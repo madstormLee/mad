@@ -1,0 +1,35 @@
+{
+	"objects": {
+		"sitemap": "MadSitemap",
+		"phpStormMenu": "PhpStormMenu"
+	},
+	"instances": {
+		"log": {
+			"class": "MadLog",
+			"method": "getInstance"
+		},
+		"js": {
+			"class": "MadJs",
+			"method": "getInstance"
+		},
+		"style": {
+			"class": "MadCss",
+			"method": "getInstance"
+		}
+	},
+	"views": {
+		"layout": "views/layouts/preset",
+		"left": "views/left",
+		"header": "views/header",
+		"footer": "views/footer",
+		"main": "views/{controller}/{action}"
+	},
+	"styles": [
+		"~/css/base",
+		"~/css/{controller}/{action}"
+	],
+	"js": [
+		"~/js/base",
+		"~/js/{controller}/{action}"
+	]
+}

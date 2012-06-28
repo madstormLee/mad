@@ -1,0 +1,16 @@
+<h1>tree보기</h1>
+
+<h2><?=$sitemapTree->getFile()?></h2>
+
+
+<form id='JsonWrite' method='post' action='save'>
+	<section id='sitemapTree'>
+	<?=$sitemapTree?>
+	</section>
+
+	<button type='submit'>저장</button>
+</form>
+
+<ul class='naviButtons'>
+	<li><a href='javascript:history.back();'>뒤로가기</a></li>
+</ul>

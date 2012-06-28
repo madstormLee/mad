@@ -1,0 +1,13 @@
+ul {
+	list-style: none;
+}
+ul li {
+}
+ul li a {
+	display: inline-block;
+	border: 1px solid #ccc;
+	padding: 3px 5px;
+	margin: 2px;
+	text-decoration: none;
+	color: #000;
+}

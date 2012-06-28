@@ -1,0 +1,3 @@
+<?
+class InterfaceDiagram extends MadJson {
+}

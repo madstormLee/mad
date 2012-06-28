@@ -1,0 +1,37 @@
+<a id='logo' href='<?=$g->sitemap->home->href?>'><?=$g->sitemap->home->label?></a>
+
+<ul id='personalNavi'>
+	<? if ( $g->log->isRoot() ): ?>
+	<li><a href='~/log/logoutRoot'>logout</a></li>
+	<? endif; ?>
+</ul>
+
+<dl id='mainNavi' class='mainNavi'>
+	<? foreach ( $g->sitemap->home->subs as $dir ): ?>
+	<dt><a href='<?=$dir->href?>'><?=$dir->label?></a></dt>
+	<? if ( $dir->subs ): ?>
+	<dd style='display: none'>
+		<ul>
+			<? foreach( $dir->subs as $action ): ?>
+			<li><a href='<?=$action->href?>'><?=$action->label?></a></li>
+			<? endforeach; ?>
+		</ul>
+	</dd>
+	<? endif; ?>
+	<? endforeach; ?>
+</dl>
+
+<dl id='phpStormMenu' class='mainNavi'>
+	<? foreach ( $g->phpStormMenu as $dir ): ?>
+	<dt><a href='<?=$dir->href?>'><?=$dir->label?></a></dt>
+	<? if ( $dir->subs ): ?>
+	<dd style='display: none'>
+		<ul>
+			<? foreach( $dir->subs as $action ): ?>
+			<li><a href='<?=$action->href?>'><?=$action->label?></a></li>
+			<? endforeach; ?>
+		</ul>
+	</dd>
+	<? endif; ?>
+	<? endforeach; ?>
+</dl>

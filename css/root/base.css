@@ -1,0 +1,90 @@
+@import 'baseExt.css';
+@import 'top.css';
+@import 'left.css';
+@import 'right.css';
+@import 'main.css';
+@import 'bottom.css';
+
+body {
+}
+#middle {
+float: left;
+margin-top: 20px;
+width: 100%;
+}
+#left {
+float: left;
+width: 170px;
+}
+#main {
+float: right;
+width: 700px;
+}
+#bottom {
+float: left;
+width: 100%;
+margin-top: 20px;
+}
+#container {
+position: absolute;
+top: 10px;
+left: 50%;
+margin-left: -500px;
+width: 1000px;
+}
+#top {
+width: 100%;
+}
+#logo {
+float: left;
+}
+#baseNavi, #mainNavi {
+clear: right;
+float: right;
+}
+#main {
+float: right;
+width: 700px;
+}
+#left {
+float: left;
+width: 200px;
+}
+#right {
+float: right;
+width: 780px;
+}
+#bottom {
+float: left;
+width: 100%;
+background: #eef;
+margin-top: 20px;
+}
+.btnFull {
+display: block;
+width: 100%;
+padding: 10px 0px;
+background: #333;
+color: #fff;
+	   text-align: center;
+}
+#newProject fieldset{
+padding: 10px;
+}
+#newProject dt {
+	margin-top: 8px;
+}
+#newProject input[type='text']{
+width: 350px;
+border: 1px solid #ccc;
+padding: 2px 5px;
+background: #eeeeff;
+}
+#brief textarea {
+width: 400px;
+height: 100px;
+background: #eeeeff;
+}
+#newProject button {
+	margin-top: 15px;
+}

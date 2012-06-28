@@ -1,0 +1,49 @@
+#scheduleWrite {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+}
+#scheduleWrite dl {
+	float: left;
+	width: 100%;
+}
+#scheduleWrite dt {
+	float: left;
+	clear: left;
+	width: 130px;
+	font: 600 12px verdana;
+	margin-top: 5px;
+	text-align: right;
+	line-height: 20px;
+	padding-right: 20px;
+	border: 1px solid #ccc;
+}
+#scheduleWrite dd {
+	float: right;
+	width: 500px;
+	margin-top: 5px;
+}
+#scheduleWrite #title {
+	float: left;
+	width: 480px;
+	border: 1px solid #ccf;
+	background: #eee;
+}
+#scheduleWrite #contents {
+	float: left;
+	width: 480px;
+	height: 200px;
+	border: 1px solid #ccf;
+	background: #eee;
+}
+#scheduleWrite .btn01 {
+}
+#scheduleWrite input {
+	height: 16px;
+}
+
+#scheduleWrite .buttons {
+	float: right;
+	margin-top: 10px;
+	margin-right: 20px;
+}

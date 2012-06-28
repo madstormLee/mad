@@ -1,0 +1,134 @@
+{
+	"info": {
+		"name": {
+			"label": "프로젝트명",
+			"placeholder": "myProject",
+			"type": "text"
+		},
+		"label": {
+			"label": "프로젝트 한글명",
+			"placeholder": "내 프로젝트",
+			"type": "text"
+		},
+		"team": {
+			"label": "프로젝트 팀명",
+			"placeholder": "내 프로젝트 구축팀",
+			"type": "text"
+		},
+		"author": {
+			"label": "저자",
+			"placeholder": "madstorm",
+			"type": "text"
+		},
+		"creator": {
+			"label": "생성자",
+			"placeholder": "PhpStorm",
+			"value": "PhpStorm",
+			"type": "text"
+		},
+		"wDate": {
+			"label": "생성일",
+			"placeholder": "2011-07-22 21:19:35",
+			"type": "text"
+		},
+		"uDate": {
+			"label": "업데이트일",
+			"placeholder": "2011-07-22 21:19:35",
+			"type": "text"
+		}
+	},
+	"dirs": {
+		"projectRoot": {
+			"label": "프로젝트 루트",
+			"placeholder": "myProject/",
+			"value": "myProject/",
+			"type": "text"
+		},
+		"controllers": {
+			"label": "컨트롤러",
+			"placeholder": "controllers/",
+			"value": "controllers/",
+			"type": "text"
+		},
+		"models": {
+			"label": "모델",
+			"placeholder": "models/",
+			"value": "models/",
+			"type": "text"
+		},
+		"views": {
+			"label": "뷰 디렉터리",
+			"placeholder": "views/",
+			"value": "views/",
+			"type": "text"
+		},
+		"json": {
+			"label": "json 파일",
+			"placeholder": "json/",
+			"value": "json/",
+			"type": "text"
+		},
+		"schemes": {
+			"label": "테이블 스키마",
+			"placeholder": "schemes/",
+			"value": "schemes/",
+			"type": "text"
+		},
+		"ini": {
+			"label": "ini 파일",
+			"placeholder": "ini/",
+			"value": "ini/",
+			"type": "text"
+		},
+		"xml": {
+			"label": "xml 파일",
+			"placeholder": "xml/",
+			"value": "xml/",
+			"type": "text"
+		},
+		"erm": {
+			"label": "db 설계파일",
+			"placeholder": "erm/",
+			"value": "erm/",
+			"type": "text"
+		},
+		"configs": {
+			"label": "설정파일",
+			"placeholder": "json/configs/",
+			"value": "json/configs/",
+			"type": "text"
+		},
+		"diagrams": {
+			"label": "다이어그램 파일",
+			"placeholder": "json/diagrams/",
+			"value": "json/diagrams/",
+			"type": "text"
+		}
+	},
+	"files": {
+		"logo": {
+			"label": "로고 파일",
+			"placeholder": "images/logo.png",
+			"value": "images/logo.png",
+			"type": "text"
+		},
+		"dbConnect": {
+			"label": "데이터베이스 연결정보",
+			"placeholder": "ini/dbConnect.ini",
+			"value": "ini/dbConnect.ini",
+			"type": "text"
+		},
+		"urlMap": {
+			"label": "url 매핑 정보",
+			"placeholder": "json/urlMap.json",
+			"value": "json/urlMap.json",
+			"type": "text"
+		},
+		"siteMap": {
+			"label": "작성자",
+			"placeholder": "json/siteMap.json",
+			"value": "json/siteMap.json",
+			"type": "text"
+		}
+	}
+}

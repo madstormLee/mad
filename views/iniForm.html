@@ -1,0 +1,16 @@
+<h1><?=baseName($ini->getFile())?></h1>
+<form method='post' action='/mad/ini/update?file=<?=$ini->getFile()?>'>
+<? foreach( $ini as $legend => $data ): ?>
+	<fieldset>
+		<legend><?=$legend?></legend>
+		<ul>
+		<? foreach( $data as $key => $value ): $id = $legend."[$key]"; ?>
+			<li>
+			<label for='<?=$id?>'><?=$key?></label>
+			<input id='<?=$id?>' name='<?=$id?>' type='text' value='<?=$value?>' /></li>
+		<? endforeach; ?>
+		</ul>
+	</fieldset>
+<? endforeach; ?>
+<input type='submit' value='확인' />
+</form>

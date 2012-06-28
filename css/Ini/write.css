@@ -1,0 +1,29 @@
+#IniWriteForm {
+}
+#IniWriteForm fieldset {
+margin-top: 20px;
+}
+#IniWriteForm legend {
+border: 1px solid #000;
+padding: 3px 20px;
+background: #eee;
+}
+#IniWriteForm ul {
+border-top: 1px solid #999;
+}
+#IniWriteForm li {
+border-bottom: 1px solid #999;
+background: #eee;
+}
+#IniWriteForm label {
+display: inline-block;
+width: 180px;
+padding: 3px 10px;
+margin-right: 10px;
+text-align: right;
+background: #ccc;
+}
+#IniWriteForm input {
+width: 300px;
+border: 1px solid #ccc;
+}

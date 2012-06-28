@@ -1,0 +1,555 @@
+body {
+	margin: 0;
+	padding: 0;
+	top: 0;
+	font-size: 0.8em;
+}
+ul, ol, li, dl, dt, dd {
+	margin: 0;
+	padding: 0;
+}
+ul, ol {
+	list-style: none;
+}
+table {
+	width: 100%;
+}
+table td ,
+table th {
+	text-align: center;
+	font-size: 0.8em;
+}
+h1 {
+	padding-left: 15px;
+}
+a {
+	text-decoration: none;
+	color: #444;
+}
+a:hover {
+	text-decoration: underline;
+}
+nav a {
+/******* 이건 아직...*********/
+	display: inline-block;
+	padding: 3px 5px;
+	margin-left: 3px;
+	border: 1px solid #333;
+}
+p.caution {
+	padding: 10px;
+	text-align: center;
+	color: #f00;
+	border: 5px solid #f99;
+}
+#container {
+position: relative;
+width: 100%;
+height: 100%;
+margin: 0 auto;
+}
+header {
+position: relative;
+width: 100%;
+background: #ccc;
+border-bottom: 1px solid #000;
+}
+footer {
+position: fixed;
+width: 100%;
+bottom: -12px;
+}
+#left {
+float: left;
+width: 240px;
+padding-bottom: 100px;
+}
+#main {
+padding-top: 10px;
+padding-right: 310px;
+padding-bottom: 100px;
+padding-left: 250px;
+display: block;
+}
+#right {
+float: right;
+/*
+position: absolute;
+top: 31px;
+right: 0;
+*/
+width: 300px;
+min-height: 200px;
+border-left: 1px solid #000;
+border-bottom: 1px solid #000;
+background: #fff;
+}
+/***************** header ******************/
+#logo {
+display: inline-block;
+margin: 2px 0;
+margin-left: 10px;
+color: green;
+font: bold 20px verdana;
+}
+/******************** personalNavi ****************/
+#personalNavi {
+position: absolute;
+list-style: none;
+top: 7px;
+right: 10px;
+}
+#personalNavi li {
+display: inline;
+}
+#personalNavi a {
+display: inline-block;
+}
+#personalNavi {
+position: absolute;
+right: 0;
+}
+/******************* mainNavi ****************/
+#mainNavi {
+position: absolute;
+min-width: 400px;
+left: 150px;
+top: 7px;
+}
+#mainNavi dt {
+display: inline;
+}
+#mainNavi dd {
+position: absolute;
+z-index: 100;
+background: #eee;
+border: 1px solid #000;
+}
+#mainNavi dd ul li a {
+display: block;
+padding: 2px 5px;
+border-bottom: 1px solid #000; 
+text-decoration: none;
+}
+#mainNavi dd ul li a:hover {
+background: #ccf;
+}
+#mainNavi dt a {
+display: inline-block;
+padding: 2px 5px;
+font-weight: bold;
+}
+/******************** bottom *****************/
+footer #copyright {
+font-size: 12px;
+	padding: 20px;
+	background: #333;
+	color: #fff;
+	border: 1px solid #ccc;
+}
+
+
+/********************* .adminForm *******************/
+.adminForm {
+}
+.adminForm nav.buttons {
+	margin-top: 10px;
+}
+/********************* .madPageNavi *******************/
+.madPageNavi {
+float: left;
+padding: 5px 0;
+text-align: center;
+width: 100%;
+}
+.madPageNavi li {
+display: inline;
+}
+.madPageNavi a, .madPageNavi b {
+display: inline-block;
+height: 16px;
+padding: 1px 3px;
+}
+.madPageNavi a:hover {
+text-decoration: none;
+}
+.madPageNavi b {
+background: none repeat scroll 0 0 #EEEEEE;
+}
+.madPageNavi .first, .madPageNavi .prev, .madPageNavi .next, .madPageNavi .last {
+border: 0 none;
+height: 16px;
+margin: 0;
+overflow: hidden;
+padding: 0;
+text-align: left;
+text-indent: -9999px;
+vertical-align: middle;
+width: 28px;
+}
+.madPageNavi .first {
+background: url("/mad/images/pageNavi/first.gif") no-repeat scroll 0 0 transparent;
+}
+.madPageNavi .prev {
+background: url("/mad/images/pageNavi/prev.gif") no-repeat scroll 0 0 transparent;
+}
+.madPageNavi .next {
+background: url("/mad/images/pageNavi/next.gif") no-repeat scroll 0 0 transparent;
+}
+.madPageNavi .last {
+background: url("/mad/images/pageNavi/last.gif") no-repeat scroll 0 0 transparent;
+}
+/******************* .naviButtons *********************/
+ul.naviButtons {
+	list-style: none;
+	margin-top: 10px;
+	text-align: right;
+}
+ul.naviButtons li {
+	display: inline;
+}
+ul.naviButtons li a {
+	display: inline-block;
+	border: 1px solid #000;
+	padding: 2px 5px;
+	text-decoration: none;
+	background: #eee;
+}
+ul.naviButtons li a:hover {
+	background: #fcc;
+}
+/****************** ul.adminForm ********************/
+.adminForm ul{
+	border-top: 5px solid #666;
+	border-bottom: 5px solid #666;
+	list-style: none;
+}
+.adminForm ul li {
+	border-bottom: 1px solid #666;
+}
+.adminForm ul span.title ,
+.adminForm ul label {
+	display: inline-block;
+	width: 150px;
+	margin-right: 10px;
+	padding: 5px 10px;
+	text-align: right;
+	background: #ccc;
+}
+.adminForm ul input {
+}
+.adminForm ul.buttons {
+	margin-top: 10px;
+	border: 0;
+	text-align: center;
+}
+.adminForm ul.buttons li {
+	border: 0;
+}
+.adminForm ul.buttons button {
+	border: 1px solid #000;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+.adminForm ul.buttons button:hover {
+	background: #ccf;
+}
+/**************** table.tableSummary *******************/
+table.tableSummary {
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+table.tableSummary td {
+border: 1px solid #000;
+text-align: left;
+height: 27px;
+padding-left: 10px;
+}
+table.tableSummary td.title {
+text-align: center;
+width: 15%;
+background: #ccc;
+padding-left: 0;
+}
+/******************* table.adminFormTable ******************/
+table.adminFormTable {
+	border-collapse: collapse;
+	border-top: 5px solid #666;
+	border-bottom: 5px solid #666;
+}
+table.adminFormTable td {
+	border-bottom: 1px solid #666;
+	height: 26px;
+	padding-right: 10px;
+	padding-left: 10px;
+	text-align: left;
+}
+table.adminFormTable .title {
+	width: 150px;
+	text-align: right;
+	background: #ccc;
+}
+/****************** table.adminTable *******************/
+.adminTable {
+	border-collapse: collapse;
+}
+.adminTable td,
+.adminTable th {
+	border: 1px solid #000;
+	height: 28px;
+}
+.adminTable th {
+	background: #aaa;
+	height: 30px;
+}
+/************ 아직 적용시키지 못함 ****************/
+#ComponentList .adminTable td {
+	text-align: left;
+	padding-left: 10px;
+}
+/****************** .noContent ****************/
+.noContent {
+	text-align: center;
+}
+/********************* dl.simpleList **********************/
+dl.simpleList {
+	margin: 10px;
+	padding: 10px;
+	border: 3px solid #999;
+}
+dl.simpleList dt {
+	padding: 5px 10px;
+	border-top: 1px solid #000;
+	background: #fee;
+}
+dl.simpleList dd {
+	padding: 5px 10px;
+	text-indent: 30px;
+	background: #eee;
+	border-bottom: 1px solid #000;
+	margin-bottom: 5px;
+}
+/*********************** .madWindow **************************/
+.madWindow {
+border: 1px solid #000;
+border-radius: 7px;
+background: #fff;
+}
+.madWindow>.titleBar {
+border-bottom: 3px double #000;
+height: 20px;
+background: #eee;
+}
+.madWindow>.titleBar .title {
+display: inline;
+margin: 0;
+padding: 2px;
+font-size: 12px;
+}
+.madWindow>.titleBar {
+position: relative;
+margin: 0;
+padding: 2px;
+font-size: 12px;
+border-bottom: 3px double #000;
+}
+.madWindow>.titleBar .title {
+	display: inline-block;
+	margin-left: 6px;
+}
+.madWindow>.titleBar .buttons {
+position: absolute;
+right: 5px;
+top: 3px;
+}
+.madWindow>.titleBar .buttons li {
+display: inline;
+}
+.madWindow>.titleBar .buttons li a {
+display: inline-block;
+}
+.madWindow .statusBar {
+border-top: 1px solid #000;
+min-height: 12px;
+}
+.madWindow .tabBar {
+border-bottom: 1px solid #000;
+width: 100%;
+height: 26px;
+overflow: hidden;
+}
+.madWindow .tabBar ul {
+list-style: none;
+margin: 0;
+padding: 0;
+margin-top: 2px;
+padding-left: 5px;
+}
+.madWindow .tabBar ul li {
+display: inline;
+}
+.madWindow .tabBar ul li>a {
+position: relative;
+display: inline-block;
+margin: 0;
+padding: 3px 10px;
+border: 1px solid #aaf;
+border-radius: 5px 5px 0px 0px;
+white-space: nowrap;
+}
+.madWindow .tabBar ul li>a.current {
+background: #ccf;
+}
+.madWindow .tabBar ul li>a:hover {
+background: #fcc;
+text-decoration: none;
+}
+.madWindow .tabBar ul li .btnCloseTab {
+position: absolute;
+right: 3px;
+padding: 1px;
+display: inline-block;
+border: 1px solid #ccc;
+font-size: 10px;
+background: #fff;
+}
+.madWindow .main {
+height: 332px;
+overflow: auto;
+}
+/***************** leftNavi *****************/
+#leftNavi {
+margin: 5px;
+padding-bottom: 5px;
+}
+#leftNavi .content {
+padding: 10px;
+}
+#leftNavi .actions a {
+display: block;
+margin: 2px 0 0 0px;
+padding: 3px 10px 0 0;
+text-align: right;
+}
+#leftNavi .actions a:hover {
+background: #ccf;
+text-decoration: none;
+}
+#leftNavi .content h1 {
+display: none;
+}
+#leftNavi .tabBar ul li>a {
+max-width: 6ex;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+/****************** sitemapWidgetTree *********************/
+#sitemapWidgetTree {
+}
+#sitemapWidgetTree dl {
+padding-left: 5px;
+}
+/******************** mainWindow *********************/
+#mainWindow {
+}
+#mainWindow .content {
+padding: 10px;
+}
+/********************** sitemapTree *************************/
+#sitemapTree {
+float: left;
+width: 100%;
+font-size: 12px;
+}
+#sitemapTree dl {
+margin-left: 15px;
+}
+#sitemapTree dl dt {
+float: left;
+margin-top: 2px;
+padding: 2px 7px;
+border: 1px solid #ccc;
+clear: left;
+}
+#sitemapTree dl dt .label {
+display: inline-block;
+padding: 2px;
+background: #eea;
+}
+#sitemapTree dl dt .buttons {
+display: inline;
+}
+#sitemapTree dl dt .buttons li {
+display: inline;
+}
+#sitemapTree dl dt .buttons li a {
+display: inline-block;
+border: 1px solid #ccc;
+padding: 1px;
+background: #eee;
+}
+/********************* writeSub *****************/
+.writeSub #write {
+position: absolute;
+top: 30px;
+right: 0px;
+width: 500px;
+border: 5px solid #000;
+background: #fff;
+z-index: 30;
+}
+#controllersContainer dt {
+	margin-top: 2px;
+}
+#controllersContainer dt a {
+display: block;
+padding: 2px;
+background: #eee;
+border: 1px solid #999;
+}
+#controllersContainer dt a.current {
+background: #fcc;
+}
+#controllersContainer dt a:hover {
+background: #ccf;
+}
+#controllersContainer dd ul {
+padding-left: 10px;
+}
+/********************* view *********************/
+#view {
+position: absolute;
+top: 30px;
+right: 0px;
+width: 500px;
+border: 3px solid #000;
+background: #fff;
+overflow: auto;
+z-index: 100;
+}
+#content {
+	border-collapse: collapse;
+	border: 1px solid #000;
+}
+#content td {
+	border: 1px solid #000;
+}
+#content td.header {
+background: #ccc;
+}
+/******************** Persona *********************/
+#personaList {
+}
+#personaList a {
+margin-left: 10px;
+text-decoration: none;
+}
+#personaList dl {
+display: inline-block;
+}
+/******************* right ********************/
+#right>dl {
+}
+#right>dl dt {
+border-bottom: 1px solid #000;
+}

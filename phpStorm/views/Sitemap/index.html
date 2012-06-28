@@ -1,0 +1,15 @@
+<h1>사이트 맵</h1>
+
+<section id='sitemap'>
+<?=sitemapTemplate( $sitemap ); ?>
+<? function sitemapTemplate( $data, $depth = 0, $visible = true  ) { ?>
+	<dl>
+	<? foreach( $data as $location => $values ) : ?>
+		<dt><?=$values->label?></dt>
+		<? if ( $values->subDir ): ?>
+		<dd><? sitemapTemplate( $values->subDir )?></dd>
+		<? endif; ?>
+	<? endforeach; ?>
+	</dl>
+<? } // endfunction; ?>
+</section>

@@ -1,0 +1,29 @@
+<h1>사이트맵 보기</h1>
+
+<h2><?=$sitemap->label?></h2>
+
+<dl>
+	<dt>명칭</dt>
+	<dd><?=$sitemap->label?></dd>
+	<dt>액션</dt>
+	<dd><?=$sitemap->action?></dd>
+	<dt>controller</dt>
+	<dd>
+		<ul>
+			<li>file : <?=$sitemap->controllerFile?></li>
+			<li><?=$sitemap->isControllerFile? "파일 존재": "없음"?></li>
+		</ul>
+	</dd>
+</dl>
+
+<? if ( $sitemap->subDir ) : ?>
+<h2><?=$sitemap->label?> 서브 디렉토리 현황</h2>
+<section id='subDirView'>
+	<dl>
+	<? foreach( $sitemap->subDir as $value ): ?>
+		<dt><?=$value->label?></dt>
+		<dd><?=$value->action?></dd>
+	<? endforeach; ?>
+	</dl>
+</section>
+<? endif; ?>

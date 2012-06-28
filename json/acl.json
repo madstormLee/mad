@@ -1,0 +1,30 @@
+{
+	view : {
+		deny : {
+			"get.no" : {
+				"not numeric" : "illegalAccess"
+			}
+		},
+		allow : {
+			"session.user.level" : "userLevels.admin, userLevel.root",
+			"session.user.no" : "model.no"
+		}
+		messages : {
+			notPassedAllow : "rowLevel"
+		}
+	}
+	write : {
+	}
+
+	[insert, update, delete] : {
+		accept : {
+			session.user.level : ["admin", "root"]
+		}
+	}
+
+	delete : {
+		accept: {
+			get.no
+		}
+	}
+}

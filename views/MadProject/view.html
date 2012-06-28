@@ -1,0 +1,54 @@
+		<form method='post' id='newProject'>
+			<p>Type : PHP Project</p>
+			<a href='/admin/project/sitemap?project=<?=$projectName?>'>sitemap 편집</a>
+			<fieldset>
+			<legend>Main</legend>
+			<dl id='brief'>
+				<dt>프로젝트 명</dt>
+				<dd>
+					<a href='/<?=$projectName?>'><?=$projectName?></a>
+					<? if ( is_dir( ROOT . $projectName ) ): ?>
+					<span style='font-weight:600; color: red;'> : 프로젝트용 디렉토리가 생성되어 있습니다.</span>
+					<? else: ?>
+					<span style='font-weight:600; color: blue;'> : 프로젝트용 디렉토리가 존재하지 않습니다..</span>
+					<? endif; ?>
+				</dd>
+				<dt>목적(goal)</dt>
+				<dd><?=$goal?></dd>
+				<dt>간단한 설명(brief)</dt>
+				<dd><?=$brief?></dd>
+			</dl>
+			</fieldset>
+			<fieldset>
+			<legend>Time Plan</legend>
+			<dl id='timePlan'>
+				<dt>시작일</dt>
+				<dd><?=$s_date?></dd>
+				<dt>종료일</dt>
+				<dd><?=$e_date?></dd>
+				<dt>작업도</dt>
+				<dd><?=$progress?> %</dd>
+			</dl>
+			</fieldset>
+			<fieldset>
+			<legend>Developers</legend>
+			<dl id='Developers'>
+				<dt>Project Manager</dt>
+				<dd><?=$PM?></dd>
+				<dt>Cheif Programmer</dt>
+				<dd><?=$cheifProgrammer?></dd>
+				<dt>Cheif Designer</dt>
+				<dd><?=$cheifDesigner?></dd>
+				<!-- make some difference. for simplicity
+				<dt>Team</dt>
+				<dd><select name='part' value='part'>
+						<option>Programmer</option>
+						<option>Designer</option>
+					</select>
+					<input type='text' name='etcMembers[]' id='etcMembers[]' />
+				</dd>
+				-->
+			</dl>
+			</fieldset>
+			<a href='javascript:history.go(-1)'>목록보기</a>
+		</form>

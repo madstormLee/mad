@@ -1,0 +1,61 @@
+<style>
+#phpStormWidget {
+position: absolute;
+border: 2px solid #666;
+position: absolute;
+top: 40px;
+right: 20px;
+width: 300px;
+z-index: 9999;
+background: #fff;
+border-radius: 5px 5px 0px 0px;
+}
+</style>
+<script type='text/javascript' src='/mad/js/prototype.js'></script>
+<script type='text/javascript' src='/mad/js/scriptaculous.js'></script>
+<script>
+document.observe('dom:loaded', function() {
+	new PhpStormWidget;
+});
+var PhpStormWidget = Class.create({
+	initialize: function() {
+		this.widget = $('PhpStormWidget');
+		this.widgetBaseUrl = '/mad/phpStorm/widget/';
+		this.main = this.widget.down('.main');
+		this.widget.select('a').invoke('observe', 'click', this.onClick.bind(this));
+		new Draggable( this.widget, {handle: this.widget.down('.header')} );
+	},
+	onClick: function( ev ) {
+		ev.stop();
+		var el = ev.element();
+		if ( el.hasClassName('minimize') ) {
+			this.main.toggle();
+		} else if ( el.up('section').hasClassName('tabBar') ) {
+			this.main.show();
+			new Ajax.Updater( this.main , el.href );
+		}
+	}
+});
+</script>
+<dl id='PhpStormWidget' class='madWindow'>
+	<dt class='titleBar'>
+		<b class='title'>PhpStorm Widget</b>
+		<ul class='buttons'>
+			<li><a class='minimize' href='#minimize'>_</a></li>
+		</ul>
+	</dt>
+	<dd class='tabBar'>
+		<ul>
+			<li><a class='current' href='/mad/phpStorm/widget/sitemap'>sitemap</a></li>
+			<li><a href='/mad/phpStorm/widget/sitemap'>test</a></li>
+			<li><a href='/mad/phpStorm/widget/sitemap'>test</a></li>
+			<li><a href='/mad/phpStorm/widget/sitemap'>test</a></li>
+		</ul>
+	</dd>
+	<dd class='content' style='display: none'>
+	testing<br />
+	testing<br />
+	testing<br />
+	</dd>
+	<dd class='statusBar'>state : good!</dd>
+</dl>

@@ -1,0 +1,14 @@
+<?=$view?>
+<div id='<?=$this->program?>' class='<?=$this->table?>'>
+	<img id='madNoteIcon' class='dragable' src='/mad/images/icon_madNote.gif' width='40px' height='40px'  /><br />
+	<b id='MadNotesToggle'>Toggle</b>
+</div>
+<form id='MadNoteInstance' style='display: none'>
+<input type='hidden' id='program' name='program' value='<?=$this->program?>' />
+<input type='hidden' id='tail' name='tail' value='<?=$this->tail?>' />
+<input type='hidden' id='request_uri' name='request_uri' value='<?=$_SERVER['REQUEST_URI']?>' />
+	<dl>
+	<dt id='MadNoteBar'><b id='MadNoteSave'>S</b><b id='MadNoteClose'>X</b></dt>
+	<dd><textarea id='MadNoteContent' name='MadNoteContent'></textarea></dd>
+	</dl>
+</form>

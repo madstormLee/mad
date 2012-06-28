@@ -1,0 +1,20 @@
+/****************** #projectView ********************/
+#projectView ul{
+	border-top: 5px solid #666;
+	border-bottom: 5px solid #666;
+	list-style: none;
+}
+#projectView ul li {
+	border-bottom: 1px solid #666;
+}
+#projectView ul span.title ,
+#projectView ul label {
+	display: inline-block;
+	width: 150px;
+	margin-right: 10px;
+	padding: 5px 10px;
+	text-align: right;
+	background: #ccc;
+}
+#projectView ul input {
+}

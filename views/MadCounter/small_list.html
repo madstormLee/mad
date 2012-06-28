@@ -1,0 +1,9 @@
+<table class='madboardSmall'>
+	<? while($row=$q->row()){
+   extract($row);?>
+	<tr>
+		<td class='date'><?=$w_date?></td>
+		<td><a href='<?=$address.$no?>'><?=$title?></a></td>
+	</tr>
+	<? } ?>
+</table>

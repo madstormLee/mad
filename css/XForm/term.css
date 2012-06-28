@@ -1,0 +1,16 @@
+.MadXDate {
+width: 70px;
+}
+#MadXTerm {
+position: absolute;
+border: 1px solid #333;
+background: #f8f1dc;
+width: 300px;
+top: 100px;
+left: 100px;
+}
+#MadXTerm li {
+float: left;
+width: 65px;
+padding: 5px;
+}

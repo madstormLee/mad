@@ -1,0 +1,36 @@
+#jsonTree dl {
+}
+#jsonTree dl dt,
+#jsonTree dl dd {
+display: block;
+margin: 5px;
+border: 1px solid #999;
+}
+#jsonTree dl dt {
+padding: 3px 10px;
+background: #fcc;
+margin: 5px;
+cursor: pointer;
+}
+#jsonTree dl dd {
+padding-left: 10px;
+margin-left: 20px;
+min-height: 20px;
+}
+#jsonTree dl dd input {
+width: 99%;
+}
+#floatMenu {
+position: absolute;
+padding: 1px;
+border: 2px solid #000;
+top: 100px;
+right: 30px;
+background: #fff;
+}
+#floatMenu li {
+display: inline;
+}
+#floatMenu li a {
+display: inline-block;
+}

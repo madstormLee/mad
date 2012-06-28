@@ -1,0 +1,19 @@
+#bottomNavi {
+float: left;
+width: 100%;
+}
+#bottomNavi li {
+float: left;
+}
+#bottomNavi li a {
+float: left;
+	   margin-left: 10px;
+	padding: 5px;
+	border: 1px solid #eef;
+}
+#copyright {
+	margin-top: 15px;
+float: left;
+width: 100%;
+	   text-align: center;
+}

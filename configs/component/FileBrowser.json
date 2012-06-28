@@ -1,0 +1,18 @@
+{
+	"version": "1",
+	"name": "FileBrowser",
+	"label": "FileBrowser",
+	"files" : [
+		"controllers/FileBrowserController.php",
+		"views/FileBrowser/index.html",
+		"views/FileBrowser/list.html",
+		"js/FileBrowser/index.js",
+		"css/FileBrowser/index.css"
+	],
+	"externalCall": {
+		"loads" : [
+			"js/FileBrowser/index.js",
+			"css/FileBrowser/index.css"
+		]
+	}
+}

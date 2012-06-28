@@ -1,0 +1,14 @@
+{
+	"illegalAccess" : "잘못된 접근 입니다.",
+	"saved" :  "저장되었습니다.",
+	"saveFailed" :  "저장 중 문제가 발생하였습니다.",
+	"updated" :  "변경되었습니다.",
+	"updateFailed" :  "변경 사항이 없습니다.",
+	"undefined" :  "예기치 못한 에러가 발생하였습니다.",
+	"deleted" :  "삭제되었습니다.",
+	"deleteFailed" :  "삭제 중 문제가 발생하였습니다.",
+	"fileNotFound" :  "파일을 발견할 수 없습니다.",
+	"fileLoaded" :  "파일을 성공적으로 열었습니다.",
+	"fileUnloadedFailure" : "파일을 닫을 수 없습니다.",
+	"fileCreateFailed" : "파일을 생성할 수 없습니다."
+}

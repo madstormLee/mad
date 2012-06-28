@@ -1,0 +1,15 @@
+<form id='<?=$this->table?>' class='madCommentWrite' method='post'>
+	<input type='hidden' name='<?=$this->program?>' value='ins' />
+	<input type='hidden' name='rel_no' value='<?=$rel_no?>' />
+	<input type='hidden' name='w_date' value='now()' />
+	<dl>
+		<? if ( ! $madlog->isLogin() ): ?>
+		<dt>
+		<span>아이디 : <input id='id' name='id' type='text' /></span>
+		<span>패스워드 : <input id='pw' name='pw' type='password' /></span>
+		</dt>
+		<? endif; ?>
+		<dd><textarea name='contents'></textarea></dd>
+	</dl>
+	<button type='submit'>꼬리말 달기</button>
+</form>

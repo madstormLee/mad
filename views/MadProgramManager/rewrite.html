@@ -1,0 +1,50 @@
+<style>
+h1 {
+	margin-top: 20px;
+	font-size: 20px;
+	text-indent: 20px;
+}
+h2 {
+	margin-top: 10px;
+	font-size: 13px;
+	text-indent: 20px;
+}
+#MadProgramManager {
+width: 90%;
+margin: 5%;
+}
+#MadProgramManager table {
+}
+#MadProgramManager td {
+height: 27px;
+border-bottom: 1px solid #ccc;
+}
+#MadProgramManager td.title {
+width: 25%;
+padding-right: 5%;
+text-align: right;
+font-weight: 600;
+}
+#MadProgramManager label {
+}
+#MadProgramManager input {
+float: left;
+width: 90%;
+border: 1px solid #ccc;
+}
+</style>
+<h1><?=$this->programName?></h1>
+<h2><?=$this->programName . '_' . $this->id?></h2>
+<form id='MadProgramManager' method='post' action='?'>
+	<table>
+	<? foreach( $this->spec as $key => $value ): ?>
+		<tr>
+		<td class='title'><label for='<?=$key?>'><?=$key?></label></td>
+		<td><?=$this->form->text($key,$value)?></td>
+		</tr>
+	<? endforeach; ?>
+	</table>
+	<div class='buttons'>
+		<button type='submit'>저장</button>
+	</div>
+</form>

@@ -1,0 +1,84 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+}
+dl, ul, dt, dd {
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	width: 100%;
+}
+table td ,
+table th {
+	text-align: center;
+	font-size: 0.8em;
+}
+h1 {
+	padding-left: 15px;
+}
+a {
+	text-decoration: none;
+	color: #444;
+}
+a:hover {
+	text-decoration: underline;
+}
+header {
+	background: #000;
+	height: 20px;
+}
+header ul.mainMenu {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	margin: 0;
+	padding: 0;
+}
+header ul.mainMenu li {
+	display: inline;
+}
+header ul.mainMenu li a {
+	padding: 0 10px;
+	display: inline-block;
+	font-weight: 600;
+	color: #fff;
+}
+header .btnClose {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	width: 20px;
+	font: 600 13px verdana;
+	color: #fff;
+}
+footer {
+	float: left;
+	width: 100%;
+}
+footer #copyright {
+	padding: 20px;
+	background: #333;
+	color: #fff;
+	border: 1px solid #ccc;
+}
+/******************** temporal ********************/
+.noContent {
+	padding: 10px;
+	border: 1px solid #000;
+	text-align: center;
+}
+/**************** table.tableSummary *******************/
+table.tableSummary {
+	border-collapse: collapse;
+	margin-bottom: 10px;
+}
+table.tableSummary td {
+	border: 1px solid #000;
+}
+table.tableSummary td.title {
+	width: 15%;
+	background: #ccc;
+}

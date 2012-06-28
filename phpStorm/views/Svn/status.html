@@ -1,0 +1,31 @@
+<h1>Svn Status</h1>
+
+<table class='adminTable'>
+<thead>
+	<tr>
+		<th>상태</th>
+		<th>이름</th>
+		<th>add</th>
+	</tr>
+</thead>
+<tbody>
+	<? foreach ( $list as $row ):
+	$state = substr($row, 0, 7 );
+	$target = substr($row, 7 );
+	?>
+	<? if ( empty( $row ) ) continue; ?>
+	<tr>
+		<td class='title'><?=$state?></td>
+		<td class='title'><?=$target?></td>
+		<td><a href='add'>추가</a></td>
+	</tr>
+	<? endforeach; ?>
+</tbody>
+</table>
+
+<? if ( $list->isEmpty() ) : ?>
+	<p class='noContent'>리스트가 없습니다.</p>
+<? endif; ?>
+<ul class='naviButtons'>
+	<li><a href='list'>목록</a></li>
+</ul>

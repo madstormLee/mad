@@ -1,0 +1,36 @@
+<h1>Erm file list</h1>
+<table class='adminTable'>
+	<thead>
+	<tr>
+		<th>no</th>
+		<th>파일</th>
+		<th>크기</th>
+		<th>날자</th>
+		<th>xml</th>
+		<th>인스톨</th>
+		<th>다운</th>
+		<th>삭제</th>
+	</tr>
+	</thead>
+	<tbody>
+	<? $i = 1; foreach( $list as $file => $info ):?>
+	<tr>
+		<td><?=$i?></td>
+		<td><a href='view?file=<?=$file?>'><?=$info->getBasename()?></a></td>
+		<td><?=number_format($info->getSize())?></td>
+		<td><?=date("Y/m/d", $info->getCTime())?></td>
+		<td><a href='viewXml?file=<?=$file?>'>xml</a></td>
+		<td><a href='writeConfig?file=<?=$file?>'>install</a></td>
+		<td><a href='download?file=<?=$file?>'>down</a></td>
+		<td><a href='delete?file=<?=$file?>'>del</a></td>
+	</tr>
+	<? ++$i; endforeach; ?>
+	</tbody>
+</table>
+<? if ( $list->isEmpty() ) : ?>
+<p class='noContent'>목록이 없습니다.</p>
+<? endif; ?>
+
+<ul class='naviButtons'>
+	<li><a href='write'>쓰기</a></li>
+</ul>

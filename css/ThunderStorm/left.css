@@ -1,0 +1,29 @@
+#left .box {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+.loginBox {
+}
+.loginBox input {
+	border: 1px solid #ccc;
+}
+#leftNavi {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+}
+#leftNavi li a {
+	float: left;
+	clear: left;
+	width: 120px;
+margin-top: 8px;
+	padding: 10px 20px;
+	font: 12px verdana;
+	text-align: right;
+	border: 1px solid #aaf;
+}
+#leftNavi li a:hover {
+	border: 1px solid #ccf;
+	background: #eef;
+}

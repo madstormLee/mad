@@ -1,0 +1,9 @@
+<table id='<?=$this->table?>' class='smallList'>
+	<? foreach( $tuple as $row ): extract($row);?>
+	<tr>
+	<td class='no'><?=$no?></td>
+	<td class='title'><a href='/madstorm/bbs/notice?<?=$this->program?>=view&no=<?=$no?>'><?=$title?></a></td>
+	<td class='date'><?=$wDate?></td>
+</tr>
+	<? endforeach; ?>
+</table>

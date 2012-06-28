@@ -1,0 +1,60 @@
+.window {
+float: left;
+margin: 0;
+padding: 0;
+width: 700px;
+background: url(/mad/images/window/body.gif) repeat-y left;
+}
+.window .titleBar {
+float: left;
+margin: 0;
+padding: 0;
+width: 100%;
+font: 600 12px arial;
+border-bottom: 1px solid #ccc;
+background: url(/mad/images/window/top.gif) no-repeat left top;
+}
+.window .windowBottom {
+float: left;
+margin: 0;
+padding: 0;
+width: 100%;
+background: url(/mad/images/window/bottom.gif) no-repeat left bottom;
+}
+.window .menuBar {
+}
+.window .toolBar {
+}
+.window .statusBar {
+}
+.window .titleBar .windowButtons {
+float: right;
+margin: 5px;
+}
+.window .titleBar .btnMenu ,
+.window .titleBar .btnRemove ,
+.window .titleBar .btnFold {
+float: left;
+width: 17px;
+height: 17px;
+cursor: pointer;
+}
+.window .titleBar .btnMenu {
+background: url(/mad/images/window/btnMenu.gif) no-repeat left bottom;
+}
+.window .titleBar .btnRemove {
+background: url(/mad/images/window/btnRemove.gif) no-repeat left bottom;
+}
+.window .titleBar .btnFold {
+background: url(/mad/images/window/btnFold.gif) no-repeat left bottom;
+}
+.window .titleBar .windowTitle {
+float: left;
+margin: 8px 0 0 10px;
+}
+.window .windowContents {
+width: 690px;
+margin-top: 5px;
+margin-left: 5px;
+padding-bottom: 5px;
+}

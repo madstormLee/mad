@@ -1,0 +1,144 @@
+.madboardList {
+	width: 100%;
+	margin-top: 3px;
+}
+.madboardList table {
+	border-collapse: collapse;
+	width: 100%;
+}
+.madboardList th {
+	height: 20px;
+	font: 600 12px ±¼¸²;
+	color: #333;
+	background: #ddf;
+}
+.madboardList td {
+	height: 20px;
+	padding: 5px;
+	text-align: center;
+	border-bottom: 1px solid #eef;
+	color: #333;
+	background: #fff;
+}
+.madboardList .title {
+	width: 60%;
+	text-align: left;
+}
+.madboardList .pageNavi {
+	margin-top: 10px;
+	width: 100%;
+	text-align: center;
+}
+.madboardList .search {
+	width: 100%;
+	text-align: center;
+}
+.madboardList .search button {
+	margin-left: 10px;
+}
+.madboardList .search * {
+	vertical-align: middle;
+}
+.madboardWrite {
+	width: 100%;
+}
+.madboardWrite .head {
+	clear: left;
+	float: left;
+	width: 10%;
+	text-align: right;
+	margin-right: 20px;
+	margin-top: 5px;
+}
+.madboardWrite .body {
+	float: left;
+	width: 70%;
+	margin-top: 5px;
+}
+.madboardWrite input {
+	float: left;
+	width: 70%;
+}
+.madboardWrite textarea {
+	width: 100%;
+	height: 250px;
+	vertical-align: middle;
+}
+.madboardWrite button {
+	float: left;
+	clear: left;
+	margin-left: 13%;
+	margin-top: 10px;
+	padding: 5px;
+}
+.madboardView {
+float: left;
+	width: 100%;
+}
+.madboardView .view {
+float: left;
+width: 100%;
+}
+.madboardView .view .head {
+float: left;
+width: 100%;
+	border: 1px solid #ccc;
+	color: #e7e3bd;
+	background: #313442;
+}
+.madboardView .view .head dl {
+float: left;
+width: 100%;
+}
+.madboardView .view .head dt {
+float: left;
+width: 60px;
+	   text-align: right;
+	padding: 5px 0;
+}
+.madboardView .view .head dd {
+float: left;
+width: 170px
+	padding: 5px 0;
+}
+.madboardView .view .head .titleDt {
+width: 28%;
+}
+.madboardView .view .head .title {
+float: left;
+	width: 70%;
+	padding: 5px 0;
+	background: #313442;
+}
+.madboardView .view .body {
+float: left;
+	padding: 20px 10px;
+	color: #333;
+	background: #fff;
+	border: 3px dotted #999;
+}
+.madboardView a {
+	background: #fff;
+}
+.madboardSmall {
+	width: 100%;
+}
+.madboardSmall td {
+	width: 70%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.madboardSmall .date {
+	width: 30%;
+	overflow: hidden;
+}
+.smallList td {
+	height: 20px;
+}
+.smallList .no {
+	display: none;
+}
+.smallList .title {
+	text-align: left;
+	text-indent: 5px;
+}

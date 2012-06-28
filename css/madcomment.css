@@ -1,0 +1,62 @@
+.madCommentList {
+	width: 100%;
+	padding: 10px 0;
+	color: #000;
+	background: #efebef;
+}
+.madCommentList dt {
+	margin: 5px 20px;
+	padding: 5px;
+	background: #dddddd;
+}
+.madCommentList dt b {
+	padding-right: 10px;
+}
+.madCommentList dd {
+	margin: 5px 20px;
+	padding: 10px;
+	border: 1px solid #7b9ebd;
+}
+.madCommentWrite {
+	margin: 0;
+	width: 100%;
+	padding: 10px 0;
+	color: #000;
+	border-top: 2px double #666;
+	background: #efebef;
+}
+.madCommentWrite input {
+	width: 80px;
+	height: 16px;
+	padding: 0 3px;
+	border: 1px solid #7b9ebd;
+	font: 10px verdana;
+	line-height: 16px;
+	vertical-align: middle;
+}
+.madCommentWrite dl {
+}
+.madCommentWrite dt {
+	padding: 3px 0;
+}
+.madCommentWrite dt span {
+	margin-left: 2%;
+}
+.madCommentWrite dd {
+	width: 100%;
+}
+.madCommentWrite textarea {
+	width: 95%;
+	margin-left: 2%;
+	padding: 5px;
+	height: 40px;
+	border: 1px solid #7b9ebd;
+	font: 12px ±¼¸²;
+	overflow: auto;
+}
+.madCommentWrite button {
+	display: inline;
+	float: right;
+	margin-top: 5px;
+	margin-right: 2%;
+}

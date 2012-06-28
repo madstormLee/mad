@@ -1,0 +1,20 @@
+#bottomNavi {
+float: right;
+}
+#bottomNavi li {
+float: left;
+}
+#bottomNavi li a {
+float: left;
+border-right: 1px solid #ccc;
+padding: 3px;
+}
+#bottomNavi .last a {
+border: 0;
+}
+#copyright {
+float: left;
+width: 100%;
+text-align: center;
+padding: 10px 0;
+}

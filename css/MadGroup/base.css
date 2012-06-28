@@ -1,0 +1,50 @@
+#MadGroupList {
+	position: absolute;
+	top: 130px;
+	left: 50%;
+	width: 400px;
+	margin-left: -200px;
+	border: 3px double #ccc;
+	background: #fff;
+	z-index: 40;
+}
+#MadGroupList #groups {
+float: left;
+margin-top: 8px;
+height: 400px;
+overflow: auto;
+}
+#MadGroupList dl {
+width: 95%;
+margin-left: 5%;
+}
+#MadGroupList .buttons {
+float: left;
+width: 100%;
+       text-align: center;
+}
+#MadGroupList .buttons button {
+    background: #eee;
+}
+#MadGroupList .buttons a {
+    background: #eee;
+}
+#addRootSub {
+float: left;
+}
+#MadGroupList .menuBar {
+float: left;
+width: 100%;
+       border-bottom: 2px solid #aaa;
+	   cursor: pointer;
+}
+#MadGroupList .menuBar .buttons {
+float: right;
+padding: 3px;
+width: auto;
+}
+#MadGroupList input {
+border: 1px solid #ccc;
+font: 11px dotum;
+width: 70%;
+}

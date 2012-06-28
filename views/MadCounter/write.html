@@ -1,0 +1,19 @@
+<div id='<?=$this->table?>' class='madboardWrite'>
+	<form id='madboardWrite' method='post'>
+		<input type='hidden' name='table' value='<?=$this->table?>' />
+		<input type='hidden' name='mode' value='ins' />
+		<dl>
+			<? if ( empty($_SESSION['id']) ): ?>
+			<dt>작성자</dt>
+			<dd><input type='text' name='id' /></dd>
+			<dt>패스워드</dt>
+			<dd><input type='password' name='pw' /></dd>
+			<? endif; ?>
+			<dt>제목</dt>
+			<dd><input type='text' name='title' /></dd>
+			<dt>내용</dt>
+			<dd><textarea name='contents'> </textarea></dd>
+		</dl>
+		<button type='submit'>저장</button>
+	</form>
+</div>

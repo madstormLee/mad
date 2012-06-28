@@ -1,0 +1,3 @@
+<?
+class MadException extends Exception {
+}

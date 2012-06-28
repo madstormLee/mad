@@ -1,0 +1,113 @@
+<html>
+	<head>
+		<title>키워드 광고대행 계약서</title>
+		<style>@import 'contract.css';</style>
+		<script src='/js/prototype.js' type='text/javascript'></script>
+		<script src='contract.js' type='text/javascript'></script>
+	</head>
+	<body>
+		<div id='container'>
+			<form id='contract' method='post' action='?mode=<?=$action?>'>
+				<input type='hidden' id='no' name='no' value='' />
+				<input type='hidden' id='w_date' name='w_date' value='now()' />
+			<div id='top'>
+				<h1 class='title'>키워드 광고대행 계약서</h1>
+				<img ondblclick="location.href='?mode=ls';" src='images/logo.gif'>
+				<img src='images/ad.gif' width='60px'>
+			</div>
+			<h3>1. 광고내용</h3>
+			<table>
+				<tr>
+					<th>광고명</th>
+					<th>광고방식</th>
+					<th>광고매체</th>
+				</tr>
+				<tr>
+					<td>구글 키워드 광고</td>
+					<td>클릭당 지불방식 (CPC방식)</td>
+					<td>구글 제휴 네트워크 매체</td>
+				</tr>
+			</table>
+			<h3>2. 계약내용</h3>
+			<table>
+				<tr>
+					<th>최초 예치금</th>
+					<th>결제방법</th>
+					<th>계약기간</th>
+				</tr>
+				<tr>
+					<td>선불 예치 방식</td>
+					<td>카드 및 가상계좌</td>
+					<td>광고개시일~12개월</td>
+				</tr>
+			</table>
+			<h3>3. 입금계좌</h3>
+			<table>
+				<tr>
+					<th>상품</th>
+					<th>입금계좌</th>
+					<th>예금주</th>
+				</tr>
+				<tr>
+					<td>구글</td>
+					<td>나무홈페이지 [광고결제] 이용</td>
+					<td>(주)나무커뮤니케이션</td>
+				</tr>
+			</table>
+			<h3>4. 광고주</h3>
+			<table>
+				<tr>
+					<th>업체명</th>
+					<th>전화번호</th>
+					<th>대 표 자 (담당자)</th>
+				</tr>
+				<tr>
+					<td><?=$company?></td>
+					<td><?=$tel?></td>
+					<td><?=$client?></td>
+				</tr>
+				<tr>
+					<th>구글 아이디(e메일주소)</th>
+					<th>구글 패스워드(영자포함 7자 이상)</th>
+					<th>광고주 URL</th>
+				</tr>
+				<tr>
+					<td><?=$google_id?></td>
+					<td><?=$google_pw?></td>
+					<td><?=$URL?></td>
+				</tr>
+			</table>
+			<h3>5. 특약사항</h3>
+			<?include 'agreement.html'?>
+			<div class='date'><?=date("Y.m.d")?></div>
+			<div class='spec'>
+				<div class='label'>광 고 주 (신청인)</div>
+				<dl>
+					<dt>주소</dt>
+					<dd><?=$firm_address?></dd>
+					<dt>상호</dt>
+					<dd><?=$firm_name?></dd>
+					<dt>사업자 NO</dt>
+					<dd><?=$firm_id?></dd>
+					<dt>대표</dt>
+					<dd><?=$firm_chief?></dd>
+				</dl>
+			</div>
+			<div class='spec' id='namu'>
+				<div class='label'>광고대행사</div>
+				<dl>
+					<dt>주소</dt>
+					<dd>서울특별시 강남구 논현동 231-13 팍스타워 3층</dd>
+					<dt>상호</dt>
+					<dd>(주)나무커뮤니케이션</dd>
+					<dt>사업자 NO</dt>
+					<dd>120-86-46264</dd>
+					<dt>대표</dt>
+					<dd>김 진 현</dd>
+				</dl>
+			</div>
+		</form>
+			<div class='explain'>* 예제와 같이 작성하신 후, 사업자등록증을 팩스로 송신부탁드립니다.<br />&lt; 담당 : 나영훈 대리 HP : 010-6669-6843 / FAX : 3430-0096 &gt; </div>
+		</div>
+	</body>
+</html>

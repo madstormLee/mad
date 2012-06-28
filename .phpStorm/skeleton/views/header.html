@@ -1,0 +1,23 @@
+<a id='logo' href='~/'>Proto</a>
+
+<ul id='personalNavi'>
+	<li><a href='~/'>Home</a></li>
+</ul>
+
+<?
+$sitemap = new SitemapTree('json/sitemap');
+?>
+<dl id='mainNavi'>
+	<? foreach ( $sitemap->{'/'}->subDir as $dir ): ?>
+	<dt><a href='<?=$dir->href?>'><?=$dir->label?></a></dt>
+	<? if ( $dir->subDir ): ?>
+	<dd style='display: none'>
+		<ul>
+			<? foreach( $dir->subDir as $action ): ?>
+			<li><a href='<?=$action->href?>'><?=$action->label?></a></li>
+			<? endforeach; ?>
+		</ul>
+	</dd>
+	<? endif; ?>
+	<? endforeach; ?>
+</dl>

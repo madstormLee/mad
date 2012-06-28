@@ -1,0 +1,127 @@
+body {
+	background: #fff;
+	font: 12px ±¼¸²;
+}
+body, dl, ol, ul, dt, dd, li {
+	margin: 0;
+	padding: 0;
+}
+dl, ol, ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    width: 100%;
+    height: 30px;
+    font: bold 15px verdana;
+    background: #bdbe42;
+    line-height: 30px;
+    text-indent: 10px;
+}
+img {
+	border: 0;
+}
+input, button {
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+	color: #333;
+}
+.main-temp {
+    width: 768px;
+    border: 1px solid #bdbe42;
+}
+.MadLog {
+    width: 544px;
+    height: 300px;
+    margin-top: 22px;
+    margin-left: 112px;
+    border: 2px solid #eeeeee;
+    background: #f9f9f9;
+}
+.MadLog dl {
+    margin-top: 30px;
+    width: 300px;
+    margin-left: 80px;
+}
+.MadLog dt {
+    float: left;
+    clear: left;
+    font: 600 12px verdana;
+    width: 100px;
+    height: 30px;
+    text-align: right;
+    padding-right: 20px;
+    line-height: 20px;
+}
+.MadLog dd {
+    float: left;
+    height: 30px;
+}
+.MadLog button {
+    margin-left: 200px;
+}
+.dl01 {
+	width: 300px;
+}
+.dl01 dt {
+	float: left;
+	padding: 5px;
+	width: 30%;
+	border: 1px solid #ccf;
+	background: #ccf;
+}
+.dl01 dd {
+	float: left;
+	padding: 5px;
+	border: 1px solid #ccf;
+	width: 70%;
+}
+#container {
+	position:absolute;
+	top: 30px;
+	left: 50%;
+	width: 770px;
+	margin-left: -375px; /*set to a negative number 1/2 of your width*/
+}
+#top {
+	float: left;
+	clear: both;
+}
+#right {
+	padding-left: 200px;
+}
+#bottom {
+	float: left;
+	clear: both;
+}
+#logo {
+	float: left;
+	clear: left;
+}
+#baseMenu {
+	float: right;
+}
+#baseMenu li {
+	float: left;
+	margin: 1px;
+	padding: 4px 10px;
+	background: #fcc;
+}
+#bottomMenu {
+	float: left;
+	width: 100%;
+}
+#bottomMenu li {
+	float: left;
+	margin: 1px;
+	padding: 4px 20px;
+	background: #ccf;
+}

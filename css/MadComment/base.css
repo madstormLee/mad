@@ -1,0 +1,67 @@
+#MadComment {
+float: left;
+width: 98%;
+margin: 1%;
+}
+#MadCommentList {
+float: left;
+width: 100%;
+}
+#MadCommentList table {
+margin: 2px 0px;
+width: 98%;
+}
+#MadCommentList td {
+padding: 5px;
+border: 1px solid #ccc;
+}
+#MadCommentList .no {
+width: 40px;
+text-align: center;
+}
+#MadCommentList .writer {
+width: 150px;
+text-align: center;
+background: #eee;
+}
+#MadCommentList .contents {
+}
+#MadCommentList p {
+	padding-right: 30px;
+	line-height: 140%;
+}
+#MadCommentList .btnRemove {
+float: right;
+display: inline;
+margin-right: 10px;
+}
+#MadCommentWrite {
+float: left;
+width: 100%;
+}
+#MadCommentWrite textarea {
+float: left;
+width: 88%;
+height: 40px;
+padding: 5px;
+border: 1px solid #ccc;
+font: 12px dotum;
+}
+#MadCommentWrite .buttons {
+display: inline;
+margin-left: 1%;
+width: 7%;
+float: left;
+}
+#MadCommentWrite .btnSubmit {
+float: left;
+	width: 100%;
+height: 50px;
+text-align: center;
+line-height: 50px;
+border: 1px solid #ccc;
+}
+#MadCommentWrite .btnSubmit:hover {
+text-decoration: none;
+background: #eef;
+}

@@ -1,0 +1,73 @@
+<h1>tree 목록</h1>
+
+<form id='JsonWrite' method='post' action='./save'>
+	<section id='sitemapTree'>
+	<?=sitemapTemplate( $sitemap, 1, true, $g ); ?>
+	<? function sitemapTemplate( $data, $depth = 1, $visible = true, $g ) { ?>
+		<? foreach( $data as $name => $values ): ?>
+		<?
+		$root = $g->project->getRoot();
+		$values->href = str_replace( '~/', substr( $root, strlen(ROOT)-1 ), $values->href ) ?>
+		<dl class='depth<?=$depth?>'>
+			<dt class='<?=$name?>'>
+				<a href='<?=$values->href?>' class='label'><?=$name ?>( <?=$values->label?> ) :</a>
+				<span class='action'><?=$values->controller?>::<?=$values->action?></span>
+				<span class='menu'>
+					<ul class='buttons'>
+						<li><a class='view' href='view?href=<?=$values->href?>'>보기</a><li>
+						<li><a class='write' href='write?href=<?=$values->href?>'>편집</a><li>
+						<li><a class='writeSub' href='writeSub?href=<?=$values->href?>'>추가</a><li>
+						<li><a class='remove' href='remove?href=<?=$values->href?>'>삭제</a><li>
+					</ul>
+				</span>
+			</dt>
+			<? if ( $values->subs ) : ?>
+			<dd><? sitemapTemplate( $values->subs, ++$depth, true, $g ); ?></dd>
+			<? endif; ?>
+		</dl>
+	<? endforeach; ?>
+	<? } // endfunction ?>
+	</section>
+	<textarea id='content' name='content' style='display: none;'><?=$sitemap?></textarea>
+
+	<button type='submit'>저장</button>
+</form> 
+
+<section id='view' style='display: none'>
+</section>
+
+<section id='write' style='display: none;'>
+<h1>서브 만들기</h1>
+
+<form id='writeForm' method='post' action='addSub?current=<?=$current->href?>'>
+<ul>
+	<li>
+		<label for='name'>Name</label>
+		<input type='text' name='name' id='name' />
+	</li>
+	<li>
+		<label for='label'>Label</label>
+		<input type='text' name='label' id='label' />
+	</li>
+	<li>
+		<label for='href'>Href</label>
+		<input type='text' name='href' id='href' />
+	</li>
+	<li>
+		<label for='controller'>Controller</label>
+		<input type='text' name='controller' id='controller' readonly />
+	</li>
+	<li>
+		<label for='action'>Action</label>
+		<input type='text' name='action' id='action' readonly />
+	</li>
+</ul>
+<ul class='buttons'>
+	<li><button>만들기</button>
+</ul>
+</form>
+</section>
+
+<ul class='naviButtons'>
+	<li><a href='javascript:history.back();'>뒤로가기</a></li>
+</ul>

@@ -1,0 +1,27 @@
+/********   start of basic format   ********/
+#container {
+	position:absolute;
+	left: 50%;
+	width: 100%;
+	margin-left: -50%; /*set to a negative number 1/2 of your width*/
+}
+#top {
+	float: left;
+	width: 100%;
+}
+#logo { float: left; }
+#middle {
+float: left;
+width: 100%;
+}
+#left { float: left; }
+#right { float: right; }
+#main { float: left; }
+#bottom {
+	float: left;
+	width: 100%;
+}
+/*************** basic utility classes *************/
+.fl { float: left; }
+.fr { float: right; }
+.fn { float: none; }

@@ -1,0 +1,8 @@
+{
+	"index" : {
+		"controller" : "index",
+		"action" : {
+			"index" : "index"
+		}
+	}
+}

@@ -1,0 +1,23 @@
+<h1>Project List</h1>
+<table class='adminTable'>
+	<tr>
+		<th>프로젝트 </th>
+		<th>한글명</th>
+		<th>열기</th>
+		<th>변경</th>
+		<th>삭제</th>
+	</tr>
+	<? foreach( $list as $name => $ini ) :
+	$file = $ini->getFile(); ?>
+	<tr>
+		<td><?=$ini->info->name?></td>
+		<td><?=$ini->info->label?></td>
+		<td><a href='open?file=<?=$file?>'>열기</a></td>
+		<td><a href='write?file=<?=$file?>'>변경</a></td>
+		<td><a class='btnDelete' href='delete?file=<?=$file?>'>삭제</a></td>
+	</tr>
+	<? endforeach; ?>
+</table>
+<? if ( $list->isEmpty() ) : ?>
+<p class='noContent'>리스트가 없습니다.</p>
+<? endif; ?>

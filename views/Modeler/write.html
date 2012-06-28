@@ -1,0 +1,38 @@
+<?
+$madform = new MadForm();
+$types = 'int,float,varchar,text,password';
+?>
+<form method='post' id='modeler'>
+<b>모델명 : </b><input type='text' name='ini' value='' />
+<table class='table01'>
+	<thead>
+		<tr>
+			<th>이름</th>
+			<th>닉네임</th>
+			<th>타입</th>
+			<th>min</th>
+			<th>max</th>
+			<th>저장</th>
+			<th>기본값</th>
+			<th>추가</th>
+			<th>삭제</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><?=$madform->text('name[]')?></td>
+			<td><?=$madform->text('nickName[]')?></td>
+			<td><?=$madform->select('type[]',$types)?></td>
+			<td><?=$madform->text('min[]')?></td>
+			<td><?=$madform->text('max[]')?></td>
+			<td><?=$madform->checkbox('save[]')?></td>
+			<td><?=$madform->text('default[]')?></td>
+			<td class='addRow'>+</td>
+			<td class='removeRow'>X</td>
+		</tr>
+	</tbody>
+</table>
+<div class='buttons'>
+	<a class='btnSubmit'>확인</a>
+</div>
+</form>

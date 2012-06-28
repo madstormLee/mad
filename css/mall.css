@@ -1,0 +1,54 @@
+.eventBox {
+	float: left;
+	width: 507px; height: 250px;
+	border: 1px solid #dddddd;
+}
+.eventBox-right {
+	width: 275px;
+	margin-left: 16px;
+	border-top: 1px solid #dddddd;
+}
+.eventBox-right li {
+	width: 100%;
+	height: 82px;
+	border-bottom: 1px solid #dddddd;
+}
+.product-list {
+	margin-top: 20px;
+	width: 800px;
+}
+.product-list dt {
+	width: 100%; height: 42px;
+	color: #666666;
+	text-indent: 150px;
+	line-height: 42px;
+	border-bottom: 1px solid #dd0000;
+}
+.product-list dd {
+	float: left;
+	width: 114px;
+	margin: 5px 7px;
+}
+.product-list dd img {
+	width: 99px; height: 99px;
+	margin-left: 7px;
+	border: 1px solid #cccccc;
+}
+.product-list dd p {
+	float: left;
+	clear: both;
+	width: 100%; height: 30px;
+	font: 600 12px ¹ÙÅÁ;
+	line-height: 30px;
+	text-indent: 10px;
+	color: #00659c;
+}
+.recommend {
+	background: url('/images/recommend.gif') no-repeat 10px 3px;
+}
+.new-product {
+	background: url('/images/new_product.gif') no-repeat 10px 3px;
+}
+.popular {
+	background: url('/images/popular.gif') no-repeat 10px 3px;
+}

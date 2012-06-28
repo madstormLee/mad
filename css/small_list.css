@@ -1,0 +1,13 @@
+.slist {
+	text-align: left;
+	font-size: 13px;
+	padding: 5px;
+	line-height: 140%;
+}
+.slist a:hover {
+	text-decoration: underline;
+	color: #cc6666;
+}
+.slist a {
+	color: #666633;
+}

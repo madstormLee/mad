@@ -1,0 +1,3 @@
+<?
+class UserStory extends MadJson {
+}

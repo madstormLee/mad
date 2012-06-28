@@ -1,0 +1,25 @@
+<div id='MadCommentList'>
+	<? foreach( $madArr as $row): extract($row); ?>
+	<dl>
+		<dt class='writer'>
+		글쓴이 : <b><?=$id?></b> 날짜 : <b><?=$w_date?></b>
+		<a href='?<?=$className?>=del'><img src='/mad/images/MadComment/delete.gif' /></a>
+		</dt>
+		<dd><?=$contents?></dd>
+	</dl>
+	<? endforeach; ?>
+</div>
+<form id='MadCommentWrite' method='post'>
+	<dl>
+		<? if ( ! $madlog->isLogin() ): ?>
+		<dt>
+		<span>아이디 : <input id='id' name='id' type='text' /></span>
+		<span>패스워드 : <input id='pw' name='pw' type='password' /></span>
+		</dt>
+		<? endif; ?>
+		<dd><textarea name='contents'></textarea></dd>
+	</dl>
+	<div class='buttons'>
+		<a href='#' class='btnSubmit'>확인</a>
+	</div>
+</form>

@@ -1,0 +1,21 @@
+<? extract($rewrite) ?>
+<div id='<?=$this->table?>' class='madboardWrite'>
+	<form id='madboardWrite' method='post'>
+		<input type='hidden' name='table' value='<?=$this->table?>' />
+		<input type='hidden' name='mode' value='up' />
+		<input type='hidden' name='no' value='<?=$no?>' />
+		<dl>
+			<dt>작성자</dt>
+			<dd><?=$id?></dd>
+			<? if ( empty($_SESSION['id']) ): ?>
+			<dt>패스워드</dt>
+			<dd><input type='password' name='pw' /></dd>
+			<? endif; ?>
+			<dt>제목</dt>
+			<dd><input type='text' name='title' value='<?=$title?>' /></dd>
+			<dt>내용</dt>
+			<dd><textarea name='contents'><?=$contents?></textarea></dd>
+		</dl>
+		<button type='submit'>저장</button>
+	</form>
+</div>

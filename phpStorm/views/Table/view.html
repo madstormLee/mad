@@ -1,0 +1,25 @@
+<h1>Table View</h1>
+
+<table class='adminTable'>
+<thead>
+	<tr>
+		<th>Field</th>
+		<th>Type</th>
+		<th>Comment</th>
+	</tr>
+</thead>
+<tbody>
+	<? foreach ( $list as $row ): ?>
+	<tr>
+		<td><?=$row->Field?></td>
+		<td><?=$row->Type?></td>
+		<td><?=$row->Comment?></td>
+	</tr>
+	<? endforeach; ?>
+</tbody>
+</table>
+<form id='mock' method='post' action='~/mock/insert?table=<?=$table?>'>
+	<label for='rows'>create mock : </label>
+	<input type='text' name='rows' value='100' />
+	<button>rows</button>
+</form>

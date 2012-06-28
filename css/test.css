@@ -1,0 +1,14 @@
+#container {
+border: 1px solid #ccc;
+}
+#top {
+background: #fcc;
+}
+#left {
+background: #cfc;
+}
+#main {
+background: #ccf;
+}
+#bottom {
+}

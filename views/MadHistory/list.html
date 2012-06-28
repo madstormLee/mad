@@ -1,0 +1,11 @@
+<div id='<?=$this->table?>' class='<?=$this->program?>'>
+	<dl>
+		<? while( $row = $q->row() ) :
+		extract($row);?>
+		<dt><?=substr($date_s,0,10)?> ~ <?=substr($date_e,0,10)?></dt>
+		<dd><?=$contents?></dd>
+		<? endwhile; ?>
+	</dl>
+	<?=$page_navi?>
+	<?=$buttons?>
+</div>

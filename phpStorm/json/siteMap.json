@@ -1,0 +1,10 @@
+{
+	"home" : {
+		"name" : "phpStorm",
+		"label" : "PhpStorm",
+		"controller" : "Index",
+		"action" : "index",
+		"subDir": {
+		}
+	}
+}

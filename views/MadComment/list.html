@@ -1,0 +1,10 @@
+<dl class='madCommentList'>
+	<? while( $row = $q->row() ) {
+	extract(sqlout($row)); ?>
+	<dt class='writer'>
+	글쓴이 : <b><?=$id?></b> 날짜 : <b><?=$w_date?></b>
+	<a href='?<?=$this->program?>=del'><img src='/mad/images/MadComment/delete.gif' /></a>
+	</dt>
+	<dd><?=$contents?></dd>
+	<? } ?>
+</dl>

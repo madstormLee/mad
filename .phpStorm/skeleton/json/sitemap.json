@@ -1,0 +1,35 @@
+{
+	"/" : {
+		"label" : "홈",
+		"action" : "Index::index",
+		"subDir" : {
+			"/sitemap" : {
+				"label" : "사이트맵",
+				"href" : "~/sitemap",
+				"action" : "Sitemap::index",
+				"subDir" : {
+					"/sitemap/tree": {
+						"label": "트리보기",
+						"action": "Sitemap::tree"
+					}
+				}
+			},
+			"/manual" : {
+				"label" : "Manual",
+				"href" : "~/manual",
+				"action" : "Manual::index"
+			},
+			"/about" : {
+				"label" : "About",
+				"href" : "~/info/about",
+				"action" : "Info::about"
+			},
+			"/phpStorm" : {
+				"label" : "phpStorm",
+				"href" : "~/phpStorm/project/view",
+				"include" : "{MAD}phpStorm/controllers/ProjectController.php",
+				"action" : "Project::view"
+			}
+		}
+	}
+}

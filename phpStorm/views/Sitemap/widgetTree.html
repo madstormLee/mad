@@ -1,0 +1,15 @@
+<section id='sitemapWidgetTree'>
+<?=sitemapTemplate( $sitemap ); ?>
+<? function sitemapTemplate( $data, $depth = 1, $visible = true ) {
+	foreach( $data as $name => $values ): ?>
+	<dl class='depth<?=$depth?>'>
+		<dt class='<?=$name?>'>
+			<a href='<?=$values->href?>' class='label'><?=$values->label?>:</a> <span class='action'><?=$values->controller?>::<?=$values->action?></span>
+		</dt>
+		<? if ( $values->subDir ) : ?>
+		<dd><? sitemapTemplate( $values->subDir, ++$depth ); ?></dd>
+		<? endif; ?>
+	</dl>
+<? endforeach; ?>
+<? } // endfunction ?>
+</section>

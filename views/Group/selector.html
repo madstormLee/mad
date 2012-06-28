@@ -1,0 +1,24 @@
+<form id='MadGroupSelector' class='madGroupSelector' method='post' action='?'>
+    <div class='menuBar'>
+		<a id='addRootSub' href='#addRootSub'>추가</a>
+		<div class='buttons'>
+			<a class='btnMenu' href='#close'><img src='/mad/images/window/btnMenu.gif' /></a>
+			<a class='btnFold' href='#close'><img src='/mad/images/window/btnFold.gif' /></a>
+			<a class='btnClose' href='#close'><img src='/mad/images/window/btnRemove.gif' /></a>
+		</div>
+	</div>
+	<dl id='groups'>
+		<? foreach ( $tuple as $no => $row ) : extract($row); ?>
+		<dd><dl>
+			<dt class='<?=$no?>'>
+			<a class='subGroup' href='#subGroup'>+</a>
+			<a href='#mad'><?=$name?></a>
+			</dt>
+		</dl></dd>
+		<? endforeach; ?>
+	</dl>
+	<div class='buttons'>
+	<button type='submit' class='btnOk' href='#btnOk'>확인</button>
+	<a class='btnClose' href='#close'>닫기</a>
+	</div>
+</form>

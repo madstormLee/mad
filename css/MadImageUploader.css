@@ -1,0 +1,61 @@
+/******************* MadImageUploader *************************/
+#MadImageUploader {
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	width: 600px;
+	height: 500px;
+	margin-left: -300px;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+#MadImageUploader dt {
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	background: #eee;
+}
+#MadImageUploader dd {
+	width: 100%;
+	height: 480px;
+}
+#MadImageUploader iframe {
+	border: 0;
+	width: 100%;
+	height: 100%;
+	background: #ccf;
+}
+.MadImageUploader {
+	cursor: pointer;
+}
+/******************** .imageList ******************/
+.imageList {
+}
+.imageList dl {
+display: inline;
+float: left;
+width: 92px;
+height: 130px;
+margin: 11px;
+overflow: hidden;
+}
+.imageList dt ,
+.imageList dd {
+width: 100%;
+padding: 5px 0;
+text-align: center;
+}
+.imageList dt {
+}
+.imageList dd {
+}
+.imageList img {
+width: 90px;
+height: 90px;
+border: 1px solid #ccc;
+cursor: pointer;
+}
+.imageList .hover, /* for ie6 */
+.imageList img:hover {
+border: 1px solid #ed1c24;
+}

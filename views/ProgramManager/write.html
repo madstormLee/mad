@@ -1,0 +1,66 @@
+<?=$style?>
+<style>
+h1 {
+	margin-top: 20px;
+	font-size: 20px;
+	text-indent: 20px;
+}
+h2 {
+	margin-top: 10px;
+	font-size: 13px;
+	text-indent: 20px;
+}
+#ProgramManagerWrite {
+width: 90%;
+margin: 5%;
+}
+#ProgramManagerWrite table {
+}
+#ProgramManagerWrite td {
+height: 27px;
+border-bottom: 1px solid #ccc;
+}
+#ProgramManagerWrite td.title {
+width: 25%;
+padding-right: 5%;
+text-align: right;
+font-weight: 600;
+}
+#ProgramManagerWrite td label {
+}
+#ProgramManagerWrite td input {
+float: left;
+width: 90%;
+border: 1px solid #ccc;
+}
+</style>
+<ul class='navi'>
+	<li><a href='/mad/programManager/'>리스트</a></li>
+</ul>
+<form id='ProgramManagerWrite' method='post' action='?'>
+	<input type='hidden' name='ProgramManagerWrite' value='ins' />
+	<ul>
+		<li>
+			<label for='program'>프로그램</label>
+			<?=$form->radio('program', 'MadBoard,MadGallery')?>
+		</li>
+		<li>
+			<label for='id'>아이디</label>
+			<?=$form->text('id')?>
+		</li>
+	</ul>
+	<div id='spec'>
+		<table>
+		<? foreach ( $spec['MadBoard'] as $key => $value ): ?>
+			<tr>
+			<td class='title'><label for='<?=$key?>'><?=$key?></label></td>
+			<td><?=$form->text($key,$value)?></td>
+			</tr>
+		<? endforeach ?>
+		</table>
+	</div>
+	<div class='buttons'>
+		<button type='submit'>확인</button>
+		<button type='reset'>취소</button>
+	</div>
+</form>

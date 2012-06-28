@@ -1,0 +1,20 @@
+<table>
+	<thead>
+		<tr>
+			<th>일</th>
+			<th>접속자 수</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? $i=0; foreach($tuple as $row ): ?>
+		<tr>
+			<td class='day'><?=$row['day']?> 일</td>
+			<td><div class='counterBar <?=$row['group']?>' style='width: <?=$row['width']?>%'><?=$row['cnt']?> 명</div></td>
+		</tr>
+		<? ++$i; endforeach; ?>
+	</tbody>
+</table>
+<div style='text-align: right;font-weight: 600;margin: 10px 20px 0 0;'>월 총계 : <?=$total?> 명</div>
+<? if ( empty($tuple) ) : ?>
+	<p class='noContents'>접속자가 없습니다.</p>
+<? endif; ?>

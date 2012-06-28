@@ -1,0 +1,28 @@
+<div id='<?=$this->table?>' class='madboardList'>
+	<table>
+		<tr>
+			<th>no</th>
+			<th>이름</th>
+			<th>섹션</th>
+		</tr>
+		<? while ( $row = mysql_fetch_assoc($lst) ) {
+		extract($row); ?>
+		<tr>
+			<td><?=$no?></td>
+			<td class='title'><a href='?mode=view&id=<?=$id?>'><?=$id?></a></td>
+			<td><?=$section?></td>
+		</tr>
+		<? } ?>
+	</table>
+	<div class='pageNavi'><?=$page_navi?></div>
+	<div class='buttons'><?=$buttons?></div>
+	<form class='search' method='post'>
+		<select id='from' name='search'>
+			<option value='title'>제목</option>
+			<option value='contents'>내용</option>
+			<option value='id'>글쓴이</option>
+		</select>
+		<input type='text' name='search_text' />
+		<button type='submit'>찾기</button>
+	</form>
+</div>

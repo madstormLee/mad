@@ -1,0 +1,15 @@
+.backup {
+	width: 95%;
+	border: 1px solid #999900;
+}
+.backup .downloadLink {
+	width: 100%;
+	border-bottom: 1px dashed #ccc;
+}
+.backup .downloadLink a {
+	float: left;
+	height: 30px;
+	padding: 0 20px;
+	line-height: 30px;
+	background: #eee;
+}

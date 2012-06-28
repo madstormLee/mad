@@ -1,0 +1,8 @@
+#phpStormMenu {
+}
+#phpStormMenu dd a {
+color: #f00;
+}
+#phpStormMenu>dt a {
+color: #f60;
+}

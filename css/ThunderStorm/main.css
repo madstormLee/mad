@@ -1,0 +1,56 @@
+#main .box {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+}
+#main .pageExplain {
+	float: left;
+	padding: 10px;
+	border: 5px double #ccf;
+}
+#main .halfBox {
+	float: left;
+	width: 300px;
+	margin-left: 20px;
+}
+#main .halfBox h2 {
+	padding: 3px 10px;
+	margin: 0;
+	font: 600 15px verdana;
+	color: #339;
+	border: 1px solid #eee;
+}
+.MadBlog {
+	float: left;
+width: 100%;
+}
+#counter {
+	float: left;
+	width: 100%;
+}
+#mmp {
+width: 100%;
+}
+#mmp dt {
+float: left;
+clear: left;
+font: 600 20px µ¸¿ò;
+}
+#mmp dd {
+float: left;
+clear: left;
+padding: 10px;
+	font: 500 15px ±¼¸²;
+		  line-height: 140%;
+}
+#mmp dd ol li{
+float: left;
+}
+#mmp dd ol li{
+float: left;
+clear: left;
+}
+#main .plan {
+padding: 20px;
+border: 3px double #999;
+}

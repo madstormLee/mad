@@ -1,0 +1,14 @@
+.buttons {
+float: left;
+	   margin-top: 10px;
+}
+.buttons a {
+float: left;
+padding: 10px;
+border: 1px solid #ccc;
+}
+.buttons a:hover {
+color: #333;
+border: 1px solid #333;
+text-decoration: none;
+}

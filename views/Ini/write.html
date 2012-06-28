@@ -1,0 +1,16 @@
+<h1><?=baseName($model->getFile())?></h1>
+<form id='IniWriteForm' method='post' action='update?file=<?=$model->getFile()?>'>
+<? foreach( $model as $legend => $info ): ?>
+	<fieldset>
+		<legend><?=$legend?></legend>
+		<ul>
+		<? foreach( $info as $key => $value ): $id = $legend."[$key]"; ?>
+			<li>
+			<label for='<?=$id?>'><?=$key?></label>
+			<input id='<?=$id?>' name='<?=$id?>' type='text' value='<?=$value?>' /></li>
+		<? endforeach; ?>
+		</ul>
+	</fieldset>
+<? endforeach; ?>
+<button type='submit'>확인</button>
+</form>

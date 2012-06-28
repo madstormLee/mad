@@ -1,0 +1,22 @@
+<style>
+@import '/mad/css/base.css';
+@import '/mad/css/MadFileManager/base.css';
+body {
+	margin: 0;
+	padding: 0;
+}
+#MadUploaderForm {
+}
+</style>
+<form id='MadUploaderForm' method='post' enctype='multipart/form-data' action='?'>
+	<input type='hidden' name='Uploader' value='ins' />
+		<ul>
+			<li><input name='files[]' type='file' value='파일 찾기' /></li>
+			<li><input name='files[]' type='file' value='파일 찾기' /></li>
+			<li><input name='files[]' type='file' value='파일 찾기' /></li>
+			<li><input name='files[]' type='file' value='파일 찾기' /></li>
+		</ul>
+		<div class='buttons'>
+			<button type='submit'>확인</button>
+		</div>
+</form>

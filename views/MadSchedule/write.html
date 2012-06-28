@@ -1,0 +1,20 @@
+<form id='<?=$this->table?>' class='<?=$this->program?>' method='post'>
+	<input type='hidden' name='table' value='<?=$this->table?>' />
+	<input type='hidden' name='mode' value='ins' />
+	<dl>
+		<dt>시작일</dt>
+		<dd><input type='text' class='MadDateSelector' name='s_date' /></dd>
+		<dt>종료일</dt>
+		<dd><input type='text' class='MadDateSelector' name='e_date' /></dd>
+		<dt>시작시간</dt>
+		<dd><input type='text' class='MadTimeSelector' name='s_time' /></dd>
+		<dt>종료시간</dt>
+		<dd><input type='text' class='MadTimeSelector' name='e_time' /></dd>
+		<dt>제목</dt>
+		<dd><input type='text' name='title' /></dd>
+		<dt>내용</dt>
+		<dd><textarea name='contents'> </textarea></dd>
+	</dl>
+	<button type='submit'>저장</button>
+	<a href='javascript:history.back();'>취소</a>
+</form>

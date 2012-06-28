@@ -1,0 +1,13 @@
+<div id='<?=$this->table?>' class='<?=$this->program?>'>
+	<table>
+		<? while ( $row = $q->row() ) :
+		extract($row); ?>
+		<tr>
+		<td class='title'>
+		<a href='?<?=$this->program?>=view&no=<?=$no?>'><?=$projectName?></a>
+		</td>
+		<td><?=$progress?> %</td>
+		</tr>
+		<? endwhile; ?>
+	</table>
+</div>

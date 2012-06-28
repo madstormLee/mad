@@ -1,0 +1,3 @@
+<?
+class ComponentList extends MadJsonList {
+}

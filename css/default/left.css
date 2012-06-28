@@ -1,0 +1,10 @@
+#left ul {
+	width: 100%;
+}
+#left li {
+	width: 100%;
+	margin-top: 20px;
+}
+#left .subMenu {
+	margin-top: 10px;
+}

@@ -1,0 +1,20 @@
+<section id='FileBrowser'>
+<h1>File Browser</h1>
+
+<nav class='dirView'>
+<ul>
+	<?  foreach( $files as $path ) : ?>
+	<li class='<?=is_dir( $path ) ? "dir": "file"?>'> <a href='./getList?path=<?=$path?>'><?=baseName($path)?></a> </li>
+	<? endforeach; ?>
+</ul>
+</nav>
+
+<section class='fileView'>
+<ul>
+	<?  foreach( $files as $path ) : ?>
+	<li class='<?=is_dir( $path ) ? "dir": "file"?>'> <a href='./getList?path=<?=$path?>'><?=baseName($path)?></a> </li>
+	<? endforeach; ?>
+</ul>
+</section>
+
+</section>

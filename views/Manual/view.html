@@ -1,0 +1,17 @@
+<h1><?=$data->title?></h1>
+
+<section id='content'>
+<?=$data->content?>
+</section>
+
+<ul class='info'>
+	<li> <?=$data->id?></li>
+	<li>작성일 <?=$data->wDate?></li>
+	<li>변경일 <?=$data->uDate?></li>
+</ul>
+
+<ul class='programNavi'>
+	<li><a href='./index' class='btnIndex'>Index</a></li>
+	<li><a href='./write?path=<?=$g->get->path?>' class='btnRewrite'>Rewrite</a></li>
+	<li><a href='./delete?path=<?=$g->get->path?>' class='btnDelete'>Delete</a></li>
+</ul>

@@ -1,0 +1,24 @@
+<form method='post' action='?mode=make'>
+	<table>
+		<tr>
+			<th>name</th>
+			<th>속성</th>
+			<th>unsigned</th>
+			<th>auto_increment</th>
+			<th>primary</th>
+		</tr>
+		<? if(!$_GET['rows']) $rows=10;
+		else $rows=$_GET['rows'];
+		for($i=0; $i<$rows; $i++){
+		?>
+		<tr>
+			<td><input type='text' name='name[]' /></td>
+			<td><input type='text' name='attr[]' /></td>
+			<td><input type='checkbox' name='unsigned[]' value='true' /></td>
+			<td><input type='checkbox' name='ai[]' value='true' /></td>
+			<td><input type='checkbox' name='pk[]' value='true' /></td>
+		</tr>
+		<? } ?>
+	</table>
+	<input type='submit' value=' 실행 ' />
+</form>

@@ -1,0 +1,15 @@
+<h1><?=$config->kName?></h1>
+
+<table class='adminFormTable'>
+	<? foreach( $config->column as $column ) : ?>
+<tr>
+		<td class='title'><?=$column['kName']?></td>
+		<td><?='<?=$model->' . $column['name'] . '?>'?></td>
+	</tr>
+	<? endforeach; ?>
+</table>
+
+<ul class='naviButtons'>
+	<li><a class='btnList' href="list">목록보기</a></li>
+	<li><a class='btnRewrite' href="write?no=<?='<?=$model->no?>'?>">변경하기</a></li>
+</ul>

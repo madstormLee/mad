@@ -1,0 +1,11 @@
+.componentViewTable {
+}
+.componentViewTable td {
+	height: 35px;
+	text-align: left;
+	padding-left: 15px;
+}
+.componentViewTable td.title {
+	text-align: center;
+	padding-left: 0;
+}

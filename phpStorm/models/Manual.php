@@ -1,0 +1,3 @@
+<?
+class Manual extends MadModel {
+}

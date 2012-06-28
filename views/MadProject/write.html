@@ -1,0 +1,55 @@
+		<form method='post' id='newProject'>
+			<input type='hidden' name='<?=$this->program?>' value='ins' />
+			<span>Type : </span>
+			<select id='type'>
+				<option>프로그래밍</option>
+				<option>일반</option>
+			</select>
+			<fieldset>
+			<legend>Main</legend>
+			<dl id='brief'>
+				<dt>프로젝트 명</dt>
+				<dd>
+					<input type='text' name='projectName' id='projectName' />
+					<input type='checkbox' name='makeDir' id='makeDir' />
+					<label for='makeDir'>디렉토리를 생성합니다.</label>
+				</dd>
+				<dt>목적(goal)</dt>
+				<dd><input type='text' name='goal' id='goal' /></dd>
+				<dt>간단한 설명(brief)</dt>
+				<dd><textarea name='brief' id='brief'></textarea></dd>
+			</dl>
+			</fieldset>
+			<fieldset>
+			<legend>Time Plan</legend>
+			<dl id='timePlan'>
+				<dt>시작일</dt>
+				<dd><input type='text' name='s_date' id='s_date' /></dd>
+				<dt>종료일</dt>
+				<dd><input type='text' name='e_date' id='e_date' /></dd>
+				<dt>작업도</dt>
+				<dd><input type='text' name='progress' id='progress' /> %</dd>
+			</dl>
+			</fieldset>
+			<fieldset>
+			<legend>Developers</legend>
+			<dl id='Developers'>
+				<dt>Project Manager</dt>
+				<dd><input type='text' name='PM' id='PM' /></dd>
+				<dt>Cheif Programmer</dt>
+				<dd><input type='text' name='cheifProgrammer' id='cheifProgrammer' /></dd>
+				<dt>Cheif Designer</dt>
+				<dd><input type='text' name='cheifDesigner' id='cheifDesigner' /></dd>
+				<!-- make some difference. for simplicity
+				<dt>Team</dt>
+				<dd><select name='part' value='part'>
+						<option>Programmer</option>
+						<option>Designer</option>
+					</select>
+					<input type='text' name='etcMembers[]' id='etcMembers[]' />
+				</dd>
+				-->
+			</dl>
+			</fieldset>
+			<button type='submit'>저장 &amp; Make</button>
+		</form>

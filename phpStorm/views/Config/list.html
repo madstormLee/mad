@@ -1,0 +1,26 @@
+<h1>Config List</h1>
+<table class='adminTable'>
+	<tr>
+		<th>프로그램</th>
+		<th>한글명</th>
+		<th>보기</th>
+		<th>변경</th>
+		<th>삭제</th>
+	</tr>
+	<? foreach( $list as $file => $config ) : ?>
+	<tr>
+		<td><?=$config->name?></td>
+		<td><?=$config->label?></td>
+		<td><a href='view?file=<?=$file?>'>보기</a></td>
+		<td><a href='~/json/write?file=<?=$file?>'>변경</a></td>
+		<td><a href='~/json/write?file=<?=$file?>'>삭제</a></td>
+	</tr>
+	<? endforeach; ?>
+</table>
+<? if ( $list->isEmpty() ) : ?>
+<p class='noContent'>리스트가 없습니다.</p>
+<? endif; ?>
+
+<ul class='naviButtons'>
+	<li><a href='write'>쓰기</a></li>
+</ul>
