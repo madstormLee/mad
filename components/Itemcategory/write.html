@@ -1,0 +1,19 @@
+<dl>
+	<dt>
+		<form class='categoryRow' method='post' action='./save'>
+			<a class='toggle' href='#toggleSub' title='<?=_("no sub category")?>'>-</a>
+			<input type='hidden' class='ordernumber' name='ordernumber' id='ordernumber<?=$row->id?>' value='<?=$row->ordernumber?>' />
+			<input type='hidden' class='id' name='id' value='<?=$row->id?>' />
+			<input type='hidden' class='ordernumber' name='ordernumber' id='ordernumber<?=$row->id?>' value='<?=$row->ordernumber?>' />
+			<input type='text' class='label' name='label' id='label<?=$row->id?>' value='<?=$row->label?>' placeholder='<?=_("input category name")?>' title='<?=_("category name")?>' required='required' />
+			( <a class='items' href='~/itemLocale/list?id=<?=$row->id?>' title='item list'>0</a> )
+			<input type='checkbox' name='isopen' id='isopen<?=$row->id?>' value='<?=$row->isopen?>' <?=( $row->isopen )? "checked='checked'": ""; ?> title='<?=_("is opened")?>' />
+			<a class='createSub' href='./write?parentid=<?=$row->id?>' title='create sub'><?=_("create sub")?></a>
+			<a class='delete' href='./delete?id=<?=$row->id?>' data-confirm='delete category'><?=_("delete")?></a>
+			<nav class='position'>
+				<a class='moveUp' href='./moveUp?id=$<?=$row->id?>' title='order up'><?=_("up")?></a>
+				<a class='moveDown' href='./moveDown?id=$<?=$row->id?>' title='order down'><?=_("down")?></a>
+			</nav>
+		</form>
+	</dt>
+</dl>

@@ -28,7 +28,7 @@ class MadIni extends MadData {
 	function getContents() {
 		$contents = array();
 		foreach( $this->data as $section => $member ) {
-			if ( isArray($member) ) {
+			if ( is_array($member) ) {
 				$contents[] = "[$section]";
 				foreach( $member as $key => $value ) {
 					$contents[] = "$key = \"$value\"";
@@ -58,6 +58,6 @@ class MadIni extends MadData {
 		print BR;
 		print $this->file;
 		print BR;
-		printR( $this->data );
+		(new MadDebug)->printR( $this->data );
 	}
 }

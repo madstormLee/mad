@@ -1,0 +1,17 @@
+<h1>View gettext tool</h1>
+
+<h2><?=$view->getFile() ?></h2>
+
+<content id='ViewGettext'>
+<?=$contents?>
+</content>
+
+<section id='gettextList'>
+<ul>
+	<? foreach( $list as $row ): ?>
+	<li>
+		<a href='#'><?=htmlSpecialChars( $row )?></a>
+	</li>
+	<? endforeach; ?>
+</ul>
+</section>

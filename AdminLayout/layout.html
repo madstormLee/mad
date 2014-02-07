@@ -1,0 +1,31 @@
+<!doctype html>
+<!--[if IE 6]><html class="no-js ie ie6" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js ie ie7" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js ie ie8" lang="en"><![endif]-->
+<!--[if (IE 9)&!(IEMobile)]><html class="no-js ie ie9" lang="en"><![endif]-->
+	<head>
+	<title><?=$g->title?></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<?=$g->css?>
+		<script src="./modernizr-2.6.1-min.js"></script>
+		<!--[if (lt IE 9) & (!IEMobile)]>
+		<script src="./nwmatcher-1.2.5.js"></script>
+		<script src="./selectivizr-min.js"></script>
+		<![endif]-->
+		<?=$g->js?>
+	</head>
+	<body class='<?=$g->router->controller?>-<?=$g->router->action?>'>
+		<section id='popupWindow'></section>
+		<header> <?=$g->header ?></header>
+		<section id="left"> <?=$g->left ?> </section>
+		
+		<section id="main">
+			<?=$contents ?>
+			<!-- this is seriously fucked up clearing. hate flow. -->
+			<br style='clear:both;' />
+		</section>
+
+		<section id="right"><?=$g->right ?></section>
+		<footer><?=$g->footer?></footer>
+	</body>
+</html>

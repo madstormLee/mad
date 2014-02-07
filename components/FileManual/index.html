@@ -1,0 +1,12 @@
+<h1><?=_("Manual Index")?></h1>
+
+<nav class='component'>
+	<a href='./'><?=_("Index")?></a>
+	<a href='./write'><?=_("Write New")?></a>
+</nav>
+
+<ul>
+	<? foreach( $list as $id => $row ): ?>
+	<li><a href='./view?id=<?=$id?>'><?=$row->title?></a></li>
+	<? endforeach; ?>
+</ul>

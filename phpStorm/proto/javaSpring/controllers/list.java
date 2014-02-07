@@ -1,7 +1,7 @@
 <?
 $packages = $classDiagram->packages;
 $interface = $packages->models->classes->interface->name;
-$instance = lcFirst( $interface );
+$instance = $interface->lcFirst();
 $model = $packages->models->classes->model->name;
 $modelPackage = $packages->models->name;
 ?>

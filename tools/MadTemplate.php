@@ -91,6 +91,6 @@ class MadTemplate extends Mad {
 		return $this->getContent();
 	}
 	function test() {
-		printR( $this->data );
+		(new MadDebug)->printR( $this->data );
 	}
 }

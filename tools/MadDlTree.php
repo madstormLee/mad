@@ -43,7 +43,7 @@ class MadDlTree {
 		$rv = "<dl class='temp$depth'>\n";
 		foreach( $data as $key => $value ){
 			$rv .= "<dt>$key</dt>\n";
-			if ( ! isArray( $value ) ) {
+			if ( ! is_array( $value ) ) {
 				$rv .= "<dd style='display: none'>$value</dd>\n";
 			} else {
 				$rv .= "<dd style='display: none'>" . $this->fromValue( $value, $depth ) ."</dd>\n";

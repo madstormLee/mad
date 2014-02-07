@@ -1,0 +1,11 @@
+{
+	"values": {
+		"saveDir": "data"
+	},
+	"instances": {
+		"model": "UserStory('data/UserStory/')",
+		"persona": "Persona('data/Persona/userStory.json')"
+	},
+	"main": {
+	}
+}

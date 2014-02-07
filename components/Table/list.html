@@ -1,0 +1,6 @@
+<h1>Table List</h1>
+<ul>
+	<? foreach( $list as $table ): ?>
+	<li><a href='~/table/columns?table=<?=$table->table_name?>'><?=$table->table_name?></a></li>
+	<? endforeach; ?>
+</ul>

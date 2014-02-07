@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+* {border:0;margin:0;padding:0;}
+
+body {font-size:0.8em; line-height:1.4; font-family:dotum, Arial, Verdana, Helvetica, sans-serif; color:#444; background:url(/A_img/common/top_img_bg2.gif) center top repeat-x;}
+.main{font-size:0.8em; line-height:1.4; font-family:dotum, Arial, Verdana, Helvetica, sans-serif; color:#444; background:url(/images/main/main_full_bg.gif) center top no-repeat;}]
+.login{font-size:0.8em; line-height:1.4; font-family:dotum, Arial, Verdana, Helvetica, sans-serif; color:#444; background:url(/A_img/common/login_bg.gif) center top repeat-x;}
+
+div, ul, li, dl, dt, dd{list-style:none; margin:0; padding:0;}
+
+form {margin:0; padding:0;}
+
+img{border:0;}
+.blind{position:absolute; height:1px; width:1px; text-indent:-5000px; visibility:hidden;}
+
+.border_none{border:0;}
+hr {display:none;}
+h1, h2, h3, h4, h5 {margin:0;padding:0;}
+
+.clear{clear:both;}
+
+table, th, td {margin:0; padding:0; border-collapse:collapse;}
+caption {position:absolute;	width:0; height:0; font-size:0;	line-height:0; visibility:hidden;}
+
+fieldset {margin:0; padding:0; border:none;}
+legend{position:absolute; height:1px; width:1px; text-indent:-5000px; overflow:hidden;}
+
+/*LINK*/
+a:link, a:visited {color:#333; text-decoration:none;}
+a:hover, a:active {color:#f6642a;}
+
+textarea, select, list, input{border:1px solid #cccccc; vertical-align: middle; font-size:0.9em;}
+radio{border:0;}
+
+.nobg{background:none;}

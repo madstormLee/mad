@@ -3,17 +3,18 @@ class MadConventions {
 	private static $instance = null;
 	private $data;
 
-	private $loaders = array(
+	private $loaders;
+
+	private function __construct() {
+		$this->loaders = new MadData( array(
 			'ini' => 'MadIni',
 			'json' => 'MadJson',
 			'xml' => 'MadXml',
-			);
-
-	private function __construct() {
+		) );
 		$this->data = array(
-				'config' => 'configs/config.ini',
-				'convention' => MAD . 'configs/conventions.ini',
-				);
+			'config' => 'configs/config.ini',
+			'convention' => MAD . 'configs/conventions.ini',
+		);
 	}
 	public function getInstance() {
 		if ( ! self::$instance ) {
@@ -22,20 +23,15 @@ class MadConventions {
 		return self::$instance;
 	}
 	function load( $target ) {
-		if ( $file = $this->$target ) {
-			$ext = getExtension( $file );
-			if ( $loader = ckKey( $ext, $this->loaders ) ) {
-				$loader = new $loader;
-				$loader->load( $file );
-				return $loader;
-			}
+		$file = new MadFile( $this->$target );
+		if ( ! $file->exists() ) {
+			return false;
 		}
-		return false;
-	}
-	function __get( $key ) {
-		return ckKey( $key, $this->data );
-	}
-	function __set( $key, $value ) {
-		$this->data[$key] = $value;
+		$ext = $file->getExtension();
+		if ( $loader = $this->loaders->$ext ) {
+			$loader = new $loader;
+			$loader->load( $file );
+			return $loader;
+		}
 	}
 }

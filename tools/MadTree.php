@@ -2,34 +2,57 @@
 class MadTree implements IteratorAggregate {
 	private $data;
 	private $tree;
+	private $parentid = 'parentid';
 
 	public function __construct( $data, $relNo = 0, $depth = 0 ) {
-		$this->data = new MadData;
-		$this->tree = $this->makeTree($data, $relNo, $depth);
+		$this->data = $data->getData();
+		$this->tree = $this->makeTree2($data, $relNo, $depth);
 	}
-	private function makeTree( &$data, $relNo=0, $depth=0 ) {
+	private function makeTree2( $data ) {
+		$data = new MadData( $data );
+		$i=0; foreach ( $data as $key => &$row ) {
+			if( $row->$parentid == 0 ) {
+				continue;
+			}
+			if( empty( $data->{$row->$parentid}->subs ) ) {
+				$data->{$row->$parentid}->subs = array();
+			}
+			$data->{$row->$parentid}->subs[$row->id] = $row;
+			unset( $data->$key );
+		}
+		return $data;
+	}
+	private function makeTree( $data, $relNo=0, $depth=0 ) {
 		$rv = new MadData;
 		++$depth;
-		$orderNo = 1;
-		foreach ( $data as $key => $row ) {
-			$row = new MadData( $row );
-			if ( $row->relNo == $relNo ) {
-				unset( $data[$key] );
-				$row->depth = $depth;
-				$row->orderNo = $orderNo;
-				$row->subTree = $this->makeTree($data, $row->no, $depth);
-				$row->subs = $row->subTree->count();
-
-				$this->data->{$row->no} = $row;
-				$rv->{$row->no} = $row;
-
-				++$orderNo;
+		$order = 1;
+		foreach ( $data as $key => &$row ) {
+			unset( $data->$key );
+			if ( $row->parentid != $relNo ) {
+				continue;
 			}
+			$row->depth = $depth;
+			$row->order = $order;
+			if( $subs = $this->makeTree( $data, $row->id, $depth ) ) {
+				$row->subs = $subs;
+				$row->subcount = count( $row->subs );
+			} else {
+				$row->subcount = 0;
+			}
+
+
+			$this->data->{$row->id} = $row;
+			$rv->{$row->id} = $row;
+
+			++$order;
+		}
+		if ( $rv->isEmpty() ) {
+			return false;
 		}
 		return $rv;
 	}
 	public function getSub( $relNo ) {
-		$tuple = $this->data; //source를 직접 건드려선 안된다.
+		$tuple = $this->data;
 		return $this->makeTree($tuple, $relNo);
 	}
 	function get( $key ) {
@@ -98,6 +121,6 @@ class MadTree implements IteratorAggregate {
 		}
 	}
 	function test() {
-		printR($this->tree);
+		(new MadDebug)->printR($this->tree);
 	}
 }

@@ -6,11 +6,13 @@ class ProjectController extends Preset {
 	function importAction() {
 		include MAD . 'controllers/FileBrowserController.php';
 		$fb = new FileBrowserController;
-		print $fb->indexAction();
+		$fb->indexAction();
 		die;
 		$fileBrowser = new MadAjaxWidget('/mad/fileBrowser?filter=.phpStorm.ini&style=TreeAndFileList');
 		$this->main->fileBrowser = $fileBrowser;
 		return $this->main;
+	}
+	function fromInterview() {
 	}
 	function registAction() {
 	}
@@ -59,14 +61,13 @@ class ProjectController extends Preset {
 		$model = new MadIni( $post );
 		$model->createDirs();
 		$model->save();
-		replace( "view?file=" . $model->getFile() );
+		$this->js->replace( "view?file=" . $model->getFile() );
 	}
 	function deleteAction() {
 		$get = $this->get;
-		if ( is_dir( $get->dir ) ) {
-			rmDirAll( $get->dir );
-		}
-		replace( 'list' );
+		$dir = new MadFile( $get->dir );
+		$dir->removeDirAll();
+		$this->js->replace( 'list' );
 	}
 	function registProjectAction() {
 	}

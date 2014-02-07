@@ -1,0 +1,42 @@
+<h1>User Config</h1>
+
+<form class='simple' method='post' action='./saveConfig'>
+	<fieldset>
+		<legend for='auto_happy_item'>Happy Item 자동 설정</legend>
+		<? foreach( $yesNo as $value => $label ): ?>
+		<? $checked = ( $model->auto_happy_item == $value ) ? 'checked="checked"': ""; ?>
+		<input type='radio' name='auto_happy_item' id='auto_happy_item<?=$value?>' value='<?=$value?>' <?=$checked?> /><label for='auto_happy_item<?=$value?>'><?=$label?></label> 
+		<? endforeach; ?>
+	</fieldset>
+	<fieldset>
+		<legend for='auto_extension'>자동 연장 설정</legend>
+		<? foreach( $yesNo as $value => $label ): ?>
+		<? $checked = ( $model->auto_extensions == $value ) ? 'checked="checked"': ""; ?>
+		<input type='radio' name='auto_extension' id='auto_extension<?=$value?>' value='<?=$value?>' <?=$checked?> /><label for='auto_extension<?=$value?>'><?=$label?></label> 
+		<? endforeach; ?>
+	</fieldset>
+	<fieldset>
+		<legend for='auto_present_accept'>선물 자동 수락 설정</legend>
+		<? foreach( $yesNo as $value => $label ): ?>
+		<? $checked = ( $model->auto_present_accepts == $value ) ? 'checked="checked"': ""; ?>
+		<input type='radio' name='auto_present_accept' id='auto_present_accept<?=$value?>' value='<?=$value?>' <?=$checked?> /><label for='auto_present_accept<?=$value?>'><?=$label?></label> 
+		<? endforeach; ?>
+	</fieldset>
+	<fieldset>
+		<legend for='open_item_list_friend'>내 아이템 목록 공개(쪽지 친구)</legend>
+		<? foreach( $yesNo as $value => $label ): ?>
+		<? $checked = ( $model->open_item_list_friends == $value ) ? 'checked="checked"': ""; ?>
+		<input type='radio' name='open_item_list_friend' id='open_item_list_friend<?=$value?>' value='<?=$value?>' <?=$checked?> /><label for='open_item_list_friend<?=$value?>'><?=$label?></label> 
+		<? endforeach; ?>
+	</fieldset>
+	<fieldset>
+		<legend for='open_item_list_talk_friend'>내 아이템 목록 공개(토크 친구)</legend>
+		<? foreach( $yesNo as $value => $label ): ?>
+		<? $checked = ( $model->open_item_list_talk_friends == $value ) ? 'checked="checked"': ""; ?>
+		<input type='radio' name='open_item_list_talk_friend' id='open_item_list_talk_friend<?=$value?>' value='<?=$value?>' <?=$checked?> /><label for='open_item_list_talk_friend<?=$value?>'><?=$label?></label> 
+		<? endforeach; ?>
+	</fieldset>
+	<nav class='buttons'>
+		<button class='submit'>save</button>
+	</nav>
+</form>

@@ -1,0 +1,75 @@
+<h1><?=_("Item Machine Event Write")?></h1>
+
+<nav class='component'>
+	<a href='./index'><?=_("index")?></a>
+</nav>
+
+<form id='ItemMachineEventWrite' class='simple' method='post' action='./save'>
+	<input type='hidden' id='id' name='id' value='<?=$model->id?>' />
+	<ul>
+		<li>
+			<label for='name'><?=_("name")?></label>
+			<input type='text' name='name' id='name' value='<?=$model->name?>' />
+		</li>
+		<li>
+			<label for='client_code'><?=_("client_code")?></label>
+			<input type='text' name='client_code' id='client_code' value='<?=$model->client_code?>' />
+		</li>
+		<li>
+			<label for='description'><?=_("description")?></label>
+			<textarea name='description' id='description'><?=$model->description?></textarea>
+		</li>
+		<li>
+			<input type='checkbox'  name='customable' id='customable' value='1'
+			<? if ($model->customable) : ?>
+			checked='checked'
+			<? endif; ?>
+			/>
+			<label for='customable'><?=_("customable")?></label>
+
+			<input type='checkbox'  name='status' id='status' value='1'
+			<? if ($model->status) : ?>
+			checked='checked'
+			<? endif; ?>
+			/>
+			<label for='status'><?=_("status")?></label>
+		</li>
+		<li>
+			<label for='icon'><?=_("icon")?></label>
+			<input type='text' name='icon' id='icon' value='<?=$model->icon?>' />
+		</li>
+	</ul>
+
+
+	<!-- isolate this. -->
+	<section id='eventSelector'>
+		<h1><a class='toggleUpNext' href='#toggleUpNext'><?=_("Machine Events")?></a><b><?=_("handle")?></b></h1>
+		<nav class='tree'>
+			<? $eventsIterator = function( $events, $model ) use ( &$eventsIterator ) { ?>
+			<? foreach( $events as $row ): ?>
+			<? $checked = ( $model->events->in( $row->id ) ) ? 'checked': ''; ?>
+			<dl <?=( empty( $row->subs ) ) ? 'class="noSub"': ''; ?>>
+				<dt>
+					<? if ( ! empty( $row->subs ) ): ?>
+					<a class='toggleUpNext' href='#toggleUpNext'>+</a>
+					<? endif; ?>
+					<input type='checkbox' name='events[]' id='eventid<?=$row->id?>' value='<?=$row->id?>' <?=$checked?> />
+					<label for='eventid<?=$row->id?>' class='<?=$checked?>'><?=$row->label?></label>
+				</dt>
+				<? if ( ! empty( $row->subs ) ): ?>
+				<dd><? $eventsIterator( $row->subs, $model ); ?></dd>
+				<? endif; ?>
+			</dl>
+			<? endforeach; ?>
+			<? }; $eventsIterator( $events, $model ); ?>
+		</nav>
+	</section>
+
+	<nav class='buttons'>
+		<button type='submit'><?=_("ok")?></button>
+		<? if ( $model->id ): ?>
+		<a class='delete' href='./delete?id=<?=$model->id?>' data-confirm='<?=_("정말로 삭제하시겠습니까?")?>'><?=_("delete")?></a>
+		<? endif; ?>
+	</nav>
+
+</form>

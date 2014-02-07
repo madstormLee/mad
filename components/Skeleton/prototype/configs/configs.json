@@ -1,0 +1,59 @@
+{
+	"common": {
+		"instances": {
+		},
+		"values": {
+			"info": {
+				"title": "Goldstore",
+				"name": "PxTools",
+				"label": "PxTools",
+				"team": "Hong International Service Team",
+				"author": "madstorm",
+				"wDate": "2012-11-11 09:39:56",
+				"uDate": "2012-11-11 09:39:56"
+			},
+			"dirs": {
+				"controllers": "controllers/",
+				"models": "models/",
+				"views": "views/",
+				"images": "images/",
+				"js": "js/",
+				"css": "css/",
+				"schemes": "schemes/",
+				"json": "json/"
+			},
+			"databases": {
+				"default": {
+					"server": "pgsql",
+					"host": "dev1.darts.kr",
+					"port": "5432",
+					"id": "pxprogram",
+					"pw": "vlslrtm",
+					"db": "phoenix"
+				}
+			},
+			"acl": {
+				"default": {
+					"level": "0-1",
+					"replace": "~/user/login"
+				},
+				"User": {
+				}
+			}
+		}
+	},
+	"get": {
+		"instances": {
+			"css": "PxCss::getInstance()"
+		},
+		"calls": [
+			"css::add( '~/css/default/style.css' )",
+			"css::add( '~/css/{controllerName}/{actionName}.css' )",
+			"js::add('~/js/base.js')",
+			"js::add('~/js/{controllerName}/{actionName}.js')"
+		]
+	},
+	"post": {
+	}
+}
+

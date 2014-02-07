@@ -1,0 +1,18 @@
+<section id='categorySelector'>
+	<label for='categoryid'><?=_("No Category")?></label>
+	<nav class='tree'>
+		<? $treeIterator = function( $category ) use ( &$treeIterator ) { ?>
+		<? foreach( $category as $row ): ?>
+		<dl>
+			<dt>
+				<input type='radio' name='categoryid' id='categoryid<?=$row->id?>' value='<?=$row->id?>' required />
+				<label for='categoryid<?=$row->id?>'><?=$row->label?></label>
+			</dt>
+			<? if ( ! empty( $row->subs ) ): ?>
+			<dd><? $treeIterator( $row->subs ); ?></dd>
+			<? endif; ?>
+		</dl>
+		<? endforeach; ?>
+		<? }; $treeIterator( $category ); ?>
+	</nav>
+</section>

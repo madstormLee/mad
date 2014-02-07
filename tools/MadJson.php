@@ -1,6 +1,16 @@
 <?
+// refactoring with MadJsonView. about autoBreak and some methods.
 class MadJson extends MadData {
 	protected $file = '';
+
+	private $errorMessages = array(
+			JSON_ERROR_NONE => ' - No errors',
+			JSON_ERROR_DEPTH => ' - Maximum stack depth exceeded',
+			JSON_ERROR_STATE_MISMATCH => ' - Underflow or the modes mismatch',
+			JSON_ERROR_CTRL_CHAR => ' - Unexpected control character found',
+			JSON_ERROR_SYNTAX => ' - Syntax error, malformed JSON',
+			JSON_ERROR_UTF8 => ' - Malformed UTF-8 characters, possibly incorrectly encoded',
+			);
 
 	function __construct( $file = '', $data = array() ) {
 		$this->load( $file, $data );
@@ -11,11 +21,10 @@ class MadJson extends MadData {
 	function getFile() {
 		return $this->file;
 	}
+	function getFileInfo() {
+		return new SplFileInfo( $this->file );
+	}
 	function setFile( $file ) {
-		$fileParts = explode('.', $file);
-		if ( end( $fileParts ) !== 'json' ) {
-			$file = $file . '.json';
-		}
 		$this->file = $file;
 		return $this;
 	}
@@ -23,54 +32,74 @@ class MadJson extends MadData {
 		if ( ! empty( $file ) ) {
 			$this->setFile( $file );
 		}
-		if ( is_file ( $this->file ) ) {
-			$temp = array();
-			foreach( $data as $key => $unit ) {
-				$key = '{' . $key . '}';
-				$temp[$key] = $unit;
-			}
-			$content = file_get_contents( $this->file );
-			$content = str_replace( array_keys( $temp ), array_values( $temp ), $content );
-			$this->setFromRaw( $content );
+		if ( ! is_file ( $this->file ) ) {
+			return $this;
 		}
+		$temp = array();
+		if ( ! empty( $data ) ) {
+			foreach( $data as $key => $unit ) {
+				$temp['{'.$key.'}'] = (string) $unit;
+			}
+		}
+		$content = file_get_contents( $this->file );
+		$content = str_replace( array_keys( $temp ), array_values( $temp ), $content );
+		$this->setFromRaw( $content );
 		return $this;
 	}
+	function setFromDl( $dl ) {
+		$this->setData( $this->dl2Array( $dl ) );
+		return $this;
+	}
+	private function dl2Array( $data ) {
+		$data = preg_replace('/<(dl|dt|dd) \w+\s*=\s*[\'"][^\'"]*[\'"]>/', "<$1>", $data );
+		$data = json_decode( json_encode( new SimpleXMLElement( $data ) ), 1 );
+		return $this->parseDl( $data );
+	}
+	private function parseDl( $data ) {
+		$rv = array();
+		if ( ! isset( $data['dt'] ) ) {
+			return array();
+		}
+		$dt = $data['dt'];
+		$dd = $data['dd'];
+		if ( ! is_array( $dt ) ) {
+			if ( isset( $dd['dl'] ) ) {
+				$rv[$dt] = $this->parseDl( $dd['dl'] );
+			} else {
+				$rv[$dt] = $dd;
+			}
+			return $rv;
+		}
+		foreach( $dt as $key => $value ) {
+			if ( is_array( $dd[$key] ) ) {
+				if( isset( $dd[$key]['dl'] ) ) {
+					$dd[$key] = $this->parseDl( $dd[$key]['dl'] );
+				} else if ( empty( $dd[$key] ) ) {
+					$dd[$key] = '';
+				}
+			}
+			$rv[$value] = $dd[$key];
+		}
+		return $rv;
+	}
 	function setFromRaw( $json ) {
-		$json = json_decode( $json, 1 );
+		return $this->setJson( $json );
+	}
+	function setJson( $json ) {
+		$json = json_decode( $json, true );
 		if( function_exists( 'json_last_error' ) && $errorNo = json_last_error() ) {
-			print $this->getError( $errorNo );
-			print BR;
-			print "file : $this->file" . BR;
-			print  get_Class($this) . ' ' . __line__ . ' : ';
-			die;
+			throw new Exception( $this->getErrorMessage( $errorNo ) );
 		}
 		$this->setData( $json );
 		return $this;
 	}
-	function getError( $errorNo ) {
-		switch ( $errorNo ) {
-			case JSON_ERROR_NONE:
-				return ' - No errors';
-				break;
-			case JSON_ERROR_DEPTH:
-				return ' - Maximum stack depth exceeded';
-				break;
-			case JSON_ERROR_STATE_MISMATCH:
-				return ' - Underflow or the modes mismatch';
-				break;
-			case JSON_ERROR_CTRL_CHAR:
-				return ' - Unexpected control character found';
-				break;
-			case JSON_ERROR_SYNTAX:
-				return ' - Syntax error, malformed JSON';
-				break;
-			case JSON_ERROR_UTF8:
-				return ' - Malformed UTF-8 characters, possibly incorrectly encoded';
-				break;
-			default:
-				return ' - Unknown error';
-				break;
+	function isJson( $string ) {
+	}
+	function getErrorMessage( $errorNo ) {
+		if ( ! $message = (new MadData($this->errorMessages))->$errorNo ) {
+			$message = ' - Unknown error';
 		}
+		return $message;
 	}
 	function save() {
 		if ( empty($this->data) || empty( $this->file ) ) {
@@ -81,6 +110,9 @@ class MadJson extends MadData {
 			mkdir( $dir, 0777, true );
 		}
 		return file_put_contents( $this->file, json_encode( $this->getArray() ) ) ? 1: 0;
+	}
+	function unlink() {
+		return unlink( $this->file );
 	}
 	function getRaw() {
 		$data = json_encode( $this->getArray() );
@@ -172,13 +204,27 @@ class MadJson extends MadData {
 		}
 		return $tab;
 	}
+	private function iconv( $charset, &$data = array() ) {
+		foreach( $data as $key => &$value ) {
+			if ( is_array( $value ) ) {
+				$value = $this->iconv( $charset, $value );
+			} else {
+				$value = iconv( 'utf-8', $charset, $value );
+			}
+		}
+		return $data;
+	}
+	function decoding( $charset ) {
+		$this->setData( $this->iconv( $charset, $this->getArray() ) );
+		return $this;
+	}
 	function getString( $data, $tabs = 0 ) {
 		$tab = $this->getTab( $tabs++ );
 		$rv = "{\n";
 		$contents = array();
 		foreach( $data as $key => $value ) {
 			$key = addCSlashes( $key, '"' );
-			if ( isArray($value) ) {
+			if ( is_array($value) ) {
 				$contents[] = "$tab\t\"$key\" : " . $this->getString( $value, $tabs );
 			} else {
 				$value = addCSlashes( $value, '"' );
@@ -190,12 +236,13 @@ class MadJson extends MadData {
 		return $rv;
 	}
 	function __toString() {
-		return $this->getString( $this );
+		// return $this->getString( $this );
+		$view = new MadJsonView;
+		$view->json = $this;
+		return $view->__toString();
 	}
 	function test() {
-		print BR;
 		print $this->file;
-		print BR;
-		printR( $this->data );
+		(new MadDebug)->r( $this->data );
 	}
 }

@@ -1,0 +1,16 @@
+ol {
+	list-style: none;
+}
+ol li {
+	font-size: 12px;
+}
+span.name {
+	display: inline-block;
+	background: #ccc;
+	width: 100px;
+	text-align: right;
+	overflow: hidden;
+	padding: 2px 10px 2px 0;
+}
+span.dataType {
+}

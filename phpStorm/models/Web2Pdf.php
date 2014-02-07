@@ -43,7 +43,10 @@ class Web2Pdf {
 		$this->data[$key] = $value;
 	}
 	function __get( $key ) {
-		return ckKey( $key, $this->data );
+		if ( isset( $this->data[$key] ) ) {
+			return $this->data[$key];
+		}
+		return '';
 	}
 	private function getUrl() {
 		$this->data = array(

@@ -1,0 +1,81 @@
+<h1>Project Write</h1>
+
+<form class='simple' method='post' action='save'>
+	<ul>
+		<li>
+			<label for='id'>ID</label>
+			<input type='text' name='id' id='id' value='<?=$model->id?>' />
+		</li>
+		<li>
+			<label for='name'>Name</label>
+			<input type='text' name='name' id='name' value='<?=$model->name?>' />
+		</li>
+		<li>
+			<label for='label'>Label</label>
+			<input type='text' name='label' id='label' value='<?=$model->label?>' />
+		</li>
+		<li>
+			<label for='root'>Root Dir</label>
+			<input type='text' name='root' id='root' value='<?=$model->root?>' />
+		</li>
+	</ul>
+	<nav class='buttons'>
+		<button type='submit'>Create Project</button>
+	</nav>
+</form>
+
+<form method='post' id='newProject'>
+	<input type='hidden' name='<?=$this->program?>' value='ins' />
+	<span>Type : </span>
+	<select id='type'>
+		<option>?Á·Î±×·???</option>
+		<option>?Ï¹?</option>
+	</select>
+	<fieldset>
+	<legend>Main</legend>
+	<dl id='brief'>
+		<dt>?Á·?Á§Æ® ??</dt>
+		<dd>
+			<input type='text' name='projectName' id='projectName' />
+			<input type='checkbox' name='makeDir' id='makeDir' />
+			<label for='makeDir'>?????ä¸®?? ?????Õ´Ï´?.</label>
+		</dd>
+		<dt>????(goal)</dt>
+		<dd><input type='text' name='goal' id='goal' /></dd>
+		<dt>?????? ????(brief)</dt>
+		<dd><textarea name='brief' id='brief'></textarea></dd>
+	</dl>
+	</fieldset>
+	<fieldset>
+	<legend>Time Plan</legend>
+	<dl id='timePlan'>
+		<dt>??????</dt>
+		<dd><input type='text' name='s_date' id='s_date' /></dd>
+		<dt>Á¾????</dt>
+		<dd><input type='text' name='e_date' id='e_date' /></dd>
+		<dt>?Û¾???</dt>
+		<dd><input type='text' name='progress' id='progress' /> %</dd>
+	</dl>
+	</fieldset>
+	<fieldset>
+	<legend>Developers</legend>
+	<dl id='Developers'>
+		<dt>Project Manager</dt>
+		<dd><input type='text' name='PM' id='PM' /></dd>
+		<dt>Cheif Programmer</dt>
+		<dd><input type='text' name='cheifProgrammer' id='cheifProgrammer' /></dd>
+		<dt>Cheif Designer</dt>
+		<dd><input type='text' name='cheifDesigner' id='cheifDesigner' /></dd>
+		<!-- make some difference. for simplicity
+		<dt>Team</dt>
+		<dd><select name='part' value='part'>
+				<option>Programmer</option>
+				<option>Designer</option>
+			</select>
+			<input type='text' name='etcMembers[]' id='etcMembers[]' />
+		</dd>
+		-->
+	</dl>
+	</fieldset>
+	<button type='submit'>???? &amp; Make</button>
+</form>

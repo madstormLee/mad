@@ -1,0 +1,32 @@
+<h1>Locale Db Index</h1>
+
+<nav class='component'>
+	<a href='./commonTables'>Common Tables</a>
+	<a href='./mockupables'>Mockupables</a>
+</nav>
+
+<p class='notice'>
+	if you press "Locale Code", you can view tables of database.
+</p>
+
+<form id='LocaleDbIndex' class='simple' action='save'>
+	<? foreach( $list as $id => $database ): ?>
+	<fieldset>
+		<legend>
+			<a href='~/Table?id=<?=$id?>'>ID : <?=$id?></a>
+			<a class='toggleUpNext' href='#contents'>toggle</a>
+		</legend>
+		<ul>
+			<? foreach( $database as $key => $value ): ?>
+			<li>
+				<label for='<?=$id?><?=$key?>'><?=$key?></label>
+				<input type='text' id='<?=$id?><?=$key?>' name='<?=$id?>[<?=$key?>]' value='<?=$value?>' />
+			</li>
+			<? endforeach; ?>
+		</ul>
+	</fieldset>
+	<? endforeach; ?>
+	<nav class='buttons'>
+		<button type='submit'>Save</button>
+	</nav>
+</form>

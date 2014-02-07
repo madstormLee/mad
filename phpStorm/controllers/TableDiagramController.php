@@ -4,7 +4,7 @@ class TableDiagramController extends Preset {
 		parent::__construct();
 	}
 	function indexAction() {
-		replace( "$this->projectRoot$this->controllerName/list" );
+		$this->js->replace( "$this->projectRoot$this->controllerName/list" );
 	}
 	function listAction() {
 		$list = new TableDiagramList( $this->phpStorm->getDir('diagrams') . 'table/' );
@@ -72,6 +72,6 @@ class TableDiagramController extends Preset {
 			$tableDiagram->type = 'BASE TABLE';
 			$cnt += $tableDiagram->save();
 		}
-		alert( $cnt . ' 개의 파일이 생성되었습니다.', 'back', 'replace');
+		$this->js->alert( $cnt . ' 개의 파일이 생성되었습니다.')->replaceBack();
 	}
 }

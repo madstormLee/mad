@@ -1,0 +1,25 @@
+#ViewGettext {
+	display: block;
+	padding: 10px;
+	margin: 10px;
+	border: 3px solid #000;
+	border-radius: 10px;
+}
+#gettextList {
+position: absolute;
+top: 0;
+right: 0;
+width: 300px;
+border: 2px solid #000;
+background: #fff;
+}
+#gettextList ul {
+list-style: none;
+}
+#gettextList li {
+border-bottom: 1px solid #000;
+}
+#gettextList li a {
+font-size: 12px;
+color: #000;
+}

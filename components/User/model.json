@@ -1,0 +1,35 @@
+{
+	"level": {
+		"id": "level",
+		"name": "level",
+		"label": "Level",
+		"type": "radio",
+		"data": {
+			"root": {
+				"id": "root",
+				"label": "Root",
+				"value": 0
+			},
+			"admin": {
+				"id": "admin",
+				"label": "Admin",
+				"value": 1
+			},
+			"localeAdmin": {
+				"id": "localeAdmin",
+				"label": "LocaleAdmin",
+				"value": 5
+			},
+			"dealer": {
+				"id": "dealer",
+				"label": "Dealer",
+				"value": 10
+			},
+			"shopOwner": {
+				"id": "Shop Owner",
+				"label": "Shop Owner",
+				"value": 50
+			}
+		}
+	}
+}

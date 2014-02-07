@@ -1,0 +1,17 @@
+<h1>File Write Contents</h1>
+
+<nav class='component'>
+	<a href='./index?target=<?=dirname($file->getFile())?>'>index</a>
+	<a href='./view?target=<?=$file->getFile()?>'>view</a>
+</nav>
+
+<h2>file : <?=$file->getFile()?></h2>
+
+<form id='FileWriteContents' method='post' action='./saveContents'>
+	<input type='hidden' name='target' value='<?=$file->getFile()?>' />
+	<textarea name='contents' id='contents'><?= $file->getContents();?></textarea>
+	<nav class='buttons'>
+		<button type='submit'>Save</button>
+	</nav>
+</form>
+

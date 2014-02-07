@@ -1,0 +1,23 @@
+#ComponentList {
+}
+#ComponentList td {
+padding: 5px 10px;
+}
+#ComponentList dl {
+padding-left: 10px;
+text-align: left;
+}
+#ComponentList dl dt {
+margin-top: 1px;
+border: 1px solid #000;
+}
+#ComponentList dl dt span {
+display: inline-block;
+padding: 2px 10px;
+text-align: right;
+width: 70px;
+background: #ccf;
+}
+#ComponentList dl dt b {
+padding-left: 10px;
+}

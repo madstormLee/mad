@@ -1,0 +1,22 @@
+{
+	"usage" : {
+		"description" : "Usage : php madtools.php COMMAND OPTIONS...\n"
+	},
+	"help" : {
+		"description" : "madtools.php help",
+		"options" : {
+		}
+	},
+	"install" : {
+		"description" : "install madtools.",
+		"options" : {
+			"version" : {
+				"default" : "TOP"
+			}
+		}
+	},
+	"update" : {
+		"options" : {
+		}
+	}
+}

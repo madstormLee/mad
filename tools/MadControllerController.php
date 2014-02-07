@@ -58,6 +58,6 @@ class MadControllerController {
 		return '';
 	}
 	function test() {
-		printR( $this->g );
+		(new MadDebug)->printR( $this->g );
 	}
 }

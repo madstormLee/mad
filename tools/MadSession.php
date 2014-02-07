@@ -1,20 +1,9 @@
 <?
-// singleton이 아니다.
-class MadSession {
-	protected static $instance = null;
+class MadSession extends MadSingletonData {
 	protected $data;
-	protected $sessId;
 
-	public function __construct( $sessId = '' ) {
-		if ( empty( $sessId ) ) {
-			$this->data = &$_SESSION;
-			return;
-		}
-		$this->sessId = $sessId;
-		if ( ! isset( $_SESSION[$sessId] ) ) {
-			$_SESSION[$sessId] = array();
-		}
-		$this->data = &$_SESSION[$sessId];
+	protected function __construct() {
+		$this->data = &$_SESSION;
 	}
 	public static function getInstance() {
 		if ( ! self::$instance ) {
@@ -22,84 +11,32 @@ class MadSession {
 		}
 		return self::$instance;
 	}
-	function __set($key, $value) {
-		$this->data[$key] = $value;
-	}
-	function __get($key) {
-		if ( isset ($this->data[$key]) ) {
-			return $this->data[$key];
+	public static function start() {
+		/*
+		header('P3P: CP="ALL CURa ADMa DEVa TAIa OUR BUS IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC OTC"');
+		$server = PxParams::create('_SERVER');
+		session_set_cookie_params (0,"/", $server->SERVER_NAME );
+		if ( isset( $_POST["PHPSESSID"] ) ) {
+			session_id( trim( $_POST["PHPSESSID"] ) );
+		} elseif ( isset( $_GET["PHPSESSID"] ) ) {
+			session_id( trim( $_GET["PHPSESSID"] ) );
 		}
-		return null;
-	}
-	function isEmpty() {
-		return empty( $this->data );
-	}
-	function __isset( $key ) {
-		if( isset($this->data[$key] ) ) {
-			return true;
-		}
-	}
-	function __unset( $key ) {
-		if( isset( $this->data[$key] ) ) {
-			unset( $this->data[$key] );
-			return true;
-		}
-		return false;
-	}
-	function add( $data ) {
-		return $this->addData( $data );
-	}
-	function addData( $data ) {
-		if ( ! isArray( $data ) ) {
-			$data = (array) $data;
-		}
-		foreach( $data as $key => $value ) {
-			$this->data[$key] = $value;
-		}
-		return $this;
-	}
-	function set( $data ) {
-		$this->data = $data;
-		return $this;
-	}
-	function get($key='') {
-		if ($key === '' and isset($this->data)) {
-			return $this->data;
-		} else {
-			return $this->__get($key);
-		}
-	}
-	function getTotal() {
-		if ( isset($this->data) ) {
-			return count( $this->data );
-		}
+		*/
+		session_start();
 		return 0;
 	}
-	function remove($key) {
-		if ( isset($this->data[$key]) ) {
-			unset($this->data[$key]);
-			return true;
-		}
-		return false;
+	public static function destroy() {
+		return session_destroy();
 	}
-	function clear() {
-		return $this->destroy();
-	}
-	function destroy() {
-		if ( isset( $this->data ) ) {
-			$this->data = array();
-		}
+	function setData( $data ) {
+		$_SESSION = $data;
 		return $this;
 	}
-	function test() {
-		printR( $this->data );
-	}
-	function testAll() {
-		printR( $_SESSION );
-	}
-	function __toString() {
-	}
-	function __call($method, $args) {
-		print $method . ' method is not in ' . $this->className . '.';
+	function __call( $method, $args ) {
+		$function = 'session_' . $method;
+		if ( ! function_exists( $function ) ) {
+			throw new Exception( "there is no $method method in " . get_class( $this ) . ' class.');
+		}
+		return call_user_func_array( $function, $args );
 	}
 }

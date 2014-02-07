@@ -84,13 +84,13 @@ class Configs2PhpStorm {
 	}
 	function createConfigs() {
 		$sourceDir = $this->phpStorm->getDir('configs');
-		$targetDir = $this->targetDir . 'json/configs/';
-		dircopy( $sourceDir, $targetDir );
+		$dir = new MadFile( $this->targetDir . 'json/configs/' );
+		$dir->copyDir( $sourceDir, $targetDir );
 	}
 	function createDiagrams() {
 		$sourceDir = $this->phpStorm->getDir('diagrams');
-		$targetDir = $this->targetDir . 'json/diagrams/';
-		dircopy( $sourceDir, $targetDir );
+		$dir = new MadFile( $this->targetDir . 'json/diagrams/' );
+		$dir->copyDir( $sourceDir, $targetDir );
 	}
 	private function createView( $view ) {
 		$template = new MadTemplate( $this->presetDir . "views/$view.html" );

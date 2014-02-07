@@ -1,0 +1,6 @@
+<h1>view 10 rows of table</h1>
+<ul>
+    <?  foreach( $q->toObject() as $row ): ?>
+    <li> <? printR( $row )?> </li>
+    <? endforeach ?>
+</ul>

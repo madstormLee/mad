@@ -7,7 +7,7 @@ class TableDiagram extends MadJson {
 	}
 	function interpretOracle( $data ) {
 		foreach( $data as $key => $value ) {
-			if ( isArray( $value ) ) {
+			if ( is_array( $value ) ) {
 				$data[$key] = $this->interpretOracle( $value );
 			} else {
 				$data[$key] = strToUpper( $value );

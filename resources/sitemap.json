@@ -1,0 +1,248 @@
+{
+	"index": {
+		"controller": "Index",
+		"label": "Index",
+		"level": "0-1",
+		"options": "noMain"
+	},
+	"locale": {
+		"label": "Locale",
+		"level": "0-300",
+		"controller": "Locale"
+	},
+	"project": {
+		"controller": "Project",
+		"level": "0-1",
+		"label": "Project"
+	},
+	"images": {
+		"label": "Images",
+		"controller": "Images",
+		"level": "0-0",
+		"options": "noMain"
+	},
+	"adminUser": {
+		"label": "권한 관리",
+		"controller": "AdminUser",
+		"options": "noSubs",
+		"level": "0-100",
+		"subs": {
+			"request":{
+				"level": "0-300"
+			},
+			"saveRequest":{
+				"level": "0-300"
+			},
+			"login":{
+				"label":"Login Admin",
+				"level": "0-300"
+			},
+			"logout":{
+				"level": "0-300"
+			},
+			"registSession":{
+				"level": "0-300"
+			},
+			"delete":{
+				"level": "1-5"
+			}
+		}
+	},
+	"components": {
+		"label": "Components",
+		"level": "0-1",
+		"subs": {
+			"component": {
+				"controller": "Component",
+				"label": "Component"
+			},
+			"controller": {
+				"controller": "Controller",
+				"label": "Controller"
+			},
+			"model": {
+				"controller": "Model",
+				"label": "Model"
+			},
+			"view": {
+				"controller": "View",
+				"label": "View"
+			}
+		}
+	},
+	"diagrams": {
+		"controller": "Diagrams",
+		"label": "Diagrams",
+		"level": "0-1",
+		"subs": {
+			"erd": {
+				"controller": "Erd",
+				"label": "Erd"
+			},
+			"componentDiagram": {
+				"controller": "ComponentDiagram",
+				"label": "Component"
+			},
+			"classDiagram": {
+				"controller": "ClassDiagram",
+				"label": "Class"
+			}
+		}
+	},
+	"tools": {
+		"label": "Tools",
+		"level": "0-1",
+		"subs": {
+			"session": {
+				"level":"0-1",
+				"label": "Session",
+				"controller": "Session"
+			},
+			"sitemap": {
+				"controller": "Sitemap",
+				"label": "Sitemap"
+			},
+			"file": {
+				"controller": "File",
+				"label": "File"
+			},
+			"fileManual": {
+				"label": "FileManual",
+				"controller":"FileManual"
+			},
+			"css": {
+				"label":"css",
+				"controller":"Css"
+			},
+			"svn": {
+				"label":"svn",
+				"controller":"Svn"
+			},
+			"database": {
+				"controller": "Database",
+				"label": "Database"
+			},
+			"table": {
+				"controller": "Table",
+				"label": "Table"
+			},
+			"tableManual": {
+				"label": "TableManual",
+				"controller":"TableManual"
+			},
+			"log": {
+				"label":"log",
+				"controller":"Log"
+			},
+			"persona": {
+				"controller": "Persona",
+				"label": "Persona"
+			},
+			"test": {
+				"controller": "Test",
+				"label": "Test"
+			},
+			"info": {
+				"controller": "Info",
+				"label": "Info"
+			}
+		}
+	},
+	"etc": {
+		"label": "Etc",
+		"subs": {
+			"date":{
+				"label":"Date",
+				"level": "0-100",
+				"controller":"Date"
+			},
+			"localeTable":{
+				"label":"LocaleTable",
+				"controller":"LocaleTable",
+				"level": "0-0"
+			},
+			"itemcategory":{
+				"label":"카테고리",
+				"level": "0-0",
+				"controller":"Itemcategory"
+			}
+		}
+	},
+	"scheme":{
+		"label":"Scheme",
+		"controller":"Scheme",
+		"level": "0-0"
+	},
+	"itemMachineEvent":{
+		"label":"Item MachineEvent",
+		"controller":"ItemMachineEvent",
+		"level": "0-0"
+	},
+	"manuals": {
+		"label": "Manuals",
+		"level": "0-1",
+		"subs": {
+			"manual": {
+				"controller": "Manual",
+				"label": "Manual"
+			},
+			"classManual": {
+				"controller": "ClassManual",
+				"label": "Class Manual"
+			}
+		}
+	},
+	"errors": {
+		"controller":"Errors",
+		"label":"Errors",
+		"options": "noMain",
+		"subs": {
+			"unauth": {
+				"replace": "~/user/login"
+			}
+		}
+	},
+	"user": {
+		"controller": "User",
+		"label": "User",
+		"options": "noMain"
+	},
+	"projects": {
+		"controller": "Projects",
+		"label": "Projects",
+		"options": "noMain"
+	},
+	"image": {
+		"level":"0-300",
+		"controller": "Image"
+	},
+	"daemon": {
+		"label":"Daemon",
+		"level":"0-300",
+		"configs": "configs/daemon.json",
+		"subs": {
+			"happyitemLog": {
+				"label": "HappyitemLog",
+				"controller": "HappyitemLog"
+			}
+		}
+	},
+	"api": {
+		"options": "noMain",
+		"label": "Api",
+		"configs": "configs/api.json",
+		"controller": "Index",
+		"level": "0-300"
+	},
+	"manual":{
+		"options": "noMain",
+		"label":"Manual",
+		"level": "0-1",
+		"controller":"Manual"
+	},
+	"statistics": {
+		"label":"통계",
+		"options": "noMain",
+		"controller":"Statistics"
+	}
+}

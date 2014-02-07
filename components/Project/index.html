@@ -1,0 +1,28 @@
+<h1>Projects</h1>
+
+<nav class='component'>
+	<a href='./write'>write</a>
+</nav>
+
+<table class='simple'>
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Label</th>
+			<th>Location</th>
+			<th>Open</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $list as $row ): ?>
+		<tr>
+			<td><?=$row->id?></td>
+			<td><?=$row->name?></td>
+			<td><a href='./view?file=<?=$row->getFile()?>'><?=$row->label?></a></td>
+			<td><?=$row->dir?></td>
+			<td><a href='./open?file=<?=$row->getFile()?>'>open</a></td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>

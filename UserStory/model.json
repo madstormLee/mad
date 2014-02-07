@@ -1,0 +1,20 @@
+{
+	"card": {
+		"type": "text"
+	},
+	"conversation": {
+		"type": "text"
+	},
+	"confirm": {
+		"type": "text"
+	},
+	"wdate": {
+		"type": "datetime",
+		"default": "now()"
+	},
+	"udate": {
+		"type": "datetime",
+		"default": "now()",
+		"update": "now()"
+	}
+}

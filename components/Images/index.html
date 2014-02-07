@@ -1,0 +1,21 @@
+<dl id='popupWindow'>
+	<dt><a class='toggleId' href='#popupBody'>popup</a><a class='hideId' href='#popupWindow'>Hide</a></dt>
+	<dd id='popupBody'></dd>
+</dl>
+
+<h1>Images</h1>
+
+<ul class='files'>
+	<? foreach( $dir as $file ) : ?>
+	<? if ( $file->isDir() ) : ?>
+	<li class='dir'><a href='./?dir=<?=$file->getFile()?>'><?=$file->getBaseName()?></a></li>
+	<? else: ?>
+	<li>
+		<a class='popup' href='./view?file=<?=$file->getFile()?>'><?=$file->getBaseName()?></a>
+		<? if ( $file->isWritable() ): ?>
+		<a class='popup button' href='./rename?file=<?=$file->getFile()?>'>Rename</a>
+		<? endif; ?>
+	</li>
+	<? endif; ?>
+	<? endforeach; ?>
+</ul>

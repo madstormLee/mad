@@ -45,15 +45,15 @@ class SitemapController extends Preset {
 		$sitemap = $this->sitemap;
 		$sitemap->addSub( $this->get->current, $this->post );
 		$sitemap->save();
-		replace('back');
+		$this->js->replace('back');
 	}
 	function removeAction() {
 		$this->sitemap->removePath( $this->get->href )
 			->save();
-		replace('back');
+		$this->js->replace('back');
 	}
 	function saveAction() {
 		$this->sitemap->saveContents( $this->post->content );
-		replace('back');
+		$this->js->replace('back');
 	}
 }

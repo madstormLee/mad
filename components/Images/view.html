@@ -1,0 +1,59 @@
+<h1>Image View</h1>
+
+<nav class='component'>
+	<a href='./'>Index</a>
+</nav>
+
+<nav class='location'>
+	<? if ( $server->HTTP_REFERER ) : ?>
+	<a href='<?=$server->HTTP_REFERER ?>'>back</a>
+	<? endif; ?>
+</nav>
+
+<table class='simple'>
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>title</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Filename</td>
+			<td class='title'><?=$file->getName()?></td>
+		</tr>
+		<tr>
+			<td>Image</td>
+			<td class='title'>
+				<a href='~/<?=$file->getFile()?>'>
+					<img src='~/<?=$file->getFile()?>' />
+				</a>
+				<span>
+					src='~/<?=$file->getFile()?>'
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>File Permission</td>
+			<td class='title'><?=sprintf('%o', filePerms( $file->getFile() ) );?></td>
+		</tr>
+		<tr>
+			<td>File Owner</td>
+			<td class='title'><?=fileOwner( $file->getFile() )?></td>
+		</tr>
+		<tr>
+			<td>File Writable</td>
+			<td class='title'>
+				<? if ( $info->isWritable() ) : ?>
+				Writable
+				<? endif; ?>
+				<? if ( $info->isReadable() ) : ?>
+				Readable
+				<? endif; ?>
+				<? if ( $info->isExecutable() ) : ?>
+				Excutable
+				<? endif; ?>
+			</td>
+		</tr>
+	</tbody>
+</table>

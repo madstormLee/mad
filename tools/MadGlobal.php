@@ -22,6 +22,6 @@ class MadGlobal {
 		$this->data[$key] = $value;
 	}
 	function test() {
-		printR( $this->data );
+		(new MadDebug)->printR( $this->data );
 	}
 }

@@ -18,7 +18,7 @@ class MadTag_Dl {
 		$rv = "<dl class='depth$depth'>\n";
 		foreach( $data as $key => $value ){
 			$rv .= "<dt>$key</dt>\n";
-			if ( ! isArray( $value ) ) {
+			if ( ! is_array( $value ) ) {
 				$rv .= "<dd>$value</dd>\n";
 			} else {
 				$rv .= "<dd>" . $this->getTree( $value, $depth ) ."</dd>\n";

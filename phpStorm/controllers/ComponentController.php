@@ -1,9 +1,6 @@
 <?
 class ComponentController extends Preset {
-	function __construct() {
-		parent::__construct();
-	}
-	function listAction() {
+	function indexAction() {
 		$this->main->list = new ComponentList( $this->project->getRoot() . 'json/Components' );;
 		return $this->main;
 	}

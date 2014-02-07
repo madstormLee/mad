@@ -1,156 +1,58 @@
 <?
-// setting을 따로 만들어 외부에서 온 내용을 담아두고,
-// 실행시에 config 파일을 읽은 후 setting을 덮어쓴다.
 class MadFront {
-	private static $instance;
-	private $g;
+	private static $instance = null;
 
-	protected function __construct() {
-		$this->g = MadGlobal::getInstance();
+	private function __construct() {
 	}
-	public static function getInstance() {
+	public function getInstance() {
 		if ( ! self::$instance ) {
 			self::$instance = new self;
 		}
 		return self::$instance;
 	}
-	private function initConfig() {
-		$configFile = "json/configs/front.json";
-		if ( is_file( $configFile ) ) {
-			$data = array(
-				'controller' => $this->controllerName,
-				'action' => $this->actionName,
-				);
-			$config = new MadJson( $configFile , $data );
-			if ( $config->objects ) {
-				foreach( $config->objects as $key => $value ) {
-					$this->$key = new $value;
-				}
-			}
-			if ( $config->instances ) {
-				foreach( $config->instances as $key => $init ) {
-					// $this->$key = $value::getInstance();
-					$this->$key = $init['class']::$init['method']();
-				}
-			}
-			if ( $config->styles ) {
-				foreach( $config->styles as $key => $value ) {
-					$this->style->add( $value );
-				}
-			}
-			if ( $config->js ) {
-				$this->js = MadJs::getInstance();
-				foreach( $config->js as $key => $value ) {
-					$this->js->add( $value );
-				}
-			}
-			if ( $config->views ) {
-				foreach( $config->views as $key => $value ) {
-					$this->$key = new MadView( $value );
-				}
-			}
-		}
-	}
-	private function prepare() {
-		// conventionally load configuration
-		// PhpStorm load default values for this.
-		$phpStorm = new PhpStorm;
-		if ( ! $this->config ) {
-			$configFile = $phpStorm->files->config;
-			if ( is_file( $configFile ) ) {
-				$this->config = new MadIni( $configFile );
-			} else {
-				$this->config = new MadIni( ".phpStorm/$configFile" );
-			}
-		}
-		// make default values if it is not there.
-		if ( ! $this->projectRoot ) {
-			$this->projectRoot = realpath( ROOT . dirname($_SERVER['SCRIPT_NAME']) ) . DS;
-		}
-		if ( ! $this->urlRoot ) {
-			$this->urlRoot = dirname( $_SERVER['SCRIPT_NAME'] ) . DS;
-		}
-		$sitemap = new MadSitemap;
-		$map = MadUrlMapper::getInstance( $sitemap );
-		$this->controllerName = $map->getController();
-		$this->actionName = $map->getAction();
-
-		if ( $phpStorm->config->scaffold == 'auto' ) {
-			$phpStorm->scaffolding( $this->controllerName, $this->actionName );
-		}
-	}
-	public function excute() {
-		$this->get = new MadData( sqlin($_GET) );
-		$this->post = new MadData( sqlin($_POST) );
-
-		$this->prepare();
-		$this->initConfig();
-
-		$controllerName = $this->controllerName . 'Controller';
-		$controller = $this->createController( $controllerName );
-
-		$controller->setState( $this->actionName );
-		$rv = $controller->dispatchResult();
-		$rv = preg_replace('!(action|background|src|href)=(["\'])~/!i', "$1=$2$this->urlRoot", (string)$rv );
-		$rv = preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2$this->urlRoot$this->controllerName/", (string)$rv );
-		print $rv;
-	}
-	private function createController( $controllerName ) {
-		$dirs = $this->config->dirs;
-		$controllerFile = $dirs->controllers . $controllerName . '.php';
-		if( is_file( $controllerFile) ) {
-			require_once( $controllerFile );
-			return new $controllerName;
-		} else if ( class_exists( $controllerName ) ) {
-			return new $controllerName;
-		} else if ( class_exists( $this->errorController ) ) {
-			return new $this->errorController;
-		}
-		return new MadErrorController;
-	}
-	// start front
-	function stormming() {
-		try {
-			$this->excute();
-		} catch( Exception $e ) {
-			print $e;
-		}
-	}
-	function start() {
-		return $this->stormming();
-	}
 	function __toString() {
-		$this->stormming();
-		return '';
-	}
-	// setters and getters
-	function __get( $key ) {
-		return $this->g->$key;
-	}
-	function __set( $key, $value ) {
-		$this->g->$key = $value;
-	}
-	public function setConfig( $file ) {
-		$this->config = new MadIni( $file );
-	}
-	public function setAction( $actionName ) {
-		$this->actionName = array_shift(explode('.', $actionName));
-	}
-	public function getController() {
-		if ( ! $this->controller instanceof MadController ) {
-			$this->setController();
+		try {
+			$result = $this->dispatch();
+			return $result;
+		} catch ( Exception $e ) {
+			return $e;
 		}
-		return $this->controller;
 	}
-	public function setController( MadController $controller = null ) {
-		if ( $controller instanceof MadController ) {
-			$this->controller = $controller;
+	private function dispatch() {
+		$configs = MadConfigs::getInstance();
+		try {
+			$controller = MadController::create( $configs->router->controller );
+			$action = $configs->router->action . 'Action';
+
+			$contents = $controller->$action();
+		} catch ( PDOException $e ) {
+			if ( $configs->debug == true ) {
+				return (new MadDebug)->printR( $e, true );
+			}
+			throw $e;
+		} catch ( Exception $e ) {
+			$message = _( $e->getMessage() );
+			if ( IS_AJAX || IS_INTERNAL ) {
+				return $message;
+			}
+			MadJs::getInstance()->alert( $message )->replaceBack();
 		}
-		$urlMapper = MadUrlMapper::getInstance();
-		$this->controller = new $this->controllerName;
-		return $this;
-	}
-	function test() {
-		printR( $this->g );
+
+		if ( (! IS_INTERNAL) && (! IS_AJAX) &&
+				( empty( $contents ) || is_numeric( $contents ) ) ) {
+			MadJs::getInstance()->replaceBack();
+		}
+
+		if ( IS_AJAX ) {
+			return $contents;
+		}
+		if ( IS_GET ) {
+			$layout = MadComponent::create( $configs->layout );
+			$configs->layout->contents = $contents;
+			return $configs->layout;
+		}
+		if ( IS_POST ) {
+			return $contents;
+		}
 	}
 }

@@ -168,7 +168,7 @@ class MadQ implements IteratorAggregate {
 	}
 	/***************** utilities ********************/
 	function test() {
-		printR( $this->result );
+		(new MadDebug)->printR( $this->result );
 	}
 	/***************** magic methods ******************/
 	function __set($key, $value) {

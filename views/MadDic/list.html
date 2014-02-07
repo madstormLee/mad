@@ -1,6 +1,0 @@
-<div>
-	<? while ( $row = $madic->row() ){
-	extract(sqlout($row)); ?>
-	<div class='row'> <div class='word'>$word</div><div>$explanation</div><form method='post' action='?mode=del'><input type='hidden' name='word' value='$word' /><input type='submit' value='삭제하기' /></form> </div>
-	<? } ?>
-</div>

@@ -55,7 +55,7 @@
 						}
 					},
 					"attributes": {
-						"<?=lcFirst($config->name)?>": {
+						"<?=$config->name->lcFirst()?>": {
 							"access": "private",
 							"type": "<?=$config->name?>",
 							"description": "서비스 클래스"
@@ -110,7 +110,7 @@
 						}
 					},
 					"attributes": {
-						"<?=lcFirst($config->name)?>": {
+						"<?=$config->name->lcFirst()?>": {
 							"access": "private",
 							"type": "<?=$config->name?>",
 							"description": "서비스 클래스"
@@ -165,7 +165,7 @@
 						}
 					},
 					"attributes": {
-						"<?=lcFirst($config->name)?>": {
+						"<?=$config->name->lcFirst()?>": {
 							"access": "private",
 							"type": "<?=$config->name?>",
 							"description": "서비스 클래스"

@@ -1,0 +1,17 @@
+<h1>Sitemap</h1>
+
+<section class='treeContainer'>
+	<section class='tree subs'>
+	<? $treeIterator = function( $tree ) use ( &$treeIterator ) { ?>
+	<? foreach( $tree as $row ): ?>
+	<? if ( preg_match('/noMain/', $row->options) ) continue; ?>
+	<dl>
+		<dt><a href='<?=$row->href?>'><?=$row->label?></a></dt>
+		<? if ( ! empty( $row->subs ) ): ?>
+		<dd class='subs'><? $treeIterator( $row->subs ); ?></dd>
+		<? endif; ?>
+	</dl>
+	<? endforeach; ?>
+	<? }; $treeIterator( $tree ); ?>
+	</section>
+</section>

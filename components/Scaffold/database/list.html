@@ -1,0 +1,40 @@
+<h1><?=$config->kName?> 목록</h1>
+
+<form id='ListSearch' class='listSearch' method='get' action='?'>
+	<ul>
+	<?='<? foreach( $list->searchForms as $searchForm ) : ?>'?>
+		<li>
+			<?='<?=$searchForm->label?><?=$searchForm?>'?>
+		</li>
+	<?='<? endforeach; ?>'?>
+	</ul>
+	<button class='btnSubmit' type='submit'>검색</button>
+</form>
+
+<table class='adminTable'>
+<thead>
+	<tr>
+		<?='<? foreach ( $list->getSelectedHeaders() as $th ): ?>'?>
+		<th><?='<?=$th?>'?></th>
+		<?='<? endforeach; ?>'?>
+	</tr>
+</thead>
+<tbody>
+	<?='<? foreach ( $list as $row ): ?>'?>
+	<tr>
+		<?='<? foreach ( $row as $td ): ?>'?>
+		<td><?='<?=$td?>'?></td>
+		<?='<? endforeach; ?>'?>
+	</tr>
+	<?='<? endforeach; ?>'?>
+</tbody>
+</table>
+
+<?='<? if ( $list->isEmpty() ) : ?>'?>
+	<p class='noContent'>리스트가 없습니다.</p>
+<?='<? endif; ?>'?>
+<?='<?=$list->getPageNavi()?>'?>
+
+<ul class='naviButtons'>
+	<li><a class='btnWrite' href="write">글 쓰기</a></li>
+</ul>

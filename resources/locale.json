@@ -1,0 +1,122 @@
+{
+	"ca": {
+		"id": "ca",
+		"nationcode": "CA",
+		"code": "en_CA",
+		"language": "en_US.UTF-8",
+		"timezone":"Canada/Central",
+		"label": "Canada"
+	},
+	"be": {
+		"id": "be",
+		"nationcode": "BE",
+		"code": "fr_BE",
+		"language": "fr_FR.UTF-8",
+		"timezone":"Europe/Brussels",
+		"label": "Belgium"
+	},
+	"br": {
+		"id": "br",
+		"nationcode": "BR",
+		"code": "pt_BR",
+		"language": "pt_PT.UTF-8",
+		"timezone":"America/Rio_Branco",
+		"label": "Brazil"
+	},
+	"ch": {
+		"id": "ch",
+		"nationcode": "CH",
+		"code": "en_CH",
+		"language": "fr_FR.UTF-8",
+		"timezone":"Europe/Zurich",
+		"label": "Swiss"
+	},
+	"cn": {
+		"id": "cn",
+		"nationcode": "CN",
+		"code": "zh_CN",
+		"language": "zh_CN.UTF-8",
+		"timezone":"Asia/Shanghai",
+		"label": "中国"
+	},
+	"es": {
+		"id": "es",
+		"nationcode": "ES",
+		"code": "es_ES",
+		"language": "es_ES.UTF-8",
+		"timezone":"Europe/Madrid",
+		"label": "España"
+	},
+	"fr": {
+		"id": "fr",
+		"nationcode": "FR",
+		"code": "fr_FR",
+		"language": "fr_FR.UTF-8",
+		"timezone":"Europe/Paris",
+		"label": "France"
+	},
+	"hk": {
+		"id": "hk",
+		"nationcode": "HK",
+		"code": "zh_HK",
+		"language": "zh_HK.UTF-8",
+		"timezone":"Asia/Hong_Kong",
+		"label": "香港"
+	},
+	"jp": {
+		"id": "jp",
+		"nationcode": "JP",
+		"code": "ja_JP",
+		"language": "ja_JP.UTF-8",
+		"timezone":"Asia/Tokyo",
+		"label": "日本"
+	},
+	"kr": {
+		"id": "kr",
+		"nationcode": "KR",
+		"code": "ko_KR",
+		"language": "ko_KR.UTF-8",
+		"timezone":"Asia/Seoul",
+		"label": "Korea"
+	},
+	"my": {
+		"id": "my",
+		"nationcode": "MY",
+		"code": "en_SG",
+		"language": "en_SG.UTF-8",
+		"timezone":"Asia/Singapore",
+		"label": "Malaysia"
+	},
+	"pt": {
+		"id": "pt",
+		"nationcode": "PT",
+		"code": "pt_PT",
+		"language": "pt_PT.UTF-8",
+		"timezone":"Portugal",
+		"label": "Portugal"
+	},
+	"sg": {
+		"id": "sg",
+		"nationcode": "SG",
+		"code": "en_SG",
+		"language": "en_SG.UTF-8",
+		"timezone":"Asia/Singapore",
+		"label": "Singapore"
+	},
+	"tw": {
+		"id": "tw",
+		"nationcode": "TW",
+		"code": "zh_TW",
+		"language": "zh_TW.UTF-8",
+		"timezone":"Asia/Taipei",
+		"label": "台灣"
+	},
+	"us": {
+		"id": "us",
+		"nationcode": "US",
+		"code": "en_US",
+		"language": "en_US.UTF-8",
+		"timezone":"America/Los_Angeles",
+		"label": "United States"
+	}
+}

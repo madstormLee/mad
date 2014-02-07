@@ -1,0 +1,36 @@
+<h1><?=_( $g->sitemap->getInfo()->label )?></h1>
+
+<nav class='component'>
+	<a href='./'><?=_("Index")?></a>
+</nav>
+
+<table class='simple'>
+	<thead>
+		<tr>
+			<th>table_catalog</th>
+			<th>table_schema</th>
+			<th>table_name</th>
+			<th>table_type</th>
+			<th>is_insertable_into</th>
+			<th>is_typed</th>
+			<th>commit_action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $list as $row ): ?>
+		<tr>
+			<td><?=$row->table_catalog?></td>
+			<td><?=$row->table_schema?></td>
+			<td><?=$row->table_name?></td>
+			<td><?=$row->table_type?></td>
+			<td><?=$row->is_insertable_into?></td>
+			<td><?=$row->is_typed?></td>
+			<td><?=$row->commit_action?></td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>
+
+<? if ( $list->isEmpty() ) : ?>
+<p class='notice'>No searched list.</p>
+<? endif; ?>

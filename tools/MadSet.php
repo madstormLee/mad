@@ -72,7 +72,7 @@ class MadSet {
 		}
 	}
 	function test(){
-		printR( $this->data );
+		(new MadDebug)->printR( $this->data );
 	}
 	function setFilter( $filter = array() ) {
 		$this->filter = $filter;

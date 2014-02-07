@@ -1,0 +1,18 @@
+<dl class='entity'>
+	<dt><?=$table->getTable()?></dt>
+	<dd>
+		<ol>
+			<? foreach( $table->getColumns() as $column ): ?>
+			<li>
+				<span class='name'><?=$column->column_name ?></span>
+				<span class='dataType'>
+					<?=$column->data_type ?>
+					<? if ( $column->character_maximum_length ): ?>
+					( <?=$column->character_maximum_length ?> )
+					<? endif; ?>
+				</span>
+			</li>
+			<? endforeach; ?>
+		</ol>
+	</dd>
+</dl>

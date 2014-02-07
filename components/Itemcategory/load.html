@@ -1,0 +1,25 @@
+<? $categoryIterator = function( $category ) use ( &$categoryIterator ) { ?>
+<dl>
+	<? foreach( $category as $row ): ?>
+	<dt>
+		<? if ( ! empty( $row->subs ) ): ?>
+		<a href='./subs?<?=$row->id?>' title='<?=_("toggle sub category")?>'>+</a>
+		<? else: ?>
+		<b title='<?=_("no sub category")?>'>-</b>
+		<? endif; ?>
+		<input type='text' name='label[]' id='label<?=$row->id?>' value='<?=$row->label?>' placeholder='<?=_("input category name")?>' title='<?=_("category name")?>' required='required' />
+		( <a href='~/itemLocale/list?id=<?=$row->id?>' title='item list'>187</a> )
+		<input type='checkbox' name='isOpen' id='isOpen<?=$row->id?>' value='<?=$row->isOpen?>' <?=( $row->isOpen )? "checked='checked'": ""; ?> title='<?=_("is opened")?>' />
+		<a class='createSub' href='./write?parent=<?=$row->id?>' title='<?=_("create sub")?>'><?=_("create sub")?></a>
+		<a class='delete' href='./delete?id=<?=$row->id?>' data-confirm='<?=_("delete category")?>'><?=_("delete")?></a>
+		<nav class='position'>
+			<a class='moveUp' href='./moveUp?id=$<?=$row->id?>' title='<?=_("order up")?>'><?=_("up")?></a>
+			<a class='moveDown' href='./moveDown?id=$<?=$row->id?>' title='<?=_("order down")?>'><?=_("down")?></a>
+		</nav>
+	</dt>
+	<? if ( ! empty( $row->subs ) ): ?>
+	<dd><? $categoryIterator( $row->subs ); ?></dd>
+	<? endif; ?>
+	<? endforeach; ?>
+</dl>
+<? }; $categoryIterator( $category ); ?>

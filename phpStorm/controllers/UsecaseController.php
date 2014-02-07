@@ -5,7 +5,7 @@ class UsecaseController extends Preset {
 		$this->model = new Usecase;
 	}
 	function indexAction() {
-		replace( "$this->projectName$this->controllerName/list" );
+		$this->js->replace( "$this->projectName$this->controllerName/list" );
 	}
 	function listAction() {
 		$list = new UsecaseList;
@@ -98,7 +98,7 @@ class UsecaseController extends Preset {
 			$model->getFile();
 			$cnt += $model->save();
 		}
-		alert( $cnt . '개의 파일이 생성되었습니다.', 'back', 'replace' );
+		$this->js->alert( $cnt . '개의 파일이 생성되었습니다.')->replaceBack();
 	}
 	function insertAction() {
 		if ( $this->model->setData( $this->post->get() )->insert() ) {

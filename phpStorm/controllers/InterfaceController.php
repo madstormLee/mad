@@ -4,11 +4,11 @@ class InterfaceController extends Preset {
 		parent::__construct();
 		$this->model = new InterfaceDiagram;
 		if ( ! $this->phpStorm->isOpened() ) {
-			replace( "/$this->projectName" );
+			$this->js->replace( "/$this->projectName" );
 		}
 	}
 	function indexAction() {
-		replace( "$this->projectName$this->controllerName/list" );
+		$this->js->replace( "$this->projectName$this->controllerName/list" );
 	}
 	function listAction() {
 		$this->js->add('/mad/js/prototype');
@@ -116,6 +116,6 @@ class InterfaceController extends Preset {
 			$convertor->setConfig( $config );
 			$cnt += $convertor->save();
 		}
-		alert( $cnt . '개의 파일이 생성되었습니다.', 'back', 'replace' );
+		$this->js->alert( $cnt . '개의 파일이 생성되었습니다.')->replaceBack();
 	}
 }

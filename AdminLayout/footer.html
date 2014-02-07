@@ -1,0 +1,12 @@
+<? $year = date('Y') ?>
+<p class='copyright'><?=_("Copyright :: {$year} Hong International all rights reserved.")?></p>
+<span>
+<? if ( ckKey( 'notrans', $_SESSION ) === 'true' ): ?>
+<a style="position: absolute;right: 200px;top: 10px;" href='~/admin/tools/session/set?notrans=false'>no trans off</a>
+<? else : ?>
+<a style="position: absolute;right: 200px;top: 10px;" href='~/admin/tools/session/set?notrans=true'>no trans on</a>
+<? endif; ?>
+</span>
+<span>
+<a class='main' href='~/'><?=_("아이템샵 바로가기")?></a>
+</span>

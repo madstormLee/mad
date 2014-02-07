@@ -1,0 +1,41 @@
+<a id='logo' href='~/'>MadTools</a>
+
+<ul class='main'>
+	<? foreach( $g->sitemap as $sub ): ?>
+	<? if ( preg_match( '/noMain/', $sub->options ) ) continue; ?>
+	<? if ( $sub->locales && ! $sub->locales->in( $g->l10n->id ) ) continue; ?>
+	<? // if ( ! $g->log->inLevel( $sub->level ) ) continue; ?>
+	<li>
+		<a <?=( $sub->subs && ! preg_match( '/noSubs/', $sub->options ) )?"class='toggleNext'":'';?> href='<?=$sub->href?>'><?=_($sub->label)?></a>
+		<? if ( $sub->subs ): ?>
+		<nav class='sub'>
+			<? foreach( $sub->subs as $subsub ): ?>
+			<? if ( ! $g->log->inLevel( $subsub->level ) ) continue; ?>
+			<? if ( $subsub->locales && ! $subsub->locales->in( $g->l10n->id ) ) continue; ?>
+			<? if ( preg_match( '/noMain/', $subsub->options ) ) continue; ?>
+			<a href='<?=$subsub->href?>'><?=_($subsub->label)?></a>
+			<? endforeach; ?>
+		</nav>
+		<? endif; ?>
+	</li>
+	<? endforeach; ?>
+</ul>
+
+<nav class='personal'>
+	<? if ( $g->projectLog->isOpen() ): ?>
+	<a href='~/project'>project: <?=$g->projectLog->label?></a>
+	<? endif; ?>
+
+	<a class='popup' href='~/adminUser/view?id=<?=$g->log->id?>'><?=$g->log->name?> : <?=$g->log->levelName?></a>
+
+	<a class="popup" href="~/tools/date"><?=_("Date")?></a>
+	<a class='popup' href='~/locale'><?=$g->l10n->label?></a>
+
+	<? if ( $g->log->isLogin() ): ?>
+	<a href='~/user/logout'>Logout</a>
+	<? else : ?>
+	<a href='~/user/login'>Login</a>
+	<? endif; ?>
+	<a class='popup help' href='~/manual/view?id=<?=$g->controllerName?>.<?=$g->actionName?>'>?</a>
+	<section id='personalPopup'></section>
+</nav>

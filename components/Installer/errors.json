@@ -1,0 +1,5 @@
+{
+	"errorCodeNotFound": "Unknown error occured",
+	"commandNotFound": "There is no '{command}' command in command list.\n",
+	"madtoolsExists": "Madtools is installed already"
+}

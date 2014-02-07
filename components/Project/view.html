@@ -1,0 +1,81 @@
+<h1>Projects View</h1>
+
+<nav class='component'>
+	<a href='./index'>index</a>
+</nav>
+
+<dl class='simple'>
+	<dt>Id</dt>
+	<dd><?=$model->id?></dd>
+	<dt>Name</dt>
+	<dd><?=$model->name?></dd>
+	<dt>Label</dt>
+	<dd><a href='./open?id=<?=$model->id?>'><?=$model->label?></a></dd>
+	<dt>Root</dt>
+	<dd><a href='~/<?=$model->root?>'><?=$model->root?></a></dd>
+	<dt>Description</dt>
+	<dd><?=$model->description?></dd>
+	<dt>Files</dt>
+	<dd>
+		<ul>
+			<? foreach( $model->files as $name => $file ): ?>
+			<li><a href='~/file/view?file=<?=$file?>'><?=$name?></a></li>
+			<? endforeach; ?>
+		</ul>
+	</dd>
+</dl>
+
+<form method='post' id='newProject'>
+	<p>Type : PHP Project</p>
+	<a href='/admin/project/sitemap?project=<?=$projectName?>'>sitemap ????</a>
+	<fieldset>
+	<legend>Main</legend>
+	<dl id='brief'>
+		<dt>?Á·?Á§Æ® ??</dt>
+		<dd>
+			<a href='/<?=$projectName?>'><?=$projectName?></a>
+			<? if ( is_dir( ROOT . $projectName ) ): ?>
+			<span style='font-weight:600; color: red;'> : ?Á·?Á§Æ®?? ?????ä¸®?? ?????Ç¾? ?Ö½À´Ï´?.</span>
+			<? else: ?>
+			<span style='font-weight:600; color: blue;'> : ?Á·?Á§Æ®?? ?????ä¸®?? Á¸?????? ?Ê½À´Ï´?..</span>
+			<? endif; ?>
+		</dd>
+		<dt>????(goal)</dt>
+		<dd><?=$goal?></dd>
+		<dt>?????? ????(brief)</dt>
+		<dd><?=$brief?></dd>
+	</dl>
+	</fieldset>
+	<fieldset>
+	<legend>Time Plan</legend>
+	<dl id='timePlan'>
+		<dt>??????</dt>
+		<dd><?=$s_date?></dd>
+		<dt>Á¾????</dt>
+		<dd><?=$e_date?></dd>
+		<dt>?Û¾???</dt>
+		<dd><?=$progress?> %</dd>
+	</dl>
+	</fieldset>
+	<fieldset>
+	<legend>Developers</legend>
+	<dl id='Developers'>
+		<dt>Project Manager</dt>
+		<dd><?=$PM?></dd>
+		<dt>Cheif Programmer</dt>
+		<dd><?=$cheifProgrammer?></dd>
+		<dt>Cheif Designer</dt>
+		<dd><?=$cheifDesigner?></dd>
+		<!-- make some difference. for simplicity
+		<dt>Team</dt>
+		<dd><select name='part' value='part'>
+				<option>Programmer</option>
+				<option>Designer</option>
+			</select>
+			<input type='text' name='etcMembers[]' id='etcMembers[]' />
+		</dd>
+		-->
+	</dl>
+	</fieldset>
+	<a href='javascript:history.go(-1)'>???Ïº???</a>
+</form>

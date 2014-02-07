@@ -1,0 +1,18 @@
+<h1>Model index</h1>
+
+<section class='list'>
+	<? foreach( $list as $model ) : ?>
+	<dl class='classDiagramUnit'>
+		<dt class='name'>
+			<a href='./view?<?=$model->getFile()?>'><?=$model->getName() ?></a>
+		</dt>
+		<dd>
+			<ul>
+				<? foreach( $model->getMethods() as $method ): ?>
+				<li><?=$method?></li>
+				<? endforeach; ?>
+			</ul>
+		</dd>
+	</dl>
+	<? endforeach; ?>
+</section>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<title><?=$g->title?></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<?=$g->css?>
+		<?=$g->js?>
+	</head>
+	<body id="info">
+		<header> <?=$g->header ?></header>
+		<section id="right"><?=$g->right?></section>
+		
+		<section id="main">
+			<?=$g->main ?>
+			<!-- this is seriously fucked up clearing. hate flow. -->
+			<br style='clear:both;' />
+		</section>
+
+		<br style='clear:both;' />
+		<footer><?=$g->footer?></footer>
+	</body>
+</html>

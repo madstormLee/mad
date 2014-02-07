@@ -1,0 +1,37 @@
+<h1><?=_("User Login")?></h1>
+
+<form id='LocaleSelector' class='changeSubmit' method='get' action='~/admin/locale/select'>
+	<label for='locale'><?=_("국가 선택")?></label>
+	<select id='code' name='code'>
+		<? foreach( $g->l10n->getLocales() as $row ): ?>
+		<? if ( ! $row->open ) continue; ?>
+		<option value='<?=$row->code?>' <?=($row->id == $g->l10n->id ) ? "selected": "" ?> ><?=$row->label?></option>
+		<? endforeach; ?>
+	</select>
+</form>
+
+<form id='UserLogin' method='post' action='./registSession'>
+	<input type='hidden' name='returnUrl' value='<?=$g->get->returnUrl?>' />
+	<ul>
+		<li>
+			<label for='id'><?=_("ID")?></label>
+			<input type='text' id='id' name='id' required />
+		</li>
+		<li>
+			<label for='pw'><?=_("Password")?></label>
+			<input type='password' id='pw' name='pw' required />
+		</li>
+	</ul>
+
+	<button>Login</button>
+
+	<nav class='buttons'>
+		<!--
+		<a href='./findIdPw'><?=_("ID/PWD 찾기")?></a>
+		<a href='./askToAdmin'><?=_("관리자 문의하기")?></a>
+		<a href='./request'><?=_("신규가입")?></a>
+		-->
+		<a href='~/'><?=_("아이템샵 바로가기")?></a>
+	</nav>
+
+</form>

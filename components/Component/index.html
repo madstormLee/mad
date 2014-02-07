@@ -1,0 +1,60 @@
+<h1>Component Index</h1>
+
+<nav class='component'>
+	<a href='./write'>write</a>
+</nav>
+
+<table id='ComponentList' class='simple'>
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>files</th>
+			<th>dirs</th>
+			<th>buttons</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $list as $row ): ?>
+		<tr>
+			<th class='title'><a href='./view?id=<?=$row->id?>'><?=$row->id?></a></th>
+			<td>
+				<dl>
+					<? foreach( $row->files as $id => $file ): ?>
+					<? if ( $id != 'views' ) : ?>
+					<dt><span><?=$id?></span><b><?=$file?></b></dt>
+					<? else : ?>
+					<dt><span><?=$id?></span></dt>
+					<dd>
+						<dl>
+							<? foreach( $file as $key => $view ) : ?>
+							<dt><span><?=$key?></span><b><?=$view?></b></dt>
+							<? endforeach; ?>
+						</dl>
+					</dd>
+					<? endif; ?>
+					<? endforeach; ?>
+				</dl>
+			</td>
+			<td>
+				<dl>
+				<? foreach( $row->dirs as $id => $dir ): ?>
+					<dt><span><?=$id?></span><b><?=$dir?></b></dt>
+				<? endforeach; ?>
+				</dl>
+			</td>
+			<td>
+				<nav>
+					<a href='./view?id=<?=$row->id?>'>View</a>
+					<a href='./write?id=<?=$row->id?>'>Edit</a>
+					<a href='./delete?id=<?=$row->id?>'>Delete</a>
+				</nav>
+			</td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>
+
+<? if ( $list->isEmpty() ) : ?>
+<p class='notice'>No searched list.</p>
+<? endif; ?>
+

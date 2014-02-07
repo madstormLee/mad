@@ -5,7 +5,7 @@ class ClassController extends Preset {
 		$this->model = new ClassDiagram;
 	}
 	function indexAction() {
-		replace( "$this->projectName$this->controllerName/list" );
+		$this->js->replace( "$this->projectName$this->controllerName/list" );
 	}
 	function listAction() {
 		
@@ -78,13 +78,14 @@ class ClassController extends Preset {
 		$cnt = 0;
 		$this->main = new MadView('json/prototype/class.json');
 		foreach( $configs as $config ) {
-			$config->name = ucFirst( underscore2camel(strToLower($config->name)));
+			$name = new MadString($config->name);
+			$config->name = $name->lower()->camel()->ucFirst();
 			$model->setFile( $phpStorm->getDir('diagrams') . 'class/' . $config->name );
 			$this->main->config = $config;
 			$this->main->project = $phpStorm->info->name;
 			$model->setFromRaw($this->main);
 			$cnt += $model->save();
 		}
-		alert( $cnt . ' 개의 파일이 생성되었습니다.', 'back', 'replace');
+		$this->js->alert( $cnt . ' 개의 파일이 생성되었습니다.')->replaceBack();
 	}
 }

@@ -5,7 +5,7 @@ class DatabaseDiagramController extends Preset {
 		$this->model = new DatabaseDiagram;
 	}
 	function indexAction() {
-		replace( "$this->projectRoot$this->controllerName/list" );
+		$this->js->replace( "$this->projectRoot$this->controllerName/list" );
 	}
 	function listAction() {
 		$dir = $this->phpStorm->getDir('diagrams') . 'database/';
@@ -29,6 +29,6 @@ class DatabaseDiagramController extends Preset {
 		$file = $this->phpStorm->getDir('diagrams') . 'database/' . $post->name;
 		$model->setFile( $file );
 		$model->setData( $post->get() );
-		alert( $model->save() . '개의 데이타가 저장되었습니다.', 'list', 'replace');
+		$this->js->alert( $model->save() . '개의 데이타가 저장되었습니다.')->replaceBack();
 	}
 }

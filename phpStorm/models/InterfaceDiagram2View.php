@@ -17,7 +17,8 @@ class InterfaceDiagram2View implements IteratorAggregate {
 	}
 	function setViews() {
 		$this->views->setData();
-		$viewNamePrefix = underscore2camel( strToLower( $this->config->name ) );
+		$name = new MadString($this->config->name);
+		$viewNamePrefix = $name->lower()->camel();
 		$viewNames = new MadData( array(
 				"list" => $viewNamePrefix . "00_l",
 				"write" =>  $viewNamePrefix . "00_u",

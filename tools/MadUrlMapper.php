@@ -11,11 +11,12 @@ class MadUrlMapper {
 	}
 	private function __construct( $sitemap = null ) {
 		$this->data = new MadData;
+		$server = MadParam::create('_SERVER');
 		$this->base = dirname($_SERVER['SCRIPT_NAME']);
-		$url = ckKey('REQUEST_URI', $_SERVER);
+		$url = $server->REQUEST_URI;
 		// remove if index.php exists
-		if ( 0 === strpos( $url,$_SERVER['SCRIPT_NAME'] ) ) {
-			$url = substr( $url, strlen( $_SERVER['SCRIPT_NAME'] ) );
+		if ( 0 === strpos( $url,$server->SCRIPT_NAME ) {
+			$url = substr( $url, strlen( $server->SCRIPT_NAME ) );
 		} else {
 			$url = substr( $url, strlen($this->base) );
 		}
@@ -31,7 +32,7 @@ class MadUrlMapper {
 		}
 
 		$map = $sitemap->getUrlMap();
-		$mapped = ckKey( $this->request, $map );
+		$mapped = $map->{$this->request};
 
 		if ( $mapped ) {
 			$this->controller = $mapped['controller'];

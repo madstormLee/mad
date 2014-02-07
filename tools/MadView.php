@@ -1,43 +1,45 @@
 <?
 class MadView extends MadFile {
-	const DEFAULT_EXTENSION = '.html';
-	protected $data;
+	protected $file;
+	protected $data = array();
 
 	function __construct( $file = '' ) {
-		$this->data = new MadData;
-		parent::__construct( $file );
+		$this->setFile( $file );
+	}
+	function getView() {
+		return $this->getFile();
 	}
 	function setView( $file ) {
 		return $this->setFile( $file );
 	}
-	function setFile( $file ) {
-		if ( 1 === count( explode('.', basename($file) ) ) ) {
-			$file .= self::DEFAULT_EXTENSION;
-		}
-		return parent::setFile( $file );
-	}
 	function setData( $data = array() ) {
-		$this->data->setData( $data );
+		$this->data = $data;
 		return $this;
 	}
 	function addData( $data = array() ) {
-		$this->data->addData( $data );
+		$this->data = array_merge( $this->data, $data );
 		return $this;
 	}
-	function get() {
-		if ( ! is_file( $this->getFile() ) ) {
+	function getContents() {
+		if ( ! $this->isFile() ) {
 			return '';
 		}
-		extract( $this->data->get() );
-		$g = MadGlobal::getInstance();
 
+		// and use assigned data 
+		extract( $this->data );
 		ob_start();
 		include $this->getFile();
-		return ob_get_clean();
+		$rv = ob_get_clean();
+
+		if ( $this->componentPath ) {
+			$rv = preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2{$this->componentPath}", $rv );
+		}
+
+		return $rv;
 	}
 	/********************** etc tools *********************/
 	function save() {
-		return file_put_contents( $this->file, $this ) ? 1:0;
+		return file_put_contents( $this->file, $this->getContents() );
 	}
 	function saveAs( $file ) {
 		$content = str_replace( "", '',$this );
@@ -55,21 +57,24 @@ class MadView extends MadFile {
 		return file_put_contents( $this->getFile(), $contents ) ? 1:0;
 	}
 	function __set( $key, $value ) {
-		$this->data->$key = $value;
+		$this->data[$key] = $value;
 	}
 	function __get( $key ) {
-		return $this->data->$key;
+		if ( ! isset( $this->data[$key] ) ) {
+			return '';
+		}
+		return  $this->data[$key];
 	}
 	function __isset( $key ) {
-		return isset( $this->data->$key );
+		return isset( $this->data[$key] );
 	}
 	function __unset( $key ) {
-		unset( $this->data->$key );
+		unset( $this->data[$key] );
 	}
 	function __toString() {
-		return $this->get();
+		return $this->getContents();
 	}
 	function test() {
-		printR( $this->data );
+		(new MadDebug)->printR( $this->data );
 	}
 }

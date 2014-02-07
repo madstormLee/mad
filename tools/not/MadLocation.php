@@ -2,9 +2,10 @@
 class MadLocation {
 	static $instance;
 	private $data;
-	public $back;
+
 	function __construct() {
-		if ( ! $this->back = ckKey( 'HTTP_REFERER', $_SERVER ) ) {
+		$server = MadParams::create('_SERVER');
+		if ( ! $this->back = $server->HTTP_REFERER ) {
 			$this->back = '/';
 		}
 	}
@@ -13,7 +14,5 @@ class MadLocation {
 			self::$instance = new self;
 		}
 		return self::$instance;
-	}
-	function __get( $key ) {
 	}
 }

@@ -1,0 +1,9 @@
+#content .component {
+	background: #ccc;
+}
+#content .project {
+	background: #ccf;
+}
+#content .interface {
+	background: #fcc;
+}

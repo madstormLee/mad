@@ -8,8 +8,6 @@ class SyncList extends MadList {
 		$json->test();
 		die;
 
-
-
 		$this->searchTotal = Q::total($this->table, $this->where);
 		$this->limit->setTotal( $this->searchTotal );
 

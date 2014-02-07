@@ -1,0 +1,1395 @@
+/**********************************************************
+	Html Tags :
+		yes. this part use html5resetter. html is defaulted.
+		but some point has different taste.
+***********************************************************/
+
+@import 'html5reset-1.6.1.css';
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+button,
+label,
+input[type='checkbox'],
+input[type='radio'] {
+	cursor: pointer;
+}
+button,
+label,
+textarea,
+input {
+	vertical-align: middle;
+}
+table {
+	width: 100%;
+}
+h1 , h2 , h3 {
+	margin: 0;
+	position: relative;
+}
+h1 {
+	font: 500 25px sans-serif;
+	color: #6666ff;
+	text-align: right;
+}
+h1 strong {
+	color: red;
+}
+h2 {
+	font: 500 20px sans-serif;
+	color: white;
+	text-indent: 10px;
+	background: #6666ff;
+	margin-top: 20px;
+}
+
+ol, ul {
+	list-style-position: inside;
+}
+
+/**********************************************************
+	Common Classes :
+		for common user interface, use this part more.
+***********************************************************/
+
+
+p.notice {
+	margin: 10px;
+	padding: 2% 3%;
+	line-height: 140%;
+	font-size: 0.9em;
+	color: blue;
+	text-align: left;
+	border: 5px solid #9999ff;
+}
+p.caution {
+	text-align: center;
+	color: red;
+	padding: 5%;
+	border: 5px solid #f99;
+}
+table + p.caution {
+	padding: 30px;
+	border: 10px solid #eeeeee;
+}
+/************************* nav.buttons *************************/
+nav.buttons {
+	margin-top: 8px;
+	text-align: center;
+}
+/************************* nav.component *************************/
+nav.component {
+	margin: 10px;
+	text-align: right;
+}
+nav.component>a {
+	display: inline-block;
+	padding: 4px 20px;
+	border: 2px solid #777777;
+	border-radius: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #000000;
+	background: #ddddff;
+}
+nav.component>a:hover {
+	text-decoration: none;
+	background: #bbbbff;
+}
+/*********************** nav.relComponent **********************/
+nav.relComponent {
+	margin: 10px;
+	text-align: right;
+}
+nav.relComponent>a {
+	display: inline-block;
+	padding: 5px 20px;
+	border: 2px solid #777777;
+	border-radius: 5px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #000000;
+	background: #dddddd;
+}
+nav.relComponent>a:hover {
+	text-decoration: none;
+	background: #bbbbff;
+}
+
+/***************************** nav.history **************************/
+nav.history {
+}
+/***************************** table.simple **************************/
+table.simple {
+	position: relative;
+	font-size: 10pt;
+}
+table.simple thead th a.ckAll {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	text-align: left;
+	text-indent: -9999px;
+	background: url(images/simple/ckAll.png) no-repeat 0 0;
+}
+table.simple thead th {
+	height: 27px;
+	border: 1px solid #333333;
+	vertical-align: middle;
+	background: #eeeeee;
+}
+table.simple tbody th ,
+table.simple tbody td {
+	height: 27px;
+	border-top: 1px solid #333333;
+	border-bottom: 1px solid #333333;
+	vertical-align: middle;
+}
+table.simple tbody th {
+	text-align: right;
+	padding-right: 20px;
+	background: #cccccc;
+	width: 30%;
+	border: 1px solid #000000;
+}
+table.simple.stat tbody th {
+	width: 12%;
+}
+table.simple tbody td {
+	text-align: center;
+	border: 1px solid #000000;
+}
+table.simple tbody td.buttons a {
+	display: inline-block;
+	padding: 2px 10px;
+	font-size: 12px;
+	border: 1px solid #000000;
+	border-radius: 8px;
+	background: #ddddff;
+	color: #000000;
+}
+table.simple tbody td.buttons a.delete {
+	background: #fbbfbb;
+}
+table.simple tbody td.buttons a:hover {
+	text-decoration: none;
+	background: #fddfdd;
+}
+table.simple tbody td.title {
+	text-align: left;
+	padding: 0 10px;
+}
+table.simple tbody td.title img {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+table.simple caption {
+position: relative;
+text-align: left;
+padding: 5px 10px;
+border: 1px solid #000000;
+border-radius: 15px;
+background: #eeeeff;
+margin-bottom: 5px;
+}
+table.simple caption span.title {
+	position: absolute;
+	width: 60%;
+	left: 50%;
+	text-align: center;
+	font-weight: 600;
+	font-size: 14px;
+	margin-left: -30%;
+}
+table.simple .title .new {
+	display: inline-block;
+	padding:  1px 3px;
+	border: 1px solid #000;
+	font-size: 11px;
+	border-radius: 3px;
+	margin-left: 10px;
+	background: #ffcc99;
+}
+cotent.simple {
+}
+cotent.simple table {
+}
+content.simple table thead th {
+	height: 27px;
+	border: 1px solid #333333;
+	vertical-align: middle;
+	background: #eeeeee;
+}
+content.simple table tbody th ,
+content.simple table tbody td {
+	height: 27px;
+	border-top: 1px solid #333333;
+	border-bottom: 1px solid #333333;
+	vertical-align: middle;
+}
+content.simple table tbody th {
+	text-align: right;
+	padding-right: 20px;
+	background: #cccccc;
+	width: 30%;
+}
+content.simple table tbody td {
+	text-align: left;
+	padding: 0 10px;
+}
+content.simple table tbody td.buttons a {
+	display: inline-block;
+	padding: 2px 10px;
+	font-size: 12px;
+	border: 1px solid #000000;
+	border-radius: 8px;
+	background: #ddddff;
+	color: #000000;
+}
+content.simple table tbody td.title img {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+/***************************** nav.order *****************************/
+nav.order {
+	display: inline;
+	letter-spacing: -5px;
+}
+nav.order a {
+	color: #333333;
+	text-decoration: none;
+}
+nav.order a.current {
+	color: #ff3300;
+}
+nav.rows {
+position: absolute;
+top: 5px;
+right: 15px;
+z-index: 10;
+}
+nav.rows a ,
+nav.rows b {
+	display: inline-block;
+	border: 1px solid #999999;
+	padding: 1px 2px;
+	font-size: 13px;
+	color: #000000;
+	background: #ffffff;
+}
+nav.rows a:hover {
+	text-decoration: none;
+	background: #ccccff;
+}
+nav.rows b {
+	background: #fddfdd;
+}
+/***************************** form.simple **************************/
+form.simple {
+	padding: 15px;
+	background: #ffffff;
+	margin-top: 10px;
+	border: 2px solid #666666;
+	font-size: 10pt;
+}
+form.simple ul {
+	list-style: none;
+}
+form.simple fieldset ul>li,
+form.simple>ul>li {
+	position: relative;
+	padding: 5px 0;
+	border-bottom: 1px solid #666666;
+}
+form.simple ul li * {
+	vertical-align: middle;
+}
+form.simple fieldset ul>li:last-child,
+form.simple>ul>li:last-child {
+	border: 0;
+}
+form.simple fieldset {
+	border: 1px solid #666666;
+	padding: 5px 20px;
+}
+form.simple fieldset legend.ckAll {
+	cursor: pointer;
+}
+form.simple fieldset ul>li>label,
+form.simple>ul>li>label {
+	display: inline-block;
+	text-align: right;
+	width: 150px;
+	padding-right: 20px;
+}
+form.simple fieldset legend ,
+form.simple ul li fieldset legend {
+	padding: 3px 20px;
+	margin: 8px 10px 0 10px;
+	border: 1px solid #666666;
+	font-size: 13px;
+	border-radius: 10px;
+	background: #ccccff;
+}
+form.simple dl {
+}
+form.simple dl dt {
+	background: #cccccc;
+	padding: 5px 20px;
+}
+form.simple dl dd {
+	margin-top: 5px;
+	padding: 3px 10px;
+	border-bottom: 1px solid #cccccc;
+}
+form.simple dl dd label {
+	display: inline-block;
+	width: 25%;
+	padding: 2px;
+	padding-right: 20px;
+	text-align: right;
+	background: #eeeeee;
+	border: 1px solid #666666;
+	border-radius: 10px;
+}
+form.simple dl dd input[type='text'] {
+	width: 60%;
+	border: 1px solid #666666;
+	padding: 2px;
+}
+form.simple dl.targetItem dt {
+	background: transparent;
+	padding: 5px;
+}
+form.simple dl.targetItem dd {
+	border: 0;
+	border-top: 1px solid #cccccc;
+}
+form.simple table {
+	position: relative;
+	font-size: 10pt;
+}
+form.simple table tbody th ,
+form.simple table tbody td {
+	height: 27px;
+	border-top: 1px solid #333333;
+	border-bottom: 1px solid #333333;
+	vertical-align: middle;
+}
+form.simple table tbody th {
+	text-align: right;
+	padding-right: 20px;
+	background: #cccccc;
+	width: 30%;
+}
+form.simple table tbody td {
+	padding-left: 10px;
+}
+form.simple table tbody td * {
+	vertical-align: middle;
+}
+form.simple table tbody td input[readonly] {
+	background: #ccf;
+}
+form.simple table tbody td.buttons a {
+	display: inline-block;
+	padding: 2px 10px;
+	font-size: 12px;
+	border: 1px solid #000000;
+	border-radius: 8px;
+	background: #ddddff;
+	color: #000000;
+}
+form.simple table tbody td.buttons a:hover {
+	text-decoration: none;
+	background: #ffcccc;
+}
+form.simple table tbody td.title {
+	text-align: left;
+	padding: 0 10px;
+}
+form.simple ul li span.notice ,
+form.simple table tbody td span.notice {
+	font-size: 11px;
+	margin-left: 10px;
+	color: #f60f60;
+}
+form.simple table caption {
+position: relative;
+text-align: left;
+padding: 5px 10px;
+border: 1px solid #000000;
+border-radius: 15px;
+background: #eeeeff;
+margin-bottom: 5px;
+}
+form.simple table caption span.title {
+	position: absolute;
+	width: 60%;
+	left: 50%;
+	text-align: center;
+	font-weight: 600;
+	font-size: 14px;
+	margin-left: -30%;
+}
+form.simple.write table tbody td {
+	text-align: left;
+}
+
+
+
+/***************************** form.search **************************/
+form.search {
+	position: relative;
+	display: inline-block;
+	padding: 10px;
+	border-radius: 5px;
+	border: 2px solid #333333;
+	font-size: 10pt;
+	background: #ffffff;
+}
+form.search h2 {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background: #eeeeee;
+	border: 2px solid #333333;
+	padding: 2px 10px;
+	border-radius: 5px;
+}
+form.search ul {
+	list-style: none;
+}
+form.search ul.options {
+	position: absolute;
+	right: 10px;
+	top: 27px;
+	min-width: 400px;
+	z-index: 1000;
+	background: #ffffff;
+	border: 2px solid #999999;
+	padding: 10px;
+	display: none;
+}
+form.search ul li {
+	position: relative;
+	padding: 2px 0;
+	border-bottom: 1px solid #666666;
+}
+form.search ul li:last-child {
+	border: 0;
+}
+form.search fieldset {
+	border: 1px solid #666666;
+	padding: 2px 10px;
+}
+form.search ul li>label {
+	display: inline-block;
+	text-align: right;
+	width: 150px;
+	padding-right: 20px;
+}
+form.search ul li fieldset legend {
+	padding: 0 20px;
+	margin: 8px 10px 0 10px;
+	border: 1px solid #666666;
+	background: #ccccff;
+}
+
+/** below from Item/index **/
+form.search {
+	display: inline-block;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+form.search > fieldset.quick {
+	display: inline-block;
+	border: 0;
+	margin: 0;
+	padding: 2px 10px;
+	background: #eeeeee;
+	border: 1px solid #999999;
+	border-radius: 10px;
+}
+form.search > fieldset.quick input {
+	border-radius: 8px;
+	border: 1px solid #999999;
+	width: 10em;
+	padding: 0 7px;
+	color: #0033aa;
+	font-weight: 600;
+}
+form.search > fieldset.quick button {
+	width: 20px;
+	border: 0;
+	width: 16px;
+	height: 16px;
+	text-align: left;
+	text-indent: -9999px;
+	background-color: transparent;
+	overflow: hidden;
+}
+form.search > fieldset.quick button[type=submit] {
+	background-image: url(images/simple/btnSearch.png);
+}
+form.search > fieldset.quick button.options {
+	background-image: url(images/simple/btnOption.gif);
+}
+/***************************** form.searchStat **************************/
+form.searchStat {
+	text-align: right;
+	font-size: 12px;
+}
+form.searchStat * {
+	vertical-align: middle;
+}
+
+/***************************** section.indexTools **************************/
+section.indexTools {
+	text-align: right;
+}
+section.indexTools * {
+vertical-align: middle;
+}
+section.indexTools nav.component {
+	display: inline;
+}
+/***************************** form.list **************************/
+section.list ,
+form.list {
+margin-top: 10px;
+display: block;
+position: relative;
+}
+form.list {
+}
+form.list > nav.buttons {
+	margin-top: 10px;
+}
+form.list td nav.buttons {
+}
+form.list td nav.buttons a {
+	color: #000000;
+	font-size: 12px;
+	border: 1px solid #000000;
+	padding: 2px 9px;
+	border-radius: 8px;
+	background: #eeeeff;
+}
+form.list td nav.buttons a:hover {
+	text-decoration: none;
+	background: #ccccff;
+}
+/*************************** nav.listHeader **************************/
+nav.listHeader {
+position: relative;
+text-align: left;
+padding: 5px 10px;
+border: 1px solid #000000;
+border-radius: 15px;
+background: #eeeeff;
+margin-bottom: 5px;
+}
+nav.listHeader span.title {
+	position: absolute;
+	width: 60%;
+	left: 50%;
+	text-align: center;
+	font-weight: 600;
+	font-14size: px;
+	margin-left: -30%;
+}
+/**************************** p.adminConfig **********************/
+p.adminConfig {
+margin-top: 10px;
+text-align: right;
+}
+/************************* nav.page *********************/
+nav.page {
+margin-top: 10px;
+text-align: center;
+}
+nav.page a ,
+nav.page b {
+display: inline-block;
+padding: 3px;
+font-size: 12px;
+text-decoration: none;
+vertical-align: middle;
+}
+nav.page a:hover {
+background-color: #ccccff;
+}
+nav.page b {
+background-color: #ffcccc;
+}
+nav.page .first,
+nav.page .prev,
+nav.page .next,
+nav.page .last {
+width: 28px;
+height: 16px;
+margin: 0;
+padding: 0;
+overflow: hidden;
+text-align: left;
+text-indent: -9999px;
+background-repeat: no-repeat;
+background-position: 0 0;
+background-color: transparent;
+}
+nav.page .prev,
+nav.page .next{
+	width: 21px;
+}
+nav.page .first {
+background: url("images/pageNavi/first.gif") no-repeat 0 0 transparent;
+}
+nav.page .prev {
+background: url("images/pageNavi/prev.gif") no-repeat 0 0 transparent;
+}
+nav.page .next {
+background: url("images/pageNavi/next.gif") no-repeat 0 0 transparent;
+}
+nav.page .last {
+background: url("images/pageNavi/last.gif") no-repeat 0 0 transparent;
+}
+/************************ nav#categorySelector **************************/
+#categorySelector {
+position: relative;
+}
+#categorySelector>label {
+min-width: 200px;
+min-height: 20px;
+background: #ddddff;
+border: 2px solid #999999;
+border-radius: 7px;
+padding: 2px 20px;
+font-size: 13px;
+}
+#categorySelector .tree {
+display: none;
+position: absolute;
+min-width: 300px;
+border: 2px solid #000000;
+border-radius: 7px;
+padding: 5px;
+font-size: 12px;
+background: #ffffff;
+z-index: 100;
+}
+#categorySelector .tree dd {
+margin-left: 10px;
+}
+#categorySelector .tree dt {
+margin-top: 2px;
+background: #eeeeee;
+}
+/************************** .btnCart *************************/
+a.btnCart {
+display: inline-block;
+padding: 4px 10px 3px 27px;
+border: 2px solid #933933;
+border-radius: 5px;
+font-size: 13px;
+font-weight: 600;
+color: #000000;
+background: #ffcccc url(images/simple/iconCart.png) no-repeat 5px 50%;
+}
+a:hover.btnCart {
+text-decoration: none;
+background-color: #ffdddd;
+}
+/************************* section.cartList **********************/
+nav.cartList {
+text-align: center;
+margin: 10px;
+}
+nav.cartList dl {
+display: inline-block;
+width: 100px;
+padding: 3px;
+margin: 3px;
+letter-spacing: 0;
+border: 1px solid #999999;
+border-radius: 5px;
+background: #ffffff;
+}
+nav.cartList dd {
+margin: 2px 5px;
+text-align: left;
+font-size: 12px;
+overflow: hidden;
+}
+/************************** nav.undo ************************/
+nav.undo a {
+display: block;
+border: 3px solid #cccc33;
+background: #ffff99;
+padding: 3px 10px;
+font-size: 13px;
+color: #000000;
+}
+nav.undo a:hover {
+background: #ffff00;
+text-decoration: none;
+}
+/************************ .treeContainer ******************/
+.treeContainer {
+font-size: 13px;
+}
+.treeContainer dl dt {
+position: relative;
+margin-top: 1px;
+padding: 2px;
+border: 1px solid #cccccc;
+}
+.treeContainer dl dt nav.position {
+display: inline;
+position: absolute;
+right: 10px;
+top: 10px;
+}
+.treeContainer dl dl {
+margin-left: 20px;
+}
+.treeContainer .tree dl dt a.toggle {
+display: inline-block;
+width: 14px;
+height: 14px;
+border: 1px solid #000000;
+border-radius: 3px;
+text-align: center;
+text-decoration: none;
+}
+.treeContainer .tree nav.buttons {
+	display: inline;
+}
+.treeContainer .tree a.createSub ,
+.treeContainer .tree a.delete {
+display: inline-block;
+border: 2px solid #777777;
+border-radius: 10px;
+color: #000000;
+font-size: 12px;
+font-weight: 600;
+padding: 2px 10px;
+background: none repeat scroll 0 0 #DDDDFF;
+}
+.treeContainer .tree a.delete {
+background: #ffcccc;
+}
+.treeContainer .tree a:hover.delete {
+background: #ffaaaa;
+}
+form.changed {
+background: #ffeeee;
+}
+/************************* nav.pulldownMenu *************************/
+nav.pulldownMenu {
+	position: absolute;
+	border: 1px solid #000000;
+	background: #ffffff;
+	font-size: 12px;
+	z-index: 1000;
+}
+nav.pulldownMenu a {
+	display: block;
+	padding: 3px 20px;
+	border-bottom: 1px solid #000000;
+	color: #000000;
+}
+nav.pulldownMenu a:hover {
+	text-decoration: none;
+	background: #cccccc;
+}
+/************************* section.date *************************/
+section.date {
+	position: absolute;
+	right: 30px;
+	width: 300px;
+	border: 2px solid #000;
+	background: #fff;
+	z-index: 1000;
+}
+section.date dl {
+	position: relative;
+	border-bottom: 1px solid #000;
+}
+section.date dl * {
+	display: inline-block;
+	font-size: 12px;
+	padding: 3px 10px 3px 0px;
+}
+section.date dt {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40%;
+	background: #eee;
+	text-align: right;
+}
+section.date dd {
+	padding-left: 50%;
+}
+/************************* section.date *************************/
+table.date {
+}
+table.date th ,
+table.date td {
+border: 1px solid #000000;
+font-size: 12px;
+padding: 3px 10px;
+}
+table.date th {
+	width: 50%;
+	background: #eeeeee;
+	text-align: right;
+}
+table.date td {
+}
+/************************** nav.simple ***********************/
+nav.simple {
+	padding: 2%;
+}
+nav.simple a {
+	display: inline-block;
+	padding: 2px 10px;
+	margin: 5px;
+	border: 1px solid #666666;
+	border-radius: 10px;
+	background: #ddddff;
+	color: #000000;
+	font-size: 13px;
+}
+nav.simple a:hover {
+	background: #ccccff;
+	text-decoration: none;
+}
+/************************** nav.locale ***********************/
+nav.locale {
+}
+nav.locale a {
+	display: inline-block;
+	padding: 2px 5px;
+	margin: 2px 5px;
+	border: 1px solid #666666;
+	background: #ddddff;
+	font-size: 13px;
+	border-radius: 10px;
+	color: #000000;
+}
+nav.locale a:hover {
+	background: #99f99f;
+	text-decoration: none;
+}
+nav.locale a.current {
+	background: #cccc00;
+}
+/*********************** nav.pageManual **********************/
+nav.pageManual {
+position: absolute;
+top: 20px;
+right: 20px;
+}
+nav.pageManual a {
+display: inline-block;
+padding: 3px 7px;
+border: 2px solid #000000;
+background: #ffffff;
+color: #000000;
+z-index: 1000;
+}
+nav.pageManual a:hover {
+text-decoration: none;
+background: #ccccff;
+}
+
+/******************************* simpleSearch *******************************/ 
+form.simpleSearch {
+text-align: right;
+font-size: 12px;
+margin: 5px;
+padding: 5px;
+}
+h2 a.more {
+	position: absolute;
+	right: 10px;
+	display: inline-block;
+	padding: 2px 5px;
+	font-size: 12px;
+	color: #000000;
+	background: #eeeeee;
+	border: 1px solid #000000;
+	border-radius: 10px;
+}
+form.simpleSearch nav.buttons {
+	text-align: right;
+}
+form.simpleSearch nav.buttons button ,
+form.simpleSearch nav.buttons a {
+	display: inline-block;
+	margin: 0;
+	padding: 3px 10px;
+	border: 1px solid #000;
+	border-radius: 5px;
+	background: #ccf;
+}
+form.simpleSearch nav.buttons button:hover ,
+form.simpleSearch nav.buttons a:hover {
+	background: #ddf;
+}
+form.simpleSearch fieldset {
+	border: 1px solid #000;
+	display: inline-block;
+	padding: 10px;
+}
+/******************************* #popupWindow *****************************/
+#popupWindow {
+display: none;
+position: absolute;
+left: 50%;
+top: 30px;
+width: 800px;
+min-height: 300px;
+margin-left: -400px;
+padding: 10px;
+border: 10px solid #000;
+border-radius: 20px;
+background: #fff;
+z-index: 1000;
+}
+
+
+/******************** personalNavi ****************/
+#personalNavi {
+position: absolute;
+list-style: none;
+top: 7px;
+right: 10px;
+}
+#personalNavi li {
+display: inline;
+}
+#personalNavi a {
+display: inline-block;
+}
+#personalNavi {
+position: absolute;
+right: 0;
+}
+/******************* mainNavi ****************/
+.mainNavi {
+padding-left: 50px;
+}
+.mainNavi {
+display: inline-block;
+padding-top: 7px;
+}
+.mainNavi dt {
+display: inline;
+}
+.mainNavi dd {
+position: absolute;
+z-index: 100;
+background: #eee;
+border: 1px solid #000;
+}
+.mainNavi dd ul li a {
+display: block;
+padding: 2px 5px;
+border-bottom: 1px solid #000; 
+text-decoration: none;
+}
+.mainNavi dd ul li a:hover {
+background: #ccf;
+}
+.mainNavi dt a {
+display: inline-block;
+padding: 2px 5px;
+font-weight: bold;
+}
+/***************** left *****************/
+#leftNavi {
+margin: 5px;
+border: 1px solid #ccc;
+border-radius: 5px;
+padding-bottom: 5px;
+background: #eef;
+}
+#leftNavi dt {
+background: #ccc;
+text-align: center;
+font-weight: 600;
+padding: 5px;
+}
+#leftNavi dd {
+background: #eee;
+}
+#leftNavi dd a {
+display: block;
+margin: 2px 0 0 0px;
+padding: 3px 10px 0 0;
+background: #eef;
+text-align: right;
+}
+#leftNavi dd a:hover {
+background: #ccf;
+text-decoration: none;
+}
+/******************** bottom *****************/
+footer #copyright {
+font-size: 12px;
+	padding: 20px;
+	background: #333;
+	color: #fff;
+	border: 1px solid #ccc;
+}
+
+
+/**************** table.summary *******************/
+table.summary {
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+table.summary td {
+border: 1px solid #000;
+text-align: left;
+height: 27px;
+padding-left: 10px;
+}
+table.summary td.title {
+text-align: center;
+width: 15%;
+background: #ccc;
+padding-left: 0;
+}
+/******************* table.adminForm ******************/
+table.adminForm {
+	border-collapse: collapse;
+	border-top: 5px solid #666;
+	border-bottom: 5px solid #666;
+}
+table.adminForm td {
+	border-bottom: 1px solid #666;
+	height: 26px;
+	padding-right: 10px;
+	padding-left: 10px;
+	text-align: left;
+}
+table.adminForm .title {
+	width: 150px;
+	text-align: right;
+	background: #ccc;
+}
+/****************** table.admin *******************/
+table.admin {
+	border-collapse: collapse;
+}
+table.admin td,
+table.admin th {
+	border: 1px solid #000;
+	height: 28px;
+}
+table.admin th {
+	background: #aaa;
+	height: 30px;
+}
+/****************** .noContent ****************/
+p.noContent {
+	text-align: center;
+}
+/********************* dl.simpleList **********************/
+dl.simpleList {
+	margin: 10px;
+	padding: 10px;
+	border: 3px solid #999;
+}
+dl.simpleList dt {
+	padding: 5px 10px;
+	border-top: 1px solid #000;
+	background: #fee;
+}
+dl.simpleList dd {
+	padding: 5px 10px;
+	text-indent: 30px;
+	background: #eee;
+	border-bottom: 1px solid #000;
+	margin-bottom: 5px;
+}
+/************************ .madWindow ********************/
+.madWindow {
+position: absolute;
+width: 800px;
+top: 100px;
+left: 50%;
+border-radius: 7px;
+margin-left: -400px;
+border: 2px solid #000;
+background: #fff;
+z-index: 100;
+}
+.madWindow dt {
+position: relative;
+margin: 0;
+padding: 2px;
+font-size: 12px;
+border-bottom: 3px double #000;
+}
+.madWindow dt .title {
+	display: inline-block;
+	margin-left: 6px;
+}
+.madWindow dt .buttons {
+position: absolute;
+right: 5px;
+top: 3px;
+}
+.madWindow dt .buttons li {
+display: inline;
+}
+.madWindow dt .buttons li a {
+display: inline-block;
+}
+.madWindow .content {
+padding: 30px;
+min-height: 100px;
+background: #eee;
+}
+.madWindow .status {
+	font-size: 12px;
+	height: 20px;
+	border-top: 1px solid #000;
+}
+
+
+
+/***************************** something.list **************************/
+section.list ,
+form.list {
+margin-top: 10px;
+display: block;
+position: relative;
+}
+form.list nav.buttons {
+	margin-top: 10px;
+}
+nav.list {
+}
+nav.list a {
+	display: block;
+}
+
+/********************************* main ********************************/
+.introduce {
+	float: left;
+	margin-top: 20px;
+	padding-bottom: 20px;
+	width: 100%;
+	background: #fff;
+}
+.introduce dt {
+	width: 100%;
+	font: 600 18px dotumche;
+	color: #666666;
+	text-indent: 30px;
+	background: url('/images/m.gif') no-repeat left;
+}
+.introduce dd {
+	width: 650px;
+	font: 12px dotumche;
+	text-indent: 10px;
+	line-height: 160%;
+}
+.overview {
+	width: 100%;
+	margin-top: 20px;
+	padding-bottom: 20px;
+	background: white url('/images/overview.gif');
+}
+.overview dt {
+}
+.overview dd {
+	float: left;
+	width: 300px;
+	margin-top: 24px;
+	padding-left: 24px;
+	font-size: 12px;
+	line-height: 20px;
+	background: url('/images/m.gif') no-repeat left top;
+}
+.overview .image {
+	float: right;
+	width: 300px;
+	margin-top: 20px;
+	background: url('');
+}
+.clip {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+	padding-bottom: 20px;
+	background: url('/images/overview.gif');
+}
+.clip dl {
+	display: inline;
+	float: left;
+	width: 140px;
+	margin-left: 20px;
+}
+.clip dt {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+}
+.clip dt img {
+	width: 100%;
+	height: 100px;
+}
+.clip dd {
+	float: left;
+	width: 100%;
+	height: 20px;
+	font: 12px dutumche;
+	line-height: 20px;
+	text-align: center;
+	margin-top: 20px;
+	background: #eee;
+}
+.tblList {
+	float: left;
+	width: 100%;
+	margin-top: 20px;
+}
+.tblList table {
+	width: 100%;
+}
+.tblList th {
+	height: 30px;
+	border-top: 2px solid #333;
+	border-bottom: 1px solid #ccc;
+	font: 10px verdana;
+	background: #eeeeff;
+}
+.tblList td {
+	height: 30px;
+	border-bottom: 1px solid #eee;
+	font: 12px dotumche;
+	text-align: center;
+}
+.tblList .subject {
+	width: 350px;
+	text-align: left;
+}
+.pageNavi {
+	height: 30px;
+	margin-top: 10px;
+	line-height: 30px;
+	text-align: center;
+	border-bottom: 3px double #eee;
+}
+.pageNavi a {
+	padding: 5px 3px;
+}
+.pageNavi a:hover {
+	background: #ddf;
+}
+/************************ search ************************/
+.search {
+	display: inline;
+	height: 30px;
+	margin-top: 20px;
+	border-bottom: 1px solid #eee;
+}
+#range {
+	display: inline;
+	width: 80px;
+	float: left;
+	margin-right: 5px;
+	margin-left: 160px;
+}
+#searchText {
+	background: #fcc;
+	float: left;
+	border: 1px solid #ccc;
+	margin-right: 5px;
+}
+#btnSearch {
+	float: left;
+	width: 80px; height: 20px;
+	text-align: center;
+	line-height: 20px;
+	background: #ccf;
+}
+/************************ diary ************************/
+#calendar {
+}
+#calTitle {
+	float: left;
+	width: 190px;
+	height: 20px;
+	margin-top: 20px;
+	text-align: center;
+}
+#btnPrevMonth {
+	float: left;
+	width: 13px; height: 13px;
+	background: url(/images/btnPrev.gif) no-repeat;
+}
+#btnNextMonth {
+	float: right;
+	width: 13px; height: 13px;
+	background: url(/images/btnNext.gif) no-repeat;
+
+}
+#calMonth table {
+	width: 100%;
+}
+#calMonth td {
+	width: 82px;
+	height: 70px;
+	vertical-align: top;
+}
+#calMonth th {
+	width: 82px;
+	height: 30px;
+	font: bold 11px verdana;
+	background: #eee;
+}
+#calMonth .day {
+	padding-right: 10px;
+	border: 1px solid #ddf;
+	font: bold 12px verdana;
+}
+.sunday {
+	color: red;
+}
+.saturday {
+	color: #0876ee;
+}
+#monYear {
+	display: inline;
+	font: 12px verdana;
+	margin-left: 10px;
+}
+#calMonth .dayTop {
+	display: inline;
+	float: right;
+	margin-top: 5px;
+	font: bold 10px verdana;
+	text-align: right;
+}
+#calToday {
+	display: inline;
+	float: right;
+	margin-top: 20px;
+	margin-right: 10px;
+}
+#calMonth {
+	float: left;
+	width: 100%;
+}

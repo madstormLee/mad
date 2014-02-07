@@ -1,0 +1,26 @@
+<h1>File Write</h1>
+
+<form id='FileWrite' class='simple swfupload' method='post' action="./upload">
+	<fieldset> 
+		<a class='uploader' href='~/swf/swfupload.swf'><?=_("swfupload")?></a>
+		<input type="hidden" name="PHPSESSID" value="<?=session_id(); ?>" />
+		<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+		<input type='file'
+			accept="images/*"
+			title='Image Files'
+			data-types='*.jpg;*.gif;*.png'
+			data-uploadLimit='1'
+			data-queueLimit='1'
+			/>
+
+		<button id='btnUpload'>
+			<?=_("Select Source ")?><b><?=_("(2 MB Max)")?></b>
+		</button>
+		<input class='btnCancel' id='btnCancel$this->id' type='button' value='Cancel Uploads' disabled='disabled' />
+	</fieldset>
+
+	<div class="progress" id="uploadProgress">
+		<span class="legend"><?=_("Upload Queue")?></span>
+	</div>
+
+</form>

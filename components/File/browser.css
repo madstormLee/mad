@@ -1,0 +1,114 @@
+#FileBrowser {
+	width: 900px;
+	position: absolute;
+	top: 50px;
+	border: 2px solid #000;
+	background: #eee;
+padding-bottom: 20px;
+}
+#FileBrowser h1 {
+position: relative;
+border: 1px solid #000;
+font-size: 10px;
+margin: 0;
+padding: 3px 10px;
+background: #ccc;
+}
+#FileBrowser h1 nav.buttons {
+position: absolute;
+top: 2px;
+right: 5px;
+margin: 0;
+}
+#FileBrowser h1 nav.buttons a {
+font-weight: 600;
+}
+#FileBrowser section h1 {
+background: #fcc;
+border: 1px solid #000;
+padding: 3px 10px;
+}
+#FileBrowser section {
+display: inline-block;
+vertical-align: top;
+}
+#FileBrowser section.dir {
+width: 25%;
+}
+#FileBrowser section.files {
+width: 75%;
+}
+#FileBrowser section.images {
+width: 75%;
+}
+#FileBrowser section ul {
+background: #fff;
+border: 1px solid #000;
+padding: 10px;
+list-style: none;
+}
+#FileBrowser section.files ul.thumbnail img {
+max-width: 100px;
+max-height: 100px;
+}
+#FileBrowser section.files ul.thumbnail li {
+display: inline;
+margin: 3px;
+}
+
+#FileBrowser form {
+background: #ccc;
+}
+#FileBrowser form label {
+padding: 0 10px;
+}
+#FileBrowser form input {
+border: 1px solid #000;
+}
+#FileBrowser form.dirWrite button {
+border: 1px solid #000;
+padding: 1px 10px;
+margin: 0;
+font-size: 11px;
+border-radius: 5px;
+background: #fc9;
+}
+#FileBrowser form.dirWrite ,
+#FileBrowser form.fileWrite {
+position: absolute;
+bottom: 0;
+height: 19px;
+border-top: 1px solid #000;
+font-size: 10px;
+}
+#FileBrowser form.dirWrite {
+width: 50%;
+}
+#FileBrowser form.fileWrite {
+left: 50%;
+width: 50%;
+}
+#dirWriteName {
+}
+
+/***************************** FileWrite *****************************/
+#FileBrowser form.fileWrite fieldset * {
+vertical-align: top;
+}
+#FileBrowser form.fileWrite input[type=file] ,
+#FileBrowser form.fileWrite .uploader ,
+#FileBrowser form.fileWrite #uploadProgress {
+display: none;
+}
+#FileBrowser form.fileWrite button {
+width: 180px;
+height: 18px;
+font-family: Helvetica, Arial, sans-serif;
+font-size: 12pt;
+padding-top: 0px;
+padding-left: 18px;
+background: url(btnSpyGlass.png) no-repeat 0 50%;
+}
+#FileBrowser form.fileWrite button b {
+font-size: 10pt;
+}

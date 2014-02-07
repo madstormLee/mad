@@ -1,5 +1,5 @@
 <?
-class MadFileList implements IteratorAggregate {
+class MadFileList extends MadDir {
 	protected $dir; 
 	protected $modelName;
 	protected $ext = '';
@@ -30,19 +30,6 @@ class MadFileList implements IteratorAggregate {
 		}
 		return new ArrayIterator( $this->data );
 	}
-	function setDir( $dir = '' ) {
-		$this->dir = $dir;
-		return $this;
-	}
-	function getDir() {
-		return $this->dir;
-	}
-	function isEmpty() {
-		return empty( $this->data );
-	}
-	function getData() {
-		return $this->data;
-	}
 	function getCount() {
 		if ( ! is_dir( $this->dir )  ) {
 			return 0;
@@ -64,11 +51,5 @@ class MadFileList implements IteratorAggregate {
 		}
 		$this->data = $data;
 		return $this;
-	}
-	function __get( $key ) {
-		return ckKey( $key, $this->data );
-	}
-	function test() {
-		printR( $this->data );
 	}
 }

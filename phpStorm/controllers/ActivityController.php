@@ -65,6 +65,6 @@ class ActivityController extends Preset {
 
 			$cnt += $activity->save();
 		}
-		alert( $cnt . '개의 파일이 생성되었습니다.', 'back', 'replace' );
+		$this->js->alert( $cnt . '개의 파일이 생성되었습니다.')->replaceBack();
 	}
 }

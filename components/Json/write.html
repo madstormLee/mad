@@ -1,0 +1,39 @@
+<h1>JSON 변경</h1>
+<h2><?=$model->getFile()?></h2>
+
+<ul id='floatMenu'>
+	<li><a id='remove' href='#remove'>remove</a><li>
+	<li><a id='addSub' href='#addSub'>addSub</a><li>
+</ul>
+
+<form id='JsonWrite' method='post' action='save'>
+<input type='hidden' id='file' name='file' value='<?=$g->get->file?>' />
+
+<section id='jsonTree'>
+<?=dlTree( $model ) ?>
+</section>
+
+<button type='submit'>저장</button>
+
+</form>
+<ul class='naviButtons'>
+	<li><a href='javascript:history.back();'>뒤로가기</a></li>
+</ul>
+
+<?
+function dlTree( $data, $depth = 0 ) {
+	++$depth;
+	$rv = "<dl class='temp$depth'>\n";
+	foreach( $data as $key => $value ){
+		$rv .= "<dt>$key</dt>\n";
+		//todo use tree model
+		if ( ! is_array( $value ) ) {
+			$rv .= "<dd style='display: none'>$value</dd>\n";
+		} else {
+			$rv .= "<dd style='display: none'>" . dlTree( $value, $depth ) ."</dd>\n";
+		}
+	}
+	$rv .= "</dl>\n";
+	return $rv;
+}
+?>

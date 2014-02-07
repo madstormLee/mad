@@ -144,7 +144,7 @@ class MadList extends Mad implements IteratorAggregate {
 		$this->groupBy->add( $column );
 	}
 	function test() {
-		printR($this->data);
+		(new MadDebug)->printR($this->data);
 	}
 	function getWhere() {
 		return $this->where;

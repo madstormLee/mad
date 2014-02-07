@@ -1,0 +1,14 @@
+{
+	"version": "1",
+	"tools": "madtools",
+	"controller": "AdminUserController",
+	"model": "AdminUser",
+	"defaultLevel": 1,
+	"defaultLocale": "ko",
+	"interfaces": {
+		"index": {
+		}
+		"view": {
+		}
+	}
+}

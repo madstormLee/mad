@@ -1,0 +1,36 @@
+<h1>Manual View</h1>
+
+<nav class='component'>
+	<a href='./'>Index</a>
+	<a href='./write?id=<?=$model->id?>'>Edit <?=$model->id?></a>
+	<a href='./write'>Write New</a>
+	<a href='./delete?path=<?=$g->get->path?>' class='btnDelete'>Delete</a>
+</nav>
+
+<dl class='index'>
+	<dt>Index <b>move</b></dt>
+	<dd>
+		<nav>
+			<? foreach( $list as $id => $row ): ?>
+			<a href='./view?id=<?=$id?>' title='<?=$row->title?>'><?=$id?></a>
+			<? endforeach; ?>
+		</nav>
+	</dd>
+</dl>
+
+<!-- start view -->
+<h2>about : <?=$g->get->id?></h2>
+
+<ul class='info'>
+	<li> <?=$data->id?></li>
+	<li>작성일 <?=$data->wDate?></li>
+	<li>변경일 <?=$data->uDate?></li>
+</ul>
+
+<section id='ManualView'>
+	<? if ( $view->isFile() ) : ?>
+	<?=$view?>
+	<? else: ?>
+	<p class='notice'>No contents</p>
+	<? endif; ?>
+</section>

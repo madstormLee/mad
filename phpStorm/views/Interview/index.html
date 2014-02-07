@@ -1,0 +1,16 @@
+<h1>Interview Index</h1>
+
+<ul>
+	<? foreach( $dir as $file ) : $file = baseName( $file ); ?>
+	<? if ( 0 === strpos( $file, '.' ) ) continue; ?>
+	<li>
+		<a href='./read?file=<?=$file?>'><?=$file?></a>
+		<a class='analyze' href='./analyze?file=<?=$file?>'>Analyze</a>
+		<a class='delete' href='./delete?file=<?=$file?>'>X</a>
+	</li>
+	<? endforeach; ?>
+</ul>
+
+<ul class='componentNavi'>
+	<li><a href='./read'>새 인터뷰</a></li>
+</ul>

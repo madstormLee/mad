@@ -1,0 +1,39 @@
+<h1>Sitemap</h1>
+
+<form id='SitemapWrite' method='post' action='./save'>
+	<nav id='floatMenu'>
+		<a id='remove' href='#remove'>remove</a>
+		<a id='addSub' href='#addSub'>addSub</a>
+	</nav>
+
+	<dl id='SitemapIndex'>
+		<dt class='hasDic root current' href='#root'>/root</dt>
+		<dd class='tree dic'>
+			<dl>
+				<dt class='hasDic'>subs</dt>
+				<dd class='content dic'>
+				<? $treeIterator = function( $sitemap ) use ( &$treeIterator ) { ?>
+				<dl>
+					<? foreach( $sitemap as $key => $row ): ?>
+					<? if ( is_array( $row ) ): ?>
+					<dt class='hasDic'><?=$key?></dt>
+					<dd class='dic'><? $treeIterator( $row ); ?></dd>
+					<? else: ?>
+					<dt class='hasValue'><?=$key?></dt>
+					<dd class='value'><?=$row?></dd>
+					<? endif; ?>
+					<? endforeach; ?>
+				</dl>
+				<? }; $treeIterator( $sitemap ); ?>
+				</dd>
+			</dl>
+		</dd>
+	</dl>
+
+	<textarea id='content' name='content'>test</textarea>
+
+	<nav class='buttons'>
+		<button type='submit'>저장</button>
+	</nav>
+
+</form>

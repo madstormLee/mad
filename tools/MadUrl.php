@@ -6,10 +6,11 @@ class MadUrl {
 	private function __construct() {
 		$this->data = new MadData;
 		$root = dirname($_SERVER['SCRIPT_NAME']);
-		$url = ckKey('REQUEST_URI', $_SERVER);
+		$server = MadParam::create('_SERVER');
+		$url = $server->REQUEST_URI;
 		// remove if index.php exists
-		if ( 0 === strpos( $url,$_SERVER['SCRIPT_NAME'] ) ) {
-			$url = substr( $url, strlen( $_SERVER['SCRIPT_NAME'] ) );
+		if ( 0 === strpos( $url,$server->SCRIPT_NAME ) ) {
+			$url = substr( $url, strlen( $server->SCRIPT_NAME ) );
 		} else {
 			$url = substr($url, strlen($root));
 		}
@@ -30,6 +31,10 @@ class MadUrl {
 		}
 		return self::$instance;
 	}
+	function getBackUrl() {
+		$url = parse_url( $_SERVER['HTTP_REFERER'] );
+		return $url['path'] . '?' . $url['query'];
+	}
 	function getRequest() {
 		return $this->request;
 	}
@@ -40,6 +45,6 @@ class MadUrl {
 		return $this->data->$key;
 	}
 	function test() {
-		printR( $this->data );
+		(new MadDebug)->printR( $this->data );
 	}
 }

@@ -36,7 +36,7 @@ class MadTag {
 		return $this;
 	}
 	function getAttribute( $attribute ) {
-		return ckKey( $attribute, $this->attributes );
+		return $this->attributes->get( $attribute );
 	}
 	function removeAttribute( $attribute ) { 
 		if ( isset( $this->attributes[$attribute] ) ) {

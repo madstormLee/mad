@@ -7,7 +7,7 @@ class ComponentDiagramController extends Preset {
 		$this->configDir = $this->project->getRoot() . 'configs';
 	}
 	function indexAction() {
-		replace( "$this->projectRoot$this->controllerName/list" );
+		$this->js->replace( "$this->projectRoot$this->controllerName/list" );
 	}
 	function listAction() {
 		$list = new ComponentList( $this->project->getDir('diagrams') . 'component/' );
@@ -70,6 +70,6 @@ class ComponentDiagramController extends Preset {
 			$model->setData( $data );
 			$cnt += $model->save();
 		}
-		alert( $cnt . ' 개의 파일이 생성되었습니다.', 'back', 'replace');
+		$this->js->alert( $cnt . ' 개의 파일이 생성되었습니다.')->replaceBack();
 	}
 }

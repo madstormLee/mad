@@ -35,7 +35,7 @@ class MadForm implements IteratorAggregate {
 	}
 	function setData( $data ) {
 		foreach( $data as $key => $value ) {
-			if ( ! isArray( $value ) ) {
+			if ( ! is_array( $value ) ) {
 				if ( $this->$key ) {
 					$this->$key->value = $value;
 					continue;

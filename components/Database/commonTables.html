@@ -1,0 +1,18 @@
+<h1>Common Tables</h1>
+
+<nav class='component'>
+	<a href='./'>Locale Db index</a>
+</nav>
+
+<p class='notice'>
+If you click table name, that will be global table with locale field.<br />
+table is very plane columns.<br />
+after insert, update, or delete, you wanna make some INDEX for select speed.<br />
+It's your job.<br />
+</p>
+
+<nav class='simple'>
+	<? foreach( $list as $tableName ): ?>
+	<a href='./globalizeTable?table=<?=$tableName?>' title='globalize table'><?=$tableName?></a>
+	<? endforeach; ?>
+</nav>

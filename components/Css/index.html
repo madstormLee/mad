@@ -1,0 +1,42 @@
+<script>
+$( function() {
+	$('a.popup').click( function( ev ) {
+		ev.preventDefault();
+		var el = $(ev.target);
+		$('#popupBody').load( el.attr('href') );
+		$('#cssPopupWindow').show();
+		$('#cssPopupWindow').css({
+			top: el.position().top
+		});
+	});
+	$('a.hideId').click( function( ev ) {
+		ev.preventDefault();
+		$( $(this).attr('href') ).hide();
+	});
+});
+</script>
+
+<dl id='cssPopupWindow'>
+	<dt><a class='toggleId' href='#popupBody'>popup</a><a class='hideId' href='#cssPopupWindow'>Hide</a></dt>
+	<dd id='popupBody'></dd>
+</dl>
+
+<h1>Css Files</h1>
+<h2>Pwd: <?=$dir->getFile()?></h2>
+
+<ul class='files'>
+	<? foreach( $dir as $file ) : ?>
+	<? if ( $file->getBaseName() == '.svn' ) continue; ?>
+	<? if ( $file->isDir() ) : ?>
+	<li class='dir'><a href='./?dir=<?=$file->getFile()?>'><?=$file->getBaseName()?></a></li>
+	<? else: ?>
+	<li>
+		<a class='popup' href='./view?file=<?=$file->getFile()?>'><?=$file->getBaseName()?></a>
+		<? if ( $file->isWritable() ): ?>
+		<a class='popup' href='./write?file=<?=$file->getFile()?>'>write</a>
+		<a class='popup button' href='./rename?file=<?=$file->getFile()?>'>Rename</a>
+		<? endif; ?>
+	</li>
+	<? endif; ?>
+	<? endforeach; ?>
+</ul>

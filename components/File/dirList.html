@@ -1,0 +1,8 @@
+<h1><?=_("Dir List")?></h1>
+
+<ul class='dir'>
+	<? foreach( $dirs as $dir ): ?>
+	<? if ( $dir->isFile() ) continue; ?>
+	<li><a href='./dirList?file=<?=$dir->getFile()?>'><?=$dir->getName()?></a></li>
+	<? endforeach; ?>
+</ul>

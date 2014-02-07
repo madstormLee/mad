@@ -13,10 +13,10 @@ class Activity extends MadJson {
 
 		if ( $db && $db->server == 'oracle' ) {
 			foreach( $this->columns as $column ) {
-				$column->name = strToUpper( camel2underscore( $column->name ) );
+				$column->name = MadString::create( $column->name )->format('upper|underscore' );
 			}
 			if ( $db->prefix ) {
-				$this->name = strToUpper( $db->prefix . '_' . $this->name );
+				$this->name = MadString::create( $db->prefix . '_' . $this->name )->upper();
 			}
 		}
 	}

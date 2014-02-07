@@ -6,7 +6,7 @@ class ErmController extends Preset {
 		$this->ermDir = $this->phpStorm->getDir('erm');
 	}
 	function indexAction() {
-		replace("$this->projectRoot$this->controllerName/list");
+		$this->js->replace("$this->projectRoot$this->controllerName/list");
 		return new MadView;
 	}
 	function viewAction() {
@@ -49,14 +49,14 @@ class ErmController extends Preset {
 			$config->setWriteMode( 'force' );
 			$cnt += $config->save();
 		}
-		alert( "$cnt 개의 config file이 생성되었습니다.", '/phpStorm/config/list', 'replace' );
+		$this->js->alert( "$cnt 개의 config file이 생성되었습니다.")->replace('./list');
 	}
 	function uploadAction() {
 		$uploader = new MadUploader($this->ermDir);
 		if ( ! $uploader->upload() ) {
 			return 'fail';
 		}
-		replace( 'list' );
+		$this->js->replace( 'list' );
 	}
 	function deleteAction() {
 		$file = $this->get->file;

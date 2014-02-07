@@ -7,7 +7,7 @@ class MadNavi extends Mad {
 		$this->setData( $data );
 	}
 	function setData( $data ) {
-		if ( isArray( $data ) ) {
+		if ( is_array( $data ) ) {
 			$this->data = $data;
 		}
 		return $this;

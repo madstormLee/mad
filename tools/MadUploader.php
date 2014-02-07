@@ -1,15 +1,13 @@
 <?
-class MadUploader implements IteratorAggregate {
+// make this perfect.
+// use CoC.
+class MadUploader extends MadAbstractData {
 	protected $dir = 'uploads';
 	protected $data = array();
 	protected $files = array();
 	protected $uploaders = array();
 
-	function __construct( $dir='', $target = '' ) {
-		if ( ! empty( $dir ) ) {
-			$this->setDir( $dir );
-		}
-		$this->setTarget( $target );
+	function __construct() {
 	}
 	function setDir( $dir ) {
 		if ( ! is_dir( $dir ) ) {
@@ -18,25 +16,24 @@ class MadUploader implements IteratorAggregate {
 		$this->dir = realpath( $dir ) . '/';
 		return $this;
 	}
+	function getTarget() {
+		return $this->target;
+	}
 	function setTarget( $targets ) {
-		if ( ! empty( $targets ) ) { // 나중에
-			if ( ! isArray( $targets ) ) {
-				$targets = explode(',', $targets );
-			} 
-			foreach( $targets as $target ) {
-				if ( isset( $_FILES[$target] ) ) {
-					$this->uploaders[] = new MadUploader($target);
-				}
-			}
-			$this->files = $target;
-		} else {
+		if ( empty( $targets ) ) {
 			$this->files = $_FILES;
+			return $this;
 		}
+		if ( ! is_array( $targets ) ) {
+			$targets = explode(',', $targets );
+		} 
+		foreach( $targets as $target ) {
+			if ( isset( $_FILES[$target] ) ) {
+				$this->uploaders[] = new MadUploader($target);
+			}
+		}
+		$this->files = $target;
 		return $this;
-
-		if ( empty( $target ) || ! isset( $_FILES[$target] ) ) {
-			return false;
-		}
 	}
 	// not yet
 	function arrangeFileArray( $target ) {
@@ -63,6 +60,14 @@ class MadUploader implements IteratorAggregate {
 		return $rv;;
 	}
 	function upload() {
+		$this->setExt();
+		$this->path = $this->getAvailableName( $this->dir . $this->name );
+		$this->uploadedName = basename( $this->path );
+		$this->src = substr( $this->path, strlen( ROOT ) - 1 );
+		$this->result = move_uploaded_file( $this->tmp_name, $this->path );
+		return $this->result;
+	}
+	function uploadAll() {
 		foreach( $this->files as $key => $row ) {
 			if ( $row['error'] != 0 ) {
 				$this->data[$key]['result'] = false;
@@ -84,6 +89,11 @@ class MadUploader implements IteratorAggregate {
 	function getExt( $name ) {
 		return array_pop(explode( '.', $name ));
 	}
+	function setExt() {
+		$temp = explode( '.', $this->name );
+		$this->ext = array_pop( $temp );
+		return $this;
+	}
 	private function getAvailableName( $path ) {
 		$sep =  explode( '.', $path );
 		$ext = array_pop( $sep );
@@ -94,17 +104,5 @@ class MadUploader implements IteratorAggregate {
 			$tempPath = $realPath . '_' . $i;
 		}
 		return $tempPath . '.' . $ext;
-	}
-	function getIterator() {
-		return new ArrayIterator( $this->data );
-	}
-	function __get( $key ) {
-		return ckKey( $key, $this->data );
-	}
-	function __set( $key, $value ) {
-		$this->data[$key] = $value;
-	}
-	function test() {
-		printR($this->data);
 	}
 }

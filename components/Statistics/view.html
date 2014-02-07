@@ -1,0 +1,28 @@
+<h1><?=_("view")?></h1>
+
+<h2><?=$stat->title?></h2>
+
+<form method='get' action='?'>
+	<input type='hidden' name='dataModel' value='<?=$g->get->dataModel?>' />
+	<select name='locale'>
+		<? foreach( $g->l10n->getLocales() as $id => $row ): ?>
+		<option value='<?=$id?>' <?=($id==$g->get->locale) ? "selected":'';?>><?=$row->label?></option>
+		<? endforeach; ?>
+	</select>
+	<select name='year'>
+		<? foreach( $years as $year ): ?>
+		<option value='<?=$year?>' <?=($year==$g->get->year) ? "selected='selected'":'';?>><?=$year?></option>
+		<? endforeach; ?>
+	</select> <?=_("년")?>
+	<select name='month'>
+		<? foreach( $months as $month ): ?>
+		<option value='<?=$month?>' <?=($month==$g->get->month)? "selected='selected'":'';?>><?=$month?></option>
+		<? endforeach; ?>
+	</select> <?=_("월")?>
+	<button><?=_("show me")?></button>
+</form>
+
+
+<section id="chart">
+<?=$stat->get2DJson()?>
+</section>

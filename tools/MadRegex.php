@@ -1,5 +1,19 @@
 <?
 class MadRegex {
+	static function getImages( $content ) {
+		$isSrc = preg_match_all( '/src=["\']([^"]*)["\']/i', $content, $images );
+		if ( $isSrc ) {
+			return $images[1];
+		}
+		return array();
+	}
+	static function getImage( $content ) {
+		$isSrc = preg_match_all( '/src=["\']([^"]*)["\']/i', $content, $images );
+		if ( $isSrc ) {
+			return current( $images[1] );
+		}
+		return false;
+	}
 	static function firstSrc( $content ) {
 		$rv = false;
 
@@ -45,5 +59,18 @@ class MadRegex {
 		} else {
 			return false;
 		}
+	}
+	static function pathAdjust( $content ) {
+		$g = MadGlobals::getInstance();
+		$rv = preg_replace('!(action|background|src|href)=(["\'])~/!i', "$1=$2{$g->projectRoot}/", $content );
+
+		$rv = preg_replace('!(action|background|src|href)=(["\'])\.!i', "$1=$2{$g->projectRoot}/{$g->periodPath}", $rv );
+		return $rv;
+	}
+	static function parseUrl( $url ) {
+		$g = MadGlobals::getInstance();
+		$rv = preg_replace('!\~/!i', "$g->projectRoot/", $url );
+  		$rv = preg_replace('!\./!i', "$g->projectRoot/{$g->periodPath}/", $rv );
+		return $rv;
 	}
 }

@@ -1,0 +1,33 @@
+/* main overriding */
+#main {
+margin-right: 230px;
+}
+#right {
+display: block;
+}
+/************************ from old Component ***********************/
+#scaffold .buttons {
+margin-top: 20px;
+text-align: right;
+}
+#scaffold .buttons li {
+display: inline;
+}
+#scaffold ul li {
+margin-top: 7px;
+}
+/***************** form units *******************/
+#scaffold ul li>label {
+display: inline-block;
+width: 100px;
+background: #ccc;
+padding: 2px 10px;
+text-align: right;
+}
+#scaffold ul li input[type='text'] {
+border: 1px solid #666;
+padding: 3px;
+}
+#description {
+width: 500px;
+}

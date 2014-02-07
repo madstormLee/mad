@@ -1,0 +1,7 @@
+<h1><?=_("Image List")?></h1>
+
+<ul class='thumbnail'>
+	<? foreach( $list as $row ): ?>
+	<li><img src='~/<?=$row->getFile()?>' /></li>
+	<? endforeach; ?>
+</ul>

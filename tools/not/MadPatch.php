@@ -19,7 +19,8 @@ class MadPatch {
 		return $lastBackup['time'];
 	}
 	function backupAction() {
-		if ( ! $mtime = ckPost('mtime') ) {
+		$post = $this->post;
+		if ( ! $post->mtime ) {
 			alert('잘못된 접근 입니다.','back','replace');
 		}
 		$backupDate = date('Y-m-d_h:i:s');
@@ -48,6 +49,7 @@ class MadPatch {
 		return $this->scanDir( $this->froms['backup'] );
 	}
 	function downloadAction() {
+		$get = $this->get;
 		$from = ckKey(ckGet('from'), $this->froms);
 		$name = ckGet('name');
 		if ( ! is_file($from . $name ) ) {

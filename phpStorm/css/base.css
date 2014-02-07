@@ -553,3 +553,19 @@ display: inline-block;
 #right>dl dt {
 border-bottom: 1px solid #000;
 }
+/********************* .componentNavi ************************/
+.componentNavi {
+text-align: right;
+}
+.componentNavi li {
+	display: inline;
+}
+.componentNavi li a {
+	display: inline-block;
+	border: 1px solid #ccc;
+	padding: 2px 5px;
+	text-decoration: none;
+}
+.componentNavi li a:hover {
+	background: #eef;
+}

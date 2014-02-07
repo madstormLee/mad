@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Madtools Ghost</title>
+	</head>
+	<body>
+
+<h1>Welcome Madtools Ghost</h1>
+<a href='<?=$ghost->getUrl()?>'>Madtools</a>
+<ol>
+	<li>First of all, remove protection!</li>
+	<li>Make your ghost admin id and password.</li>
+	<li>Select program you want.</li>
+</ol>
+<form method='post' action='?'>
+	<? if ( $ghost->phase() == 1 ) : ?>
+	<fieldset id='phase1'>
+		<label for='protect'>Protect Number</label>
+		<input type='password' name='protect' />
+	</fieldset>
+	<? elseif ( $ghost->phase() === 2 ) : ?>
+	<fieldset id='phase2'>
+	<ul>
+		<li>
+			<label for='id'>ID</label>
+			<input id='id' name='id' />
+		</li>
+		<li>
+			<label for='pw'>password</label>
+			<input type='password' id='pw' name='pw' />
+		</li>
+	</ul>
+	</fieldset>
+	<? elseif ( $ghost->phase() === 3 ) : ?>
+	<fieldset id='phase3'>
+	<ul>
+		<li>
+			<input type='checkbox' id='phpStorm' name='phpStorm' />
+			<label for='phpStorm'>PhpStorm</label>
+		</li>
+	</ul>
+	</fieldset>
+	<? endif; ?>
+</form>
+
+	</body>
+</html>

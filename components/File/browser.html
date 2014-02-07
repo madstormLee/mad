@@ -1,0 +1,51 @@
+<section id='FileBrowser'>
+
+<h1>
+	<?=$dir?>
+	<nav class='buttons'>
+		<a class='btnClose' href='#close'>X</a>
+	</nav>
+</h1>
+
+<section class='dir' data-href='./dirList?file=<?=$dir?>'>
+</section><section class='files' data-href='./<?=$type?>List?file=<?=$dir?>'>
+</section>
+
+<form class='dirWrite' method='post' action='./saveDir'>
+	<input type='hidden' name='type' value='dir' />
+	<input type='hidden' id='baseDir' name='baseDir' value='<?=$dir?>' />
+	<label for='dirName'><?=_("Add Dir")?></label>
+	<input id='dirName' name='dirName' value='' />
+	<button type='submit'><?=_("add dir")?></button>
+</form>
+
+
+
+<form id='FileWrite' class='fileWrite swfupload' method='post' data-script-href='~/js/File/swfuploader.js' action="./upload">
+	<fieldset> 
+		<input type="hidden" name="PHPSESSID" value="<?=session_id(); ?>" />
+		<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+		<input type="hidden" name="dir" value="<?=$dir?>" />
+		<input type='file'
+			accept="images/*"
+			title='Image Files'
+			data-upload-href='~/<?=$dir?>'
+			data-swf-href="~/swf/swfupload.swf"
+			data-types='*.jpg;*.gif;*.png'
+			data-uploadLimit='1'
+			data-queueLimit='1'
+			/>
+
+		<button id='btnUpload'>
+			<?=_("Select Source ")?><b><?=_("(2 MB Max)")?></b>
+		</button>
+		<input class='btnCancel' id='BtnCancel' type='button' value='<?=_("Cancel Uploads")?>' disabled='disabled' />
+	</fieldset>
+
+	<div class="progress" id="uploadProgress">
+		<span class="legend"><?=_("Upload Queue")?></span>
+	</div>
+
+</form>
+
+</section>

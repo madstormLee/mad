@@ -1,0 +1,31 @@
+<h1>Mockupables</h1>
+
+<nav class='component'>
+	<a href='./'>Locale Db index</a>
+</nav>
+
+<table class='simple orderable limitable'>
+	<thead>
+		<tr>
+			<th>Table</th>
+			<th>Total</th>
+			<th>IsScheme</th>
+			<th>Buttons</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $list as $row ) : ?>
+		<tr>
+			<td><?=$row->table?></td>
+			<td><?=$row->total?></td>
+			<td><?=$row->isScheme?></td>
+			<td class='buttons'>
+				<? if ( $row->isScheme == 'yes' ) : ?>
+				<a href='~/reinstall'>Re-install</a>
+				<? endif; ?>
+				<a href='~/mockup?table=<?=$row->table?>'>Mock Up</a>
+			</td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>

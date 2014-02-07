@@ -1,0 +1,25 @@
+{
+	"info": {
+		"id": "mad",
+		"name": "MadTools",
+		"label":"MadTools",
+		"team": "Madstormz",
+		"author": "madstorm.lee",
+		"description":"simplified MadTools",
+		"wDate": "2012-11-11 09:39:56",
+		"uDate": "2012-11-11 09:39:56"
+	},
+	"logFile": "logs/service.log",
+	"route": {
+		"layout": "MadLayout",
+		"controller": "Index",
+		"action": "index",
+		"periodPath": "/",
+		"session": true
+	},
+	"files": {
+		"databases": "configs/databases.json",
+		"sitemap": "configs/sitemap.json",
+		"config": "configs/default.json"
+	}
+}

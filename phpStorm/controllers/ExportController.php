@@ -19,7 +19,7 @@ class ExportController extends Preset {
 			unlink( $name );
 			die;
 		}
-		alert( '파일 생성 중 문제가 발생하였습니다.', 'list', 'replace');
+		$this->js->alert( '파일 생성 중 문제가 발생하였습니다.')->replace('./list');
 	}
 	function presetListAction() {
 		
@@ -30,7 +30,7 @@ class ExportController extends Preset {
 		$exportDir = 'exports/php/';
 		$preset = new MadJson("json/Export/presets/$get->preset");
 		if ( $preset->isEmpty() ) {
-			alert( '존재하지 않는 preset입니다.', 'back', 'replace' );
+			$this->js->alert( '존재하지 않는 preset입니다.')->replaceBack();
 		}
 		
 		$this->main->preset = $preset;
@@ -54,7 +54,7 @@ class ExportController extends Preset {
 
 		/*************** temporal ********************/
 		$creator->createControllers();
-		alert( 'done', 'back', 'replace' );
+		$this->js->alert( 'done', 'back', 'replace' );
 		die;
 
 		$creator->createPhpStormIni();
@@ -67,7 +67,7 @@ class ExportController extends Preset {
 		$creator->createSchemes();
 		$creator->createConfigs();
 		$creator->createDiagrams();
-		alert( 'done', 'back', 'replace' );
+		$this->js->alert( 'done', 'back', 'replace' );
 		//madTemp $creator->createListModels();
 	}
 	function etcAction() {
@@ -125,7 +125,9 @@ class ExportController extends Preset {
 		foreach( $configs as $config ) {
 			$projectName = $phpStorm->info->name;
 			$scheme = MadConfig2SchemeFactory::create( $post->database );
-			$scheme->setName( ucFirst(underscore2camel(strToLower($config->name))) );
+
+			$name = new MadString($config->name);
+			$scheme->setName( $name->lower()->camel()->ucFirst() );
 			$scheme->setConfig( $config );
 			$schemes[] = $scheme;
 			$targetPath = $dirs->src . $post->qry . 'schemes/' . $scheme->getName() . '.sql';
@@ -216,7 +218,8 @@ class ExportController extends Preset {
 			$converter->setViews();
 
 			foreach( $converter as $target => $this->main ) {
-				$targetPath = $dirs->target . $post->views . "mng/conts/" . $post->projectName . ucFirst( underscore2camel(strToLower($config->name))) . '/' .  $target;
+				$name = new MadString($config->name);
+				$targetPath = $dirs->target . $post->views . "mng/conts/" . $post->projectName . $name->lower()->camel()->ucFirst() . '/' .  $target;
 				$targetDir = dirName( $targetPath );
 				if ( ! is_dir( $targetDir ) ) {
 					mkdir( $targetDir, 0777, true );
@@ -235,14 +238,13 @@ class ExportController extends Preset {
 				);
 		$alertText = implode( "\\n", $alertText );
 
-		alert( $alertText, 'list','replace');
+		$this->js->alert( $alertText, 'list','replace');
 	}
 	function removeAction() {
 		$get = $this->get;
-		if ( is_dir( $get->dir ) ) {
-			rmDirAll( $get->dir );
-		}
-		replace( 'list' );
+		$dir = new MadFile( $get->dir );
+		$dir->removeDirAll();
+		$this->js->replace( 'list' );
 	}
 	function removeJavaSpringAction() {
 		$creator = new JavaSpringCreator;

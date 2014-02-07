@@ -1,6 +1,8 @@
 <?
-class MadJs extends MadSingletonData {
+// is needed charset(?), not implemented yet.
+class MadJs {
 	protected static $instance;
+	protected $data = array();
 
 	public static function getInstance(){
 		if(! isset(self::$instance) ){
@@ -8,30 +10,39 @@ class MadJs extends MadSingletonData {
 		}
 		return self::$instance;
 	}
-	function set($value, $prefix='') {
-		return $this->add( $value, $prefix );
+	function set( $value, $charset='' ) {
+		return $this->add( $value, $charset='' );
 	}
-	function add( $value, $prefix = '' ) {
-		if ( ! empty($prefix) ) $this->setPrefix( $prefix );
-		$value = str_replace('.js','',$value);
-		$value = $this->prefix.$value;
+	function add( $value, $charset='' ) {
 		if ( ! in_array( $value, $this->data ) ) {
 			$this->data[] = $value;
 		}
 		return $this;
 	}
-	function addFirst( $value, $prefix = '' ) {
-		if ( ! empty($prefix) ) $this->setPrefix( $prefix );
-		$value = str_replace('.js','',$value);
-		$value = $this->prefix.$value;
+  	function addExists( $fileName, $charset='' ) {
+  		if ( is_file ( preg_replace('!\~/!i', PROJECT_ROOT, $fileName ) ) ) {
+  			return $this->add( $fileName );
+  		}
+  		return $this;
+  	}
+	function addFirst( $value, $charset='' ) {
 		if ( ! in_array( $value, $this->data ) ) {
 			array_unshift( $this->data, $value );
 		}
 		return $this;
 	}
-	function remove($value) {
-		foreach ( $this->data as $key => $v ) {
-			if ( $v == $value ) {
+	function addNext( $add, $target ) {
+		foreach( $this->data as $key => $value ) {
+			if ( false !== strpos( $value, $target ) ) {
+				array_splice( $this->data, $key+1, 0, $add );
+				break;
+			}
+		}
+		return $this;
+	}
+	function remove($target) {
+		foreach ( $this->data as $key => $value ) {
+			if ( false !== strpos( $value, $target ) ) {
 				unset($this->data[$key] );
 			}
 		}
@@ -42,43 +53,63 @@ class MadJs extends MadSingletonData {
 		return $this;
 	}
 	function __toString(){
-		$rv = '';
-		foreach ( $this->data as $value ){
-			$rv .= "<script type='text/javascript' src='$value.js'></script>\n";
+		$rv = array();
+		foreach ( $this->data as $src ){
+			$rv[] = "<script type='text/javascript' src='$src'></script>\n";
 		}
-		return $rv;
+		return implode( "\n", $rv );
 	}
 	/******************** js utilities *******************/
-	function alert($msg, $address='', $flag=''){
-		echo "<script>alert('$msg');</script>";
-		if ( !empty($address) ) {
-			move($address,$flag);
-		}
+	function alert($msg){
+		$msg = _($msg);
+		$msg = str_replace( "'", '"', $msg );
+		$msg = str_replace( "\n", '\n', $msg );
+		print "<script>alert('$msg');</script>";
 		return $this;
 	}
-	function replace( $page ) {
-		$page = $this->pageParse( $page );
-		echo  "<script>location.replace('$page');</script>";
-		exit;
+	function replace( $url ) {
+		$url = $this->parseUrl( $url );
+		print  "<script>location.replace('$url');</script>";
+		die;
 	}
-	function move( $page ) {
-		$page = $this->pageParse( $page );
-		echo  "<script>location.href=('$page');</script>";
-		exit;
+	function move( $url ) {
+		$url = $this->parseUrl( $url );
+		print  "<script>location.href=('$url');</script>";
+		die;
 	}
 	function back() {
-		echo "<script>history.back();</script>";
-		exit;
+		print "<script>history.back();</script>";
+		die;
 	}
 	function replaceBack() {
+		$server = MadParam::create('_SERVER');
 		$referer = ckKey( 'HTTP_REFERER', $_SERVER );
 		if ( !empty($referer) ) {
 			$this->replace( $referer );
 		}
 		$this->back();
 	}
-	private function pageParse( $page ) {
-		$projectRoot = MadGlobal::getInstance()->urlRoot;
-		return preg_replace('!^~/!', $projectRoot, $page );
+	function closeWindow( $url = '' ) {
+		print "<script>window.close();</script>";
+		$this->replace( $url );
+		die;
+	}
+	function moveOpener( $href ) {
+		print "<script>opener.window.location.href='$href';</script>";
+	}
+	function flashin($file_name,$width='',$height=''){
+		$file_name = $file_name . '.swf';
+		$rv = "<script>Flash.print('$file_name',$width, $height)</script>";
+		return $rv;
+	}
+	private function parseUrl( $url ) {
+		$g = MadGlobals::getInstance();
+		$rv = preg_replace('!\~/!i', "{$g->projectRoot}/", $url );
+		$rv = preg_replace('!\./!i', "{$g->projectRoot}/{$g->periodPath}/", $rv );
+		return $rv;
+	}
+	function test() {
+		(new MadDebug)->printR($this->data);
+		return $this;
 	}
 }

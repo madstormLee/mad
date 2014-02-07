@@ -2,7 +2,7 @@
 // this class is temporal implementation.
 class MadTag_Ul extends Mad {
 	function __construct( $data = '' ) {
-		if ( isArray( $data ) ) {
+		if ( is_array( $data ) ) {
 			$this->setData( $data );
 		}
 	}
