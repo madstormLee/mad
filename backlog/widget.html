@@ -1,0 +1,26 @@
+<h1>Backlog</h1>
+
+<nav class='tab'>
+	<? foreach( $model->getList() as $file ): ?>
+	<? $id=baseName($file,'.json'); ?>
+	<a href='./widget?id=<?=$id?>'><?=$id?></a>
+	<? endforeach; ?>
+</nav>
+
+<section class='view'>
+<dl class='contents'>
+	<dt>id: <?=$model->id?></dt>
+	<dt>title: <?=$model->title?></dt>
+	<dd>
+	<nav>
+		<? if ( $model->item ): ?>
+		<? foreach( $model->item as $key => $row ): ?>
+		<a class='<?=$row->status?>' href='#done' title='<?=htmlEntities( $row->title )?>'>
+			<b><?=$row->title?></b><span><?=$row->status?></span>
+		</a>
+		<? endforeach; ?>
+		<? endif; ?>
+	</nav>
+	</dd>
+</dl>
+</section>

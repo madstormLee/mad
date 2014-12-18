@@ -31,7 +31,7 @@ class MadUrl {
 		}
 		return self::$instance;
 	}
-	function getBackUrl() {
+	function getBack() {
 		$url = parse_url( $_SERVER['HTTP_REFERER'] );
 		return $url['path'] . '?' . $url['query'];
 	}

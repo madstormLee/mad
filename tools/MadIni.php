@@ -1,20 +1,9 @@
 <?
-class MadIni extends MadData {
+class MadIni extends MadFile {
 	protected $data = array();
-	private $file;
 
-	function __construct( $iniFile = '') {
-		$this->load( $iniFile );
-	}
-	function getFile() {
-		return $this->file;
-	}
-	function setFile( $file ) {
-		if ( end( explode('.', $file) ) !== 'ini' ) {
-			$file = $file . '.ini';
-		}
-		$this->file = $file;
-		return $this;
+	function __construct( $file = '') {
+		$this->load( $file );
 	}
 	function load( $file = '' ) {
 		if ( ! empty( $file ) ) {

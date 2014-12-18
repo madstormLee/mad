@@ -1,0 +1,9 @@
+<h1>File View</h1>
+
+<?=new MadComponentNavi($model) ?>
+
+<h2>file : <?=$model->file?></h2>
+
+<article class='<?=$model->getExtension()?>'>
+	<?=$model->getViewer()?>
+</article>

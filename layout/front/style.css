@@ -1,0 +1,505 @@
+@import 'base.css';
+/**********************************************************
+	Layout :
+		is this layout part common?
+		no. there is lots of pages not using this part.
+		this part can be separated. but faster for net transport.
+		and easy to programming.
+***********************************************************/
+
+/************************ header ************************/
+header {
+	position: relative;
+	padding: 1px;
+	border-bottom: 1px solid #000;
+	background: #999;
+}
+#baseMenu {
+	float: right;
+	margin-top: 30px;
+	margin-right: 50px;
+}
+#baseMenu li {
+	float: left;
+}
+#baseMenu a {
+	height: 16px;
+	padding: 0 10px 0 8px;
+	font: 500 10px verdana;
+	color: #ffffff;
+	line-height: 20px;
+	background: url('/images/bulletRect.gif') no-repeat left 50%;
+}
+#baseMenu a:hover {
+	text-decoration: none;
+}
+/********************** header nav.menu *********************/
+header nav.menu {
+position: relative;
+display: inline;
+}
+header nav.menu ul {
+display: inline;
+margin-left: 20px;
+}
+header nav.menu li {
+	position: relative;
+	display: inline-block;;
+}
+header nav.menu li > a {
+	display: inline-block;
+	margin-left: 5px;
+	padding: 2px 20px;
+	border: 1px solid #000;
+	font-size: 12px;
+	font-weight: 600;
+	color: #000;
+	background: #ccd;
+}
+header nav.menu li > a:hover {
+	text-decoration: none;
+	background: #ccf;
+}
+header nav.menu li nav.sub {
+	position: absolute;
+	width: 100px;
+	display: none;
+	border: 1px solid #000;
+	top: 25px;
+	font-size: 12px;
+	z-index: 1000;
+	background: #fff;
+}
+header nav.menu li nav.sub a {
+	display: block;
+	padding: 3px 10px;
+	border-bottom: 1px solid #000;
+	color: #000;
+}
+
+/************************ main *********************/
+#main {
+position: relative;
+margin: 20px 20px 100px 270px;
+border-radius: 10px;
+padding: 20px;
+border: 3px solid #000;
+}
+#main h1 {
+font-size: 20px;
+margin: 10px 20px;
+}
+#main h2 {
+font-size: 16px;
+margin: 10px 10px;
+}
+
+.column75 {
+	padding-right: 26%;
+}
+.column25 {
+	width: 25%;
+}
+#main section.container {
+position: relative;
+}
+
+#main .rightColumn {
+position: absolute;
+right: 0;
+top: 0;
+min-height: 300px;
+border: 1px solid #000;
+}
+
+/******************** footer ************************/
+footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: #000;
+	z-index: 10;
+}
+footer p.copyright {
+	padding: 10px 70px;
+	color: #eee;
+}
+footer a.main {
+	position: absolute;
+	display: inline-block;
+	right: 10px;
+	top: 10px;
+	color: #000;
+	background: #fff;
+	padding: 3px 10px;
+	border-radius: 5px;
+	font-size: 13px;
+}
+
+/******************************* left *******************************/
+#left {
+position: relative;
+float: left;
+width: 260px;
+padding-bottom: 100px;
+overflow: hidden;
+z-index: 10;
+}
+#left section.category {
+width: 230px;
+margin: 5px;
+border: 2px solid #999;
+border-radius: 7px;
+font-size: 12px;
+background: #eee;
+}
+#left section.category h1 {
+border: 1px solid #aac;
+padding: 5px 10px;
+border-radius: 5px;
+margin: 5px;
+background: #ccf;
+}
+#left section.category nav {
+margin: 10px;
+}
+#left section.category nav a {
+text-decoration: none;
+}
+#left section.category nav dt {
+margin-top: 5px;
+}
+#left section.category nav dd {
+margin-left: 10px;
+}
+
+#leftGlobalCategory h1 {
+background: #ccc;
+}
+/************************ specification **********************/
+/************************ #fileBrowser **********************/
+#FileBrowser {
+	margin: 10px;
+	padding: 10px 10px 10px 0;
+	border: 3px solid #000;
+	border-radius: 10px;
+}
+#FileBrowser h1 {
+display: none;
+}
+#FileBrowser > h1 {
+display: block;
+font-size: 13px;
+text-align: center;
+background: #ccf;
+margin-left: 10px;
+margin-bottom: 5px;
+padding: 5px 0;
+border-radius: 10px;
+}
+#FileBrowser nav {
+margin-left: 5px;
+padding-left: 5px;
+border-left: 1px solid #000;
+}
+#FileBrowser a.dir {
+	color: #f60;
+	font-weight: 600;
+}
+#FileBrowser a {
+	display: block;
+	font-size: 12px;
+	color: black;
+}
+/************************ nav.personal **********************/
+nav.personal {
+position: absolute;
+display: block;
+top: 1px;
+right: 10px;
+}
+nav.personal>a {
+display: inline-block;
+padding: 1px 5px;
+border: 1px solid #aaa;
+border-radius: 5px;
+font-size: 12px;
+font-weight: 600;
+color: #000;
+background: #fcc;
+}
+nav.personal a:hover {
+text-decoration: none;
+background: #fee;
+}
+
+#logo {
+display: inline-block;
+padding: 0px 10px;
+margin-left: 0px;
+font-size: 13px;
+font-weight: 600;
+color: #000000;
+text-decoration: none;
+}
+/**************************** #right *************************/
+#right {
+display: none;
+position: fixed;
+top: 50px;
+right: 0;
+width: 200px;
+border: 1px solid #000;
+background: #fff;
+z-index: 1000;
+}
+#right .tools {
+border-top: 1px solid #000;
+}
+#right .tools .list {
+position: relative;
+margin: 0;
+max-height: 250px;
+overflow: auto;
+}
+#right h1 {
+font-size: 13px;
+padding: 5px;
+margin: 0;
+background: #dcf;
+border-bottom: 3px double #000;
+cursor: pointer;
+}
+#right section > ul {
+list-style: none;
+}
+#right section > ul li {
+display: inline;
+}
+#right section > ul li a {
+display: block;
+font-size: 12px;
+color: black;
+padding: 3px 10px;
+border-bottom: 1px solid #000;
+}
+#right section > ul li a:hover {
+text-decoration: none;
+background: #eef;
+}
+
+/*********************** diagramList **********************/
+.diagramList {
+}
+.diagramList ul {
+font-size: 13px;
+}
+.diagramList ul li {
+border-bottom: 1px solid #000;
+padding: 5px 10px;
+}
+.diagramList ul li > a {
+color: black;
+}
+.diagramList ul li span.date {
+display: inline-block;
+background: #ffc;
+padding: 1px 5px;
+}
+.diagramList ul li nav.buttons {
+display: inline;
+margin-left: 20px;
+}
+.diagramList ul li nav.buttons a {
+display: inline-block;
+padding: 2px 10px;
+border: 1px solid #000;
+background: #eee;
+border-radius: 10px;
+color: black;
+}
+.diagramList ul li nav.buttons a:hover {
+text-decoration: none;
+background: #ccf;
+}
+/******************** manual *******************/
+a.help p.manualWindow {
+	position: absolute;
+	right: 5px;
+	top: 25px;
+	background: #fff;
+	padding: 7px;
+	border: 3px solid #000;
+	border-radius: 10px;
+	overflow: hidden;
+	z-index: 100;
+}
+#console {
+border: 5px solid #000;
+min-height: 30px;
+}
+
+/************************** bottom ****************************/
+.nowOnConcertInfo {
+	width: 200px;
+	margin-left: 30px;
+}
+.nowOnConcertInfo dt {
+	width: 100%;
+	height: 25px;
+	font: 600 10px sans-serif;
+	color: #eeee00;
+	line-height: 25px;
+}
+.nowOnConcertInfo dd {
+	width: 100%;
+	height: 20px;
+	font: 11px ±¼¸²;
+	color: #ffffff;
+	line-height: 20px;
+}
+.nowOnConcertInfo .image {
+	height: auto;
+}
+.nowOnConcertInfo .image img {
+	width: 190px;
+	height: 75px;
+	border: 5px solid #eeeeee;
+}
+/* news */
+#bottom .news {
+	width: 280px;
+	height: 100%;
+	margin-left: 20px;
+	padding: 0 25px;
+	background: url(/images/bottom.png) repeat-x top;
+}
+#bottom .news dt {
+	width: 100%;
+	height: 25px;
+	font: 600 10px sans-serif;
+	color: #eeee00;
+	line-height: 25px;
+}
+#bottom .news dd {
+	width: 100%;
+	height: 20px;
+	font: 11px ±¼¸²;
+	color: #ffffff;
+	line-height: 20px;
+}
+#bottom .gallery {
+	margin-left: 20px;
+	width: 110px;
+	height: 100%;
+}
+#bottom .gallery dt {
+	width: 100%;
+	height: 25px;
+	font: 600 10px sans-serif;
+	color: #eeee00;
+	line-height: 25px;
+}
+#bottom .gallery .explain {
+	width: 100%;
+	height: 20px;
+	margin-top: 20px;
+	font: 11px ±¼¸²;
+	color: #ffffff;
+	line-height: 140%;
+}
+#bottom .gallery .label {
+	height: auto;
+	color: #ffffff;
+	font: 600 20px verdana;
+}
+.bottomGalleryMan {
+	position: relative;
+	top: -23px;
+}
+.galleryNowOn {
+	float: right;
+	width: 180px;
+	margin-top: 17px;
+	margin-right: 20px;
+}
+.galleryNowOn .numbers {
+	width: 18px;
+}
+.galleryNowOn .numbers ul {
+	width: 100%;
+}
+.galleryNowOn .numbers li {
+	width: 18px;
+	height: 13px;
+	margin-top: 7px;
+	font-weight: 600;
+	line-height: 13px;
+	text-align: center;
+	color: #eeeeee;
+	background: url(/images/galleryNowOnNumber.gif) no-repeat top left;
+}
+.galleryNowOn .numbers a {
+}
+.galleryNowOn .viewer {
+	width: 152px;
+	margin-left: 9px;
+}
+.galleryNowOn .viewer img {
+	width: 142px;
+	border: 5px solid #eeeeee;
+}
+.galleryNowOn .label {
+	float: right;
+	width: 152px;
+	margin-top: 10px;
+}
+
+.copyright {
+	float: right;
+	margin-top: 20px;
+	margin-right: 50px;
+	font: 600 12px verdana;
+	color: #eeeeee;
+}
+#south {
+	float: left;
+	clear: both;
+	width: 100%; height: 51px;
+	background: #eeeefe;
+	border-top: 1px solid #cccccc;
+}
+.copyright {
+	width: 910px;
+	margin: 0 auto 0 auto;
+}
+.copyright ul {
+	float: right;
+	height: 100%;
+}
+.copyright li {
+	float: left;
+	height: 100%;
+	line-height: 51px;
+}
+.copyright a {
+	padding: 3px 15px;
+}
+.copyright a:hover {
+}
+#copyright {
+	float: left;
+	width: 300px;
+	height: 100%;
+	font: 10px verdana;
+	line-height: 50px;
+	text-indent: 20px;
+}
+#copyright-logo {
+	float: left;
+	width: 65px; height: 38px;
+	margin-left: 15px;
+	margin-top: 10px;
+	background: url('/images/copyright_logo.gif') no-repeat top left;
+}
+

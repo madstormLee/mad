@@ -1,3 +1,0 @@
-<?
-class ClassDiagramList extends MadJsonList {
-}

@@ -1,0 +1,13 @@
+<h1>File Index</h1>
+
+<section id='FileIndex'>
+<ul>
+	<?  foreach( $model as $path ) : ?>
+	<? if ( is_dir( $path ) ) : ?>
+	<li> <a  class="dir" href='?dir=<?=$path?>'><?=baseName($path)?></a> </li>
+	<? else: ?>
+	<li> <a  class="file" href='./view?file=<?=$path?>'><?=baseName($path)?></a> </li>
+	<? endif; ?>
+	<? endforeach; ?>
+</ul>
+</section>

@@ -1,0 +1,11 @@
+<h1>Phpinfo</h1>
+
+<ul>
+	<? foreach( $list as $row ): ?>
+	<li>
+		<a href='?option=<?=$row->value?>' data-target='main' title='<?=htmlEntities($row->description, ENT_QUOTES)?>'><?=$row->name?></a>
+	</li>
+	<? endforeach; ?>
+</ul>
+
+<article><? phpinfo( $option );?></article>

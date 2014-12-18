@@ -1,3 +1,0 @@
-<?
-class MadJsonController extends MadController {
-}

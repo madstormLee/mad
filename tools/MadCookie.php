@@ -1,58 +1,78 @@
 <?
-// this is not done.
-// and not even close.
 class MadCookie extends MadAbstractData {
 	protected $data = array();
-	protected $domain = '';
-	protected $time = 0;
+	protected $key = 'cookie';
 
-	function __construct( $domain = '/' ) {
-		$this->data = $_COOKIE;
-		$this->setTimeString( '+1 month' );
-		$this->setDomain( $domain );
+	protected $time = 0;
+	protected $path = '/';
+	protected $domain = '';
+
+	function __construct( $key = 'cookie' ) {
+		$this->key = $key;
+		if ( ! isset( $_COOKIE[$key] ) ) {
+			$_COOKIE[$key]=array();
+		}
+		$this->data = &$_COOKIE[$key];
+		$this->time = strToTime( '+1 month' );
+	}
+	function set( $key, $value = '' ) {
+		if ( setcookie( $this->getName($key), $value, $this->time, $this->path) ) {
+			$this->data[$key] = $value;
+		}
+		return $this;
+	}
+	function push( $value ) {
+		array_push( $this->data, $value );
+		end( $this->data );
+		$this->set( key( $this->data ), $value );
+		return $this;
+	}
+	function shift() {
+		$rv = reset( $this->data );
+		$key = key( $this->data );
+		unset($this->$key);
+		return $rv;
+	}
+	function get( $key ) {
+		if ( isset( $this->data[$key] ) ) {
+			return $this->data[$key];
+		}
+		return false;
+	}
+	// @override
+	function offsetUnset($key) {
+		if ( isset( $this->data[$key] ) ) {
+			if ( $result = setcookie( $this->getName($key), '', 1, $this->path ) ) {
+				unset( $this->data[$key] );
+			}
+			return $result;
+		}
+		return $this;
+	}
+	/************************ utils ************************/
+	protected function getName( $key ) {
+		return $this->key . "[$key]";
+	}
+	/************************ getter/setter ************************/
+	function setTime( $time ) {
+		$this->time = $time;
+		return $this;
+	}
+	function getTime() {
+		return $this->time;
+	}
+	function setPath( $path ) {
+		$this->path = $path;
+		return $this;
+	}
+	function getPath() {
+		return $this->path;
 	}
 	function setDomain( $domain ) {
-		if ( ! empty( $domain ) ) {
-			$this->domain = $domain;
-		}
 		$this->domain = $domain;
 		return $this;
 	}
 	function getDomain() {
 		return $this->domain;
-	}
-	function unsetKeys( $data ) {
-		foreach( $data as $key ) {
-			unset( $this->$key );
-		}
-		return $this;
-	}
-	function setTime( $time ) {
-		$this->time = $time;
-	}
-	function setTimeString( $timeString ) {
-		$this->time = strToTime( $timeString );
-	}
-	function save() {
-		foreach( $this->data as $key => $value ) {
-			if ( isset( $this->data[$key] ) && $this->data[$key] == $_COOKIE[$key] ) {
-				continue;
-			}
-			setcookie( $key, $value, $this->time, '/', $this->domain );
-		}
-	}
-	function __unset( $key ) {
-		if ( isset( $this->data[$key] ) ) {
-			return setcookie( $key, '', strToTime('-1 hour'), '/', $this->domain );
-		}
-		unset( $this->data[$key] );
-	}
-	function __destruct() {
-		$this->save();
-	}
-	function test() {
-		print 'domain: ' . $this->domain;
-		print BR;
-		(new MadDebug)->printR( $this->data );
 	}
 }

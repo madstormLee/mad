@@ -1,5 +1,4 @@
 <?
-// this class use connection pool.
 class MadDbConn {
 	protected static $default = null;
 	protected static $connections = array();
@@ -8,8 +7,6 @@ class MadDbConn {
 	protected $pdo = null;
 	protected $debug = false;
 
-	function __construct() {
-	}
 	public static function setDefault( PDO $connect = null ) {
 		if ( is_null( $connect ) ) {
 			$info = MadGlobals::getInstance()->databases->default;
@@ -30,12 +27,6 @@ class MadDbConn {
 	}
 	private static function addConnections( $id, PDO $pdo ) {
 		self::$connections[$id] = $pdo;
-	}
-	function exec( $query ) {
-		return $this->getConnect()->exec( $query );
-	}
-	function query( $query ) {
-		return $this->getConnect()->query( $query );
 	}
 	function getInsertId( $key = '' ) {
 		return $this->getConnect()->lastInsertId( $key );
@@ -64,10 +55,6 @@ class MadDbConn {
 		}
 		return self::createPdo( $info );
 	}
-	function setConnectInfo( $info ) {
-		$this->connectInfo = $info;
-		return $this;
-	}
 	function getConnectInfo() {
 		if ( ! $this->connectInfo ) {
 			$this->connectInfo = $this->getConnectInfoFromGlobals();
@@ -79,13 +66,6 @@ class MadDbConn {
 			return $databases->default;
 		}
 		return false;
-	}
-	function setDebug( $debug ) {
-		$this->debug = ! ! $debug;
-		if ( $this->debug === true ) {
-			$this->getConnect()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		}
-		return $this;
 	}
 	function getDebug() {
 		return $this->debug;

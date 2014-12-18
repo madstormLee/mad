@@ -1,3 +1,0 @@
-<?
-class WidgetController extends Preset {
-}

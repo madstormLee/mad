@@ -1,0 +1,10 @@
+<h1><?=$model->getBasename()?></h1>
+
+<nav class='fileBrowser'>
+	<ul>
+		<? foreach( $model as $file ): ?>
+		<? if( $file->isDir() ) continue; ?>
+		<li><a href='./view?file=<?=$file->getFile()?>'><?=$file->getBasename()?></a></li>
+		<? endforeach; ?>
+	</ul>
+</nav>

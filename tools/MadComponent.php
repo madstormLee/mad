@@ -1,82 +1,85 @@
 <?
 class MadComponent {
-	private $dir;
+	private $dir = '';
+	private $component = 'Index';
+	private $action = 'index';
 
-	function __construct( $dir ) {
-		$this->dir = $dir;
-	}
-	public static final function start( $dir = '.' ) {
-		try {
-			print self::create();
-		} catch( Exception $e ) {
-			print $e;
-		}
-	}
-	public static final function create( $dir = '.' ) {
-		if ( ! is_dir( $dir ) ) {
-			throw new Exception( 'no component' );
-		}
-		return new self( $dir );
-	}
-	function initFromConfig( $dir ) {
-		if ( $config->views ) {
-			$globals = MadGlobals::getInstance();
-			foreach( $config->views as $key => $file ) {
-				$globals->$key = new MadView( "$dir/$file" );
+	function __construct( $component = 'Index') {
+		if ( strpos( $component, '/' ) ) {
+			$pathExploded = explode( '/', $component );
+			$component = array_pop( $pathExploded );
+			$this->dir = implode( $pathExploded );
+			if ( empty( $this->dir ) ) {
+				$this->dir = '/';
 			}
 		}
-		return $config;
+		$this->component = $component;
 	}
-	function getContents() {
-		$rv = '';
-		$debug = new MadDebug; // for test
-
-		$config = new MadConfig( $this->dir . '/config.json' );
-
-		// $router = MadRouter::getInstance();
-		// 1. default
-		if ( $config->type == 'php' ) {
-			if ( ! is_file( "$this->dir/$router->action.php" ) ) {
-				throw new Exception('Cannot found controller.');
-			}
-			$view = new MadView( "$this->dir/$router->action.php" );
-			$view->componentPath = "$router->projectRoot/$this->dir/";
-			return $view->getContents();
-		} elseif ( $config->type == 'layout' ) {
-			print 'tested';
-			$config->test();
-			die;
-			if ( $config->has('layout') ) {
-				print $config->layout;
-			}
-		} else {
-			// 3. controller
-			$controllerName = $router->controller . 'Controller';
-			$controllerFile = $controllerName . '.php';
-			$viewFile = "$this->dir/$router->action.html";
-			$modelFile = "$this->dir/$router->controller.php";
-
-			if ( is_file( "$this->dir/$controllerFile" ) ) {
-				include_once "$this->dir/$controllerFile";
-				$controller = new $controllerName;
-				$controller->setConfig( $config );
-
-				$controller->setView( $viewFile );
-				if ( is_file( $modelFile ) ) {
-					include_once $modelFile;
-				}
-				$controller->setModel( $router->controller );
-
-				$actionName = $router->action . 'Action';
-				// $debug->r( $config );
-				$rv = $controller->$actionName();
-				return "$rv";
-			}
+	static function isComponent( $name ) {
+		return is_dir( $name );
+	}
+	function getController() {
+		$name = $this->component.'Controller';
+		$file = "$this->dir$this->component/$name.php";
+		if ( is_file( $file ) ) {
+			include $file;
+			return new $name;
 		}
-		// $debug->(new MadDebug)->printR( $data->getData() );
-		return "$rv";
+		return new MadController;
+	}
+	function getView( $action = 'index' ) {
+		print "$this->dir$this->component/$action.html";
+		return new MadView( "$this->dir$this->component/$action.html" );
+	}
+	function getModel() {
+		$file = "$this->dir$this->component/$this->component.php";
+		if ( ! is_file( $file ) ) {
+			return new MadModel;
+		}
+		include_once $file;
+		return new $this->component;
+	}
+	function get( $action='index' , $params = null ) {
+		$controller = $this->getController();
+		$view = $this->getView( $action );
+		$model = $this->getModel();
+
+		$controller->params = $params;
+		$controller->view = $view;
+		$controller->model = $model;
+		$controller->config = MadConfig::getInstance();
+		$controller->css = MadCss::getInstance()->addExists( "~/$this->component/style.css" );
+		$controller->js = MadJs::getInstance()->addExists( "~/$this->component/script.js" );
+
+		$view->setData( $controller->getData() );
+		$view->controller = $controller;
+
+		if ( $result = $controller->{$action . 'Action'}() ) {
+			return $result;
+		}
+		return $view;
+	}
+	function getConfig() {
+		return new MadJson( "$this->component/config.json" );
+	}
+	function post( $action, $params = null ) {
+		$controller = $this->getController();
+		$controller->params = $params;
+		$controller->model = $this->getModel();
+		$action = $action . 'Action';
+		return $controller->$action();
+	}
+	function getContents( $action='index', $params=null, $method='GET' ) {
+		if( $method == 'POST' ) {
+			return $this->post( $action, $params );
+		}
+		return $this->get( $action, $params );
 	}
 	function __toString() {
-		return $this->getContents();
+		try {
+			return (string) $this->getContents();
+		} catch( Exception $e ) {
+			return $e->getMessage();
+		}
 	}
 }

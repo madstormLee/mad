@@ -1,0 +1,19 @@
+{
+	"version": "1",
+	"title": "Component",
+	"id": "Component",
+	"name": "Component",
+	"label": "Component",
+	"description":"기사 테이블",
+	"dataType": "file/json",
+	"package" : [
+		"ComponentController.php",
+		"Component.php",
+		"ComponentNavi.php",
+		"index.html",
+		"view.html",
+		"write.html",
+		"script.js",
+		"style.css"
+	]
+}

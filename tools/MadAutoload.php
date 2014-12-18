@@ -8,17 +8,20 @@ final class MadAutoload implements IteratorAggregate {
 		spl_autoload_register( array( $this, 'autoload' ), true );
 	}
 	public static function getInstance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self;
-		}
-		return self::$instance;
+		return self::$instance ? self::$instance : self::$instance = new self;;
 	}
 	private function autoload( $class ) {
+		// component's model load first;
+		$file = lcFirst($class) . "/$class.php";
+		if ( is_file( $file ) ) {
+			include $file;
+			return true;
+		}
 		foreach( $this->data as $path ) {
-			if ( is_file( "$path/$class.php" ) ) {
-				require_once( "$path/$class.php" );
-				return true;
+			if ( ! is_file( "$path/$class.php" ) ) {
+				continue;
 			}
+			return require( "$path/$class.php" );
 		}
 		return false;
 	}
@@ -36,8 +39,5 @@ final class MadAutoload implements IteratorAggregate {
 			}
 		}
 		$this->data->remove( $path );
-	}
-	function test() {
-		(new MadDebug)->printR( $this->data );
 	}
 }

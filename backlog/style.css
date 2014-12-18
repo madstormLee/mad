@@ -1,0 +1,92 @@
+#Backlog {
+}
+#Backlog ol li.write label {
+display: none;
+}
+#Backlog ol li {
+margin-top: 2px;
+font-size: 10pt;
+}
+#Backlog ol li.new {
+}
+#Backlog ol li.dev {
+background: #fff;
+}
+#Backlog ol li.dev.done {
+background: #999;
+}
+#Backlog ol li.dev.working {
+border: 1px solid #666;
+background: #ffc;
+}
+#Backlog ol li input.title {
+border: 0;
+width: 80%;
+font-size: 10pt;
+background-color: inherit;
+}
+#Backlog ol li input.status {
+font-size: 9pt;
+width: 11ex;
+background-color: inherit;
+text-align: center;
+border: 1px solid #999;
+}
+#Backlog #item {
+width: 80%;
+border: 1px solid #ccc;
+}
+
+
+/********************* new bee **********************/
+#contents {
+display: none;
+}
+article.jsonTree {
+float: left;
+border: 1px solid #000;
+width: 98%;
+overflow: hidden;
+min-height: 300px;
+font-size: 10pt;
+}
+article.jsonTree ol {
+list-style: none;
+float: left;
+clear: left;
+}
+article.jsonTree li {
+float: left;
+clear: left;
+border: 1px solid #000;
+}
+article.jsonTree dl {
+float: left;
+clear: left;
+margin-left: 10px;
+}
+article.jsonTree dt {
+float: left;
+clear: left;
+display: inline-block;
+background: #ccf;
+padding: 1px 10px;
+border-radius: 10px;
+}
+article.jsonTree dd {
+float: left;
+display: inline-block;
+min-height: 10px;
+padding: 1px 10px;
+margin-left: 3px;
+}
+article.jsonTree dd.sub {
+clear: left;
+}
+article.jsonTree dd.string {
+background: #eee;
+}
+
+ol li.done {
+	text-decoration: line-through;
+}

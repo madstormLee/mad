@@ -1,25 +1,28 @@
 <?
 class MadController {
-	protected $g = null;
+	protected $name = 'Mad';
+	protected $data = array();
 
 	function __construct() {
-		$this->g = MadGlobals::getInstance();
+		$this->name = subStr( get_class($this), 0, -10 );
 	}
-	public static final function create( $name ) {
-		$componentsDir = 'components';
-		$g = MadGlobals::getInstance();
-		if ( $g->dirs->components ) {
-			$componentsDir = $g->dirs->components;
-		}
+	public static function create( $path = '' ) {
+		$name = ucFirst( baseName( $path ) );
 
 		$controllerName = $name . 'Controller';
-		$controllerFile = "$componentsDir/$name/$controllerName.php";
-
-		if ( is_file( $controllerFile ) ) {
-			include_once $controllerFile;
-			return new $controllerName;
+		$controllerFile = "$path/$controllerName.php";
+		if ( ! is_file( $controllerFile ) ) {
+			return new self;
 		}
-		return new self;
+		include $controllerFile;
+		return new $controllerName;
+	}
+	function setData( $data ) {
+		$this->data = $data;
+		return $this;
+	}
+	function getData() {
+		return $this->data;
 	}
 	function getActions() {
 		$methods = get_class_methods( $this );
@@ -31,53 +34,24 @@ class MadController {
 		}
 		return $actions;
 	}
-	protected function getNotFoundTarget() {
-		if ( ! $this->layout instanceof MadView ) {
-			$this->layout = new MadView;
-			return 'layout';
-		}
-		if ( ! $this->main instanceof MadView ) {
-			$this->main = new MadView;
-		}
-		return 'main';
-	}
-	protected function getNotFoundView() {
-		if ( $this->debug ) {
-			$view = 'views/NotFound/debugAction.html';
-		} else {
-			$view = 'views/NotFound/action.html';
-		}
-		if( is_file( $view ) ) {
-			return $view;
-		}
-		return MAD . $view;
-	}
 	/*************** magic methods *******************/
 	function __set( $key, $value ) {
-		$this->g->$key = $value;
+		$this->data[$key] = $value;
 	}
 	function __get( $key ) {
-		return $this->g->$key;
+		return isset( $this->data[$key] ) ? $this->data[$key]:false;
 	}
 	function __isset( $key ) {
-		return isset( $this->g->$key );
+		return isset( $this->data[$key] );
 	}
-	function __call( $method, $args ) {
-		$target = $this->getNotFoundTarget();
-		$view = $this->$target;
-
-		$view->setView( $this->getNotFoundView() );
-
-		if ( $this->debug ) {
-			$view->controller = $this;
+	function __call( $action, $args ) {
+		$actionName = subStr( $action, 0, -6 );
+		$file = get_class( $this ) . "/$actionName.php";
+		if ( is_file( $file ) ) {
+			include $file;
 		}
-
-		return $view;
 	}
 	function __toString() {
-		if ( IS_AJAX ) {
-			return $this->main;
-		}
-		return $this->layout;
+		return get_class( $this );
 	}
 }

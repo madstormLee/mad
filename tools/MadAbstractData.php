@@ -12,32 +12,20 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 	}
 	function get( $key ) {
 		if ( ! isset( $this->data[$key] ) ) {
-			return new MadNull;
+			return false;
 		}
 		return $this->data[$key];
 	}
 	function set( $key, $value ) {
-		if ( $key === null ) {
-			return $this->add( $value );
-		}
-		if ( is_array( $value ) ) {
-			$value = new MadData( $value );
-		}
 		$this->data[$key] = $value;
 		return $this;
 	}
-	function addSlashes() {
-		foreach( $this->data as &$value ) {
-			$value = addSlashes( $value );
-		}
+	function remove( $key ) {
+		$this->offsetUnset( $key );
 		return $this;
 	}
 	function add( $value ) {
-		if ( is_array( $value ) ) {
-			$value = new MadData( $value );
-		}
-		$this->data[] = $value;
-		return $this;
+		return $this->push( $value );
 	}
 	function getData() {
 		return $this->data;
@@ -46,17 +34,8 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		$this->data = array();
 		return $this->addData( $data );
 	}
-	function addData( $data = null ) {
-		if ( empty( $data ) ) {
-			return $this;
-		}
-		foreach( $data as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$this->data[$key] = new MadData( $value );
-			} else {
-				$this->data[$key] = $value;
-			}
-		}
+	function addData( $data = array() ) {
+		$this->data = array_merge( $this->data, $data );
 		return $this;
 	}
 	function clear() {
@@ -157,6 +136,13 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 	function getArrayValues() {
 		return array_values($this->data);
 	}
+	/******************** utils ********************/
+	function addSlashes() {
+		foreach( $this->data as &$value ) {
+			$value = addSlashes( $value );
+		}
+		return $this;
+	}
 	function getDictionary( $target1='', $target2 = '' ) {
 		$rv = array();
 		foreach( $this->data as $key => $row ) {
@@ -186,6 +172,22 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 	function json() {
 		return json_encode( $this->getArray() );
 	}
+	function getJson() {
+		return json_encode( $this->data );
+	}
+	function setJson( $json ) {
+		$this->data = json_decode($json);
+		return $this;
+	}
+	function walk( $name, $function ) {
+		if ( ! $this->$name ) {
+			return false;
+		}
+		foreach( $this->$name as $key => $value ) {
+			$function( $key, $value, $this );
+		}
+		return $this;
+	}
 	/************* Countable implements ****************/
 	function count() {
 		return count( $this->data );
@@ -199,18 +201,19 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		reset( $this->data  );
 		return $this->current();
 	}
+	public function key() {
+		return key( $this->data );
+	}
 	public function current() {
-		$rv = current( $this->data );
-		if ( is_array( $rv ) ) {
-			return new MadData( $rv );
-		}
-		return $rv;
+		return current( $this->data );
 	}
 	public function next() {
 		return next( $this->data );
 	}
 	public function offsetUnset($key) {
-		unset( $this->$key );
+		if ( isset( $this->data[$key] ) ) {
+			unset( $this->data[$key] );
+		}
 	}
 	public function offsetExists($key) {
 		return isset( $this->$key );
@@ -235,35 +238,18 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		$this->set( $key, $value );
 	}
 	function __unset($key) {
-		if ( isset( $this->data[$key] ) ) {
-			unset( $this->data[$key] );
-		}
+		$this->offsetUnset( $key );
 	}
 	function has( $key ) {
-		if ( isset( $this->data[$key] ) ) {
-			return true;
-		}
-		return false;
+		return isset( $this->data[$key] );
 	}
 	function __isset( $key ) {
 		return $this->has( $key );
 	}
 	function __toString() {
-		return '';
-	}
-	/*********************** test util ***********************/
-	// this hen.
-	function isArray( &$array ) {
-		return (bool)(
-				$array instanceof ArrayAccess ||
-				$array instanceof Traversable ||
-				is_array($array)
-				);
+		return printR( $this->data, true );
 	}
 	public function isEmpty() {
 		return empty( $this->data );
-	}
-	function test() {
-		return (new MadDebug)->printR( $this->data );
 	}
 }

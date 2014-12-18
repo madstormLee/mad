@@ -1,0 +1,37 @@
+<h1>Component Index</h1>
+
+<?=$controller->getNavi(); ?>
+
+<table id='ComponentList' class='simple'>
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>files</th>
+			<th>buttons</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $list as $row ): ?>
+		<tr>
+			<th class='title'><a href='./view?id=<?=$row->id?>'><?=$row->id?></a></th>
+			<td>
+				<ul style='text-align: left'>
+					<? foreach( $row->files as $file ): ?>
+					<li><?=$file->getBasename()?></li>
+					<? endforeach; ?>
+				</ul>
+			</td>
+			<td class='buttons'>
+				<a href='./view?id=<?=$row->id?>'>View</a>
+				<a href='./write?id=<?=$row->id?>'>Edit</a>
+				<a href='./delete?id=<?=$row->id?>'>Delete</a>
+			</td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>
+
+<? if ( $list->isEmpty() ) : ?>
+<p class='notice'>No searched list.</p>
+<? endif; ?>
+

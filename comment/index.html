@@ -1,0 +1,14 @@
+<h1>Comment Index</h1>
+
+<dl class='CommentList'>
+	<? foreach( $list as $row ) {
+	<dt class='writer'>
+		<label>글쓴이</label>
+		<b><?=$id?></b>
+		<label>날짜</label>
+		<b><?=$row->wDate?></b>
+		<a class='delete' href='./delete?id=<?=$row->id?>'>X</a>
+	</dt>
+	<dd><?=$contents?></dd>
+	<? endforeach; ?>
+</dl>

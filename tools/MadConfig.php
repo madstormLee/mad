@@ -1,59 +1,81 @@
 <?
 class MadConfig extends MadAbstractData {
-	private $json;
-
-	function __construct( $file ) {
+	private static $instance;
+	private function __construct( ) {
+	}
+	public static function getInstance() {
+		self::$instance || self::$instance = new self;
+		return self::$instance;
+	}
+	function addConfig( $file = 'config.json' ) {
 		$json = new MadJson( $file );
-		$this->json = $json;
-		$this->init();
+		$this->data = array_merge_recursive( $this->data, $json->getData() );
+		return $this;
 	}
-	function add( $file ) {
-		$config = self::getInstance();
-		$units = explode('.', $file );
-		$extension = array_pop( $units );
-		if ( $extension == 'json' ) {
-			$config->addJson( $file );
-		}
-	}
-	function init() {
-		$json = $this->json;
-
-		// setting type
-		$this->type = 'php';
-		if( $json->type ) {
-			$this->type = $json->type;
-		}
-
-		if ( $json->useSession ) {
-			MadSession::start();
-		}
-		foreach( $json->instances as $key => $value ) {
-			if ( strpos( $value, '::' ) ) {
-				$this->g->$key = $this->createInstance( $value );
-			} else {
-				$this->g->$key = $this->createObject( $value );
-			}
-		}
-		foreach( $json->calls as $command ) {
-			$this->call( $command );
-		}
-		foreach( $json->components as $key => $dir ) {
-			$this->$key = new MadComponent( $dir );
-		}
-		// new
+	function getCss() {
 		$css = MadCss::getInstance();
+		if ( ! $this->css ) {
+			return $css;
+		}
+		foreach( $this->css as $value ) {
+			$css->add( $value );
+		}
+		return $css;
+	}
+	function getJs() {
 		$js = MadJs::getInstance();
-		foreach( $json->resources as $key => $file ) {
-			if ( preg_match( '/\.(html|json|txt)$/', $file ) ) {
-				$this->$key = MadFile::create( $file );
-			} else if ( preg_match( '/.css$/', $file ) ) {
-				$css->add( "$dir/$file" );
-			} else if ( preg_match( '/.js$/', $file ) ) {
-				$js->add( "$dir/$file" );
+		if ( ! $this->js ) {
+			return $js;
+		}
+		foreach( $this->js as $value ) {
+			$js->add( $value );
+		}
+		return $js;
+	}
+	function init2() {
+		foreach( $this->data as $key => $value ) {
+			if ( ! is_string( $value ) ) {
+				continue;
+			}
+			if ( preg_match( '/\.(html|json|txt)$/', $value ) ) {
+				$this->$key = new MadView( $value );
+			} else if ( strpos( $value, '::' ) ) {
+				$this->$key = $this->createInstance( $value );
+			} else if ( 0 === strpos( $value, 'new ' ) ) {
+				$this->$key = $this->createObject( $value );
 			} else {
 				$this->$key = $value;
 			}
 		}
+	}
+	function getViews() {
+		if ( ! $this->views ) {
+			$this->views = array();
+		}
+		$this->walk( 'views', function( $key, $value ) {
+			$this->views->$key = new MadView( $value );
+		});
+		return $this->views;
+	}
+	function init() {
+		$this->css = $this->getCss();
+		$this->js = $this->getJs();
+		$this->views = $this->getViews();
+
+		$this->walk( 'instances', function( $key, $value ) {
+			if ( strpos( $value, '::' ) ) {
+				$this->$key = $this->createInstance( $value );
+			} else if ( strpos( $value, 'new' ) == 0 ) {
+				$value = str_replace( 'new ', '', $value );
+				$this->$key = $this->createObject( $value );
+			}
+		});
+		$this->walk( 'calls', function( $key, $value ) {
+			$this->call( $value );
+		});
+		$this->walk( 'components', function( $key, $value ) {
+			$this->$key = new MadComponent( $value );
+		});
 		return $this;
 	}
 	private function createObject( $value ) {

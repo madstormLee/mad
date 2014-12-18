@@ -1,152 +1,114 @@
 <?
-class MadList extends Mad implements IteratorAggregate {
-	protected $model = null;
+// this is facade. and some utilities for list page.
+// use query, db, pagenavi ... and some adjusting names
+// todo: refactoring with no database and queries.
+class MadList extends MadData {
+	protected $initFlag = false;
 	protected $data = array();
-	protected $fields = '*';
-	protected $table;
-	protected $tables;
-	protected $on = '';
 
-	protected $where;
-	protected $order;
-	protected $groupBy;
-	protected $limit;
-	protected $search;
-	protected $searchTotal = 0;
+	protected $model = null;
 
-	// 구현해야 함.
-	public $searchForms = array();
+	protected $query = null;
 
-	function __construct( MadModel $model = null ) {
-		parent::__construct();
-		if ( $model instanceof MadModel ) {
-			$this->model = $model;
-			$this->setTable( $model->getTable() );
-		} else {
-			$this->setTable( substr( get_class( $this ), 0,-4 ) );
-			
+	protected $total = false;
+	protected $searchTotal = false;
+	protected $pageNavi = null;
+
+	function __construct( MadDbModel $model ) {
+		$this->model = $model;
+		$this->query = new MadQuery( $model->getTable() );
+
+		$this->pageNavi = new MadPageNavi( $this );
+	}
+	// this can be override.
+	public function init() {
+		if ( $this->initFlag === true || ! empty( $this->data ) ) {
+			$this->initFlag = true;
+			return $this;
 		}
-		$this->order = new MadOrder;
-		$this->limit = new MadLimit;
-		$this->where = new MadWhere;
-		$this->groupby = new MadGroupBy;
-		// default order setting
-		$this->setOrder('no desc');
+		$this->initFlag = true;
+		$this->setSearchTotal();
 
-		$this->search = new MadForm( new MadJson("json/$this->table/search") );
-		$this->search->setModel( new User );
-	}
-	function setSearch( $search ) {
-		$this->search = $search;
-	}
-	function getSearch() {
-		return $this->search;
-	}
-	function search( $search ) {
-		foreach( $search->filter() as $key => $value ) {
-			if ( ! $this->search->$key ) {
-				continue;
-			}
-			$type = $this->search->$key->type;
-			if ( $type == 'text' ) {
-				$like = 'like';
-				if ( 0 === strpos( $value, '!' ) ) {
-					$like = 'not like';
-					$value = substr( $value, 1 );
-				}
-				$this->addWhere( "$key $like '%$value%'" );
-			} else if ( $type == 'checkbox' ) {
-				$value = implode( "','", $value->get() );
-				$this->addWhere( "$key in ('$value')" );
-			}
-		}
-	}
-	function getSearchForms() {
-		return new MadData;
-	}
-	// 구현해야 함.
-	function getSelectedHeaders() {
-		$q = new Q("explain $this->table");
-		return $q->getColumn( 'Field' );
-	}
-	function get() {
-		return $this->getData();
-	}
-	function setTable( $table ) {
-		$this->tables = array();
-		$this->addTable( $table );
+		$this->data = $this->query->query();
 		return $this;
 	}
-	function getTable() {
-		return '`' . implode( '` inner join `', $this->tables ) . '`';
+	function getQuery() {
+		return $this->query;
 	}
-	function addTable( $tableName ) {
-		$this->tables[] = $tableName;
-		$this->table = $this->getTable();
+	function setQuery( MadQuery $query ) {
+		$this->query = $query;
 		return $this;
-	}
-	function on( $leftField, $rightField) {
-		if ( count( $this->tables ) > 1 ) {
-			$this->on = "on {$this->tables[0]}.$leftField = {$this->tables[1]}.$rightField";
-		}
-		return $this;
-	}
-	function setData() {
-		$this->limit->setTotal( $this->getSearchTotal() );
-
-		$query = "select * from $this->table $this->on $this->where $this->order $this->limit";
-		$q = new Q($query);
-		$this->data = $q->toObject();
-		return $this;
-	}
-	function getData() {
-		if ( empty( $this->data ) ) {
-			$this->setData();
-		}
-		return $this->data;
 	}
 	function getSearchTotal() {
-		if ( empty( $this->searchTotal ) ) {
-			$this->setSearchTotal();
-		}
-		return $this->searchTotal;
+		return $this->setSearchTotal()->searchTotal;
 	}
-	protected function setSearchTotal() {
-		$q = new MadQ( "select count(*) from $this->table $this->on $this->where" );
-		$this->searchTotal = $q->getFirst();
+	function setSearchTotal() {
+		if ( $this->searchTotal === false ) {
+			$this->searchTotal = $this->query->searchTotal();
+		}
 		return $this;
+	}
+	function getTotal() {
+		return $this->setTotal()->total;
+	}
+	function setTotal() {
+		if ( $this->total === false ) {
+			$this->total = $this->query->total();
+		}
+		return $this;
+	}
+	function setRows( $limit ) {
+		$this->query->limit( $limit );
+		return $this;
+	}
+	function getRows() {
+		return $this->query->limit();
+	}
+	function setPages( $pages = 10 ) {
+		$this->pageNavi->pages = $pages;
+	}
+	/*********************** utility methods **********************/
+	function isEmpty() {
+		return ! $this->getSearchTotal();
+	}
+	function getData() {
+		$this->init();
+		return $this->data;
 	}
 	function getIterator() {
-		return new ArrayIterator($this->get());
-	}
-	function setOrder( $order ) {
-		$this->order->set( $order );
-		return $this;
-	}
-	function setNoLimit() {
-		$this->limit->noLimit();
-	}
-	function setRows( $rows ) {
-		$this->limit->setRows( $rows );
-		return $this;
-	}
-	function addWhere( $where ) {
-		$this->where->add( $where );
-		return $this;
+		$this->init();
+		return $this->data;
 	}
 	function getPageNavi() {
-		return $this->limit->getPageNavi();
+		return $this->pageNavi;
 	}
-	function isEmpty() {
-		return empty( $this->data );
+	function getMoreNavi( $href = './list', $param = '' ) {
+		$view = new MadView('views/moreNavi.html');
+		$view->rows = $this->query->limit;
+		if ( $view->rows == 0 ) {
+			return '';
+		}
+		$view->href = $href;
+		$view->param = $param;
+		$view->list = $this;
+		if ( ! $page = MadParam::create('get')->page ) {
+			$page = 1;
+		}
+		$view->page = $page;
+		$view->nextPage = $view->page + 1;
+		$view->total = $this->getSearchTotal();
+
+		if(  $view->page * $view->rows > $view->total ) {
+			return '';
+		}
+		return $view;
 	}
-	function addGroup( $column ) {
-		$this->groupBy->add( $column );
-	}
-	function test() {
-		(new MadDebug)->printR($this->data);
-	}
-	function getWhere() {
-		return $this->where;
+	function __call( $method, $args ) {
+		if ( ! method_exists( $this->query, $method ) ) {
+			throw new Exception( get_class($this) . " has not $method method." );
+			// actually this is need ReflextionClass.
+		}
+		return call_user_func_array( array( $this->query, $method ), $args );
 	}
 }
+

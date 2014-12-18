@@ -1,9 +1,21 @@
 <?
 class MadDebug {
+	private static $instance;
 	private $runtime = 0;
 
-	function __construct() {
+	private function __construct( $mode = 'dev' ) {
 		$this->runtime = microtime( true );
+		$reporting = ( $mode == 'dev' ) ? E_ALL:0;
+		$displayErrors = $reporting ? true : false ;
+
+		header('Content-Type:text/html; charset=UTF-8');
+		error_reporting( $reporting );
+		ini_set('display_errors', $displayErrors );
+		date_default_timezone_set('Asia/Seoul');
+	}
+	public static function getInstance( $mode = 'dev' ) {
+		self::$instance || self::$instance = new self( $mode );
+		return self::$instance;
 	}
 	public function runtime() {
 		return microtime(true) - $this->runtime;

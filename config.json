@@ -1,61 +1,32 @@
 {
-	"type": "layout",
-	"version": "1.0",
+	"debug": "dev",
+	"session": "start",
+
 	"info": {
-		"id": "Mad",
-		"name": "Mad",
-		"label":"Mad",
-		"team": "Madstormz",
-		"author": "madstorm.lee",
-		"description":"simplified MadTools",
-		"wDate": "2012-11-11 09:39:56",
-		"uDate": "2012-11-11 09:39:56"
+		"title": "Mad",
+		"author": "Madstorm",
+		"year": "2014",
+		"project": "ThunderStorm"
 	},
-	"layoutInfo": {
-		"id": "DefaultLayout",
-		"name": "DefaultLayout",
-		"label":"Default Layout",
-		"description":"admin layout for MadTools"
-	},
-	"useSession": true,
-	"misc": {
-		"header": "Content-type: text/html; charset=utf-8",
-		"set_error_handler": [ "MadError::handler", "error_reporting()" ],
-		"set_exception_handler": [ "MadException::handler" ]
-	},
-	"values": {
-		"logFile": "data/logs/service.log",
-		"title": "MadTools",
-		"debug": false,
-		"maintenance": false,
-		"logo": "images/logo.gif",
-		"authUrl": "~/user/login?setting=storeMobile"
-	},
-	"components": {
-		"layout": "DefaultLayout"
-	},
-	"instances": {
-		"front": "MadFront::getInstance()",
-		"router": "MadRouter::getInstance()",
-		"js": "MadJs::getInstance()",
-		"css": "MadCss::getInstance()",
-		"get": "MadParam::create('get')",
-		"post": "MadParam::create('post')",
-		"log": "UserLog::getInstance()",
-		"l10n": "MadL10N::getInstance()"
-	},
-	"resources": {
-		"databases": "resources/databases.json",
-		"sitemap": "resources/sitemap.json",
-		"layout": "resources/layout.html",
-		"header": "resources/header.html",
-		"footer": "resources/footer.html",
-		"left": "resources/left.html",
-		"right": "resources/right.html"
-	},
-	"scripts": [
-		"resources/style.css",
-		"resources/script.js",
-		"resources/jquery-1.8.3.min.js"
+
+	"defaultComponent": "File",
+
+	"layout": "Layout/index.html",
+	"header": "Layout/header.html",
+	"right": "Layout/right.html",
+	"footer": "Layout/footer.html",
+	"userLog": "UserLog::getInstance()",
+
+	"css": [
+		"~/Foundation/css/normalize.css",
+		"~/Foundation/css/foundation.css",
+		"~/Layout/style.css"
+	],
+
+	"js": [
+		"~/Foundation/js/modernizr.js",
+		"~/Foundation/js/jquery.js",
+		"~/Foundation/js/foundation.min.js",
+		"~/Layout/script.js"
 	]
 }

@@ -1,5 +1,8 @@
 <?
 class MadHeaders {
+	public static function p3p() {
+		header ('P3P : CP="ALL CURa ADMa DEVa TAIa OUR BUS IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC OTC"');
+	}
 	public static function charset( $charset = 'UTF-8' ) {
 		mb_internal_encoding($charset);
 		header("Content-type: text/html;charset=$charset");
@@ -15,18 +18,13 @@ class MadHeaders {
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	}
 	public static function download( $fileName, $type='zip' ) {
-		Header("Content-type: file/unknown");
+		if ( $type == 'excel' ) {
+			$type = 'vnd.ms-excel';
+		}
 		header("Cache-Control: public");
 		header("Content-Description: File Transfer");
 		header("Content-Disposition: attachment; filename=$fileName");
 		header("Content-Type: application/$type");
-		header("Content-Transfer-Encoding: binary");
-	}
-	public static function excelDownload( $fileName ) {
-		header("Cache-Control: public");
-		header( "Content-Description: File Transer" );
-		header( "Content-Disposition: attachment; filename=$fileName" ); 
-		header( "Content-Type: application/vnd.ms-excel" ); 
 		header("Content-Transfer-Encoding: binary");
 	}
 	public static function replace( $location ) {

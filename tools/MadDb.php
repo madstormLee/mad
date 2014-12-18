@@ -1,115 +1,56 @@
 <?
-class MadDb implements IteratorAggregate, Countable {
-	protected static $supportDrivers = array(
-			'pgsql' => 'MadPgsqlDb',
-			'mysql' => 'MadMysqlDb',
-			);
-	protected $defaultDriver = 'pgsql';
-
-	protected $conn = null;
-
-	protected $index = false;
-	protected $query = '';
+class MadDb extends PDO implements IteratorAggregate, Countable {
+	protected $defaultDriver = 'mysql';
+	protected $driver = 'mysql';
 
 	protected $data = array();
 	protected $rows = 0;
-	protected $result = null;
+	protected $statement = null;
 
-	function __construct( $query = '' ) {
-		$this->conn = new MadDbConn;
-
-		if ( ! empty( $query ) ) {
-			$this->query( $query );
-		}
-	}
-	// factory method pattern?
+	// factory method
 	static function create( $conn = null ) {
-		if ( empty( $conn ) || isset( self::$supportDrivers[$name] ) ) {
-			return new $this->defaultDriver;
+		if ( $conn == null ) {
+			$conn = MadConfig::getInstance()->database;
 		}
-		$driver = self::$supportDrivers[$conn->server];
+		if ( is_null($conn) ) {
+			throw new Exception( 'Connection info not found.' );
+		}
 
-		$db = new $driver;
-		return $db->setConnectInfo( $conn );
-	}
-	function setDatabase( $name ) {
-		$databases = MadGlobals::getInstance()->databases;
-		$connectInfo = $databases->$name;
-		if ( ! $connectInfo  ) {
-			$connectInfo = $databases->default;
+		$dsn = "mysql:host=$conn->host;dbname=$conn->dbname";
+		$options = array();
+		foreach( $conn->options as $key => $value ) {
+			$options[(int)$key] = $value;
 		}
-		$this->setConnectInfo( $connectInfo );
+
+		$db = new self( $dsn, $conn->username, $conn->password, $options );
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		return $db;
+	}
+	function query( $query ) {
+		$this->statement = parent::query( $query );
 		return $this;
-	}
-	function setDebug( $debug = true ) {
-		$this->conn->setDebug( true );
-		return $this;
-	}
-	function exec( $query ) {
-		return $this->conn->exec( $query ) ;
-	}
-	function query( $query, $class = '' ) {
-		$this->query = $query;
-
-		if ( ! $this->result = $this->conn->query( $query ) ) {
-			return $this;
-		}
-
-		if ( ! empty( $class ) ) {
-			$this->result->setFetchMode( PDO::FETCH_CLASS);
-		} else {
-			$this->result->setFetchMode( PDO::FETCH_OBJ);
-		}
-		$data = $this->result->fetchAll();
-
-		$this->data = array();
-		foreach( $data as &$row ) {
-			if ( $this->index && isset( $row->{$this->index} ) ) {
-				$key = $row->{$this->index};
-				$this->data[$key] = $row;
-			} else {
-				$this->data[] = $row;
-			}
-		}
-
-		if ( preg_match( '/^select/i', $this->query ) ) {
-			$this->rows = count( $this->data );
-		} else {
-			$this->rows = $this->result->rowCount();
-		}
-
-		return $this;
-	}
-	function getKeys() {
-		return new MadData( array_keys( $this->data ) );
 	}
 	function setData( $data ) {
 		$this->data->setData( $data );
 		return $this;
 	}
 	function getData() {
-		$rv = new MadData( $this->data );
-		$this->clear();
-		return $rv;
-	}
-	function setConnectInfo( $conn ) {
-		$this->conn->setConnectInfo( $conn );
-		return $this;
-	}
-	function index( $index ) {
-		$this->index = $index;
-		return $this;
+		return $this->data = $this->statement->fetchAll();
 	}
 	/******************* fetches *******************/
-	function fetch() {
-		return current( $this->data );
+	function fetch( $class = 'StdClass' ) {
+		$this->statement->setFetchMode( PDO::FETCH_CLASS, $class );
+		return $this->statement->fetch();
+	}
+	function fetchAssoc() {
+		return $this->statement->fetch( PDO::FETCH_ASSOC );
 	}
 	function row() {
 		return $this->fetch();
 	}
 	function fetchColumn( $fieldName ) {
 		$rv = array();
-		foreach( $this as $row ) {
+		foreach( $this->data as $row ) {
 			$rv[] = $row->$fieldName;
 		}
 		return new MadData( $rv );
@@ -119,15 +60,14 @@ class MadDb implements IteratorAggregate, Countable {
 			return false;
 		}
 		$rv = current( $this->data[0] );
-		$this->clear();
 		return $rv;
 	}
 	/*********************** utilities ***********************/
 	function rows() {
-		return $this->rows;
+		return $this->statement->rowCount();
 	}
 	function count() {
-		return $this->rows();
+		return $this->statement->rowCount();
 	}
 	function getAllColumnMeta() {
 		$rv = array();
@@ -136,22 +76,12 @@ class MadDb implements IteratorAggregate, Countable {
 		}
 		return $rv;
 	}
-	function dic( $target1 = '', $target2='' ) {
-		return $this->getData()->dic( $target1, $target2 );
-	}
-	function getDictionary( $key = '', $value = '' ) {
-		$rv = array();
-		foreach( $this->data as $row ) {
-			$rv[$row->$key] = $row->$value;
-		}
-		return new MadData( $rv );
-	}
 	/******************* getter only ******************/
-	function getResult() {
-		return $this->result;
+	function getStatement() {
+		return $this->statement;
 	}
 	function getInsertId( $key = '' ) {
-		return $this->conn->getInsertId( $key );
+		return $this->lastInsertId( $key );
 	}
 	function getIterator() {
 		return $this->getData();
@@ -191,19 +121,48 @@ class MadDb implements IteratorAggregate, Countable {
 		$this->data = array();
 		return $this;
 	}
+	function setDebug( $debug ) {
+		$this->debug = ! ! $debug;
+		if ( $this->debug === true ) {
+		}
+		return $this;
+	}
 	static function testColumns( $table ) {
 		self::create()->showColumns( $table )->test();
-	}
-	function test() {
-		print $this->query;
-		print BR;
-		(new MadDebug)->printR( $this->data );
 	}
 	/***************** magic methods ******************/
 	function __unset( $key ) {
 		unset( $this->data->$key );
 	}
 	function __toString() {
+		// this must view db spec
 		return $this->query;
+	}
+	/***************** escapes ******************/
+	public function escapeFields( $data ) {
+		foreach( $data as &$value ) {
+			$value = $this->escapeField( $value );
+		}
+		return $data;
+	}
+	public function escapeField( $value ) {
+		if ( is_array( $value ) ) {
+			return $this->escapeFields( $value );
+		}
+		if ( false !== strpos( '.', $value ) ) {
+			$fields = explode( '.', $value );
+			return implode( '.', $this->escapeFields( $fields ) );
+		}
+		if ( $this->driver == 'mysql' ) {
+			return  "`$value`";
+		}
+		return "\"$value\"";
+	}
+	public final function getSet( $data ) {
+		$rv = array();
+		foreach( $data as $key => $value ) {
+			$rv[] = $this->escapeField( $key ) . "=:$key";
+		}
+		return implode( ', ', $rv );
 	}
 }

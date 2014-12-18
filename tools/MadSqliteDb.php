@@ -1,0 +1,3 @@
+<?
+class MadSqliteDb extends MadDb {
+}

@@ -1,0 +1,34 @@
+{
+	"index": {
+		"views": {
+			"right": "~/Backlog/widget?id=default"
+		}
+	},
+	"view": {
+	},
+	"write": {
+	},
+	"save": {
+		"validate": {
+			"contents": {
+				"empty": "No contents"
+			}
+		},
+		"interpret": {
+			"empty": "Save Error",
+			"default": "Saved"
+		}
+	},
+	"delete": {
+		"validate": {
+			"id": {
+				"empty": "id is mandatory",
+				"!/[0-9]{6}_[0-9]{6}/": "Wrong id"
+			}
+		},
+		"interpret": {
+			"empty": "Delete Error",
+			"default": "Deleted"
+		}
+	}
+}

@@ -1,58 +1,45 @@
 <?
 class MadFront {
-	private static $instance = null;
+	private static $instance;
+	private $config;
 
 	private function __construct() {
+		$this->config = MadConfig::getInstance();
+		MadDebug::getInstance( $this->config->debug );
+		MadSession::start( $this->config->session );
 	}
-	public function getInstance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self;
-		}
+	public static function getInstance() {
+		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
-	function __toString() {
-		try {
-			$result = $this->dispatch();
-			return $result;
-		} catch ( Exception $e ) {
-			return $e;
-		}
+	function getConfig() {
+		return $this->config;
 	}
-	private function dispatch() {
-		$configs = MadConfigs::getInstance();
-		try {
-			$controller = MadController::create( $configs->router->controller );
-			$action = $configs->router->action . 'Action';
+	public function getContents() {
+		$config = $this->config;
 
-			$contents = $controller->$action();
-		} catch ( PDOException $e ) {
-			if ( $configs->debug == true ) {
-				return (new MadDebug)->printR( $e, true );
-			}
-			throw $e;
-		} catch ( Exception $e ) {
-			$message = _( $e->getMessage() );
-			if ( IS_AJAX || IS_INTERNAL ) {
-				return $message;
-			}
-			MadJs::getInstance()->alert( $message )->replaceBack();
+		$router = MadRouter::getInstance();
+
+		if ( MadComponent::isComponent( $router->component ) ) {
+			$component = new MadComponent( $router->component );
+		} else {
+			$component = new MadComponent( $config->defaultComponent );
 		}
 
-		if ( (! IS_INTERNAL) && (! IS_AJAX) &&
-				( empty( $contents ) || is_numeric( $contents ) ) ) {
-			MadJs::getInstance()->replaceBack();
+		$params = new MadParams("_$router->method");
+		$main = $component->{$router->method}( $router->action, $params );
+
+		if ( $router->ajax || $router->method == 'POST' ) {
+			return (string) $main;
 		}
 
-		if ( IS_AJAX ) {
-			return $contents;
+		if ( ! $config->layout ) {
+			return (string) $main;
 		}
-		if ( IS_GET ) {
-			$layout = MadComponent::create( $configs->layout );
-			$configs->layout->contents = $contents;
-			return $configs->layout;
-		}
-		if ( IS_POST ) {
-			return $contents;
-		}
+		$config->main = $main;
+		return (string) $config->layout;
+	}
+	function __toString() {
+		return $this->getContents();
 	}
 }

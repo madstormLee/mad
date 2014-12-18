@@ -1,0 +1,3 @@
+<?
+class NotFoundController extends MadController {
+}

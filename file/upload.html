@@ -1,0 +1,9 @@
+<h1>File Upload</h1>
+
+<form name='file_uploader' method='post' enctype='multipart/form-data' action='./upload'>
+	<input type='hidden' name='MAX_FILE_SIZE' value='$filesize'>
+	<input type='file' name='upload[]' /><br />
+	<div id='upload_form'>
+	</div>
+	<button>Upload<button>
+</form>

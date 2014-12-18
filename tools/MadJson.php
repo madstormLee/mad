@@ -3,17 +3,16 @@
 class MadJson extends MadData {
 	protected $file = '';
 
-	private $errorMessages = array(
-			JSON_ERROR_NONE => ' - No errors',
-			JSON_ERROR_DEPTH => ' - Maximum stack depth exceeded',
-			JSON_ERROR_STATE_MISMATCH => ' - Underflow or the modes mismatch',
-			JSON_ERROR_CTRL_CHAR => ' - Unexpected control character found',
-			JSON_ERROR_SYNTAX => ' - Syntax error, malformed JSON',
-			JSON_ERROR_UTF8 => ' - Malformed UTF-8 characters, possibly incorrectly encoded',
-			);
-
-	function __construct( $file = '', $data = array() ) {
-		$this->load( $file, $data );
+	function __construct( $file = '' ) {
+		$this->fetch( $file );
+	}
+	function fetch( $file ) {
+		$this->setFile( $file );
+		if( ! is_file($file) ) {
+			return false;
+		}
+		$this->setJson( file_get_contents( $file ) );
+		return $this;
 	}
 	function isFile() {
 		return is_file( $this->getFile() );
@@ -22,6 +21,9 @@ class MadJson extends MadData {
 		return $this->file;
 	}
 	function getFileInfo() {
+		if ( ! is_file( $this->file ) ) {
+			throw new Exception('File Not Found');
+		}
 		return new SplFileInfo( $this->file );
 	}
 	function setFile( $file ) {
@@ -29,9 +31,7 @@ class MadJson extends MadData {
 		return $this;
 	}
 	function load( $file = '', $data = array() ) {
-		if ( ! empty( $file ) ) {
-			$this->setFile( $file );
-		}
+		$this->setFile( $file );
 		if ( ! is_file ( $this->file ) ) {
 			return $this;
 		}
@@ -43,7 +43,7 @@ class MadJson extends MadData {
 		}
 		$content = file_get_contents( $this->file );
 		$content = str_replace( array_keys( $temp ), array_values( $temp ), $content );
-		$this->setFromRaw( $content );
+		$this->setJson( $content );
 		return $this;
 	}
 	function setFromDl( $dl ) {
@@ -52,7 +52,7 @@ class MadJson extends MadData {
 	}
 	private function dl2Array( $data ) {
 		$data = preg_replace('/<(dl|dt|dd) \w+\s*=\s*[\'"][^\'"]*[\'"]>/', "<$1>", $data );
-		$data = json_decode( json_encode( new SimpleXMLElement( $data ) ), 1 );
+		$data = json_decode( json_encode( new SimpleXMLElement( $data ) ) );
 		return $this->parseDl( $data );
 	}
 	private function parseDl( $data ) {
@@ -82,27 +82,36 @@ class MadJson extends MadData {
 		}
 		return $rv;
 	}
-	function setFromRaw( $json ) {
-		return $this->setJson( $json );
-	}
 	function setJson( $json ) {
-		$json = json_decode( $json, true );
+		$json = json_decode( $json );
 		if( function_exists( 'json_last_error' ) && $errorNo = json_last_error() ) {
 			throw new Exception( $this->getErrorMessage( $errorNo ) );
 		}
-		$this->setData( $json );
+		$data = array();
+		foreach( $json as $key => $row ) {
+			$data[$key] = $row;
+		}
+		$this->setData( $data );
 		return $this;
 	}
 	function isJson( $string ) {
 	}
 	function getErrorMessage( $errorNo ) {
-		if ( ! $message = (new MadData($this->errorMessages))->$errorNo ) {
+		$messages = array(
+			JSON_ERROR_NONE => ' - No errors',
+			JSON_ERROR_DEPTH => ' - Maximum stack depth exceeded',
+			JSON_ERROR_STATE_MISMATCH => ' - Underflow or the modes mismatch',
+			JSON_ERROR_CTRL_CHAR => ' - Unexpected control character found',
+			JSON_ERROR_SYNTAX => ' - Syntax error, malformed JSON',
+			JSON_ERROR_UTF8 => ' - Malformed UTF-8 characters, possibly incorrectly encoded',
+		);
+		if ( ! $message = ckKey( $messages, $errorNo ) ) {
 			$message = ' - Unknown error';
 		}
 		return $message;
 	}
 	function save() {
-		if ( empty($this->data) || empty( $this->file ) ) {
+		if ( empty( $this->file ) ) {
 			return false;
 		}
 		$dir = dirName( $this->file );
@@ -148,18 +157,18 @@ class MadJson extends MadData {
 		$number = 1;
 		foreach( $lines as $key => &$line ) {
 			if ( false !== strpos( $line, '}' ) 
-					|| false !== strpos( $line, ']' ) ) {
-				--$tabs;
-			}
+				|| false !== strpos( $line, ']' ) ) {
+					--$tabs;
+				}
 			$tab = '';
 			for( $i = 0; $i < $tabs; ++$i ) {
 				$tab .= "\t";
 			}
 			$line = $tab . $line;
 			if ( false !== strpos( $line, '{' ) 
-					|| false !== strpos( $line, '[' ) ) {
-				++$tabs;
-			}
+				|| false !== strpos( $line, '[' ) ) {
+					++$tabs;
+				}
 		}
 		return $lines;
 	}
@@ -218,6 +227,7 @@ class MadJson extends MadData {
 		$this->setData( $this->iconv( $charset, $this->getArray() ) );
 		return $this;
 	}
+	// this must go to view.
 	function getString( $data, $tabs = 0 ) {
 		$tab = $this->getTab( $tabs++ );
 		$rv = "{\n";
@@ -237,12 +247,15 @@ class MadJson extends MadData {
 	}
 	function __toString() {
 		// return $this->getString( $this );
-		$view = new MadJsonView;
-		$view->json = $this;
-		return $view->__toString();
+		$component = new MadComponent( 'MadJsonView' );
+		$component->setAction( 'view' );
+		$component->setModel( $this );
+		return $component->getContents();
 	}
-	function test() {
-		print $this->file;
-		(new MadDebug)->r( $this->data );
+	function getContents() {
+		if ( ! empty( $this->data ) ) {
+			return (string) json_encode($this->data);
+		}
+		return '[]';
 	}
 }

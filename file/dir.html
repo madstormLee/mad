@@ -1,0 +1,12 @@
+<h1><?=$model->getBasename()?></h1>
+<nav class='fileBrowser'>
+	<ul>
+		<? if ( $model->getDir() != $_SERVER['DOCUMENT_ROOT'] ) : ?>
+		<li><a href='./dir?dir=<?=$model->getParentDir()?>'>..</a></li>
+		<? endif; ?>
+		<? foreach( $model as $file ): ?>
+		<? if( ! $file->isDir() ) continue; ?>
+		<li><a href='./dir?dir=<?=$file->getFile()?>'><?=$file->getBasename()?></a></li>
+		<? endforeach; ?>
+	</ul>
+</nav>

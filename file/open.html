@@ -1,0 +1,14 @@
+<h1>File</h1>
+
+<ul>
+	<? foreach( $model->getList() as $file ): ?>
+	<? $id=baseName($file,'.txt') ?>
+	<li>
+		<a href='./view?id=<?=$id?>' data-target='main'><?=$id?></a>
+		<? if ( $_SESSION['User']->id ) : ?>
+		<a href='./write?id=<?=$id?>' data-target='main'>E</a>
+		<a href='./delete?id=<?=$id?>' data-confirm='Do you wanna delete file?'>X</a>
+		<? endif; ?>
+	</li>
+	<? endforeach; ?>
+</ul>

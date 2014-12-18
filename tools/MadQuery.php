@@ -1,26 +1,34 @@
 <?
-// 여기에서 db 차이에 대한 것을 없앤다.
-// use lazy setters
-class MadQuery implements IteratorAggregate {
-	private $server = 'pgsql';
+class MadQuery implements IteratorAggregate, Countable {
+	protected $server = 'mysql';
+ 	protected $db = 'null';
 	protected $command = 'select';
-	protected $table = array();
+ 	protected $table = '';
+ 	protected $tables = array();
 	protected $select = '*';
 	protected $having = array();
 	protected $where = array();
 	protected $order = array();
-	public $limit = '';
+	public $limit = '10';
 	protected $offset = 0;
 
-	private $set = null;
+	protected $set = array();
 
 	protected $on = array();
 	protected $group;
 
-	protected $data = array();
+	protected $rollback = false;
+	protected $rollbackQuery = '';
 
-	function __construct( $table ) {
+	protected $data = array();
+	protected $count = 0;
+
+	protected $model = null;
+	protected $statement;
+
+	function __construct( $table = '' ) {
 		$this->db = MadDb::create();
+		$this->table = $table;
 		$this->from( $table );
 	}
 	function getCommand() {
@@ -28,12 +36,6 @@ class MadQuery implements IteratorAggregate {
 	}
 	/*************************** setters *************************/
 	/******************** commands ********************/
-	function drop() {
-		$this->command = 'drop';
-	}
-	function truncate() {
-		return Q::truncate( $this->table );
-	}
 	function select( $select='*' ) {
 		$this->command = 'select';
 		if ( is_array( $select ) ) {
@@ -44,12 +46,12 @@ class MadQuery implements IteratorAggregate {
 	}
 	function insert( $data ) {
 		$this->command = 'insert';
-		$this->data[] = $data;
+		$this->set = $data;
 		return $this;
 	}
 	function update( $data ) {
 		$this->command = 'update';
-		$this->data[] = $data;
+		$this->set = $data;
 		return $this;
 	}
 	function delete() {
@@ -57,10 +59,11 @@ class MadQuery implements IteratorAggregate {
 		return $this;
 	}
 	function from( $table = '' ) {
+		$this->table = $table;
 		if ( empty( $table ) ) {
-			$this->table = array();
+			$this->tables = array();
 		} else {
-			$this->table[] = $table;
+			$this->tables[] = $table;
 		}
 		return $this;
 	}
@@ -125,7 +128,8 @@ class MadQuery implements IteratorAggregate {
 			$this->offset = ( $page - 1) * $this->limit;
 		}
 		// convention
-		if ( ! $page = MadParam::create('get')->page ) {
+		$page = 1;
+		if ( ! $page = MadParams::create('get')->page ) {
 			$page = 1;
 		}
 		$this->offset = ( $page -1 ) * $this->limit;
@@ -135,17 +139,36 @@ class MadQuery implements IteratorAggregate {
 		$this->offset = $offset;
 		return $this;
 	}
-	/******************* getter/setter *****************/
-	function getData() {
-		return $this->data;
-	}
-	function setData( $data ) {
-		$this->data = $data;
+	/*************************** db involed ***************************/
+	function setModel( $model ) {
+		$this->model = $model;
 		return $this;
 	}
+ 	function query( $query = '' ) {
+ 		if ( ! $query ) {
+ 			$query = $this->getQuery();
+ 		}
+ 		$this->statement = $this->db->query( $query );
+ 		return $this;
+ 	}
+ 	function exec( $query = '' ) {
+ 		if ( ! $query ) {
+ 			$query = $this->getQuery();
+ 		}
+		$this->createRollback();
+		return $this->execQuery( $query, array_values($this->set) );
+ 	}
+	function execQuery( $query, $values = array() ) {
+		$statement = $this->db->prepare( $query );
+		$statement->execute( $values );
+		return $statement->rowCount();
+	}
 	/************************* getters **************************/
+	function getDb() {
+		return $this->db;
+	}
 	function getFrom() {
-		$table = $this->escapeField( $this->table );
+		return $this->db->escapeField( $this->table );
 		return implode( ' inner join ', $table );
 	}
 	function getOn() {
@@ -172,11 +195,15 @@ class MadQuery implements IteratorAggregate {
 		}
 		return 'having ' . implode( ' and ', $this->having );
 	}
+	function setOrder( $order ) {
+		$this->order = array();
+		return $this->order( $order );
+	}
 	function getOrder() {
-		if ( ! empty( $this->order ) ) {
-			return 'order by ' . implode( ',', $this->order );
+		if ( empty( $this->order ) ) {
+			return '';
 		}
-		return '';
+		return 'order by ' . implode( ',', $this->order );
 	}
 	function getLimit() {
 		if ( empty( $this->limit ) ) {
@@ -184,6 +211,7 @@ class MadQuery implements IteratorAggregate {
 		}
 		return "limit $this->limit offset $this->offset";
 	}
+	/************************** queries ************************/
 	function getQuery() {
 		$action = 'get' . ucFirst( $this->command ) . 'Query';
 		return $this->$action();
@@ -198,21 +226,28 @@ class MadQuery implements IteratorAggregate {
 		return "select $this->select from $from $on $where $order $limit";
 	}
 	function getInsertQuery() {
-		$table = end( $this->table );
-		$keys = $this->set->getKeys()->implode(',');
-		$values = "'" . $this->set->getValues()->implode("','") . "'";
-		return "insert into $table ( $keys ) values ( $values )";
+		$set = $this->set;
+		unset( $set[$this->pKey] );
+
+		$keys = array_keys( $set );
+		$table = $this->db->escapeField( $this->table );
+		$set = implode( ',', $this->db->escapeFields( $keys ) );
+		$placeholders = implode(',', array_fill( 0, count($keys), '?' ) );
+		return "insert into $table ($set) values ($placeholders)";
 	}
 	function getUpdateQuery() {
-		$table = end( $this->table );
-		$set = $this->getSet();
+		$set = $this->set;
+		if ( ! $key = ckKey( $this->pKey, $set ) ) {
+			return false;
+		}
+		$key = $this->db->escape( $key );
+		$set = $this->getSet( $this->data );
 		$where = $this->getWhere();
-		return "update $table set $set $where";
+		return "update $this->table set $set $where";
 	}
 	function getDeleteQuery() {
-		$table = end( $this->table );
 		$where = $this->getWhere();
-		return "delete from $table $where";
+		return "delete from $this->table $where";
 	}
 	// this is not right.
 	function __get( $key ) {
@@ -228,15 +263,40 @@ class MadQuery implements IteratorAggregate {
 	function __toString() {
 		return $this->getQuery();
 	}
+	/******************* implementaion *****************/
+	function getIterator() {
+		if ( empty( $this->statement ) ) {
+			$this->query();
+			$this->statement = $this->db->getStatement();
+			$this->statement->setFetchMode( PDO::FETCH_INTO, $this->model );
+		}
+		return $this->statement;
+	}
+	function count() {
+		return count( $this->data );
+	}
+	/******************* getter/setter *****************/
+	function getData() {
+		return $this->db->getData();
+	}
+	function setData( $data ) {
+		$this->data = $data;
+		return $this;
+	}
 	/****************** fetches *****************/
 	function fetchAssoc() {
-		return $this->query()->fetchAssoc();
+		return $this->db->query( $this->getQuery() )->fetchAssoc();
 	}
 	function fetch() {
-		return $this->fetchObject();
+		$this->query();
+		$statement = $this->db->getStatement();
+		$statement->setFetchMode( PDO::FETCH_INTO, $this->model );
+		$statement->fetch();
 	}
 	function fetchObject( $class = '' ) {
-		return $this->query()->fetchObject( $class );
+		$this->query();
+		return current( $this->data );
+		// return $this->query()->fetchObject( $class );
 	}
 	function insertId() {
 		return $this->query()->getInsertId();
@@ -244,96 +304,82 @@ class MadQuery implements IteratorAggregate {
 	function rows() {
 		return $this->query()->getRows();
 	}
-	/*************************** db involed ***************************/
-	function query() {
-		return $this->db->query( $get->getQuery() );
-	}
-	function exec() {
-		return $this->db->exec( $this );
-	}
 	/*************************** test ***************************/
 	function isEmpty() {
 		return empty( $this->data );
 	}
-	function test() {
-		print $this;
-		$this->db->query( $this->getQuery() )->test();
+	function isTable(){
+		$query = "show tables like '$this->table'";
+		return $this->db->query( $query )->rows();
 	}
-	/************************* escape **************************/
-	protected function escape( $value ) {
-		if ( is_array( $value ) ) {
-			foreach( $value as &$row ) {
-				$row = $this->escape( $row );
-			}
-			return $this->escape( $value );
-		}
-		if ( ! preg_match( '/\)$/', $value ) ) {
-		}
-		if ( $this->server == 'mysql' ) {
-			$value = mysql_real_escape_string( $value );
-		} elseif ( $this->server == 'pgsql' ) {
-			$value = pg_escape_string( $value );
-		}
-		$value = "'$value'";
-		return $value;
+	/*************************** util ***************************/
+	function total() {
+		$query = "select count(*) from $this->table";
+		return $this->db->query($query)->getFirst();
 	}
-	protected function escapeField( $value ) {
-		if ( is_array( $value ) ) {
-			foreach( $value as &$row ) {
-				$row = $this->escapeField( $row );
-			}
-			return $value;
-		}
-		if ( false !== strpos( '.', $value ) ) {
-			$fields = explode( '.', $value );
-			return implode( '.', $this->escapeField( $fields ) );
-		}
-		if ( $this->server == 'mysql' ) {
-			return  "`$value`";
-		} else if ( $this->server == 'pgsql' ) {
-			return "\"$value\"";
-		}
-		return $value;
+	function searchTotal() {
+		$where = $this->getWhere();
+		$query = "select count(*) from $this->table $where";
+		return $this->count = $this->db->query($query)->getFirst();
 	}
-	protected final function getSet() {
-		$rv = array();
-		foreach( $this->set as $key => $value ) {
-			$value = $this->escape( $value );
-			if ( $this->server == 'mysql' ) {
-				$rv[] = "`$key`=$value";
-			} else {
-				$rv[] = "$key=$value";
-			}
-		}
-		return implode( ', ', $rv );
+	function drop() {
+		return $this->db->exec("drop table $this->table");
 	}
-	function sqlin($string){
-		if( is_array($string) ){
-			$rv = array();
-			foreach($string as $key => $value){
-				$rv[$key] = $this->sqlin($value);
-			}
-		} else {
-			$rv = '';
-			$rv=trim($string);
-			if(!get_magic_quotes_gpc()) $rv=addSlashes($rv);
-		}
-		return $rv;
+	function truncate() {
+		return $this->db->exec( "truncate $this->table" );
 	}
-	function sqlout($string, $flag = false){
-		if( is_array($string) ){
-			$rv = array();
-			foreach($string as $key => $value){
-				$rv[$key]=$this->sqlout($value, $flag);
-			}
-		} else {
-			$rv = '';
-			$rv = $string;
-			$rv = stripslashes($rv);
-			if ( $flag ) {
-				$rv = htmlspecialchars($rv);
-			}
+	function explain() {
+		return $this->db->query( "explain $this->table" );
+	}
+	/**************************** query and rollback ****************************/
+	public function setRollback( $flag = true ) {
+		$this->rollback = $flag;
+		return $this;
+	}
+	public function getRollback() {
+		$this->rollback = $flag;
+		return $this;
+	}
+	public function rollback() {
+		return $this->db->exec( $this->rollbackQuery );
+	}
+	function createRollback() {
+		if ( ! $this->rollback ) {
+			return false;
 		}
-		return $rv;
+		if ( $this->command == 'insert' ) {
+			$query = "delete from $this->table where $this->pKey = $this->id";
+		} elseif ( $this->command == 'delete' ) {
+			$this->select()->setWhere( "id=$this->id" )->query()->fetch();
+			$query = $this->getInsertQuery();
+		} elseif ( $this->command == 'update' ) {
+			$this->select()->setWhere( "id=$this->id" )->query()->fetch();
+			$query = $this->getUpdateQuery();
+		}
+		$this->rollbackQuery = $query;
+	}
+	/******************** from BoardIndex ******************/
+	function getPage() {
+		if ( $this->searchTotal() == 0 ) {
+			return 1;
+		}
+		return ckKey( 'page', $_GET, '1' );
+	}
+	function getPages() {
+		return ceil( $this->searchTotal() / $this->getRows() );
+	}
+	function setRows( $rows ) {
+		$this->rows = $rows;
+		return $this;
+	}
+	private $rows = 10;
+	function getRows() {
+		return $this->rows;
+	}
+	function getPageNavi() {
+		if ( $this->isEmpty() ) {
+			return '';
+		}
+		return new MadPageNavi( $this, 10 );
 	}
 }

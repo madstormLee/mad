@@ -1,0 +1,17 @@
+#right {
+background: #ccf;
+}
+main table th ,
+main table td {
+	text-align: center;
+}
+/******************** footer ************************/
+footer {
+	font-size: 8pt;
+	text-align: right;
+	line-height: 16pt;
+	color: #fff;
+	background: #000;
+	z-index: 1000;
+}
+

@@ -1,3 +1,0 @@
-<?
-class Persona extends MadJson {
-}

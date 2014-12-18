@@ -19,6 +19,9 @@ class MadGeoIp {
 		}
 		return self::$instance;
 	}
+function getCode($ipaddr) {
+	   return file_get_contents("http://geoip.wtanaka.com/cc/$ipaddr");
+}
 	function getLocale( $ip ) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,'http://www.geoplugin.net/php.gp?ip='.$ip);

@@ -1,3 +1,0 @@
-rm -rf css/UserStory/
-rm -rf mv json/UserStory/
-rm -rf mv views/UserStory/

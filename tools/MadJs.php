@@ -1,31 +1,34 @@
 <?
-// is needed charset(?), not implemented yet.
-class MadJs {
+class MadJs extends MadAbstractData {
 	protected static $instance;
+	protected $router;
 	protected $data = array();
 
 	public static function getInstance(){
-		if(! isset(self::$instance) ){
-			self::$instance = new self;
+		return self::$instance ? self::$instance : self::$instance = new self;
+	}
+	private function __construct() {
+		$this->router = MadRouter::getInstance();
+	}
+	function set( $key, $value = '' ) {
+		if ( empty( $value ) ) {
+			$value = $key;
 		}
-		return self::$instance;
+		return $this->add( $value );
 	}
-	function set( $value, $charset='' ) {
-		return $this->add( $value, $charset='' );
-	}
-	function add( $value, $charset='' ) {
+	function add( $value ) {
 		if ( ! in_array( $value, $this->data ) ) {
 			$this->data[] = $value;
 		}
 		return $this;
 	}
-  	function addExists( $fileName, $charset='' ) {
-  		if ( is_file ( preg_replace('!\~/!i', PROJECT_ROOT, $fileName ) ) ) {
-  			return $this->add( $fileName );
-  		}
-  		return $this;
-  	}
-	function addFirst( $value, $charset='' ) {
+	function addExists( $file ) {
+		if ( is_file( $this->router->pathAdjust($file) ) ) {
+			return $this->add( $file );
+		}
+		return $this;
+	}
+	function addFirst( $value ) {
 		if ( ! in_array( $value, $this->data ) ) {
 			array_unshift( $this->data, $value );
 		}
@@ -61,55 +64,30 @@ class MadJs {
 	}
 	/******************** js utilities *******************/
 	function alert($msg){
-		$msg = _($msg);
 		$msg = str_replace( "'", '"', $msg );
 		$msg = str_replace( "\n", '\n', $msg );
 		print "<script>alert('$msg');</script>";
 		return $this;
 	}
 	function replace( $url ) {
-		$url = $this->parseUrl( $url );
+		$url = $this->router->urlAdjust( $url );
 		print  "<script>location.replace('$url');</script>";
-		die;
+		exit;
 	}
 	function move( $url ) {
-		$url = $this->parseUrl( $url );
+		$url = $this->router->urlAdjust( $url );
 		print  "<script>location.href=('$url');</script>";
-		die;
+		exit;
 	}
 	function back() {
 		print "<script>history.back();</script>";
-		die;
+		exit;
 	}
 	function replaceBack() {
 		$server = MadParam::create('_SERVER');
-		$referer = ckKey( 'HTTP_REFERER', $_SERVER );
-		if ( !empty($referer) ) {
-			$this->replace( $referer );
+		if( $server->HTTP_REFERER ) {
+			$this->replace( $server->HTTP_REFERER );
 		}
 		$this->back();
-	}
-	function closeWindow( $url = '' ) {
-		print "<script>window.close();</script>";
-		$this->replace( $url );
-		die;
-	}
-	function moveOpener( $href ) {
-		print "<script>opener.window.location.href='$href';</script>";
-	}
-	function flashin($file_name,$width='',$height=''){
-		$file_name = $file_name . '.swf';
-		$rv = "<script>Flash.print('$file_name',$width, $height)</script>";
-		return $rv;
-	}
-	private function parseUrl( $url ) {
-		$g = MadGlobals::getInstance();
-		$rv = preg_replace('!\~/!i', "{$g->projectRoot}/", $url );
-		$rv = preg_replace('!\./!i', "{$g->projectRoot}/{$g->periodPath}/", $rv );
-		return $rv;
-	}
-	function test() {
-		(new MadDebug)->printR($this->data);
-		return $this;
 	}
 }

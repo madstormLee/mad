@@ -1,0 +1,30 @@
+<h1>Table Write</h1>
+
+<form method='post' action='./save'>
+	<table>
+		<thead>
+		<tr>
+			<th>name</th>
+			<th>attribute</th>
+			<th>unsigned</th>
+			<th>auto_increment</th>
+			<th>primary</th>
+		</tr>
+		</thead>
+		<tbody>
+		<? foreach( $model->getTable() as $row ): ?>
+		<tr>
+			<td><input type='text' name='name[]' /></td>
+			<td><input type='text' name='attr[]' /></td>
+			<td><input type='checkbox' name='unsigned[]' value='true' /></td>
+			<td><input type='checkbox' name='ai[]' value='true' /></td>
+			<td><input type='checkbox' name='pk[]' value='true' /></td>
+		</tr>
+		<? endfor; ?>
+		</tbody>
+	</table>
+
+	<nav class='buttons'>
+		<button type='submit'>Save</button>
+	</nav>
+</form>

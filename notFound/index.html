@@ -1,0 +1,16 @@
+<? if( isset( $exception ) ): ?>
+
+<h1>Exception info</h1>
+<article class='pre'><?=$e?></article>
+
+<? else: ?>
+
+<h1>Page Not Found</h1>
+
+<article class='view'>
+You request <b><?=$_SERVER['REQUEST_URI']?>.</b>
+But we do not serve it.
+You can go <a href='<?=dirName($_SERVER['SCRIPT_NAME'])?>'>here</a>, and looking links.
+</article>
+
+<? endif; ?>

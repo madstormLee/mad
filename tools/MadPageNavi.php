@@ -3,18 +3,18 @@ class MadPageNavi extends MadView {
 	private $list = null;
 
 	function __construct( $list, $pages = 10 ) {
-		parent::__construct( PX_ROOT . 'views/pageNavi.html' );
+		parent::__construct( 'pageNavi/pageNavi.html' );
 		$this->list = $list;
 		$this->pages = $pages;
 	}
 	function __toString() {
 		$list = $this->list;
 
-		$this->total = $list->getSearchTotal();
+		$this->total = $list->searchTotal();
 		if ( $this->total == 0 ) {
 			return '';
 		}
-		$this->rows = $list->getQuery()->limit;
+		$this->rows = $list->getRows();
 		if ( ! $page = MadParam::create('get')->page ) {
 			$page = 1;
 		}

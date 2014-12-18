@@ -1,0 +1,42 @@
+{
+	"GENERAL": {
+		"name": "INFO_GENERAL",
+		"value": 1,
+		"description": "The configuration line, php.ini location, build date, Web Server, System and more."
+	},
+	"CREDITS": {
+		"name": "INFO_CREDITS",
+		"value": 2,
+		"description": "PHP Credits. See also phpcredits()."
+	},
+	"CONFIGURATION": {
+		"name": "INFO_CONFIGURATION",
+		"value": 4,
+		"description": "Current Local and Master values for PHP directives. See also ini_get()."
+	},
+	"MODULES": {
+		"name": "INFO_MODULES",
+		"value": 8,
+		"description": "Loaded modules and their respective settings."
+	},
+	"ENVIRONMENT": {
+		"name": "INFO_ENVIRONMENT",
+		"value": 16,
+		"description": "Environment Variable information that's also available in $_ENV."
+	},
+	"VARIABLES": {
+		"name": "INFO_VARIABLES",
+		"value": 32,
+		"description": "Shows all predefined variables from EGPCS (Environment, GET, POST, Cookie, Server)."
+	},
+	"LICENSE": {
+		"name": "INFO_LICENSE",
+		"value": 64,
+		"description": "PHP License information. See also the » license faq."
+	},
+	"ALL": {
+		"name": "INFO_ALL",
+		"value": -1,
+		"description": "Shows all of the above. This is the default value. "
+	}
+}

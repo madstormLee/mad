@@ -1,0 +1,17 @@
+<h1>Image Rename</h1>
+
+<form class='simple' method='post' action='./mv'>
+	<ul>
+		<li>
+			<label>Image</label>
+			<a href='~/<?=$file->getFile()?>'>
+				<img src='~/<?=$file->getFile()?>' />
+			</a>
+		</li>
+		<li><label for='file'>File</label><input type='text' name='file' value='<?=$file->getFile()?>' readonly /></li>
+		<li><label for='name'>Name</label><input type='text' name='name' value='<?=$file->getName()?>' /></li>
+	</ul>
+	<nav class='buttons'>
+		<button>Rename</button>
+	</nav>
+</form>

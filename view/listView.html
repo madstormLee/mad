@@ -1,0 +1,26 @@
+<h1><?=get_class( $list );?></h1>
+
+<table class='simple'>
+	<thead>
+		<tr>
+			<? foreach( $list->getHeaders() as $header ): ?>
+			<th><?=$header?></th>
+			<? endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $list as $row ): ?>
+		<tr>
+			<? foreach( $row as $column ): ?>
+			<td><?=$column?></td>
+			<? endforeach; ?>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>
+
+<? if ( $list->isEmpty() ) : ?>
+<p class='notice'>No list.</p>
+<? endif; ?>
+
+<?=$list->getPageNavi()?>

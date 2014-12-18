@@ -1,0 +1,36 @@
+<h1>Form maker</h1>
+
+<form method='post' action='?'>
+<table>
+	<tr>
+		<th>¼ø¼­</th>
+		<th>ÄÃ·³¸í</th>
+		<th>·¹ÀÌºí</th>
+		<th>Ç¥½Ã¿©ºÎ</th>
+		<th>ÀúÀå°ª</th>
+		<th>formÇü½Ä</th>
+	</tr>
+	<? foreach( $model as $row ): ?>
+	<tr>
+		<td>$i</td>
+		<td>$field<input type='hidden' name='field[]' value='$field' /></td>
+		<td><input type='text' name='alias[]' value='$field' onfocus='select()'/></td>
+		<td><input type='checkbox' name='rwx[]' value='776'/></td>
+		<td><input type='text' name='savevalue[]' /></td>
+		<td>
+			<select name='formtype[]'>
+				<option value='text'>text</option>
+				<option value='select'>select</option>
+				<option value='radio'>radio</option>
+				<option value='checkbox'>checkbox</option>
+				<option value='textarea'>textarea</option>
+			</select>
+		</td>
+	</tr>
+	<? endforeach; ?>
+	</table>
+
+	<nav class='buttons'>
+		<button type='submit'>Make all</button>
+	</nav>
+</form>

@@ -1,5 +1,6 @@
 <?
 class MadSession extends MadSingletonData {
+	private static $instance;
 	protected $data;
 
 	protected function __construct() {
@@ -28,7 +29,7 @@ class MadSession extends MadSingletonData {
 	public static function destroy() {
 		return session_destroy();
 	}
-	function setData( $data ) {
+	function setData( $data = null ) {
 		$_SESSION = $data;
 		return $this;
 	}

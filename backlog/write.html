@@ -1,0 +1,16 @@
+<script type='text/javascript' src='./script.js'></script>
+
+<h1>Backlog Write</h1>
+
+<form id='Backlog' class='write' method='post' action='./save'>
+	<input type='hidden' id='id' name='id' value='<?=$model->id?>' />
+	<fieldset class='write'>
+		<label for='item'>item</label>
+		<input id='log' type='text' value='' />
+		<input id='status' type='text' value='new' />
+		<a id='add' href='#add'>add</a>
+		<button>Save</button>
+	</fieldset>
+	<article class='jsonTree editable'></article>
+	<textarea id='contents' name='contents'><?=$model?></textarea>
+</form>

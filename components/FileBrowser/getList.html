@@ -1,5 +1,0 @@
-<ul>
-	<?  foreach( $files as $path ) : ?>
-	<li class='<?=is_dir( $path ) ? "dir": "file"?>'> <a href='./getList?path=<?=$path?>'><?=baseName($path)?></a> </li>
-	<? endforeach; ?>
-</ul>
