@@ -2,6 +2,16 @@
 class LayoutController extends MadController {
 	function indexAction() {
 	}
+	function viewAction() {
+		if ( ! $this->configDir ) {
+			throw new Exception('잘못된 접근 입니다.');
+		}
+		$config = new MadJson( "$this->configDir/config.json" );
+
+		foreach( $config->views as $key => $view ) {
+			$this->view->$key = new MadView( "$this->configDir/$view" );
+		}
+	}
 	function layoutAction() {
 		$router = MadRouter::getInstance();
 

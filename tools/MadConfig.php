@@ -1,81 +1,55 @@
 <?
 class MadConfig extends MadAbstractData {
 	private static $instance;
-	private function __construct( ) {
+
+	private function __construct() {
+		$this->css = MadCss::getInstance();
+		$this->js = MadJs::getInstance();
+		$this->views = new MadData;
+		$this->router = MadRouter::getInstance();
+		$this->sessionUser = MadSessionUser::getInstance();
+		$this->sitemap = MadSitemap::create();
+
+		$this->addConfig();
 	}
 	public static function getInstance() {
 		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
+	function addView( $data ) {
+		if( empty( $data ) ) {
+			return false;
+		}
+		foreach( $data as $key => $value ) {
+			$this->views->$key = new MadView( $value );
+		}
+	}
 	function addConfig( $file = 'config.json' ) {
 		$json = new MadJson( $file );
-		$this->data = array_merge_recursive( $this->data, $json->getData() );
-		return $this;
-	}
-	function getCss() {
-		$css = MadCss::getInstance();
-		if ( ! $this->css ) {
-			return $css;
-		}
-		foreach( $this->css as $value ) {
-			$css->add( $value );
-		}
-		return $css;
-	}
-	function getJs() {
-		$js = MadJs::getInstance();
-		if ( ! $this->js ) {
-			return $js;
-		}
-		foreach( $this->js as $value ) {
-			$js->add( $value );
-		}
-		return $js;
-	}
-	function init2() {
-		foreach( $this->data as $key => $value ) {
-			if ( ! is_string( $value ) ) {
-				continue;
-			}
-			if ( preg_match( '/\.(html|json|txt)$/', $value ) ) {
-				$this->$key = new MadView( $value );
-			} else if ( strpos( $value, '::' ) ) {
-				$this->$key = $this->createInstance( $value );
-			} else if ( 0 === strpos( $value, 'new ' ) ) {
-				$this->$key = $this->createObject( $value );
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
-	function getViews() {
-		if ( ! $this->views ) {
-			$this->views = array();
-		}
-		$this->walk( 'views', function( $key, $value ) {
-			$this->views->$key = new MadView( $value );
-		});
-		return $this->views;
-	}
-	function init() {
-		$this->css = $this->getCss();
-		$this->js = $this->getJs();
-		$this->views = $this->getViews();
+		$this->info = $json->info;
+		$this->default = $json->default;
+		$this->database = $json->database;
 
-		$this->walk( 'instances', function( $key, $value ) {
-			if ( strpos( $value, '::' ) ) {
-				$this->$key = $this->createInstance( $value );
-			} else if ( strpos( $value, 'new' ) == 0 ) {
-				$value = str_replace( 'new ', '', $value );
-				$this->$key = $this->createObject( $value );
+		$this->js->addAll( $json->js );
+		$this->css->addAll( $json->css );
+
+		$this->addView( $json->views );
+
+		if ( isset( $json->instances ) ) {
+			foreach( $json->instances as $key => $value ) {
+				if ( strpos( $value, '::' ) ) {
+					$this->$key = $this->createInstance( $value );
+				} else if ( strpos( $value, 'new' ) == 0 ) {
+					$value = str_replace( 'new ', '', $value );
+					$this->$key = $this->createObject( $value );
+				}
 			}
-		});
-		$this->walk( 'calls', function( $key, $value ) {
-			$this->call( $value );
-		});
-		$this->walk( 'components', function( $key, $value ) {
-			$this->$key = new MadComponent( $value );
-		});
+		}
+		if ( isset( $json->calls ) ) {
+			foreach( $json->calls as $key => $value ) {
+				$this->call( $value );
+			}
+		}
 		return $this;
 	}
 	private function createObject( $value ) {
@@ -110,7 +84,7 @@ class MadConfig extends MadAbstractData {
 
 		$args = $this->getArgs( $parts[1] );
 
-		if ( ! $func[0] = $this->g->{$func[0]} ) {
+		if ( ! $func[0] = $this->{$func[0]} ) {
 			return false;
 		}
 		return call_user_func_array( $func, $args );

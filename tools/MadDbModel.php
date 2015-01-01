@@ -1,5 +1,5 @@
 <?
-class MadDbModel extends MadAbstractData {
+class MadDbModel extends MadModel{
 	protected $table = '';
 	protected $pKey = 'id';
 	protected $query;
@@ -18,17 +18,11 @@ class MadDbModel extends MadAbstractData {
 			$this->fetch( $id );
 		}
 	}
-	public static final function create( $class ) {
-		if ( class_exists( $class ) ) {
-			return new $class;
-		}
-		return new self;
-	}
 	public function getList() {
 		return $this->query->getData();
 	}
 	/************************* CRUD **********************/
-	public function fetch( $key ) {
+	public function fetch( $key = '' ) {
 		if ( empty( $key ) ) {
 			return $this;
 		}
@@ -60,7 +54,7 @@ class MadDbModel extends MadAbstractData {
 		$result = $query->update( $set )->where( "$this->pKey=$key" )->excute();
 		return $result->rows();
 	}
-	public function delete( $key ) {
+	public function delete( $key='' ) {
 		if ( is_array ( $key ) ) {
 			$key = implode(',', $key );
 		}

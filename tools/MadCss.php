@@ -24,6 +24,15 @@ class MadCss {
 		}
 		$this->mode = $mode;
 	}
+	public function addAll( $files, $media='all' ) {
+		if( empty( $files ) ) {
+			return false;
+		}
+		foreach( $files as $file ) {
+			$this->add( $file );
+		}
+		return $this;
+	}
 	public function add( $file, $media='all' ) {
 		$media = ( in_array($media, $this->mediaTypes) ) ? $media : 'all';
 

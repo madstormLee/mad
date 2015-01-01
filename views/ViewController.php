@@ -1,5 +1,7 @@
 <?
 class ViewController extends MadController {
+	function indexAction() {
+	}
 	function viewAction() {
 		$html = "file doesn't exists";
 		$target = ROOT . $_SERVER['REQUEST_URI'];

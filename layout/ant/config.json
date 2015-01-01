@@ -1,0 +1,8 @@
+{
+	"views": {
+		"footer": "footer.html",
+		"header": "header.html"
+	},
+	"js": ["script.js"],
+	"css":["style.css"]
+}

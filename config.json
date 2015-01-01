@@ -11,22 +11,20 @@
 
 	"defaultComponent": "File",
 
-	"layout": "Layout/index.html",
-	"header": "Layout/header.html",
-	"right": "Layout/right.html",
-	"footer": "Layout/footer.html",
-	"userLog": "UserLog::getInstance()",
+	"instances": {
+		"userLog": "MadSessionUser::getInstance()"
+	},
 
 	"css": [
-		"~/Foundation/css/normalize.css",
-		"~/Foundation/css/foundation.css",
-		"~/Layout/style.css"
+		"~/foundation/css/normalize.css",
+		"~/foundation/css/foundation.css",
+		"~/layout/style.css"
 	],
 
 	"js": [
-		"~/Foundation/js/modernizr.js",
-		"~/Foundation/js/jquery.js",
-		"~/Foundation/js/foundation.min.js",
-		"~/Layout/script.js"
+		"~/foundation/js/modernizr.js",
+		"~/foundation/js/jquery.js",
+		"~/foundation/js/foundation.min.js",
+		"~/layout/script.js"
 	]
 }

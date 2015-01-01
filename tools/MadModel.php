@@ -1,12 +1,23 @@
 <?
-class MadModel {
+class MadModel extends MadAbstractData {
 	protected $data = array();
 
-	public static final function create( $class ) {
-		return class_exists( $class )? new $class: new self;
+	public static final function create( $class, $file = null ) {
+		$class = ucFirst( $class );
+		return class_exists( $class )? new $class($file): new self($file);
 	}
-	function __construct( $id = '' ) {
-		$this->fetch( $id );
+	function __construct( $file = '' ) {
+		$this->setting( $file );
+	}
+	function setting( $file ) {
+		if ( ! is_file($file) ) {
+			return false;
+		}
+		$setting = new MadJson( $file );
+		foreach( $setting as $key => $value ) {
+			$this->$key = $value;
+		}
+		return $this;
 	}
 	function fetch( $id = '' ) {
 		if ( empty( $id ) ) {
@@ -14,17 +25,13 @@ class MadModel {
 		}
 		$this->id = $id;
 	}
+
+	function save( $data = array() ) {
+	}
+	function delete( $id = '' ) {
+	}
 	function getList() {
 		return new ArrayIterator( array() );
-	}
-	function __get( $key ) {
-		if ( isset( $this->data[$key] ) ) {
-			return $this->data[$key];
-		}
-		return '';
-	}
-	function __set( $key, $value ) {
-		$this->data[$key] = $value;
 	}
 	function __toString() {
 		return $this->id;

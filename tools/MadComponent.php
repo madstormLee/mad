@@ -1,85 +1,44 @@
 <?
 class MadComponent {
-	private $dir = '';
-	private $component = 'Index';
+	private $component = '';
+	private $config = '';
 	private $action = 'index';
 
-	function __construct( $component = 'Index') {
-		if ( strpos( $component, '/' ) ) {
-			$pathExploded = explode( '/', $component );
-			$component = array_pop( $pathExploded );
-			$this->dir = implode( $pathExploded );
-			if ( empty( $this->dir ) ) {
-				$this->dir = '/';
-			}
-		}
+	function __construct( $component ) {
 		$this->component = $component;
 	}
-	static function isComponent( $name ) {
-		return is_dir( $name );
+	function setConfig( $config ) {
+		$this->config = $config;
+		return $this;
 	}
-	function getController() {
-		$name = $this->component.'Controller';
-		$file = "$this->dir$this->component/$name.php";
-		if ( is_file( $file ) ) {
-			include $file;
-			return new $name;
-		}
-		return new MadController;
+	function setAction($action = 'index') {
+		$this->action = $action;
+		return $this;
 	}
-	function getView( $action = 'index' ) {
-		print "$this->dir$this->component/$action.html";
-		return new MadView( "$this->dir$this->component/$action.html" );
+	function setParams( $params ) {
+		$this->params = $params;
 	}
-	function getModel() {
-		$file = "$this->dir$this->component/$this->component.php";
-		if ( ! is_file( $file ) ) {
-			return new MadModel;
-		}
-		include_once $file;
-		return new $this->component;
-	}
-	function get( $action='index' , $params = null ) {
-		$controller = $this->getController();
-		$view = $this->getView( $action );
-		$model = $this->getModel();
+	function getContents() {
+		$modelName = ucFirst( baseName( $this->component ) );
+		// controller
+		$controllerName = $modelName . 'Controller';
+		$controllerFile = $this->component . "/$controllerName.php";
+		include_once $controllerFile;
+		$controller = new $controllerName;
+		$controller->configDir = "$this->component/$this->config";
 
-		$controller->params = $params;
+		// view
+		$view = new MadView( "$controller->configDir/$this->action.html" );
 		$controller->view = $view;
+
+		// model
+		include_once $this->component . "/$modelName.php";
+		$model = new $modelName;
 		$controller->model = $model;
-		$controller->config = MadConfig::getInstance();
-		$controller->css = MadCss::getInstance()->addExists( "~/$this->component/style.css" );
-		$controller->js = MadJs::getInstance()->addExists( "~/$this->component/script.js" );
 
-		$view->setData( $controller->getData() );
-		$view->controller = $controller;
+		$actionName = $this->action . 'Action';
+		$controller->$actionName();
 
-		if ( $result = $controller->{$action . 'Action'}() ) {
-			return $result;
-		}
 		return $view;
-	}
-	function getConfig() {
-		return new MadJson( "$this->component/config.json" );
-	}
-	function post( $action, $params = null ) {
-		$controller = $this->getController();
-		$controller->params = $params;
-		$controller->model = $this->getModel();
-		$action = $action . 'Action';
-		return $controller->$action();
-	}
-	function getContents( $action='index', $params=null, $method='GET' ) {
-		if( $method == 'POST' ) {
-			return $this->post( $action, $params );
-		}
-		return $this->get( $action, $params );
-	}
-	function __toString() {
-		try {
-			return (string) $this->getContents();
-		} catch( Exception $e ) {
-			return $e->getMessage();
-		}
 	}
 }

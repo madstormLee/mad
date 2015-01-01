@@ -20,12 +20,17 @@ class MadSessionUser {
 	function getLevel() {
 		return $this->groupId;
 	}
-	function ipCheck() {
+	function checkIp() {
 		$ipCheck = new IpCheck;
 		if (! $ipCheck->isAdmin("")) {
 			throw new Exception( '허가되지 않은 접근 아이피입니다.' );
 		}
 		return true;
+	}
+	function checkAuth() {
+		if ( ! $this->hasAuth( $info->level ) ) {
+			throw new Exception('권한이 부족합니다.');;
+		}
 	}
 	function isAdmin() {
 		return $this->getLevel() == 1;
