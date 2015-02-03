@@ -32,12 +32,11 @@ class MadFile implements IteratorAggregate {
 	function size() {
 		return filesize( $this->file );
 	}
-	function mtime( $dateFormat = '' ) {
-		$rv = filemtime( $this->file );
-		if ( $dateFormat ) {
-			$rv = date( $dateFormat, $rv );
-		}
-		return $rv;
+	function dateFormat( $format = '' ) {
+		return date( $format, $this->mtime() );
+	}
+	function mtime( $Format = '' ) {
+		return filectime( $this->file );
 	}
 	function getData() {
 		return $this->data;
@@ -199,7 +198,7 @@ class MadFile implements IteratorAggregate {
 		print file_get_contents( $model );
 		exit;
 	}
-	function getList() {
+	function getIndex() {
 		return new MadDir( $this->file );
 	}
 	function getIterator() {

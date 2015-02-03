@@ -1,39 +1,95 @@
+<link rel='stylesheet' type='text/css' href='./style.css' />
+
 <h1>Sitemap</h1>
 
-<form id='SitemapWrite' method='post' action='./save'>
-	<nav id='floatMenu'>
-		<a id='remove' href='#remove'>remove</a>
-		<a id='addSub' href='#addSub'>addSub</a>
-	</nav>
+<nav class='component'>
+	<a class='write' href='./write'>Create Tree</a>
+</nav>
 
-	<dl id='SitemapIndex'>
-		<dt class='hasDic root current' href='#root'>/root</dt>
-		<dd class='tree dic'>
+<dl id='SitemapIndex'>
+	<dt class='hasDic root current' href='#root'>/root</dt>
+	<dd class='tree dic'>
+		<dl>
+			<dt class='hasDic'>subs</dt>
+			<dd class='content dic'>
+			<? $treeIterator = function( $sitemap ) use ( &$treeIterator ) { ?>
 			<dl>
-				<dt class='hasDic'>subs</dt>
-				<dd class='content dic'>
-				<? $treeIterator = function( $sitemap ) use ( &$treeIterator ) { ?>
-				<dl>
-					<? foreach( $sitemap as $key => $row ): ?>
-					<? if ( is_array( $row ) ): ?>
-					<dt class='hasDic'><?=$key?></dt>
-					<dd class='dic'><? $treeIterator( $row ); ?></dd>
-					<? else: ?>
-					<dt class='hasValue'><?=$key?></dt>
-					<dd class='value'><?=$row?></dd>
-					<? endif; ?>
-					<? endforeach; ?>
-				</dl>
-				<? }; $treeIterator( $sitemap ); ?>
+				<? foreach( $sitemap as $key => $row ): ?>
+				<? if ( is_array( $row ) ): ?>
+				<dt class='hasDic'><?=$key?></dt>
+				<dd class='dic'><? $treeIterator( $row ); ?></dd>
+				<? else: ?>
+				<dt class='hasValue'><?=$key?></dt>
+				<dd class='value'><?=$row?></dd>
+				<? endif; ?>
+				<dd class='buttons'>
+					<a class='remove' href='#remove'>remove</a>
+					<a class='addSub' href='#addSub'>addSub</a>
 				</dd>
+				<? endforeach; ?>
 			</dl>
-		</dd>
+			<? }; $treeIterator( $sitemap ); ?>
+			</dd>
+		</dl>
+	</dd>
+</dl>
+
+
+<section id='controllers' class='tools' data-href='~/controller/index'>
+</section>
+
+
+<section class='treeContainer'>
+	<section class='tree subs'>
+	<? $treeIterator = function( $tree ) use ( &$treeIterator ) { ?>
+	<? foreach( $tree as $row ): ?>
+	<? if ( isset($row->noMain) ) continue; ?>
+	<dl>
+		<dt>
+		<form class='treeRow' method='post' action='./update'>
+			<? if ( ! empty( $row->subs ) ): ?>
+			<a class='toggle hasSubs' href='#toggleSub' title='toggle sub tree'>+</a>
+			<? else: ?>
+			<a class='toggle' href='#toggleSub' title='no sub tree'>-</a>
+			<? endif; ?>
+			<input type='hidden' class='id' name='id' value='<?=$row->id?>' />
+			<input type='hidden' class='ordernumber' name='ordernumber' id='ordernumber<?=$row->id?>' value='<?=$row->ordernumber?>' />
+			<input type='text' class='label' name='label' id='label<?=$row->id?>' value='<?=$row->label?>' placeholder='input tree name' title='tree name' required='required' />
+			( <a class='items' href='~/item/list?id=<?=$row->id?>' title='item list'>0</a> )
+			<input type='checkbox' name='isopen' id='isopen<?=$row->id?>' value='<?=$row->isopen?>' <?=( $row->isopen )? "checked='checked'": ""; ?> title='is opened' />
+			<a class='createSub' href='./write?parentid=<?=$row->id?>' title='create sub'>create sub</a>
+			<a class='delete' href='./delete?id=<?=$row->id?>' data-confirm='delete tree'>delete</a>
+			<nav class='position'>
+				<a class='moveUp' href='./moveUp?id=$<?=$row->id?>' title='order up'>up</a>
+				<a class='moveDown' href='./moveDown?id=$<?=$row->id?>' title='order down'>down</a>
+			</nav>
+		</form>
+		</dt>
+		<? if ( ! empty( $row->subs ) ): ?>
+		<dd class='subs'><? $treeIterator( $row->subs ); ?></dd>
+		<? endif; ?>
 	</dl>
+	<? endforeach; ?>
+	<? }; $treeIterator( $tree ); ?>
+	</section>
+</section>
 
-	<textarea id='content' name='content'>test</textarea>
 
-	<nav class='buttons'>
-		<button type='submit'>저장</button>
-	</nav>
 
-</form>
+
+<section class="sitemap row">
+	<? $treeIterator = function( $data ) use( &$treeIterator ) { ?>
+	<div> 
+		<h2><?=$data->label?></h2>
+		<ul>	
+			<? foreach( $data->subs as $row ): ?>
+			<li>
+				<a href="<?=$row->href?>"><?=$row->label?></a>
+				<? if ( isset( $row->subs ) && ! isset( $row->noMain ) ) $treeIterator( $row->subs ); ?>
+			</li>
+			<? endforeach; ?>
+		</ul>
+	</div>
+	<? }; $treeIterator( $config->sitemap );?>
+</section>
+

@@ -1,0 +1,169 @@
+@import "../scss/foundation.scss";
+footer {
+	background: #000;
+	text-align: right;
+	color: #fff;
+}
+
+section.view {
+	border: 1rem solid #999;
+	border-radius: 1rem;
+	padding: 1rem;
+	dl {
+		@include grid-row();
+		dt , dd {
+			@include grid-column(2);
+			background: #eee;
+		}
+		dt{
+			background: #cff;
+		}
+	}
+}
+
+/********************** table.index **********************/
+table.index {
+	width: 100%;
+	margin-top: 20px;
+	border: 0;
+	border-bottom: 1px solid #b4b4b4;
+	th {
+		height: 31px;
+		padding: 0;
+		text-align: left;
+	}
+	th.ck {
+		width: 31px;
+	}
+	th.num {
+		width: 46px;
+	}
+	th.code {
+		width: 109px;
+	}
+	tbody {
+		tr {
+			background: #ffffff;
+		}
+		tr:hover {
+			background: #d2ffd2;
+		}
+	}
+	td {
+		border-top: 1px solid #e0e0e0;
+		text-align: center;
+	}
+	td.title {
+		text-align: left;
+	}
+	td.buttons {
+		@include button-group-container();
+		@include button-group-style($radius:$button-round);
+		a {
+			@include button();
+			@include button-size($padding:$button-tny);
+			@include button-group-style($radius:$button-round);
+		}
+	}
+}
+
+/************************** table.admin ********************/
+table.admin {
+	width: 100%;
+	border-collapse: collapse;
+	border-top: 2px solid #3c9d2a;
+	border-bottom: 1px solid #b4b4b4;
+
+	tr.first td ,
+	tr.first th {
+		border-top: 1px solid #d3e8cc;
+	}
+	tr th {
+		height: 30px;
+		width: 80px;
+		padding-left: 10px;
+		text-align: left;
+		font-weight: bold;
+		color: #3a8e23;
+		background-color: #f1f1f1;
+	}
+	tr th ,
+	tr td {
+		border-bottom: 1px solid #dddddd;
+	}
+	tr td {
+		padding: 0;
+		padding-left: 20px;
+		text-align: left;
+	}
+}
+/************************** table.view ********************/
+table.view {
+	width: 100%;
+	border-collapse: collapse;
+	border-top: 2px solid #3c9d2a;
+	border-bottom: 1px solid #b4b4b4;
+
+	tr.first td ,
+	tr.first th {
+		border-top: 1px solid #d3e8cc;
+	}
+	tr th {
+		height: 30px;
+		width: 150px;
+		padding-left: 20px;
+		text-align: left;
+		font-weight: bold;
+		color: #3a8e23;
+		background-color: #f1f1f1;
+	}
+	tr th ,
+	tr td {
+		border-bottom: 1px solid #dddddd;
+	}
+	tr td {
+		padding: 0;
+		padding-left: 20px;
+		text-align: left;
+	}
+}
+
+
+/************************** table.images ********************/
+table.images {
+	tr { padding: 5px 0; }
+	td {
+		text-align: left;
+		width: 180px;
+		padding: 10px 0;
+	}
+	td span.bb {
+		margin-left: 12px;
+	}
+	a { margin-top: 24px; }
+	a img {
+		border-width:1px;
+		border-color:#dedede;
+		padding:3px;
+		width: 144px;
+		height: 100px;
+	}
+	a img:hover {
+		border-color: #ff6600;
+	}
+	td dl.info {
+		margin-top: 24px;
+		width: 180px;
+	}
+	td dl.info dt {
+		float: left;
+		width: 90px;
+	}
+	td dl.info dd {
+		float:left;
+		width:90px;
+	}
+	tbody tr:hover {
+		background: #ffffff;
+	}
+}

@@ -94,7 +94,7 @@ class MadL10N {
 			$this->setDataFromId( $id );
 		}
 		// thirdly: use accept_language if still dont know user locale
-		$server = MadParam::create('_SERVER');
+		$server = MadParams::create('_SERVER');
 		if ( ! $this->code ) {
 			$locale = Locale::acceptFromHttp( $server->HTTP_ACCEPT_LANGUAGE );
 		}

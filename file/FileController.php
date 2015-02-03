@@ -1,11 +1,22 @@
 <?
 class FileController extends MadController {
 	function indexAction() {
+		$this->model = new MadDir;
+		$model = $this->model;
 		$get = $this->params;
+
+		$model->h1 = 'File Index';
+
 		if ( ! $get->dir || ! is_dir( $get->dir ) ) {
 			$get->dir = $_SERVER['DOCUMENT_ROOT'];
 		}
-		$model = new MadDir( $get->dir );
+		$get->pattern = '*.php';
+		if ( ! isset($get->pattern) ) {
+			$get->pattern = '*';
+		}
+		$model->setDir( $get->dir );
+		$model->setPattern( $get->pattern );
+
 		$this->view->model = $model;
 	}
 	function dirAction() {

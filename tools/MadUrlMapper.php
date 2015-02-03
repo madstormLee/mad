@@ -11,7 +11,7 @@ class MadUrlMapper {
 	}
 	private function __construct( $sitemap = null ) {
 		$this->data = new MadData;
-		$server = MadParam::create('_SERVER');
+		$server = MadParams::create('_SERVER');
 		$this->base = dirname($_SERVER['SCRIPT_NAME']);
 		$url = $server->REQUEST_URI;
 		// remove if index.php exists

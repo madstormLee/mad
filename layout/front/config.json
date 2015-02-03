@@ -42,8 +42,8 @@
 		"router": "MadRouter::getInstance()",
 		"js": "MadJs::getInstance()",
 		"css": "MadCss::getInstance()",
-		"get": "MadParam::create('get')",
-		"post": "MadParam::create('post')",
+		"get": "MadParams::create('get')",
+		"post": "MadParams::create('post')",
 		"log": "UserLog::getInstance()",
 		"l10n": "MadL10N::getInstance()"
 	},

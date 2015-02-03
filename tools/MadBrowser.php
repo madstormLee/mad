@@ -4,7 +4,7 @@ class MadBrowser {
 	private $agent = "PC";
 
 	protected function __construct() {
-		$server = MadParam::create('_SERVER');
+		$server = MadParams::create('_SERVER');
 		if ( ! $httpAgent = $server->HTTP_USER_AGENT ) {
 			return null;
 		}
@@ -48,7 +48,7 @@ class MadBrowser {
 	}
 	// this check smartphone too.
 	function isMobile() {
-		$server = MadParam::create('_SERVER');
+		$server = MadParams::create('_SERVER');
 		$mobiles = array("iphone","lgtelecom","skt","mobile","samsung","nokia","blackberry","android","android","sony","phone"); 
 		$checkCount = 0; 
 		foreach( $mobiles as $mobile ) {

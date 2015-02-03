@@ -28,7 +28,6 @@ class MadManual extends MadJson {
 	}
 	function rescan() {
 		$dir = new MadFile( dirName($this->file) );
-		$dir->filter( '^\.$|^\.\.$' );
 
 		foreach( $dir as $file ) {
 			$ctime = $file->getCtime();

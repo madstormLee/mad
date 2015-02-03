@@ -12,6 +12,47 @@ class MadFront {
 		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
+	public static function temp() {
+		error_reporting(E_ALL);
+		MadHeaders::utf8();
+
+		$router = MadRouter::getInstance();
+
+		// sitemap section
+		$sitemapFile = 'sitemap.json';
+		if ( is_file( $sitemapFile ) ) {
+			$sitemap = new MadSitemap($sitemapFile);
+			$sitemap->setCurrent();
+			$current = $sitemap->getCurrent();
+		} else {
+			$current = $router;
+		}
+
+		// component
+		$params = new MadParams('_GET');
+		if ( isset( $current->params ) ) {
+			$params->addData( (array) $current->params );
+		}
+
+		$component = new MadComponent( $current->component );
+		$component->setAction( $current->action );
+		$component->setParams( $params );
+		$view = $component->getContents();
+
+
+		// layout
+		$config = new MadJson('config.json'); // temporally
+
+		$component = new MadComponent('mad/layout');
+		$component->setConfig('ant');
+		$component->setAction('view');
+		$layout = $component->getContents();
+
+		$layout->main = $view;
+
+		return $layout;
+	}
+
 	function getConfig() {
 		return $this->config;
 	}

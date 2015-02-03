@@ -1,0 +1,12 @@
+{
+	"tools": {
+		"component": "file",
+		"subs": {
+			"index": {
+				"params": {
+					"dir": "tools"
+				}
+			}
+		}
+	}
+}

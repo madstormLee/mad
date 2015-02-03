@@ -7,17 +7,10 @@ class MadModel extends MadAbstractData {
 		return class_exists( $class )? new $class($file): new self($file);
 	}
 	function __construct( $file = '' ) {
-		$this->setting( $file );
 	}
-	function setting( $file ) {
-		if ( ! is_file($file) ) {
-			return false;
-		}
-		$setting = new MadJson( $file );
-		foreach( $setting as $key => $value ) {
-			$this->$key = $value;
-		}
-		return $this;
+	function getIndex() {
+		$dir = new MadDir;
+		return $dir;
 	}
 	function fetch( $id = '' ) {
 		if ( empty( $id ) ) {
@@ -29,9 +22,6 @@ class MadModel extends MadAbstractData {
 	function save( $data = array() ) {
 	}
 	function delete( $id = '' ) {
-	}
-	function getList() {
-		return new ArrayIterator( array() );
 	}
 	function __toString() {
 		return $this->id;

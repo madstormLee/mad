@@ -18,6 +18,18 @@ class ManualController extends MadController {
 
 		$this->main->view = new MadView( "$get->id.html" );
 	}
+	function manualAction() {
+		$get = $this->get;
+
+		$this->js->addNext("http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", 'jquery');
+
+		$this->right->setView( 'views/FileManual/viewRight.html' );
+		$this->right->list = $model->getTree();
+
+		$model = new FileManual( $get->file );
+
+		$this->main->model = $model;
+	}
 	function writeAction() {
 		$this->js->add('~/venders/ckeditor/ckeditor.js');
 		$model = new Manual( $this->get->id );

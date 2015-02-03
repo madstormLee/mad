@@ -1,13 +1,17 @@
-<h1>File Index</h1>
+<h1><?=$model->h1?></h1>
 
-<section id='FileIndex'>
-<ul>
-	<?  foreach( $model as $path ) : ?>
-	<? if ( is_dir( $path ) ) : ?>
-	<li> <a  class="dir" href='?dir=<?=$path?>'><?=baseName($path)?></a> </li>
-	<? else: ?>
-	<li> <a  class="file" href='./view?file=<?=$path?>'><?=baseName($path)?></a> </li>
-	<? endif; ?>
-	<? endforeach; ?>
-</ul>
-</section>
+<table class='index'>
+	<tbody>
+		<? foreach( $model->getIndex() as $file ) : ?>
+		<tr>
+			<td class='title'><?=$file->getBasename()?></td>
+			<td><?=$file->dateFormat('Y-m-d')?></td>
+			<td class='buttons round align-center'>
+				<a class='tiny' href='./read?file=<?=$file?>'>read</a>
+				<a class='tiny' href='./write?file=<?=$file?>'>write</a>
+				<a class='tiny' href='./delete?file=<?=$file?>'>delete</a>
+			</td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>

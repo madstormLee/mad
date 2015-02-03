@@ -1,0 +1,3 @@
+<?
+class File extends MadFile {
+}

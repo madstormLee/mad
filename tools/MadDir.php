@@ -1,11 +1,11 @@
 <?
 class MadDir extends MadFile {
 	protected $data = array();
-	protected $dir = '.';
+	protected $dir = '';
 	protected $pattern = '*';
 	protected $flag = 0;
 
-	function __construct( $dir = '.' ) {
+	function __construct( $dir = '' ) {
 		$this->setDir( $dir );
 	}
 	function setDir( $dir ) {
@@ -29,17 +29,23 @@ class MadDir extends MadFile {
 		if ( ! empty( $this->data ) ) {
 			return $this;
 		}
-		if ( ! is_dir( $this->dir ) ) {
-			return $this;
-		}
-		foreach( glob( "$this->dir/$this->pattern", $this->flag ) as $file ) {
+		foreach( $this->getIndex() as $file ) {
 			$this->data[$file] = new MadFile( $file );
 		}
 
 		return $this;
 	}
-	function getList() {
-		return glob( "$this->dir/$this->pattern" );
+	function getIndex() {
+		if ( $this->dir == '' ) {
+			$target = "$this->pattern";
+		} else {
+			$target = "$this->dir/$this->pattern";
+		}
+		$rv = array();
+		foreach( glob( $target, $this->flag ) as $file ) {
+			$rv[] = new MadFile( $file );
+		}
+		return $rv;
 	}
 	function save() {
 		if ( ! $this->isDir() ) {
@@ -49,8 +55,7 @@ class MadDir extends MadFile {
 		return $this;
 	}
 	function getIterator() {
-		$this->scan();
-		return new ArrayIterator( $this->data );
+		return new ArrayIterator( $this->getIndex() );
 	}
 	/***************** utilities *****************/
 	function getTree($dir, $root = true,$UploadDate) {
