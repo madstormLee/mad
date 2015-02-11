@@ -41,14 +41,24 @@ class MadComponent {
 		$model = new $modelName;
 		return $model;
 	}
+	function createView($controller) {
+		if ( empty( $controller->configDir ) ) {
+			return new MadView( "$this->action.html" );
+		}
+		return new MadView( "$controller->configDir/$this->action.html" );
+	}
 	function getContents() {
 		// controller
 		$controller = $this->createController();
-		$controller->configDir = "$this->component/$this->config";
+		if ( empty( $this->component ) ) {
+			$controller->configDir = "$this->config";
+		} else {
+			$controller->configDir = "$this->component/$this->config";
+		}
 		$controller->params = $this->params;
 
 		// view
-		$view = new MadView( "$controller->configDir/$this->action.html" );
+		$view = $this->createView( $controller );
 		$controller->view = $view;
 
 		// model

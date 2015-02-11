@@ -34,18 +34,26 @@ class MadFront {
 			$params->addData( (array) $current->params );
 		}
 
+		if ( $current->component == 'index' ) {
+			$current->component = '';
+		}
+
 		$component = new MadComponent( $current->component );
 		$component->setAction( $current->action );
 		$component->setParams( $params );
 		$view = $component->getContents();
 
-
 		// layout
 		$config = new MadJson('config.json'); // temporally
 
-		$component = new MadComponent('mad/layout');
-		$component->setConfig('ant');
-		$component->setAction('view');
+		if( ! isset( $config->layout ) ) {
+			return $view;
+		}
+
+		$layout = $config->layout;
+		$component = new MadComponent($layout->component);
+		$component->setConfig($layout->config);
+		$component->setAction($layout->action);
 		$layout = $component->getContents();
 
 		$layout->main = $view;

@@ -12,12 +12,10 @@
 	"defaultComponent": "File",
 
 	"instances": {
-		"userLog": "MadSessionUser::getInstance()"
+		"sessionUser": "MadSessionUser::getInstance()"
 	},
 
 	"css": [
-		"~/foundation/css/normalize.css",
-		"~/foundation/css/foundation.css",
 		"~/layout/style.css"
 	],
 
