@@ -1,7 +1,7 @@
 <?
 class SitemapController extends MadController {
-	function indexAction() {
-		$this->js = MadJs::getInstance();
+	function indexOldAction() {
+		$this->layout->setView('views/layouts/write.html');
 		$this->js->addNext("http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", 'jquery');
 		$this->view->right = new MadView( 'views/Sitemap/right.html' );
 
