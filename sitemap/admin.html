@@ -1,7 +1,7 @@
-<h1><?=_("Sitemap")?></h1>
+<h1>Sitemap</h1>
 
 <nav class='component'>
-	<a class='write' href='./write'><?=_("Create Tree")?></a>
+	<a class='write' href='./write'>Create Tree</a>
 </nav>
 
 
@@ -13,20 +13,20 @@
 		<dt>
 		<form class='treeRow' method='post' action='./update'>
 			<? if ( ! empty( $row->subs ) ): ?>
-			<a class='toggle hasSubs' href='#toggleSub' title='<?=_("toggle sub tree")?>'>+</a>
+			<a class='toggle hasSubs' href='#toggleSub' title='toggle sub tree'>+</a>
 			<? else: ?>
-			<a class='toggle' href='#toggleSub' title='<?=_("no sub tree")?>'>-</a>
+			<a class='toggle' href='#toggleSub' title='no sub tree'>-</a>
 			<? endif; ?>
 			<input type='hidden' class='id' name='id' value='<?=$row->id?>' />
 			<input type='hidden' class='ordernumber' name='ordernumber' id='ordernumber<?=$row->id?>' value='<?=$row->ordernumber?>' />
-			<input type='text' class='label' name='label' id='label<?=$row->id?>' value='<?=$row->label?>' placeholder='<?=_("input tree name")?>' title='<?=_("tree name")?>' required='required' />
-			( <a class='items' href='~/item/list?id=<?=$row->id?>' title='<?=_("item list")?>'>0</a> )
-			<input type='checkbox' name='isopen' id='isopen<?=$row->id?>' value='<?=$row->isopen?>' <?=( $row->isopen )? "checked='checked'": ""; ?> title='<?=_("is opened")?>' />
-			<a class='createSub' href='./write?parentid=<?=$row->id?>' title='create sub'><?=_("create sub")?></a>
-			<a class='delete' href='./delete?id=<?=$row->id?>' data-confirm='<?=_("delete tree")?>'><?=_("delete")?></a>
+			<input type='text' class='label' name='label' id='label<?=$row->id?>' value='<?=$row->label?>' placeholder='input tree name' title='tree name' required='required' />
+			( <a class='items' href='~/item/list?id=<?=$row->id?>' title='item list'>0</a> )
+			<input type='checkbox' name='isopen' id='isopen<?=$row->id?>' value='<?=$row->isopen?>' <?=( $row->isopen )? "checked='checked'": ""; ?> title='is opened' />
+			<a class='createSub' href='./write?parentid=<?=$row->id?>' title='create sub'>create sub</a>
+			<a class='delete' href='./delete?id=<?=$row->id?>' data-confirm='delete tree'>delete</a>
 			<nav class='position'>
-				<a class='moveUp' href='./moveUp?id=$<?=$row->id?>' title='<?=_("order up")?>'><?=_("up")?></a>
-				<a class='moveDown' href='./moveDown?id=$<?=$row->id?>' title='<?=_("order down")?>'><?=_("down")?></a>
+				<a class='moveUp' href='./moveUp?id=$<?=$row->id?>' title='order up'>up</a>
+				<a class='moveDown' href='./moveDown?id=$<?=$row->id?>' title='order down'>down</a>
 			</nav>
 		</form>
 		</dt>

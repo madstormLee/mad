@@ -1,6 +1,6 @@
 <?
 class SitemapController extends MadController {
-	function indexAction() {
+	function indexOldAction() {
 		$this->layout->setView('views/layouts/write.html');
 		$this->js->addNext("http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", 'jquery');
 		$this->right = new MadView( 'views/Sitemap/right.html' );
@@ -10,20 +10,31 @@ class SitemapController extends MadController {
 		$this->main->sitemap = $sitemap;
 
 	}
+	function indexAction() {
+	}
+	function writeAction() {
+		$get = $this->params;
+		$sitemap = $this->config->sitemap;
+		if ( $get->path ) {
+			$formData = $sitemap->fetch( $get->path );
+		} else {
+			$formData = new MadData;
+		}
+		$this->view->formData = $formData;
+	}
+	function deleteAction() {
+		$get = $this->params;
+		$sitemap = $this->config->sitemap;
+		return $sitemap->delete( $get->path );
+	}
 	function saveAction() {
-		$target = $this->projectLog->root . $this->projectLog->configs->dirs->json . 'sitemap.json';
-		$sitemap = new Sitemap( $target );
-		$sitemap->setFromDl( $this->post->content );
-		$sitemap->save();
-	}
-	/***************************** old **********************/
-	function indexOldAction() {
-		$this->main->sitemap = $this->sitemap;
-		return $this->main;
-	}
-	function saveOldAction() {
-		$this->sitemap->saveContents( $this->post->content );
-		$this->js->replace('back');
+		$post = $this->params;
+		$sitemap = $this->config->sitemap;
+		$target = $sitemap->fetch( $post->path );
+		foreach( $post as $key => $value ) {
+			$target->$key = $value;
+		}
+		return $sitemap->save();
 	}
 	function treeAction() {
 		$this->js->addFirst('/mad/js/prototype');
@@ -41,8 +52,6 @@ class SitemapController extends MadController {
 		return $this->main;
 	}
 	function listAction() {
-	}
-	function writeAction() {
 	}
 	function writeSubAction() {
 		// js는 use로 framework을 사용하자.
