@@ -17,7 +17,7 @@ class MadRouter extends MadAbstractData {
 
 		$this->args = $this->getArgs();
 
-		$this->component = "Index";
+		$this->component = "index";
 		$this->action = "index";
 
 		if ( count( $this->args ) > 0 ) {

@@ -299,6 +299,17 @@ if(function_exists('lcFirst') === false) {
 		return $str;
 	}
 }
+if ( ! function_exists('globR')) {
+	function globR($pattern, $flags = 0) {
+		$files = glob($pattern, $flags);
+
+		foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+			$files = array_merge($files, globR($dir.'/'.basename($pattern), $flags));
+		}
+
+		return $files;
+	}
+}
 /***************************** date ****************************/
 function isDate( $date ) {
 	if ( preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', $date) ) {

@@ -38,7 +38,7 @@ class AdminUserController extends MadController {
 			$this->js->replace( '~/admin' );
 		}
 		if ( $this->sitemap->arg( 0 ) != 'admin' ) {
-			$server = MadParam::create('server');
+			$server = MadParams::create('server');
 			$url = $this->l10n->homeUrl . '/login.php?returl=' . $server->HTTP_REFERER;
 			$this->js->replace( $url );
 		}

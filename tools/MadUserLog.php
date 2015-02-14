@@ -7,7 +7,7 @@ class MadUserLog {
 
 	protected function __construct() {
 		$name = get_class( $this );
-		$session = MadParam::create('_SESSION');
+		$session = MadParams::create('_SESSION');
 		if ( ! $session->$name ) {
 			$session->$name = new MadData;
 		}

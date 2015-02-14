@@ -1,0 +1,49 @@
+<link rel='stylesheet' href='./style.css' type='text/css' media='all' />
+
+<? $currMonth = $model->formatNow('Y-m') ?>
+<? $prevMonth = $model->formatDate('Y-m', '-1 month') ?>
+<? $nextMonth = $model->formatDate('Y-m', '+1 month') ?>
+<? $get = new MadParams('_GET');?>
+
+<h1>Calendar</h1>
+
+<ul class='button-group'>
+	<li><a class='small button' href='?<?=$get->replace("yearMonth=$currMonth")?>'>Today is: <?=$model->formatNow('l, Y-m-d');?></a></li>
+	<li><a class='small button' href='?<?=$get->replace("yearMonth=$prevMonth")?>'>Prev: <?=$prevMonth?></a></li>
+	<li><a class='small button' href='?<?=$get->replace("yearMonth=$nextMonth")?>'>Next: <?=$nextMonth?></a></li>
+</ul>
+
+<table class="calendar">
+	<caption><?=$model->formatDate('F Y')?></caption>
+	<thead>
+		<tr>
+			<? foreach( $model->getHeaders() as $value ): ?>
+			<th><?=$value?></th>
+			<? endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<? $i = 0; ?>
+
+			<? foreach( $model->getPrepends() as $row ) : ?>
+			<td class='prepend'></td>
+			<? ++$i; endforeach; ?>
+
+			<? foreach( $model as $day => $row ): ?>
+			<td class='<?=$row->class?>'>
+				<div><?=$day?></div>
+				<?=$row->event ?> 
+			</td>
+			<? if ( $i % 7 == 6 ): ?>
+		</tr>
+		<tr>
+			<? endif; ?>
+			<? ++$i; endforeach; ?>
+
+			<? foreach( $model->getAppends() as $day ) : ?>
+			<td class='append'><?=$day?></td>
+			<? ++$i; endforeach; ?>
+		</tr>
+	</tbody>
+</table>

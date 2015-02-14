@@ -1,20 +1,15 @@
 <?
 class MadForm {
-	function __construct() {
-		$js = JsManager::getInstance();
-		$js->set('/mad/js/MadForm/base.js');
-	}
-	function setMode ( $mode ) {
-		$this->mode = $mode;
-	}
-	function hidden( $name , $value='') {
-		$rv = "<input type='hidden' id='$name' name='$name' value='$value' />";
-		return $rv;
-	}
-	function text( $name , $value='', $id='') {
+	function input( $type='text', $name='id', $value='', $id='' ) {
 		if ( empty( $id ) ) {
 			$id = $name;
 		}
+		return "<input type='$type' id='$id' name='$name' value='$value' />";
+	}
+	function hidden( $name , $value='', $id='') {
+		return "<input type='hidden' id='$name' name='$name' value='$value' />";
+	}
+	function text( $name , $value='', $id='') {
 		$rv = "<input type='text' id='$id' name='$name' value='$value' />";
 		return $rv;
 	}
@@ -26,7 +21,6 @@ class MadForm {
 		return $rv;
 	}
 	function phone( $name, $value='' ) {
-
 		(string) $value;
 
 		if ( strlen ( $value ) > 8 ) {

@@ -24,7 +24,7 @@
 			<? if ( $rows == $list->getSetting('rows') ) : ?>
 			<b><?=$rows?></b>
 			<? else : ?>
-			<a href='?<?=MadParam::replace("rows=$rows&page=1"); ?>'><?=$rows?></a>
+			<a href='?<?=MadParams::replace("rows=$rows&page=1"); ?>'><?=$rows?></a>
 			<? endif; ?>
 		<? endforeach; ?>
 		</nav>

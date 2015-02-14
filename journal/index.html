@@ -1,7 +1,7 @@
 <h1>Journal</h1>
 
 <ul>
-	<? foreach( $model->getList() as $file ): ?>
+	<? foreach( $model->getIndex() as $file ): ?>
 	<? $id=baseName($file,'.txt') ?>
 	<li>
 		<a href='./view?id=<?=$id?>' data-target='main'><?=$id?></a>

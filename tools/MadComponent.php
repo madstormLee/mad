@@ -1,8 +1,10 @@
 <?
 class MadComponent {
-	private $component = '';
-	private $config = '';
+	private $component = 'index';
 	private $action = 'index';
+
+	private $config = '';
+	private $params = null;
 
 	function __construct( $component ) {
 		$this->component = $component;
@@ -18,27 +20,54 @@ class MadComponent {
 	function setParams( $params ) {
 		$this->params = $params;
 	}
-	function getContents() {
+	function createController() {
 		$modelName = ucFirst( baseName( $this->component ) );
-		// controller
 		$controllerName = $modelName . 'Controller';
 		$controllerFile = $this->component . "/$controllerName.php";
+		if ( ! is_file( $controllerFile ) ) {
+			return new MadController;
+		}
 		include_once $controllerFile;
 		$controller = new $controllerName;
-		$controller->configDir = "$this->component/$this->config";
+		return $controller;
+	}
+	function createModel() {
+		$modelName = ucFirst( baseName( $this->component ) );
+		$modelFile = $this->component . "/$modelName.php";
+		if ( ! is_file( $modelFile ) ) {
+			return new MadModel;
+		}
+		include_once $modelFile;
+		$model = new $modelName;
+		return $model;
+	}
+	function createView($controller) {
+		if ( empty( $controller->configDir ) ) {
+			return new MadView( "$this->action.html" );
+		}
+		return new MadView( "$controller->configDir/$this->action.html" );
+	}
+	function getContents() {
+		// controller
+		$controller = $this->createController();
+		if ( empty( $this->component ) ) {
+			$controller->configDir = "$this->config";
+		} else {
+			$controller->configDir = "$this->component/$this->config";
+		}
+		$controller->params = $this->params;
 
 		// view
-		$view = new MadView( "$controller->configDir/$this->action.html" );
+		$view = $this->createView( $controller );
 		$controller->view = $view;
 
 		// model
-		include_once $this->component . "/$modelName.php";
-		$model = new $modelName;
+		$model = $this->createModel();
 		$controller->model = $model;
+		$view->model = $controller->model;
 
-		$actionName = $this->action . 'Action';
-		$controller->$actionName();
+		$result = $controller->action( $this->action );
 
-		return $view;
+		return $result;
 	}
 }

@@ -1,36 +1,36 @@
 <nav class="top-bar" data-topbar role="navigation">
 	<ul class="title-area">
-		<li class="name"><h1><a id='logo' href="~/">Mad</a></h1></li>
-		<li class="toggle-topbar menu-icon"><a href="~/"><span>Menu</span></a></li>
+		<li class="name"><h1><a id='logo' href="~/">mad</a></h1></li>
+		<li class="toggle-topbar menu-icon"><a href="~/"><span>menu</span></a></li>
 	</ul>
 
 	<section class="top-bar-section">
 		<ul class="menu left">
-			<li><a href='~/File'>File</a></li>
-			<li><a href='~/View'>View</a></li>
-			<li><a href='~/History'>History</a></li>
-			<li><a href='~/Tools'>Tools</a></li>
+			<li><a href='~/file'>file</a></li>
+			<li><a href='~/view'>view</a></li>
+			<li><a href='~/history'>history</a></li>
+			<li><a href='~/tools'>tools</a></li>
 
-			<? if ( $config->userLog->id ) : ?>
-			<li><a href='~/Backlog/write'>Backlog</a></li>
-			<li><a href='~/User/write'>User</a></li>
-			<li><a href='~/Php'>Php</a></li>
+			<? if ( $config->sessionUser->id ) : ?>
+			<li><a href='~/backlog/write'>backlog</a></li>
+			<li><a href='~/user/write'>user</a></li>
+			<li><a href='~/php'>php</a></li>
 			<? endif; ?>
 
 			<li class="has-dropdown">
-				<a href='~/Help'>Help</a>
+				<a href='~/help'>help</a>
 				<ul class="dropdown">
-					<li><a href="#">First link in dropdown</a></li>
-					<li class="active"><a href="#">Active link in dropdown</a></li>
+					<li><a href="#">first link in dropdown</a></li>
+					<li class="active"><a href="#">active link in dropdown</a></li>
 				</ul>
 			</li>
 		</ul>
 
 		<ul class="personal right">
-			<? if ( $config->userLog->id ) : ?>
-			<li><a href='~/SessionUser/logout'>logout</a></li>
+			<? if ( $config->sessionUser->id ) : ?>
+			<li><a href='~/sessionUser/logout'>logout</a></li>
 			<? else: ?>
-			<li class="active"><a class='popup' href='~/SessionUser/login'>login</a></li>
+			<li class="active"><a class='popup' href='~/sessionUser/login'>login</a></li>
 			<? endif; ?>
 		</ul>
 	</section>

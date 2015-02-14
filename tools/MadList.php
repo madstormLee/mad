@@ -91,7 +91,7 @@ class MadList extends MadData {
 		$view->href = $href;
 		$view->param = $param;
 		$view->list = $this;
-		if ( ! $page = MadParam::create('get')->page ) {
+		if ( ! $page = MadParams::create('get')->page ) {
 			$page = 1;
 		}
 		$view->page = $page;

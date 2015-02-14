@@ -13,7 +13,7 @@ class ApiController extends MadController {
 				'127.0.0.1',
 				);
 
-		$server = MadParam::create('server');
+		$server = MadParams::create('server');
 		$remote = 
 		$this->l10n->getInstance()->setCodeFromId( $this->get->locale );
 

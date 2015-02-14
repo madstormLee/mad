@@ -92,7 +92,7 @@ class MadJs extends MadAbstractData {
 		exit;
 	}
 	function replaceBack() {
-		$server = MadParam::create('_SERVER');
+		$server = MadParams::create('_SERVER');
 		if( $server->HTTP_REFERER ) {
 			$this->replace( $server->HTTP_REFERER );
 		}

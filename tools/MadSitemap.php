@@ -1,12 +1,12 @@
 <?
 class MadSitemap extends MadAbstractData {
-	private $current;
-	private $pwd = array();
-	private $json;
+	protected $current;
+	protected $pwd = array();
+	protected $json;
 
 	function __construct( $file='sitemap/sitemap.json' ) {
 		$this->json = new MadJson( $file );
-		$this->data = $this->json->getData();
+		$this->setData( $this->json->getData() );
 		$this->init( $this->data );
 	}
 	public static function create() {
@@ -15,27 +15,28 @@ class MadSitemap extends MadAbstractData {
 		return $sitemap;
 	}
 	function init( &$data, $path='', $component='', $setting='' ) {
-		foreach( $data as $key => &$row ) {
+		foreach( $data as $id => &$row ) {
 			if ( empty( $path ) ) {
-				$row->path = "$key";
+				$row->path = "$id";
 			} else {
-				$row->path = "$path/$key";
+				$row->path = "$path/$id";
 			}
 			if ( ! isset( $row->href ) ) {
 				$row->href = "~/$row->path";
 			}
 			if ( ! isset( $row->component ) ) {
+				$row->component = $component;
+				/*
 				if ( is_dir( $path ) ) {
 					$row->component = $path;
-				} else {
-					$row->component = $component;
 				}
+				 */
 			}
 			if ( ! isset( $row->setting ) ) {
 				$row->setting = $setting;
 			}
 			if ( ! isset( $row->action ) ) {
-				$row->action = $key;
+				$row->action = $id;
 			}
 			if ( ! isset( $row->view ) ) {
 				$file = "$row->path.html";
@@ -51,14 +52,14 @@ class MadSitemap extends MadAbstractData {
 		}
 	}
 	function setCurrent() {
-		$requests = parse_url( $_SERVER['REQUEST_URI'] );
-		$paths = array_filter( explode( '/', $requests['path']) );
+		$router = MadRouter::getInstance();
 		$cursor = &$this;
-		foreach( $paths as $id ) {
+		foreach( $router->args as $id ) {
 			if ( isset( $cursor->subs ) ) {
 				$cursor = $cursor->subs;
 			}
 			if ( ! isset( $cursor->$id ) ) {
+				break;
 				// throw new Exception( 'Path not exists.' );
 				return $this;
 			}

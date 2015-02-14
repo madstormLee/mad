@@ -25,27 +25,29 @@ class MadTag {
 	function getTagName() {
 		return $this->tagName;
 	}
-	function update( $innerHTML ) {
-		$this->setInnerHTML( $innerHTML );
+	function html( $html='' ) {
+		if ( empty( $html ) ) {
+			return $this->html;
+		}
+		$this->html = $html;
 	}
-	function setInnerHTML( $innerHTML ) {
-		$this->innerHTML = $innerHTML;
+	function attr( $key, $value='' ) {
+		if ( empty( $value ) ) {
+			return $this->getAttribute( $key );
+		}
+		return $this->addAttribute( $key, $value );
+	}
+	function addAttribute( $key, $value ) {
+		$this->attributes[$key] = $value;
 		return $this;
 	}
-	function getInnerHTML() {
-		return $this->innerHTML;
-	}
-	function addAttribute( $attribute, $value ) {
-		$this->attributes[$attribute] = $value;
+	function setAttribute( $key, $value ) {
+		$this->attributes[$key] = $value;
 		return $this;
 	}
-	function setAttribute( $attribute, $value ) {
-		$this->attributes[$attribute] = $value;
-		return $this;
-	}
-	function getAttribute( $attribute ) {
-		if ( isset( $this->attributes[$attribute] ) ) {
-			return $this->attributes[$attribute];
+	function getAttribute( $key ) {
+		if ( isset( $this->attributes[$key] ) ) {
+			return $this->attributes[$key];
 		}
 		return false;
 	}

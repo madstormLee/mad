@@ -6,7 +6,7 @@ class MadUrl {
 	private function __construct() {
 		$this->data = new MadData;
 		$root = dirname($_SERVER['SCRIPT_NAME']);
-		$server = MadParam::create('_SERVER');
+		$server = MadParams::create('_SERVER');
 		$url = $server->REQUEST_URI;
 		// remove if index.php exists
 		if ( 0 === strpos( $url,$server->SCRIPT_NAME ) ) {

@@ -34,6 +34,14 @@ class MadController {
 		}
 		return $actions;
 	}
+	function action( $action ) {
+		$actionName = $action . 'Action';
+		$result = $this->$actionName();
+		if ( null === $result ) {
+			return $this->view;
+		}
+		return $result;
+	}
 	/*************** magic methods *******************/
 	function __set( $key, $value ) {
 		$this->data[$key] = $value;

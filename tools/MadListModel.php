@@ -237,7 +237,7 @@ class MadListModel implements IteratorAggregate {
 		$view->href = $href;
 		$view->param = $param;
 		$view->list = $this;
-		if ( ! $page = MadParam::create('get')->page ) {
+		if ( ! $page = MadParams::create('get')->page ) {
 			$page = 1;
 		}
 		$view->page = $page;
@@ -254,7 +254,7 @@ class MadListModel implements IteratorAggregate {
 			return '';
 		}
 		if ( $this->config->orderables->in( $order ) ) {
-			return MadParam::replace("order=$order");
+			return MadParams::replace("order=$order");
 		}
 		return '';
 	}

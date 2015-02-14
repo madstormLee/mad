@@ -1,14 +1,14 @@
 <?
-class Journal {
-	private $dir = 'Journal/data';
-	private $file = '';
+class Journal extends MadFile {
+	protected $dir = 'Journal/data';
+	protected $file = '';
 
-	private $data = array();
-	private $extension = '.txt';
+	protected $data = array();
+	protected $extension = '.txt';
 
 	function __construct( $id = '' ) {
 		$this->dir = __dir__ . '/data';
-		if ( ! $id ) {
+		if ( empty($id) ) {
 			$id = date('Ymd_His');
 		}
 		$this->fetch( $id );
@@ -17,16 +17,7 @@ class Journal {
 		$this->data = $data;
 		return $this;
 	}
-	function getFile() {
-		return $this->file;
-	}
-	function isFile() {
-		return is_file( $this->file );
-	}
-	function getBasename() {
-		return basename( $this->file );
-	}
-	function getList() {
+	function getIndex() {
 		return glob( "$this->dir/*$this->extension");
 	}
 	function fetch( $id ) {
@@ -35,20 +26,11 @@ class Journal {
 		}
 		$this->id = $id;
 		$this->file = "$this->dir/$id.txt";
-		if ( ! is_file( $this->file ) ) {
+		if ( ! $this->isFile() ) {
 			return false;
 		}
-		$this->contents = file_get_contents( $this->file );
+		$this->contents = $this->getContents();
 		return true;
-	}
-	function __set( $key, $value ) {
-		$this->data[$key] = $value;
-	}
-	function __get( $key ) {
-		if( isset( $this->data[$key] ) ) {
-			return $this->data[$key];
-		}
-		return '';
 	}
 	function save() {
 		return file_put_contents( $this->file, $this->contents );

@@ -15,7 +15,7 @@ class MadPageNavi extends MadView {
 			return '';
 		}
 		$this->rows = $list->getRows();
-		if ( ! $page = MadParam::create('get')->page ) {
+		if ( ! $page = MadParams::create('get')->page ) {
 			$page = 1;
 		}
 		$this->currentPage = $page;
@@ -40,7 +40,7 @@ class MadPageNavi extends MadView {
 			$this->nextPage = $this->startPage + $this->pages;
 		}
 
-		$this->queryString = MadParam::except( 'page' );
+		$this->queryString = MadParams::except( 'page' );
 
 		return parent::__toString();
 	}

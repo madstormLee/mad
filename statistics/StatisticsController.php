@@ -26,7 +26,7 @@ class StatisticsController extends MadController {
 		$this->main->months = range( 1, 12 );
 		$this->main->years = range( '2001', date('Y') );
 
-		$this->main->param =  MadParam::except( array('year', 'month') );
+		$this->main->param =  MadParams::except( array('year', 'month') );
 		$this->main->stat = $stat;
 	}
 }
