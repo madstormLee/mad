@@ -1,3 +1,4 @@
+@import "../style.css";
 #right {
 background: #ccf;
 }
@@ -14,4 +15,3 @@ footer {
 	background: #000;
 	z-index: 1000;
 }
-

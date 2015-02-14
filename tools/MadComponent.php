@@ -57,6 +57,8 @@ class MadComponent {
 		}
 		$controller->params = $this->params;
 
+		MadConfig::getInstance()->addConfig( "$controller->configDir/config.json" );
+
 		// view
 		$view = $this->createView( $controller );
 		$controller->view = $view;
@@ -69,5 +71,13 @@ class MadComponent {
 		$result = $controller->action( $this->action );
 
 		return $result;
+	}
+	function __toString() {
+		try {
+			$rv = (string) $this->getContents();
+		} catch( Exception $e ) {
+			$rv = $e->getMessage();
+		}
+		return $rv;
 	}
 }

@@ -34,10 +34,6 @@ class MadFront {
 			$params->addData( (array) $current->params );
 		}
 
-		if ( $current->component == 'index' ) {
-			$current->component = '';
-		}
-
 		$component = new MadComponent( $current->component );
 		$component->setAction( $current->action );
 		$component->setParams( $params );
@@ -52,7 +48,6 @@ class MadFront {
 
 		$layout = $config->layout;
 		$component = new MadComponent($layout->component);
-		$component->setConfig($layout->config);
 		$component->setAction($layout->action);
 		$layout = $component->getContents();
 

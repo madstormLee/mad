@@ -4,7 +4,7 @@ class MadSitemap extends MadAbstractData {
 	protected $pwd = array();
 	protected $json;
 
-	function __construct( $file='sitemap/sitemap.json' ) {
+	function __construct( $file='sitemap.json' ) {
 		$this->json = new MadJson( $file );
 		$this->setData( $this->json->getData() );
 		$this->init( $this->data );
@@ -34,9 +34,6 @@ class MadSitemap extends MadAbstractData {
 			}
 			if ( ! isset( $row->setting ) ) {
 				$row->setting = $setting;
-			}
-			if ( ! isset( $row->action ) ) {
-				$row->action = $id;
 			}
 			if ( ! isset( $row->view ) ) {
 				$file = "$row->path.html";
@@ -117,10 +114,14 @@ class MadSitemap extends MadAbstractData {
 		$config = MadConfig::getInstance();
 
 		if ( empty( $info->component ) ) {
-			$info->component = $config->default->component;
+			if ( isset( $config->defaultComponent ) ) {
+				$info->component = $config->defaultComponent;
+			} else {
+				$info->component = 'index';
+			}
 		}
-		if ( empty( $info->view ) ) {
-			$info->view = $config->default->view;
+		if ( empty( $info->action ) ) {
+			$info->action = 'index';
 		}
 
 		return $info;

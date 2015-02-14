@@ -1,6 +1,19 @@
 <?
 class MadConfig extends MadAbstractData {
 	private static $instance;
+	public static function getInstance() {
+		self::$instance || self::$instance = new self;
+		return self::$instance;
+	}
+
+	protected $dir = '';
+	protected $keywords = array(
+		'views' => 'addViews',
+		'js' => 'addJs',
+		'css' => 'addCss',
+		'instances' => 'addInstances',
+		'calls' => 'addCalls',
+	);
 
 	private function __construct() {
 		$this->css = MadCss::getInstance();
@@ -12,43 +25,68 @@ class MadConfig extends MadAbstractData {
 
 		$this->addConfig();
 	}
-	public static function getInstance() {
-		self::$instance || self::$instance = new self;
-		return self::$instance;
+	function addConfig( $file = 'config.json' ) {
+		$this->dir = dirName( $file ) . '/';
+
+		$json = new MadJson( $file );
+		foreach( $json as $key => $row ) {
+			if ( ! isset( $this->keywords[$key] ) ) {
+				$this->addInfo( $key, $row );
+				continue;
+			}
+			$method = $this->keywords[$key];
+			$this->$method( $row );
+		}
+
+		return $this;
 	}
-	function addView( $data ) {
+	function addViews( $data ) {
 		if( empty( $data ) ) {
 			return false;
 		}
 		foreach( $data as $key => $value ) {
+			$value = preg_replace( '!^\./!', $this->dir, $value );
 			$this->views->$key = new MadView( $value );
 		}
 	}
-	function addConfig( $file = 'config.json' ) {
-		$json = new MadJson( $file );
-		$this->info = $json->info;
-		$this->default = $json->default;
-		$this->database = $json->database;
-
-		$this->js->addAll( $json->js );
-		$this->css->addAll( $json->css );
-
-		$this->addView( $json->views );
-
-		if ( isset( $json->instances ) ) {
-			foreach( $json->instances as $key => $value ) {
-				if ( strpos( $value, '::' ) ) {
-					$this->$key = $this->createInstance( $value );
-				} else if ( strpos( $value, 'new' ) == 0 ) {
-					$value = str_replace( 'new ', '', $value );
-					$this->$key = $this->createObject( $value );
-				}
+	function addJs( $data ) {
+		$router = MadRouter::getInstance();
+		foreach( $data as $row ) {
+			if ( $row = $router->path2url( $this->dir . $row ) ) {
+				$this->js->add( $row );
 			}
 		}
-		if ( isset( $json->calls ) ) {
-			foreach( $json->calls as $key => $value ) {
-				$this->call( $value );
+		return $this;
+	}
+	function addCss( $data ) {
+		$router = MadRouter::getInstance();
+		foreach( $data as $row ) {
+			if ( $local = $router->path2url( $this->dir . $row ) ) {
+				$this->css->add( $row );
+			} else {
+				$this->css->add( $row );
 			}
+		}
+		return $this;
+	}
+	function addInfo( $key, $data ) {
+		$this->$key = $data;
+		return $this;
+	}
+	function addInstances( $data ) {
+		foreach( $data as $key => $value ) {
+			if ( strpos( $value, '::' ) ) {
+				$this->$key = $this->createInstance( $value );
+			} else if ( strpos( $value, 'new' ) == 0 ) {
+				$value = str_replace( 'new ', '', $value );
+				$this->$key = $this->createObject( $value );
+			}
+		}
+		return $this;
+	}
+	function addCalls( $data ) {
+		foreach( $json->calls as $key => $value ) {
+			$this->call( $value );
 		}
 		return $this;
 	}

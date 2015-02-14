@@ -9,7 +9,7 @@ $router = MadRouter::getInstance();
 // sitemap section
 $sitemapFile = 'sitemap.json';
 if ( is_file( $sitemapFile ) ) {
-	$sitemap = new MadSitemap($sitemapFile);
+	$sitemap = MadSitemap::create($sitemapFile);
 	$sitemap->setCurrent();
 	$current = $sitemap->getCurrent();
 } else {
@@ -26,7 +26,6 @@ $component = new MadComponent( $current->component );
 $component->setAction( $current->action );
 $component->setParams( $params );
 $view = $component->getContents();
-
 
 // layout
 $component = new MadComponent('layout');

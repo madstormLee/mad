@@ -5,7 +5,7 @@ class MadRouter extends MadAbstractData {
 	protected function __construct() {
 		$server = new MadParams('_SERVER');
 
-		$this->document = $server->DOCUMENT_ROOT;
+		$this->document = realpath($server->DOCUMENT_ROOT);
 		$this->host = $server->HTTP_HOST;
 		$this->request = $server->REQUEST_URI;
 
@@ -14,6 +14,7 @@ class MadRouter extends MadAbstractData {
 		$this->internal = ( $server->REMOTE_ADDR === '127.0.0.1' );
 
 		$this->project = dirName( $server->SCRIPT_NAME );
+		$this->cwd = getCwd();
 
 		$this->args = $this->getArgs();
 
@@ -60,8 +61,10 @@ class MadRouter extends MadAbstractData {
 		}
 	}
 	public function pathAdjust( $value ) {
-		$root = $this->document . $this->project;
-		return preg_replace('!\~!i', $root, $value );
+		return str_replace('~', $this->cwd, $value );
+	}
+	public function path2url( $value ) {
+		return str_replace($this->document, '', realpath($value) );
 	}
 	public function urlAdjust( $value ) {
 		$value = preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2~/{$this->component}", "$value" );

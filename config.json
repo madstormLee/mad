@@ -9,7 +9,7 @@
 		"project": "ThunderStorm"
 	},
 
-	"defaultComponent": "File",
+	"defaultComponent": "file",
 
 	"instances": {
 		"sessionUser": "MadSessionUser::getInstance()"

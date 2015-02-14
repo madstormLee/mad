@@ -1,24 +1,19 @@
 <?
 class MadSessionUser {
 	private static $instance;
-	private $data = null;
-
-	private function __construct() {
-		if ( isset( $_SESSION['user'] ) ) {
-			$this->data = &$_SESSION['user'];
-		} else {
-			$this->logout();
-		}
-	}
 	public static function getInstance() {
 		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
-	function getCodeNumber() {
-		return $_SESSION['_CodeNumber'];
-	}
-	function getLevel() {
-		return $this->groupId;
+
+	protected $user = null;
+
+	protected function __construct() {
+		if ( isset( $_SESSION['user'] ) ) {
+			$this->user = &$_SESSION['user'];
+		} else {
+			$this->logout();
+		}
 	}
 	function checkIp() {
 		$ipCheck = new IpCheck;
@@ -32,27 +27,32 @@ class MadSessionUser {
 			throw new Exception('권한이 부족합니다.');;
 		}
 	}
+	function isLogin() {
+		return $this->user->getLevel() <= $this->user->getLevel('member');
+	}
 	function isAdmin() {
-		return $this->getLevel() == 1;
+		return $this->user->getLevel() == 1;
 	}
-	function hasAuth( $groupId = 0 ) {
-
-		return $this->getLevel() <= $groupId ;
+	function hasAuth( $level = 0 ) {
+		return $this->user->getLevel() <= $level ;
 	}
-	function regist( $user ) {
+	function login( MadUser $user ) {
 		$_SESSION['user'] = $user;
-		$this->data = &$_SESSION['user'];
+		$this->user = &$_SESSION['user'];
 		return $this;
 	}
 	function logout() {
-		$this->regist( array( 'level' => 1000 ) );
+		$this->login( new MadUser );
 		return true;
 	}
+	function getUser() {
+		return $this->user;
+	}
+	function __set( $key, $value ) {
+		throw new Exception( 'No Access to ' . $key );
+	}
 	function __get( $key ) {
-		if ( isset( $this->data[$key] ) ) {
-			return $this->data[$key];
-		}
-		return false;
+		return $this->user->$key;
 	}
 }
 

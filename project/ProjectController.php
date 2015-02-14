@@ -1,14 +1,13 @@
 <?
 class ProjectController extends MadController {
 	function indexAction() {
-		$this->main->list = new ProjectList();
 	}
 	function viewAction() {
-		$model = new MadJson( $this->get->file );
+		$model = new MadJson( $this->params->file );
 		$this->main->model = $model;
 	}
 	function writeAction() {
-		$get = $this->get;
+		$get = $this->params;
 		$projects = new MadJson( 'json/projects.json' );
 		if ( ! $project = $projects->{$get->project} ) {
 			$project = new MadData;
@@ -16,9 +15,9 @@ class ProjectController extends MadController {
 		$this->main->model = $project;
 	}
 	function saveAction() {
-		$post = $this->post;
+		$post = $this->params;
 
-		$project = new Project( $this->post );
+		$project = new Project( $this->params );
 		$project->setData( $post )->save();
 		if ( $post->skeleton ) {
 			$skeleton = new Skeleton( $project->getDir() );
@@ -27,8 +26,8 @@ class ProjectController extends MadController {
 		$this->js->replace('./');
 	}
 	function openAction() {
-		$project = new Project( $this->get->file );
-		$project->root = dirName( $this->get->file );
+		$project = new Project( $this->params->file );
+		$project->root = dirName( $this->params->file );
 		$project->configs = new MadJson( $project->root . '/configs/default.json' );
 		$this->main->result = $this->projectLog->open( $project )->isOpen();
 	}
@@ -37,7 +36,7 @@ class ProjectController extends MadController {
 	}
 	// this from madtools project
 	function downloadAction() {
-		$get = $this->get;
+		$get = $this->params;
 		$targetDir = "project/download/";
 		$model = new ProjectDownloader;
 		$model->setData( $get );

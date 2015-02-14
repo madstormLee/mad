@@ -79,7 +79,7 @@ class MadCss {
 				$rv []= "<link rel='stylesheet' href='$file' type='text/css' media='$media' />";
 			}
 		}
-		return implode("\n", $rv);
+		return implode("\n", $rv) . "\n";
 	}
 	private function getImport () {
 		$rv = '';

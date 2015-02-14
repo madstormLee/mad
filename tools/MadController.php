@@ -34,7 +34,11 @@ class MadController {
 		}
 		return $actions;
 	}
-	function action( $action ) {
+	function action( $action='' ) {
+		$action = trim($action);
+		if ( empty($action) ) {
+			throw new BadMethodCallException;
+		}
 		$actionName = $action . 'Action';
 		$result = $this->$actionName();
 		if ( null === $result ) {

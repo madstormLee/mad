@@ -35,6 +35,10 @@ class MadDir extends MadFile {
 
 		return $this;
 	}
+	function setFlag( $flag ) {
+		$this->flag = $flag;
+		return $this;
+	}
 	function getIndex() {
 		if ( $this->dir == '' ) {
 			$target = "$this->pattern";

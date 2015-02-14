@@ -4,7 +4,7 @@
 	<a href='./write'>write</a>
 </nav>
 
-<table class='simple'>
+<table class='index'>
 	<thead>
 		<tr>
 			<th>Id</th>
@@ -15,9 +15,9 @@
 		</tr>
 	</thead>
 	<tbody>
-		<? foreach( $list as $row ): ?>
+		<? foreach( $model->getIndex() as $row ): ?>
 		<tr>
-			<td><?=$row->id?></td>
+			<td><?=$row->file?></td>
 			<td><?=$row->name?></td>
 			<td><a href='./view?file=<?=$row->getFile()?>'><?=$row->label?></a></td>
 			<td><?=$row->dir?></td>

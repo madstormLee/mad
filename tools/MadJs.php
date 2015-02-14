@@ -23,6 +23,16 @@ class MadJs extends MadAbstractData {
 		foreach( $data as $value ) {
 			$this->add( $value );
 		}
+		return $this;
+	}
+	function addAllExists( $data ) {
+		if( empty( $data ) ) {
+			return false;
+		}
+		foreach( $data as $value ) {
+			$this->addExists( $value );
+		}
+		return $this;
 	}
 	function add( $value ) {
 		if ( ! in_array( $value, $this->data ) ) {

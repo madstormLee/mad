@@ -1,4 +1,7 @@
 {
+	"project": {
+		"component": "project"
+	},
 	"tools": {
 		"component": "file",
 		"subs": {

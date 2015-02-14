@@ -88,7 +88,4 @@ class MadUserLog {
 		}
 		throw new Exception("there is no $method method in " . __class__);
 	}
-	function test() {
-		(new MadDebug)->printR( $this->data );
-	}
 }
