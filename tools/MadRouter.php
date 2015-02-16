@@ -30,6 +30,17 @@ class MadRouter extends MadAbstractData {
 
 		$this->addHistory();
 	}
+	// todo: user this for sitemap routing(as access list).
+	function sitemapException() {
+		$sitemapFile = 'sitemap.json';
+		if ( is_file( $sitemapFile ) ) {
+			$sitemap = MadSitemap::create($sitemapFile);
+			$sitemap->setCurrent();
+			$current = $sitemap->getCurrent();
+		} else {
+			$current = $router;
+		}
+	}
 	public static function getInstance() {
 		self::$instance || self::$instance = new self;
 		return self::$instance;

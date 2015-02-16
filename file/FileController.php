@@ -1,7 +1,6 @@
 <?
 class FileController extends MadController {
 	function indexAction() {
-		$this->model = new MadDir;
 		$model = $this->model;
 		$get = $this->params;
 
@@ -16,8 +15,6 @@ class FileController extends MadController {
 		}
 		$model->setDir( $get->dir );
 		$model->setPattern( $get->pattern );
-
-		$this->view->model = $model;
 	}
 	function dirAction() {
 		$this->indexAction();
@@ -51,7 +48,7 @@ class FileController extends MadController {
 		return "<pre>$contents</pre>";
 	}
 	function renameAction() {
-		$file = new MadFile( $this->get->file );
+		$file = new MadFile( $this->params->file );
 		$this->view->file = $file;
 	}
 	function mvAction() {

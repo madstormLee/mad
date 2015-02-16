@@ -2,14 +2,18 @@
 
 <table class='index'>
 	<tbody>
-		<? foreach( $model->getIndex() as $file ) : ?>
+		<? foreach( $model->getIndex() as $row ) : ?>
 		<tr>
-			<td class='title'><?=$file->getBasename()?></td>
-			<td><?=$file->dateFormat('Y-m-d')?></td>
-			<td class='buttons round align-center'>
-				<a class='tiny' href='./read?file=<?=$file?>'>read</a>
-				<a class='tiny' href='./write?file=<?=$file?>'>write</a>
-				<a class='tiny' href='./delete?file=<?=$file?>'>delete</a>
+			<? if( $row->isDir() ): ?>
+			<td class='title'><a href='<?=$row->href?>'><?=$row?></a></td>
+			<? else: ?>
+			<td class='title'><?=$row?></td>
+			<? endif; ?>
+			<td><?=$row->date?></td>
+			<td class='buttons'>
+				<a href='./read?file=<?=$row->name?>'>read</a>
+				<a href='./write?file=<?=$row->name?>'>write</a>
+				<a href='./delete?file=<?=$row->name?>'>delete</a>
 			</td>
 		</tr>
 		<? endforeach; ?>

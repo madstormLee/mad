@@ -52,7 +52,9 @@ class MadConfig extends MadAbstractData {
 	function addJs( $data ) {
 		$router = MadRouter::getInstance();
 		foreach( $data as $row ) {
-			if ( $row = $router->path2url( $this->dir . $row ) ) {
+			if ( $local = $router->path2url( $this->dir . $row ) ) {
+				$this->js->add( $row );
+			} else {
 				$this->js->add( $row );
 			}
 		}

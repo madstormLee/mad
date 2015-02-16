@@ -29,14 +29,23 @@ class MadFile implements IteratorAggregate {
 		}
 		return $rv;
 	}
+	function getDirname() {
+		return dirName( $this->file );
+	}
 	function size() {
 		return filesize( $this->file );
 	}
-	function dateFormat( $format = '' ) {
+	function date( $format = 'Y-m-d' ) {
 		return date( $format, $this->mtime() );
 	}
-	function mtime( $Format = '' ) {
-		return filectime( $this->file );
+	function mtime() {
+		return fileMtime( $this->file );
+	}
+	function ctime() {
+		return fileCtime( $this->file );
+	}
+	function atime() {
+		return fileAtime( $this->file );
 	}
 	function getData() {
 		return $this->data;

@@ -8,21 +8,18 @@
 		"year": "2014",
 		"project": "ThunderStorm"
 	},
-
-	"defaultComponent": "file",
+	"auth": {
+		"level": 1,
+		"component": "sessionUser",
+		"url": "~/sessionUser/login"
+	},
+	"layout": {
+		"component": "layout/ant",
+		"action": "layout"
+	},
+	"defaultComponent": "project",
 
 	"instances": {
 		"sessionUser": "MadSessionUser::getInstance()"
-	},
-
-	"css": [
-		"~/layout/style.css"
-	],
-
-	"js": [
-		"~/foundation/js/modernizr.js",
-		"~/foundation/js/jquery.js",
-		"~/foundation/js/foundation.min.js",
-		"~/layout/script.js"
-	]
+	}
 }

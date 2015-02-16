@@ -12,46 +12,63 @@ class MadFront {
 		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
+	public static function sitemapRoute() {
+		$sitemap = new MadSitemap('sitemap.json');
+		$sitemap->setCurrent();
+		$router = $sitemap->getCurrent();
+
+		$params = new MadParams('_GET');
+		if ( isset( $router->params ) ) {
+			$params->addData( (array) $router->params );
+		}
+
+		return self::commonDo( $router, $params );
+	}
 	public static function temp() {
 		error_reporting(E_ALL);
 		MadHeaders::utf8();
+		MadSession::start();
+
+		$config = MadConfig::getInstance();
 
 		$router = MadRouter::getInstance();
+		$params = new MadParams("_$router->method");
 
-		// sitemap section
-		$sitemapFile = 'sitemap.json';
-		if ( is_file( $sitemapFile ) ) {
-			$sitemap = new MadSitemap($sitemapFile);
-			$sitemap->setCurrent();
-			$current = $sitemap->getCurrent();
-		} else {
-			$current = $router;
+		return self::commonDo( $router, $params );
+
+	}
+	public static function commonDo( $router, $params ) {
+		$config = MadConfig::getInstance();
+
+		// todo: sessionUser exception
+		if( isset( $config->auth ) && isset( $config->sessionUser )  ) {
+			$result = $config->sessionUser->hasAuth( $config->auth->level );
+			if ( ! $result ) {
+				if ( $config->auth->component != $router->component ) {
+					header( "Location: $router->project/{$config->auth->component}/login" );
+				}
+			}
 		}
 
-		// component
-		$params = new MadParams('_GET');
-		if ( isset( $current->params ) ) {
-			$params->addData( (array) $current->params );
+		if ( ! is_dir( $router->component ) && isset($config->defaultComponent) ) {
+			$router->component = $config->defaultComponent;
 		}
-
-		$component = new MadComponent( $current->component );
-		$component->setAction( $current->action );
+		$component = new MadComponent( $router->component );
+		$component->setAction( $router->action );
 		$component->setParams( $params );
-		$view = $component->getContents();
+		$main = $component->getContents();
 
-		// layout
-		$config = new MadJson('config.json'); // temporally
-
-		if( ! isset( $config->layout ) ) {
-			return $view;
+		return self::getLayout( $main );
+	}
+	public static function getLayout( $main ) {
+		$config = MadConfig::getInstance();
+		if( $config->router->ajax || (! isset( $config->layout )) ) {
+			return $main;
 		}
-
-		$layout = $config->layout;
-		$component = new MadComponent($layout->component);
-		$component->setAction($layout->action);
+		$component = new MadComponent($config->layout->component);
+		$component->setAction($config->layout->action);
 		$layout = $component->getContents();
-
-		$layout->main = $view;
+		$layout->main = $main;
 
 		return $layout;
 	}

@@ -1,27 +1,26 @@
 <h1>Projects</h1>
 
-<nav class='component'>
-	<a href='./write'>write</a>
+<nav class='component right'>
+	<a class='tiny round button' href='./write'>write</a>
 </nav>
 
 <table class='index'>
 	<thead>
 		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>Label</th>
-			<th>Location</th>
-			<th>Open</th>
+			<th>Dir</th>
+			<th>Mtime</th>
+			<th>Buttons</th>
 		</tr>
 	</thead>
 	<tbody>
 		<? foreach( $model->getIndex() as $row ): ?>
 		<tr>
-			<td><?=$row->file?></td>
-			<td><?=$row->name?></td>
-			<td><a href='./view?file=<?=$row->getFile()?>'><?=$row->label?></a></td>
-			<td><?=$row->dir?></td>
-			<td><a href='./open?file=<?=$row->getFile()?>'>open</a></td>
+			<td><a href='<?=$row->getFile()?>'><?=$row->name?></a></td>
+			<td><?=$row->date?></a></td>
+			<td class='buttons'>
+				<a href='./view?file=<?=$row->getFile()?>'>view</a>
+				<a href='./open?file=<?=$row->getFile()?>'>open</a>
+			</td>
 		</tr>
 		<? endforeach; ?>
 	</tbody>

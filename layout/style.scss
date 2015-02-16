@@ -1,4 +1,5 @@
 @import "../scss/foundation.scss";
+
 footer {
 	background: #000;
 	text-align: right;
@@ -28,9 +29,8 @@ table.index {
 	border: 0;
 	border-bottom: 1px solid #b4b4b4;
 	th {
-		height: 31px;
 		padding: 0;
-		text-align: left;
+		text-align: center;
 	}
 	th.ck {
 		width: 31px;
@@ -41,14 +41,6 @@ table.index {
 	th.code {
 		width: 109px;
 	}
-	tbody {
-		tr {
-			background: #ffffff;
-		}
-		tr:hover {
-			background: #d2ffd2;
-		}
-	}
 	td {
 		border-top: 1px solid #e0e0e0;
 		text-align: center;
@@ -58,11 +50,10 @@ table.index {
 	}
 	td.buttons {
 		@include button-group-container();
-		@include button-group-style($radius:$button-round);
 		a {
 			@include button();
 			@include button-size($padding:$button-tny);
-			@include button-group-style($radius:$button-round);
+			margin: 0;
 		}
 	}
 }
@@ -165,5 +156,15 @@ table.images {
 	}
 	tbody tr:hover {
 		background: #ffffff;
+	}
+}
+
+/************************** nav.component ********************/
+nav.component {
+	float: right;
+	a {
+		@include button();
+		@include button-size($padding:$button-tny);
+		@include button-style($bg:false, $radius:$button-round);
 	}
 }

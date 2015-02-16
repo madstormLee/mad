@@ -1,13 +1,7 @@
 <h1>Image View</h1>
 
-<nav class='component'>
-	<a href='./'>Index</a>
-</nav>
-
-<nav class='location'>
-	<? if ( $server->HTTP_REFERER ) : ?>
-	<a href='<?=$server->HTTP_REFERER ?>'>back</a>
-	<? endif; ?>
+<nav class='component row'>
+	<a class='right' href='./'>Index</a>
 </nav>
 
 <table class='simple'>
@@ -42,17 +36,11 @@
 			<td class='title'><?=fileOwner( $file->getFile() )?></td>
 		</tr>
 		<tr>
-			<td>File Writable</td>
+			<td>File Permmision</td>
 			<td class='title'>
-				<? if ( $info->isWritable() ) : ?>
-				Writable
-				<? endif; ?>
-				<? if ( $info->isReadable() ) : ?>
-				Readable
-				<? endif; ?>
-				<? if ( $info->isExecutable() ) : ?>
-				Excutable
-				<? endif; ?>
+				<?=$info->isReadable()?'r':''; ?>
+				<?=$info->isWritable()?'w':''; ?>
+				<?=$info->isExecutable()?'x':''; ?>
 			</td>
 		</tr>
 	</tbody>

@@ -1,1 +1,75 @@
 <h1>Php</h1>
+
+<nav class='component'>
+	<a href='./info'>Phpinfo</a>
+</nav>
+
+<ul class="tabs" data-tab>
+	<li class="tab-title active"><a href="#vars">Vars</a></li>
+	<li class="tab-title"><a href="#globals">Globals</a></li>
+	<li class="tab-title"><a href="#interfaces">Interfaces</a></li>
+	<li class="tab-title"><a href="#classes">Classes</a></li>
+	<li class="tab-title"><a href="#splClasses">Spl Classes</a></li>
+	<li class="tab-title"><a href="#internalFunctions">Internal functions</a></li>
+	<li class="tab-title"><a href="#userFunctions">User functions</a></li>
+</ul>
+
+<section class='tabs-content'>
+	<div class='content active' id='vars'>
+		<h1>Vars</h1>
+		<ol>
+			<? foreach( get_defined_vars() as $key => $value ): ?>
+			<li><?=$key?> <?printR($value)?></li>
+			<? endforeach; ?>
+		</ol>
+	</div>
+
+	<div class='content' id='globals'>
+		<h1>Globals</h1>
+		<ol>
+			<? foreach( $GLOBALS as $key => $value ): ?>
+			<? if ( $key == 'GLOBALS' ) continue; ?>
+			<li><?=$key ?> <? printR($value) ?></li>
+			<? endforeach; ?>
+		</ol>
+	</div>
+
+	<div class='content' id='interfaces'>
+		<h1>Interfaces</h1>
+		<ol>
+			<? foreach( get_declared_interfaces() as $value ): ?>
+			<li><?=$value?></li>
+			<? endforeach; ?>
+		</ol>
+	</div>
+
+	<div class='content' id='classes'>
+		<h1>Classes</h1>
+		<ol>
+			<? foreach( get_declared_classes() as $value ): ?>
+			<li><?=$value?></li>
+			<? endforeach; ?>
+		</ol>
+	</div>
+
+	<div class='content' id='splClasses'>
+		<h1>Spl Classes</h1>
+		<ol>
+			<? foreach( spl_classes() as $value ): ?>
+			<li><?=$value?></li>
+			<? endforeach; ?>
+		</ol>
+	</div>
+
+	<? foreach( get_defined_functions() as $domain => $functions ) : ?>
+	<div class='content' id='<?=$domain?>Functions'>
+		<h1><?=ucFirst($domain)?> Functions</h1>
+		<ol>
+			<? foreach( $functions as $key => $value ): ?>
+			<li><?=$value?></li>
+			<? endforeach; ?>
+		</ol>
+	</div>
+	<? endforeach; ?>
+
+</section>

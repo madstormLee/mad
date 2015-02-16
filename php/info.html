@@ -1,11 +1,15 @@
 <h1>Phpinfo</h1>
 
-<ul>
-	<? foreach( $list as $row ): ?>
-	<li>
-		<a href='?option=<?=$row->value?>' data-target='main' title='<?=htmlEntities($row->description, ENT_QUOTES)?>'><?=$row->name?></a>
-	</li>
-	<? endforeach; ?>
-</ul>
+<form class='medium-3 columns' action='?'>
+	<ul>
+		<? foreach( $model->getOptions() as $row ): ?>
+		<li>
+			<input id='<?=$row->name?>' name='options[]' type='checkbox' value='<?=$row->value?>' <?=$model->hasOption($row->value)?"checked=checked":'';?> />
+			<label for='<?=$row->name?>' title='<?=htmlEntities($row->description, ENT_QUOTES)?>'><?=$row->name?></label>
+		</li>
+		<? endforeach; ?>
+	</ul>
+	<button>Submit</button>
+</form>
 
-<article><? phpinfo( $option );?></article>
+<article class='medium-9 columns'><?=$model->info();?></article>

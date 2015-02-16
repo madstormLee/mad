@@ -1,9 +1,10 @@
 <?
-class MadUser {
+class MadUser implements IteratorAggregate {
+	protected $data = array();
 	protected $levels = null;
 	protected $level = 1000;
 
-	function __construct() {
+	function __construct( $id='' ) {
 		$this->levels = new MadData( array(
 			'root' => 0,
 			'admin' => 1,
@@ -12,12 +13,27 @@ class MadUser {
 			'user' => 255,
 			'default' => 1000,
 		) );
+		$this->fetch( $id );
 	}
-	function __get( $key ) {
-		if ( isset( $this->data[$key] ) ) {
-			return $this->data[$key];
+	function fetch( $id ) {
+		if ( empty( $id ) ) {
+			return $this;
 		}
-		return false;
+		$json = new MadJson( "user/data/$id.json" );
+		$this->data = $json->getData();
+		$this->setLevel( $json->level );
+		return $this;
+	}
+	function fetchLogin( $id, $pw ) {
+		$this->fetch( $id );
+		if ( $this->password != sha1( $pw ) ) {
+			throw new Exception('Wrong id/password.');
+		}
+		return $this;
+	}
+	function setLevel( $level = 1000 ) {
+		$this->level = $level;
+		return $this;
 	}
 	function getLevel( $name = '' ) {
 		if ( empty( $name ) ) {
@@ -30,5 +46,14 @@ class MadUser {
 			$this->levels->default = 300;
 		}
 		return $this->levels->default;
+	}
+	function getIterator() {
+		return new ArrayIterator($this->data);
+	}
+	function __get( $key ) {
+		if ( isset( $this->data[$key] ) ) {
+			return $this->data[$key];
+		}
+		return false;
 	}
 }

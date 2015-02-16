@@ -1,8 +1,0 @@
-<h1>Index</h1>
-
-<ul>
-	<? foreach( $model->getIndex() as $file ): ?>
-	<? if ( is_file($file ) ) continue; ?>
-	<li><a href='<?=$file?>'><?=$file?></a></li>
-	<? endforeach; ?>
-</ul>

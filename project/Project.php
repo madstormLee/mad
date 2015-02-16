@@ -4,10 +4,25 @@ class Project extends MadJson {
 		parent::__construct( $file );
 	}
 	function getIndex() {
-		$dir = new MadDir();
-		// $dir->setPattern( '*/.madProject' );
-		$dir->setFlag( GLOB_ONLYDIR );
-		return $dir;
+		$rv = array();
+
+		$dir = glob( '*/.madProject' );
+		foreach( $dir as $file ) {
+			$row = new MadFile( $file );
+			$row->date = $row->date();
+			$row->name = $row->getDirname();
+			$row->href = $row->getDirname();
+			$rv[] = $row;
+		}
+		return $rv;
+	}
+
+	function getIndexTemp() {
+		$dirs = new MadDir();
+		// $dirs->setPattern( '*/.madProject' );
+		$dirs->setFlag( GLOB_ONLYDIR );
+
+		return $dirs;
 
 		$dirs = new MadFile( $this->dir );
 		if ( ! $dirs->isDir() ) {
@@ -16,6 +31,7 @@ class Project extends MadJson {
 		$dirs->filter('^\.');
 
 		$data = array();
+
 		foreach( $dirs as $dir ) {
 			$file = $dir->getFile() . '/.madProject';
 			if ( ! is_file( $file ) ) {
@@ -36,13 +52,6 @@ class Project extends MadJson {
 		$json->label = $basename;
 		$json->description = $basename;
 		return $json;
-	}
-	function save() {
-		if ( empty( $this->root ) ) {
-			$this->root = "projects/$this->id";
-		}
-		$dir = new MadFile( $data->root );
-		$dir->saveDir();
 	}
 	function registProject() {
 		$projects = new MadJson( 'json/projects.json' );
