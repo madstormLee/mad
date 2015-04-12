@@ -8,7 +8,7 @@ final class MadAutoload implements IteratorAggregate {
 		spl_autoload_register( array( $this, 'autoload' ), true );
 	}
 	public static function getInstance() {
-		return self::$instance ? self::$instance : self::$instance = new self;;
+		return self::$instance? self::$instance : self::$instance = new self;
 	}
 	private function autoload( $class ) {
 		// component's model load first;

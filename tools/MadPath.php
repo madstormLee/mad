@@ -10,9 +10,7 @@ class MadPath extends MadAbstractData {
 		$this->project= dirName( $this->root . $server->SCRIPT_NAME );
 	}
 	public static function getInstance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self;
-		}
+		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
 }

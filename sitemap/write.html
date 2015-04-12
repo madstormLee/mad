@@ -1,17 +1,5 @@
 <script src='./script.js'></script>
 
-<section id='left' class='medium-3 columns'>
-<? $treeIterator=function( $data, $path='' ) use ( &$treeIterator ) { ?>
-<ul>
-	<? foreach( $data as $key => $row ): ?>
-	<li>
-	<a <?=( $row->path == $path )?"class='on'":'';?> href="?path=<?=$row->path?>"><?=$row->label?></a>
-		<? if ( isset( $row->subs ) ) $treeIterator( $row->subs, $path ); ?>
-	</li>
-	<? endforeach; ?>
-</ul>
-<? }; $treeIterator( $config->sitemap, $params->path ); ?>
-</section>
 
 <form id='SitemapWrite' method='post' class='medium-9 columns' action='./save'>
 	<?=$config->sitemap->getPwdNavi(); ?>

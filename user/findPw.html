@@ -1,4 +1,4 @@
-
+<h1>Find Password</h1>
 
 <form id='MadLogFindPw' method='post'>
 	<dl>
@@ -8,8 +8,7 @@
 		<dd><input type='text' name='name' /></dd>
 		<dt>이메일 주소</dt>
 		<dd>
-		<input type='text' name='email[]' />@
-		<input type='text' name='email[]' />
+			<input type='email' name='email[]' />
 		</dd>
 		<dt>새 비밀번호</dt>
 		<dd><input type='password' name='pw' /></dd>
@@ -20,25 +19,25 @@
 </form>
 
 
-<form id='<?=$this->table?>' class='<?=$this->program?>' method='post'>
-	<input type='hidden' name='table' value='<?=$this->table?>' />
-	<input type='hidden' name='mode' value='find_pw' />
-	<dl>
-		<dt>사용자이름</dt>
-		<dd><input type='text' name='name' /></dd>
-		<dt>아이디</dt>
-		<dd>
-		<input type='text' name='id' />
-		</dd>
-		<dt>새 비밀번호</dt>
-		<dd><input type='password' name='pw' /></dd>
-		<dt>새 비밀번호 확인</dt>
-		<dd><input type='password' name='pw_confirm' /></dd>
-		<dt>이메일 주소</dt>
-		<dd>
-		<input type='text' name='email[]' />@
-		<input type='text' name='email[]' />
-		</dd>
-	</dl>
-	<button type='submit'>확인</button>
-</form>
+<form id='<?=$this->table?>' class='<?=$this->program?>' method='post'>
+	<input type='hidden' name='table' value='<?=$this->table?>' />
+	<input type='hidden' name='mode' value='find_pw' />
+	<dl>
+		<dt>사용자이름</dt>
+		<dd><input type='text' name='name' /></dd>
+		<dt>아이디</dt>
+		<dd>
+		<input type='text' name='id' />
+		</dd>
+		<dt>새 비밀번호</dt>
+		<dd><input type='password' name='pw' /></dd>
+		<dt>새 비밀번호 확인</dt>
+		<dd><input type='password' name='pw_confirm' /></dd>
+		<dt>이메일 주소</dt>
+		<dd>
+		<input type='text' name='email[]' />@
+		<input type='text' name='email[]' />
+		</dd>
+	</dl>
+	<button type='submit'>확인</button>
+</form>

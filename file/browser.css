@@ -1,0 +1,71 @@
+main h1 {
+	font-size: 1rem;
+}
+#dirView {
+}
+#dirView .fileIndex nav.buttons {
+	display: none;
+}
+#fileView h1 ,
+#dirView h1 {
+	display: none;
+}
+#contextMenu {
+	display: none;
+}
+#menuBar {
+	max-width: 100%;
+	padding: 5px;
+	background: #000;
+	font-size: .8rem;
+}
+#menuBar nav {
+	display: inline-block;
+	border-radius: 5px;
+	background: #333;
+}
+#menuBar form {
+}
+#menuBar a {
+	color: #fff;
+}
+
+/******************** .fileIndex ********************/
+.fileIndex {
+	list-style: none;
+	margin: 0;
+}
+.fileIndex nav.buttons {
+	margin-left: 1rem;
+	display: inline;
+}
+.fileIndex nav.buttons a {
+	display: inline-block;
+	font-size: .7rem;
+	border: 1px solid #000;
+	background: #ccc;
+	padding: .1rem .5rem;
+	border-radius: .2rem;
+	color: #000;
+}
+.fileIndex li li {
+	margin-left: 1rem;
+}
+.fileIndex li img {
+height:1rem;
+}
+.fileIndex a.dir {
+}
+.fileIndex a.file {
+	color: #000;
+}
+
+/******************** #iconIndex ********************/
+#iconIndex {
+}
+#iconIndex li {
+	width: 120px;
+	border-radius: 1rem;
+	text-align: center;
+	margin: .5rem;
+}

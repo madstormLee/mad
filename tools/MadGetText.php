@@ -11,11 +11,6 @@ class MadGetText {
 		}
 		return self::$instance;
 	}
-	// temporal test loader.
-	function addJson( $jsonFile ) {
-		$this->data = toJis( json_decode( file_get_contents( $jsonFile ), true ) );
-		return $this;
-	}
 	function addData( $data ) {
 		$this->data = array_merge( $data, $this->data  );
 		return $this;

@@ -1,0 +1,23 @@
+<h1>User Login</h1>
+
+<nav class='component'>
+	<a href='./findIdPw'>ID/PWD 찾기</a>
+	<a href='./askToAdmin'>관리자 문의하기</a>
+	<a href='./request'>신규가입</a>
+</nav>
+
+<form id='UserLogin' method='post' action='./registSession'>
+	<input type='hidden' name='returnUrl' value='<?=$get->returnUrl?>' />
+	<ul>
+		<li>
+			<label for='id'>ID</label>
+			<input type='text' id='id' name='id' required />
+		</li>
+		<li>
+			<label for='pw'>Password</label>
+			<input type='password' id='pw' name='pw' required />
+		</li>
+	</ul>
+
+	<button>Login</button>
+</form>

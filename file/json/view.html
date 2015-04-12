@@ -1,0 +1,22 @@
+<link rel='stylesheet' href='./style.css' type='text/css' media='all' />
+<h1>Json View</h1>
+
+<h2><?=$model->getFile()?></h2>
+
+<section id='jsonView' class='jsonView'>
+<? $treeIterator = function( $data, $depth = 0 ) use ( &$treeIterator ) { ?>
+	<? ++$depth; ?>
+	<? foreach( $data as $key => $value ): ?>
+	<dl class='row sub<?=$depth?>'>
+		<dt class='medium-<?=$depth+1?> columns'><?=$key?></dt>
+		<dd class='medium-<?=11-$depth?> columns'>
+		<? if ( is_array( $value ) || is_object($value) ) : ?>
+			<?=$treeIterator( $value, $depth ) ?>
+		<? else: ?>
+			<?=$value?>
+		</dd>
+		<? endif; ?>
+	</dl>
+	<? endforeach; ?>
+<? }; $treeIterator( $model ); ?>
+</section>

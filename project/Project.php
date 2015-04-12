@@ -1,22 +1,63 @@
 <?
-class Project extends MadJson {
-	function __construct( $file = '' ) {
-		parent::__construct( $file );
+class Project extends MadModel {
+	protected $projectDir = 'project/data';
+
+	function fetch( $id='' ) {
+		if ( empty( $id ) ) {
+			$file = '.madProject';
+		} else {
+			$file = "$id/.madProject";
+		}
+		$this->data = new MadJson( $file );
+		return $this;
+	}
+	public static function getDatabase() {
+		if ( isset( $_SESSION['project'] ) ) {
+			return MadDb::create( "sqlite:{$_SESSION['project']}/.ts.db");
+		}
+		return MadDb::create('sqlite:.ts.db');
+	}
+	public static function session() {
+		$session = MadSession::getInstance();
+		if ( ! isset( $session->project ) ) {
+			$session->project = '.';
+		}
+		return new self( $session->project );
 	}
 	function getIndex() {
 		$rv = array();
 
-		$dir = glob( '*/.madProject' );
+		$dir = glob( 'project/data/*/.madProject' );
 		foreach( $dir as $file ) {
 			$row = new MadFile( $file );
 			$row->date = $row->date();
+			$row->id = $row->getDirname();
 			$row->name = $row->getDirname();
 			$row->href = $row->getDirname();
 			$rv[] = $row;
 		}
-		return $rv;
+		return new MadData($rv);
 	}
+	function save( $data = '' ) {
+		$dir = new MadDir($this->projectDir . "/$this->id");
+		if ( ! $dir->isDir() ) {
+			$dir->mkDir();
+		}
 
+		if ( empty( $this->wDate ) ) {
+			$this->wDate = date('Y-m-d m:i:s');
+		}
+		$this->uDate = date('Y-m-d m:i:s');
+
+		$json = new MadJson("$dir/.madProject");
+		$json->setData( $this->data );
+
+		if ( ! $json->save() ) {
+			throw new Exception('save failure');
+		}
+		return $this;
+	}
+	/************* from mergeThis *************/
 	function getIndexTemp() {
 		$dirs = new MadDir();
 		// $dirs->setPattern( '*/.madProject' );
@@ -58,14 +99,15 @@ class Project extends MadJson {
 		$projects->{$this->id} = $this->data;
 		$projects->save();
 	}
-
-
+	function getForms() {
+		$json = new MadJson( 'project/write.json' );
+		return new MadForm( $json );
+	}
 
 	// from ProjectDownloader
 	private $target = array();
 	private $ext = '.tar.gz';
 	function findHead( $targetDir, $project ) {
-		// MadDir can do that?
 		$lastVersionName = '';
 		$lastVersionFile = '';
 		$dir = new MadDir($targetDir);

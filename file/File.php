@@ -1,7 +1,9 @@
 <?
-class File extends MadDir {
+class File extends MadFile {
 	// @override
 	function getIndex() {
+		$rv = new MadDir( $path, $pattern );
+		return $rv;
 		$rv = array();
 
 		$dir = glob( '*', GLOB_ONLYDIR );
@@ -13,5 +15,8 @@ class File extends MadDir {
 			$rv[] = $row;
 		}
 		return $rv;
+	}
+	function getPwd() {
+		return array();
 	}
 }

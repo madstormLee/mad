@@ -1,0 +1,26 @@
+<h1>Databases</h1>
+
+<table class='adminTable'>
+	<thead>
+		<tr>
+			<th>DB명</th>
+			<th>Database 정의서</th>
+		</tr>
+	</thead>
+	<tbody>
+	<? foreach ( $model->getIndex() as $row ): extract($row); ?>
+	<tr>
+		<td><a href='~/table/list?database=<?=$row->Database?>'><?=$row->Database?></a></td>
+		<td>
+			<a href='~/database/definitionList?database=<?=$row->Database?>'>보기</a>
+			<a href='~/pdf/downloadLocation?url=/crm/database/definitionList?database=<?=$row->Database?>'>다운로드</a>
+		</td>
+	</tr>
+	<? endforeach; ?>
+	</tbody>
+</table>
+
+<? if ( $model->isEmpty() ) : ?>
+<p class='noContent'>리스트가 없습니다.</p>
+<? endif; ?>
+<?=$model->getPageNavi()?>

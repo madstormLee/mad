@@ -1,7 +1,4 @@
 {
-	"debug": "dev",
-	"session": "start",
-
 	"info": {
 		"title": "Mad",
 		"author": "Madstorm",
@@ -13,13 +10,10 @@
 		"component": "sessionUser",
 		"url": "~/sessionUser/login"
 	},
-	"layout": {
-		"component": "layout/ant",
-		"action": "layout"
-	},
-	"defaultComponent": "project",
-
 	"instances": {
-		"sessionUser": "MadSessionUser::getInstance()"
+		"db": "MadDb::create('sqlite:data.db')",
+		"debug": "MadDebug::getInstance()",
+		"session": "MadSession::getInstance()",
+		"layout": "new MadView('layout/default.html')"
 	}
 }

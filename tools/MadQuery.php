@@ -28,7 +28,6 @@ class MadQuery implements IteratorAggregate, Countable {
 
 	function __construct( $table = '' ) {
 		$this->db = MadDb::create();
-		$this->table = $table;
 		$this->from( $table );
 	}
 	function getCommand() {
@@ -60,6 +59,7 @@ class MadQuery implements IteratorAggregate, Countable {
 	}
 	function from( $table = '' ) {
 		$this->table = $table;
+		$this->model = $table;
 		if ( empty( $table ) ) {
 			$this->tables = array();
 		} else {
@@ -268,7 +268,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		if ( empty( $this->statement ) ) {
 			$this->query();
 			$this->statement = $this->db->getStatement();
-			$this->statement->setFetchMode( PDO::FETCH_INTO, $this->model );
+			$this->statement->setFetchMode( PDO::FETCH_CLASS, $this->model );
 		}
 		return $this->statement;
 	}
@@ -312,15 +312,25 @@ class MadQuery implements IteratorAggregate, Countable {
 		$query = "show tables like '$this->table'";
 		return $this->db->query( $query )->rows();
 	}
-	/*************************** util ***************************/
-	function total() {
-		$query = "select count(*) from $this->table";
-		return $this->db->query($query)->getFirst();
+	/*************************** utilities ***************************/
+	function total( $where='' ) {
+		$where = $this->formatWhere( $where );
+		$query = "select count(*) from $this->table $where";
+		$this->db->query($query);
+		$rv = $this->db->getFirst();
+		return ( $rv ) ? $rv : 0;
 	}
 	function searchTotal() {
-		$where = $this->getWhere();
-		$query = "select count(*) from $this->table $where";
-		return $this->count = $this->db->query($query)->getFirst();
+		return $this->total( $this->getWhere() );
+	}
+	function formatWhere( $where ) {
+		$where = trim( $where );
+		return empty($where)? '' : 'where ' . str_ireplace( 'where', '', $where );
+	}
+	function max($field='id', $where='') {
+		$where = $this->formatWhere( $where );
+		$query = "select max($field) from $this->table $where";
+		return $this->db->query( $query )->getFirst();
 	}
 	function drop() {
 		return $this->db->exec("drop table $this->table");
@@ -329,7 +339,11 @@ class MadQuery implements IteratorAggregate, Countable {
 		return $this->db->exec( "truncate $this->table" );
 	}
 	function explain() {
-		return $this->db->query( "explain $this->table" );
+		return $this->db->query( "explain $this->table" )->getData();
+	}
+	function getDefaults() {
+		$data = new MadData( $this->explain() );
+		return $data->dic( 'Field', 'Default' );
 	}
 	/**************************** query and rollback ****************************/
 	public function setRollback( $flag = true ) {

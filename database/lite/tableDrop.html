@@ -1,0 +1,10 @@
+
+<form action='./tableDropConfirm' method='post'>
+	<input type='hidden' name='tablename' value='<?=htmlencode($_GET['table'])?>'/>
+	<div class='confirm'>
+		<?=sprintf($lang['ques_drop'], htmlencode($_GET['table']))?>
+		<br/><br/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='./'><?=$lang['cancel']?></a>
+	</div>
+</form>

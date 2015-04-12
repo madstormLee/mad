@@ -51,18 +51,10 @@ class MadTest implements IteratorAggregate {
 		}
 		return $this;
 	}
-	function getTests( $tail = 'Test' ) {
-		$methods = get_class_methods( $this );
-		$actions = new MadData;
-		foreach( $methods as $method ) {
-			if( preg_match( "/$tail$/", $method ) ) {
-				$actions->add( $method );
-			}
-		}
+	function getTests() {
+		$actions = new MadData(get_class_methods( $this ));
+		$actions->grep("/Test$/");
 		return $actions;
-	}
-	function test() {
-		$this->data->test();
 	}
 	function getLog() {
 		return $this->log;

@@ -1,0 +1,32 @@
+<h2><?=$lang['create_index']?> '<?=htmlencode($_POST['tablename'])?>'</h2>
+
+<form action='./indexCreateConfirm?table=<?=urlencode($_POST['tablename'])?>' method='post'>
+	<fieldset><legend><?=$lang['define_index']?></legend>
+		<?=$lang['index_name']?>: <input type='text' name='name'/><br/>";
+		<?=$lang['dup_val']?>:
+		<select name='duplicate'>
+			<option value='yes'><?=$lang['allow']?></option>
+			<option value='no'><?=$lang['not_allow']?></option>
+		</select><br/>
+	</fieldset>
+	<br/>
+	<fieldset><legend><?=$lang['define_in_col']?></legend>
+		<? for($i=0; $i<$num; $i++) { ?>
+		<select name='<?=$i?>_field'>
+			<option value=''>--<?=$lang['ignore']?>--</option>
+			<? for($j=0; $j<sizeof($result); $j++): ?>
+			<option value='<?=htmlencode($result[$j][1])?>'><?=htmlencode($result[$j][1])?></option>
+			<? endfor; ?>
+		</select> 
+		<select name='<?=$i?>_order'>
+			<option value=''></option>
+			<option value=' ASC'><?=$lang['asc']?></option>
+			<option value=' DESC'><?=$lang['desc']?></option>
+		</select><br/>
+		<? } ?>
+	</fieldset>
+	<br/><br/>
+	<input type='hidden' name='num' value='<?=$num?>'/>
+	<input type='submit' value='<?=$lang['create_index1']?>' class='btn'/> 
+	<a href='./columnView?table=<?=urlencode($_POST['tablename'])?>'><?=$lang['cancel']?></a>
+</form>

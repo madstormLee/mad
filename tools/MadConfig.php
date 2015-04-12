@@ -13,6 +13,7 @@ class MadConfig extends MadAbstractData {
 		'css' => 'addCss',
 		'instances' => 'addInstances',
 		'calls' => 'addCalls',
+		'configs' => 'addConfigs',
 	);
 
 	private function __construct() {
@@ -20,7 +21,6 @@ class MadConfig extends MadAbstractData {
 		$this->js = MadJs::getInstance();
 		$this->views = new MadData;
 		$this->router = MadRouter::getInstance();
-		$this->sessionUser = MadSessionUser::getInstance();
 		$this->sitemap = MadSitemap::create();
 
 		$this->addConfig();
@@ -91,6 +91,11 @@ class MadConfig extends MadAbstractData {
 			$this->call( $value );
 		}
 		return $this;
+	}
+	function addConfigs( $data ) {
+		foreach( $data as $value ) {
+			$this->addConfig( $value );
+		}
 	}
 	private function createObject( $value ) {
 		$args = $this->getArgs( $value );

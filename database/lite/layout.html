@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Copyright <?=date("Y").' '.PROJECT.' ('.PROJECT_URL.')'; ?> -->
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+<link rel="shortcut icon" href="./favicon.ico" />
+<title><?=PROJECT ?></title>
+<link href='./style.css' rel='stylesheet' type='text/css' />
+<script type='text/javascript' src='./script.css'></script>
+</head>
+<body style="direction:<?=$lang['direction']; ?>;">
+
+<table class="body_tbl">
+	<tr>
+		<td class="left_td">
+			<div id='leftNav'>
+				<? include 'left.html' ?>
+			</div>
+		</td>
+		<td id="main_column" class="right_td">
+			<a href='./'><?=htmlencode($currentDB['name'])?></a>
+			<? if( $get->table ) { ?>
+			&rarr; <a href='./rowView?table=<?=urlencode($get->table)?>'><?=htmlencode($get->table)?></a>
+			<? } ?>
+
+			<br/>
+			<br/>
+
+			<? if(isset($_GET['confirm'])) { ?>
+			include 'confirm.html';
+			<? } ?>
+
+			<?
+			$tableActions = array(
+			"rowView",
+			"rowCreate",
+			"columnView",
+			"tableExport",
+			"tableImport",
+			"tableSql",
+			"tableRename",
+			"tableSearch",
+			"tableTriggers"
+			);
+			?>
+
+			<? if( $get->table && in_array( $action, $tableActions ) ) { ?>
+			<a href='./rowView?table=<?=urlencode($_GET['table'])?>' class='tab rowView'><?=$lang['browse']?></a>
+			<a href='./columnView?table=<?=urlencode($_GET['table'])?>' class='tab columnView'><?=$lang['struct']?></a>
+			<a href='./tableSql?table=<?=urlencode($_GET['table'])?>' class='tab tableSql'><?=$lang['sql']?></a>
+			<a href='./tableSearch?table=<?=urlencode($_GET['table'])?>' class='tab tableSearch'><?=$lang['srch']?></a>
+			<a href='./rowCreate?table=<?=urlencode($_GET['table'])?>' class='tab rowCreate'><?=$lang['insert']?></a>
+			<a href='./tableExport?table=<?=urlencode($_GET['table'])?>' class='tab tableExport'><?=$lang['export']?></a>
+			<a href='./tableImport?table=<?=urlencode($_GET['table'])?>' class='tab tableImport'><?=$lang['import']?></a>
+			<a href='./tableRename?table=<?=urlencode($_GET['table'])?>' class='tab tableRename'><?=$lang['rename']?></a>
+
+			<a href='./tableEmpty?table=<?=urlencode($_GET['table'])?>' class='tab empty'><?=$lang['empty']?></a>
+			<a href='./tableDrop?table=<?=urlencode($_GET['table'])?>' class='tab drop'><?=$lang['drop']?></a>
+			<div style='clear:both;'></div>
+			<? } ?>
+
+			<? if( !$get->table ) { ?>
+			<a href='./structure' class='tab structure'><?=$lang['struct']?></a>
+			<a href='?view=sql' class='tab sql'><?=$lang['sql']?></a>
+			<a href='?view=export' class='tab export'><?=$lang['export']?></a>
+			<a href='?view=import' class='tab import'><?=$lang['import']?></a>
+			<a href='?view=vaccum' class='tab vaccum'><?=$lang['vac']?></a>
+
+			<? if($directory!==false && is_writable($directory)) { ?>
+			<a href='?view=rename' class='tab rename'><?=$lang['db_rename']?></a>
+			<a href='?view=delete' class='tab delete delete_db' title='<?=$lang['db_del']?>'><?=$lang['db_del']?></a>
+			<? } ?>
+			<div style='clear:both;'></div>
+			<? } ?>
+
+			<div id='main'>
+				<?=$main ?>
+			</div>
+
+			<br/>
+			<footer> <?=$config->footer?> </footer>
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

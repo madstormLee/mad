@@ -1,0 +1,20 @@
+<h1>Schemes List</h1>
+
+<table class='simple'>
+	<thead>
+		<tr>
+			<th>File Name</th>
+			<th>installed</th>
+			<th>total</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $index as $row ) : ?>
+		<tr class='<?=$row->installed?>'>
+			<td><a href='./install?file=<?=$row->filename?>'><?=$row->basename?></a></td>
+			<td><?=$row->installed ?></td>
+			<td><?=$row->total?></td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>

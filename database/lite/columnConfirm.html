@@ -1,0 +1,9 @@
+
+<form action='./<?=$_REQUEST['action2']?>Confirm?table=<?=urlencode($_GET['table'])?>&amp;pk=<?=urlencode($pkVal)?>' method='post'>
+	<div class='confirm'>
+		<? printf($lang['ques_'.$_REQUEST['action2']], htmlencode($str), htmlencode($_GET['table']))?>
+		<br/><br/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=column_view'><?=$lang['cancel']?></a>
+	</div>
+</form>

@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+
+
+#l_box_outer {width:559px;height:320px; background:url(./A_img/common/mng_login_bg.gif)no-repeat;margin:45px auto 0 auto;}
+#l_box_inner {width:320px;height:300px;text-align:left;padding:30px 0 0 0; margin:0 0 0 240px;}
+#l_input {padding:20px 0 0 10px}
+#l_input_left {float:left;padding-right:10px;}
+#l_input_left dl{clear:both}
+#l_input_left dl dt{float:left;width:70px}
+#l_input_left dl dd{float:left}
+#l_input_right {float:left;width:90px;}
+#l_msg {clear:both;}
+#l_msg dl dt{float:left;width:150px}
+#l_msg dl dd{float:left}

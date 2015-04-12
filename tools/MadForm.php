@@ -6,7 +6,7 @@ class MadForm implements IteratorAggregate {
 	private $types = null;
 
 	function __construct( $data = null ) {
-		MadAutoload::getInstance()->addDir( MADTOOLS . 'forms/' );
+		MadAutoload::getInstance()->add( MADTOOLS . 'forms/' );
 		$types = array(
 				'hidden' => 'MadFormElement_Hidden',
 				'text' => 'MadFormElement_Text',
@@ -19,9 +19,7 @@ class MadForm implements IteratorAggregate {
 				'default' => 'MadFormElement_Text',
 				);
 		$this->types = new MadData( $types );
-		$this->data = new MadData;
-
-		$this->setData( $data );
+		$this->data = $data;
 	}
 	function isEmpty() {
 		return $this->data->isEmpty();
@@ -81,20 +79,26 @@ class MadForm implements IteratorAggregate {
 		return $this->getUnits();
 	}
 	function getUnits() {
-		$units = new MadData;
+		$rv = new MadData;
 		foreach( $this->data as $key => $data ) {
-			$units->$key = $this->getUnit( $key );
+			$rv->$key = $this->getUnit( $key );
 		}
-		return $units;
+		return $rv;
 	}
 	function getUnit( $key ) {
 		if ( ! $data = $this->data->$key ) {
-			return $this->getDefaultUnit( $key );
+			$data = $this->getDefaultUnit( $key );
 		}
 		if ( $this->model ) {
 			$data->value = $this->model->$key;
 		}
-		return $this->createWithData( $data );
+		if ( ! isset( $data->value ) ) {
+			$data->value = '';
+		}
+		$rv = new MadData;
+		$rv->label = "<label for='$data->id'>$data->label</label>";
+		$rv->form = "<input type='$data->type' id='$data->id' name='$data->name' value='$data->value' placeholder='$data->placeholder' />";
+		return $rv;
 	}
 	// from MadFormFactory
 	public function create( $type ) {
@@ -103,7 +107,7 @@ class MadForm implements IteratorAggregate {
 		}
 		return new $formElement;
 	}
-	public function createWithData( MadData $data ) {
+	public function createWithData( $data ) {
 		$form = $this->create( $data->type );
 		if ( ! $data->label ) {
 			$data->label = ( $data->kName ) ?  $data->kName : $form->name;
@@ -117,7 +121,7 @@ class MadForm implements IteratorAggregate {
 					'name' => $key,
 					'label' => $key,
 					)); 
-		return new MadFormElement_Text( $data );
+		return $data;
 	}
 	function __get( $key ) {
 		return $this->getUnit( $key );

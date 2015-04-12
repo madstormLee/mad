@@ -329,10 +329,6 @@ class MadListModel implements IteratorAggregate {
 		$this->query->where( "$field in ($values)" );
 		return $this;
 	}
-	function test() {
-		$this->init();
-		(new MadDebug)->printR( $this->data );
-	}
 	function __get( $key ) {
 		return $this->data->$key;
 	}

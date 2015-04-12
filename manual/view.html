@@ -1,3 +1,5 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+
 <h1>Manual View</h1>
 
 <nav class='component'>
@@ -11,7 +13,7 @@
 	<dt>Index <b>move</b></dt>
 	<dd>
 		<nav>
-			<? foreach( $list as $id => $row ): ?>
+			<? foreach( $model->getIndex() as $id => $row ): ?>
 			<a href='./view?id=<?=$id?>' title='<?=$row->title?>'><?=$id?></a>
 			<? endforeach; ?>
 		</nav>

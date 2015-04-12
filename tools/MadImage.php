@@ -44,24 +44,10 @@ class MadImage {
 		$this->file = $file;
 		return $this;
 	}
-	function setExtension( $ext = '' ) {
-		if ( ! empty( $ext ) ) {
-			$this->ext = $ext;
-			return $this;
-		}
-		$explodeBaseName = explode('.', $this->file );
-		$this->ext = end( $explodeBaseName );
-		return $this;
-	}
-	function getFile() {
-		return $this->file;
-	}
-	function isFile() {
-		return is_file( $this->file );
-	}
 	function getInfo() {
 		return $this->info;
 	}
+	// @override
 	function getExtension() {
 		if ( $this->type == 1 ) {
 			return 'gif';
@@ -78,8 +64,12 @@ class MadImage {
 	function getType() {
 		return $this->type;
 	}
-	function getSize() {
-		return filesize( $this->file );
+	function getRatio() {
+		$size = getimagesize( $this->image );
+		return $size[1] / $size[0];
+	}
+	function isAnimation($filename) {
+		return ! ! preg_match('#(\x00\x21\xF9\x04.{4}\x00\x2C.*){2,}#s', file_get_contents($filename));
 	}
 	function load( $file = '' ) {
 		if ( ! empty( $file ) ) {
@@ -89,7 +79,7 @@ class MadImage {
 			return false;
 		}
 
-		$this->info = new MadData( getimagesize( $this->file ) );
+		$this->info = new MadData( getImageSize( $this->file ) );
 		$this->type = $this->info[2];
 
 		if( $this->type == IMAGETYPE_JPEG ) {
@@ -113,15 +103,6 @@ class MadImage {
 			$result = imagepng($this->image,$file);
 		}
 		return $result;
-	}
-	function output( $type = IMAGETYPE_JPEG ) {
-		if( $this->type == IMAGETYPE_JPEG ) {
-			imagejpeg($this->image);
-		} elseif( $this->type == IMAGETYPE_GIF ) {
-			imagegif($this->image);
-		} elseif( $this->type == IMAGETYPE_PNG ) {
-			imagepng($this->image);
-		}
 	}
 	function getWidth() {
 		return imagesx($this->image);
@@ -155,50 +136,17 @@ class MadImage {
 		$height = $this->getheight() * $scale/100;
 		$this->resize($width,$height);
 	}
+	function output( $type = IMAGETYPE_JPEG ) {
+		if( $this->type == IMAGETYPE_JPEG ) {
+			imagejpeg($this->image);
+		} elseif( $this->type == IMAGETYPE_GIF ) {
+			imagegif($this->image);
+		} elseif( $this->type == IMAGETYPE_PNG ) {
+			imagepng($this->image);
+		}
+	}
 	function __toString() {
 		$this->output();
 		return '';
 	}
-	/************************ from functions ************************/
-	// Image Resize
-	function createthumb($IMAGE_SOURCE,$THUMB_X,$THUMB_Y,$OUTPUT_FILE){
-		$BACKUP_FILE = $OUTPUT_FILE . "_backup.jpg";
-		copy($IMAGE_SOURCE,$BACKUP_FILE);
-		$IMAGE_PROPERTIES = GetImageSize($BACKUP_FILE);
-		if (!$IMAGE_PROPERTIES[2] == 2) {
-			return(0);
-		} else {
-			$SRC_IMAGE = ImageCreateFromJPEG($BACKUP_FILE);
-			$SRC_X = ImageSX($SRC_IMAGE);
-			$SRC_Y = ImageSY($SRC_IMAGE);
-			if (($THUMB_Y == "0") && ($THUMB_X == "0")) {
-				return(0);
-			} elseif ($THUMB_Y == "0") {
-				$SCALEX = $THUMB_X/($SRC_X-1);
-				$THUMB_Y = $SRC_Y*$SCALEX;
-			} elseif ($THUMB_X == "0") {
-				$SCALEY = $THUMB_Y/($SRC_Y-1);
-				$THUMB_X = $SRC_X*$SCALEY;
-			}
-			$THUMB_X = (int)($THUMB_X);
-			$THUMB_Y = (int)($THUMB_Y);
-			$DEST_IMAGE = imagecreatetruecolor($THUMB_X, $THUMB_Y);
-			unlink($BACKUP_FILE);
-			if (!imagecopyresized($DEST_IMAGE, $SRC_IMAGE, 0, 0, 0, 0, $THUMB_X, $THUMB_Y, $SRC_X, $SRC_Y)) {
-				imagedestroy($SRC_IMAGE);
-				imagedestroy($DEST_IMAGE);
-				return(0);
-			} else {
-				imagedestroy($SRC_IMAGE);
-				if (ImageJPEG($DEST_IMAGE,$OUTPUT_FILE)) {
-					imagedestroy($DEST_IMAGE);
-					return(1);
-				}
-				imagedestroy($DEST_IMAGE);
-			}
-			return(0);
-		}
-
-	} # end createthumb
-
 }

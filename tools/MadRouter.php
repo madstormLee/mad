@@ -2,6 +2,11 @@
 class MadRouter extends MadAbstractData {
 	private static $instance;
 
+	public static function getInstance() {
+		self::$instance || self::$instance = new self;
+		return self::$instance;
+	}
+
 	protected function __construct() {
 		$server = new MadParams('_SERVER');
 
@@ -16,19 +21,77 @@ class MadRouter extends MadAbstractData {
 		$this->project = dirName( $server->SCRIPT_NAME );
 		$this->cwd = getCwd();
 
-		$this->args = $this->getArgs();
+		// shell mode
+		if ( $server->argv ) {
+			$this->ajax = true;
+			if ( $server->argc > 1 ) {
+				$url = parse_url($server->argv[1]);
+				$this->args = explode('/', $url['path']);
+				parse_str($url['query'], $queries);
+				$this->params = new MadParams( $queries );
+			}
+			for( $i=2; $i < $server->argc; ++$i ) {
+				$option = str_replace('-', '', $server->argv[$i]);
+				if ( strpos( $option, '=' ) ) {
+					list($key, $value) = explode( '=', $option );
+					$this->$key = $value;
+				} else {
+					$this->$option = false;
+				}
+			}
+		} else {
+			// browser mode
+			$this->args = $this->getArgs();
+			$this->params = new MadParams("_$this->method");
+		}
 
-		$this->component = "index";
-		$this->action = "index";
+		$this->component = ".";
 
 		if ( count( $this->args ) > 0 ) {
 			$this->component = $this->args[0];
 		}
-		if ( count( $this->args ) > 1 ) {
-			$this->action = $this->args[1];
-		}
+		// todo: this is potential member
+		$this->setComponentPath();
+		$this->checkAuth();
 
 		$this->addHistory();
+		$this->backUrl = isset( $server->HTTP_REFERER )? $server->HTTP_REFERER:'~/';
+	}
+	function setComponentPath() {
+		$componentPath = array();
+		$this->action = 'index';
+		// find request matching.
+		foreach( $this->args as $path ) {
+			$componentPath[] = $path;
+			$current = implode('/', $componentPath );
+			if ( ! is_dir( $current ) ) {
+				$this->action = array_pop( $componentPath );
+				break;
+			}
+		}
+		$component = implode('/', $componentPath );
+
+		if ( empty( $component ) ) {
+			$component = '.';
+		}
+		$this->componentPath = "$component/$this->action";
+	}
+	// todo: fill auth info from sitemap, first.
+	function checkAuth() {
+		if ( ! isset( $this->auth ) ) {
+			return false;
+		}
+		if ( ! $user = MadSession::getInstance()->user ) {
+			return false;
+		}
+		if ( $user->hasAuth( $this->authLevel ) ) {
+			return false;
+		}
+		if ( $this->authPath == $this->componentPath ) {
+			return false;
+		}
+		header( "Location: $this->authPath" );
+		// throw new Exception('권한이 부족합니다.');;
 	}
 	// todo: user this for sitemap routing(as access list).
 	function sitemapException() {
@@ -41,10 +104,6 @@ class MadRouter extends MadAbstractData {
 			$current = $router;
 		}
 	}
-	public static function getInstance() {
-		self::$instance || self::$instance = new self;
-		return self::$instance;
-	}
 	function addHistory() {
 		$history = new MadCookie('history');
 
@@ -52,7 +111,6 @@ class MadRouter extends MadAbstractData {
 			$history->set( 0, '/' );
 		}
 
-		$this->backUrl = $history->end();
 		if ( $this->ajax || $this->method == 'POST' || $history->end() == $this->request ) {
 			return false;
 		}

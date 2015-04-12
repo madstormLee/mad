@@ -1,0 +1,8 @@
+
+<form action='./indexDeleteConfirm?table=<?=urlencode($_GET['table'])?>pk=<?=urlencode($_GET['pk'])?>' method='post'>
+	<div class='confirm'>
+		<?=sprintf($lang['ques_del_index'], htmlencode($_GET['pk']));?><br/><br/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=column_view'><?=$lang['cancel']?></a>
+	</div>
+</form>

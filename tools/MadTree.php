@@ -120,7 +120,4 @@ class MadTree implements IteratorAggregate {
 			return $this->data[$key];
 		}
 	}
-	function test() {
-		(new MadDebug)->printR($this->tree);
-	}
 }

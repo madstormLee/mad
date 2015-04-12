@@ -10,6 +10,7 @@ class MadValidator {
 			return false;
 		}
 		$this->data = $data;
+		return $this;
 	}
 	private function getArgs( $string ) {
 		if ( $match = preg_match_all( "/(?<=[\"'])(?!,).*?(?=[\"'])/", $string, $args ) ) {

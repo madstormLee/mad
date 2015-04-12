@@ -1,0 +1,79 @@
+<h1>File View</h1>
+
+<h2>file : <?=$file->getBaseName()?></h2>
+
+<section id='FileView'>
+<?=$file->getSource();?>
+</section>
+
+<!-- this is for new File View -->
+<table class='simple'>
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>title</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Filename</td>
+			<td class='title'><?=$file->getName()?></td>
+		</tr>
+		<tr>
+			<td>File Permission</td>
+			<td class='title'><?=sprintf('%o', filePerms( $file->getFile() ) );?></td>
+		</tr>
+		<tr>
+			<td>File Owner</td>
+			<td class='title'><?=fileOwner( $file->getFile() )?></td>
+		</tr>
+		<tr>
+			<td>File Writable</td>
+			<td class='title'>
+				<? if ( $file->isWritable() ) : ?>
+				Writable
+				<? endif; ?>
+				<? if ( $file->isReadable() ) : ?>
+				Readable
+				<? endif; ?>
+				<? if ( $file->isExecutable() ) : ?>
+				Excutable
+				<? endif; ?>
+			</td>
+		</tr>
+		<? if ( $file->isImage() ) : ?>
+		<tr>
+			<td>Image</td>
+			<td class='title'>
+				<dl>
+					<dt>src='~/<?=$file->getFile()?>'</dt>
+					<dd>
+						<a href='~/<?=$file->getFile()?>'>
+							<img src='~/<?=$file->getFile()?>' />
+						</a>
+					</dd>
+				</dl>
+			</td>
+		</tr>
+		<? elseif( $file->isText() ): ?>
+		<tr>
+			<td>Text</td>
+			<td class='title'>
+				<dl>
+					<dt>href='~/<?=$file->getFile()?>'</dt>
+					<dd>
+						<textarea class='textbox'><?=$file?></textarea>
+					</dd>
+				</dl>
+			</td>
+		</tr>
+		<? else: ?>
+		<tr>
+			<td>Binary</td>
+			<td class='title'>
+				<span>src='~/<?=$file->getFile()?>'</span>
+			</td>
+		</tr>
+		<? endif; ?>
+	</tbody>
+</table>

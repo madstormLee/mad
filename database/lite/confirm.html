@@ -1,0 +1,33 @@
+<div id='main'>
+	<div class='confirm'>
+		<?  if(isset($error) && $error) { ?>
+		<?=$lang['err']?>: <?=$db->getError()?><br/><?=$lang['bug_report']?> <?=PROJECT_BUGTRACKER_LINK?>
+		<? } else { ?>
+		<?=$completed; ?>
+		<? } ?>
+	</div>
+	<br/>
+	<br/>
+
+	<?
+	if(
+	$_GET['action']=="row_delete" ||
+	$_GET['action']=="row_create" ||
+	$_GET['action']=="row_edit"):
+	?>
+	<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=row_view'><?=$lang['return']?></a>
+	<? elseif(
+	$_GET['action']=="column_create" ||
+	$_GET['action']=="column_delete" ||
+	$_GET['action']=="column_edit" ||
+	$_GET['action']=="index_create" ||
+	$_GET['action']=="index_delete" ||
+	$_GET['action']=="trigger_delete" ||
+	$_GET['action']=="trigger_create"):
+	?>
+	<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=column_view'><?=$lang['return']?></a>
+	<? else: ?>
+	<a href='./<?=isset($backlinkParameters)?"?$backlinkParameters:''?>'><?=$lang['return']?></a>
+	<? endif; ?>
+
+</div>

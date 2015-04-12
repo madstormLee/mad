@@ -1,0 +1,79 @@
+@charset "utf-8";		 
+/* 마이페이지 타이틀 및 레프트 메뉴 */
+
+#snb_navi{width:200px; display:block; margin:10px;}
+.btn_left{width:193px;height:25px;overflow:hidden;background:url(../images/common/btn/sub_left_bg.gif) no-repeat;padding:5px 0 0 6px;}
+.btn_left a{font-family:"나눔고딕";font-size:13px; font-weight:bold;color:#666666;height:25px;width:100%; background:url(../images/common/btn/left_bullet.gif) no-repeat; padding-left:15px}
+.btn_left a:hover{color:#3477c6; background-position:0 203px; background:url(../images/common/btn/left_bullet_over.gif) no-repeat; }
+.btn_left a.selected{color:#ffffff;font-size:15px; background:url(../images/common/btn/sub_left_selected.gif) no-repeat;width:155px; height:21px; padding:2px 35px 3px 10px;overflow:hidden; background-position:right;}
+.btn_left a.selected:hover{color:#ffffff;font-size:15px; background:url(../images/common/btn/sub_left_selected.gif) no-repeat;width:155px; height:21px; padding:2px 35px 3px 10px;overflow:hidden; background-position:right;}
+
+.btn_left_2{width:193px;height:20px;overflow:hidden;background:url(../images/common/btn/sub_left_bg_2.gif) no-repeat;padding:5px 0 0 6px;}
+.btn_left_2 a{font-family:"돋움";font-size:12px; font-weight:bold;color:#666666;height:25px;width:100%; background:url(../images/common/btn/left_bullet_2.gif) no-repeat;padding:3px 0 0 15px;font-weight:normal;margin:0 0 0 10px;}
+.btn_left_2 a:hover{color:#3477c6; background-position:0 203px; background:url(../images/common/btn/left_bullet_over_2.gif) no-repeat;}
+.btn_s_txt{font-family:'돋움'; font-size:12px; color:#900; height:15px; margin-bottom:10px;}
+
+
+/* 버튼 폼 */
+.btn_pack,
+.btn_pack *{display:inline-block;overflow:visible;position:relative;margin:0;padding:0;border:0;background:url(../images/common/btn/btn_pack.gif) no-repeat;font-size:12px;font-family:Tahoma, Sans-serif;color:#333;text-decoration:none !important;vertical-align:top;white-space:nowrap}
+.btn_pack{margin-right:4px;}
+.btn_pack *{left:4px;cursor:pointer;_cursor:hand}
+.btn_pack.medium,
+.btn_pack.medium *{height:24px;line-height:24px}
+.btn_pack.large,
+.btn_pack.large *{height:30px;line-height:30px;}
+.btn_pack.xlarge,
+.btn_pack.xlarge *{height:36px;line-height:36px;}
+.btn_pack.small,
+.btn_pack.small *{height:19px;line-height:19px;}
+.btn_pack.medium{background-position:left 0}
+.btn_pack.large{background-position:left -30px}
+.btn_pack.xlarge{background-position:left -65px}
+.btn_pack.small{background-position:left -106px}
+.btn_pack.medium *{padding:1px 10px 0 6px;_padding:0 10px 0 6px;background-position:right top;font-size:12px}
+.btn_pack.large *{padding:1px 10px 0 6px;_padding:0 10px 0 6px;background-position:right -30px;font-size:16px}
+.btn_pack.xlarge *{padding:1px 10px 0 6px;_padding:0 10px 0 6px;background-position:right -65px;font-size:20px}
+.btn_pack.small *{padding:1px 6px 0 2px;_padding:0 10px 0 6px;background-position:right -106px;font-size:11px}
+.btn_pack *:hover,
+.btn_pack *:active,
+.btn_pack *:focus{color:#690}
+.btn_pack.strong *{font-weight:bold !important}
+.btn_pack.icon *{padding-left:0;}
+.btn_pack.small.icon *{padding-left:0px;_padding-left:16px;}
+.btn_pack.icon span{ width:20px;_width:20px;padding:0;margin-left:0;_margin-left:-20px; }
+.btn_pack.medium .check{background-position:4px -150px}
+.btn_pack.large .check{background-position:4px -146px}
+.btn_pack.xlarge .check{background-position:5px -144px}
+.btn_pack.small .check{background-position:3px -153px}
+.btn_pack.medium .add{background-position:-16px -150px}
+.btn_pack.large .add{background-position:-14px -146px}
+.btn_pack.xlarge .add{background-position:-14px -144px}
+.btn_pack.small .add{background-position:-18px -153px}
+.btn_pack.medium .delete{background-position:-34px -150px}
+.btn_pack.large .delete{background-position:-34px -146px}
+.btn_pack.xlarge .delete{background-position:-34px -144px}
+.btn_pack.small .delete{background-position:-37px -153px}
+
+.btn_pack.medium .calendar{background-position:-56px -150px}
+.btn_pack.large .calendar{background-position:-56px -146px}
+.btn_pack.xlarge .calendar{background-position:-56px -144px}
+.btn_pack.small .calendar{background-position:-59px -153px}
+
+.btn_pack.medium .refresh{background-position:-76px -150px}
+.btn_pack.large .refresh{background-position:-76px -146px}
+.btn_pack.xlarge .refresh{background-position:-76px -144px}
+.btn_pack.small .refresh{background-position:-79px -153px}
+
+.btn_pack.medium .download{background-position:-96px -151px}
+.btn_pack.large .download{background-position:-96px -147px}
+.btn_pack.xlarge .download{background-position:-96px -145px}
+.btn_pack.small .download{background-position:-99px -154px}
+
+.btn_pack.medium .print{background-position:-116px -151px}
+.btn_pack.large .print{background-position:-116px -147px}
+.btn_pack.xlarge .print{background-position:-116px -145px}
+.btn_pack.small .print{background-position:-119px -154px}
+
+.btn_area{float:none; text-align:right; width:100%; margin-top:7px}
+.btn_area .right{overflow:hidden; text-align:right; padding:1px 0 0 0}

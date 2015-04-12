@@ -43,10 +43,4 @@ class MadIni extends MadFile {
 	function __toString() {
 		return $this->getContents();
 	}
-	function test() {
-		print BR;
-		print $this->file;
-		print BR;
-		(new MadDebug)->printR( $this->data );
-	}
 }

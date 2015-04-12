@@ -1,0 +1,13 @@
+<? if($post->vacuum) { ?>
+<div class='confirm'>
+	<? printf($lang['db_vac'], htmlencode($db->getName())); ?>
+</div>
+<br/>
+<? } ?>
+
+<form method='post' action='?view=vacuum'>
+	<?=printf($lang['vac_desc'],htmlencode($db->getName())); ?>
+	<br/><br/>
+	<input type='submit' value='<?=$lang['vac']?>' name='vacuum' class='btn'/>
+</form>
+

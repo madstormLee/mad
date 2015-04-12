@@ -1,0 +1,91 @@
+<form action='?table=<?=urlencode($_GET['table'])?>&amp;action=column_confirm' method='post' name='checkForm'>
+	<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+		<tr>
+			<? if(!isset($_GET['view'])): ?>
+			<td colspan='3'></td>
+			<? endif; ?>
+			<td class='tdheader'><?=$lang['col']?> #</td>
+			<td class='tdheader'><?=$lang['fld']?></td>
+			<td class='tdheader'><?=$lang['type']?></td>
+			<td class='tdheader'>Not Null</td>
+			<td class='tdheader'><?=$lang['def_val']?></td>
+			<td class='tdheader'><?=$lang['prim_key']?></td>
+		</tr>
+
+		<? for($i=0; $i<sizeof($result); $i++) { ?>
+		<tr>
+			<? if(!isset($_GET['view'])) { ?>
+			<td>
+				<input type='checkbox' name='check[]' value='<?=htmlencode($fieldVal)?>' id='check_<?=$i?>'/>
+			</td>
+			<td>
+				<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=column_edit&amp;pk=<?=urlencode($fieldVal)?>' title='<?=$lang['edit']?>' class='edit'><span><?=$lang['edit']?></span></a>
+			</td>
+			<td>
+				<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=column_confirm&amp;action2=column_delete&amp;pk=<?=urlencode($fieldVal)?>' title='<?=$lang['del']?>' class='delete'><span><?=$lang['del']?></span></a>
+			</td>
+			<? } ?>
+			<td>
+				<?=htmlencode($colVal);?>
+			</td>
+			<td class='title'>
+				<?=htmlencode($fieldVal);?>
+			</td>
+			<td class='title'>
+				<?=htmlencode($typeVal);?>
+			</td>
+			<td class='title'>
+				<?=htmlencode($notnullVal);?>
+			</td>
+			<td class='title'>
+				<? if($defaultVal===NULL): ?>
+				<i class='null'><?=$lang['none']?></i>
+				<? elseif($defaultVal==="NULL"): ?>
+				<i class='null'>NULL</i>
+				<? else: ?>
+				<?=htmlencode($defaultVal);?>
+				<? endif; ?>
+			</td>
+			<td class='title'>
+				<?=htmlencode($primarykeyVal);?>
+			</td>
+		</tr>
+		<? } ?>
+	</table>
+
+
+	<? if(!isset($_GET['view'])) { ?>
+	<a onclick='checkAll()'><?=$lang['chk_all']?></a> / <a onclick='uncheckAll()'><?=$lang['unchk_all']?></a> <i><?=$lang['with_sel']?>:</i> 
+	<select name='action2'>
+		<option value='column_delete'><?=$lang['del']?></option>
+		<? if($noPrimaryKey) ?>
+		<option value='primarykey_add'><?=$lang['prim_key']?></option>
+	</select> 
+	<input type='submit' value='<?=$lang['go']?>' name='massGo' class='btn'/>
+	<? } ?>
+
+</form>
+
+<? if(!isset($_GET['view'])) { ?>
+<br/>
+
+<form action='?table=<?=urlencode($_GET['table'])?>&amp;action=column_create' method='post'>
+	<input type='hidden' name='tablename' value='<?=htmlencode($_GET['table'])?>'/>
+	<?=$lang['add']?> <input type='text' name='tablefields' style='width:30px;' value='1'/> <?=$lang['tbl_end']?> <input type='submit' value='<?=$lang['go']?>' name='addfields' class='btn'/>
+</form>
+
+<? } ?>
+
+<br/>
+<br/>
+
+
+<div class='confirm'>
+	<b><?=$lang['query_used_'.$type]?></b><br/>
+	<span style='font-size:11px;'><?=htmlencode($master[0]['sql'])?></span>
+</div>
+
+<br/>
+
+
+<?=$columnNoView ?>

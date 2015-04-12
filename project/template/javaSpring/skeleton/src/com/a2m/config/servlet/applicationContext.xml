@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	<!-- Properties -->
+	<context:property-placeholder location="classpath:com/a2m/config/jdbc/datasource.properties"/>
+
+	<!-- @Transactional -->
+	<tx:annotation-driven transaction-manager="transactionManagerBase"/>
+	<tx:annotation-driven transaction-manager="transactionManagerLink"/>
+
+	<!-- Spy -->
+	<bean id="dataSourceBase" class="com.p6spy.engine.spy.P6DataSource">
+		<constructor-arg>
+			<ref local="dataSourceBaseTarget"/>
+		</constructor-arg>
+	</bean>
+
+	<!-- DataSource -->
+	<bean id="dataSourceBaseTarget" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${base.jdbc.driver}"/>
+		<property name="url" value="${base.jdbc.url}"/>
+		<property name="username" value="${base.jdbc.username}"/>
+		<property name="password" value="${base.jdbc.password}"/>
+		<property name="initialSize" value="${base.jdbc.initialSize}"/>
+		<property name="maxActive" value="${base.jdbc.maxActive}"/>
+		<property name="validationQuery" value="${base.jdbc.validationQuery}"/>
+	</bean>
+
+	<!-- Transaction -->
+	<bean id="transactionManagerBase" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceBase"/>
+	</bean>
+
+	<!-- Ibatis(SqlMapClient) -->
+	<bean id="sqlMapClientBase" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:com/a2m/config/sqlmap/base/sqlmap-config.xml</value>
+			</list>
+		</property>
+		<property name="dataSource" ref="dataSourceBase"/>
+	</bean>
+
+	<!-- MessageSource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>com.a2m.config.messages.var</value>
+				<value>com.a2m.config.messages.error</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="msgUtils" class="com.a2m.framework.util.MsgUtils">
+		<property name="msgSource" ref="messageSource"/>
+	</bean>
+	
+	<!-- Exception Resolver -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.NullPointerException">error/null</prop>
+				<prop key="java.sql.SQLException">error/sql</prop>
+				<prop key="java.lang.Exception">error/exception</prop>
+			</props>
+		</property>
+	</bean>		
+</beans>

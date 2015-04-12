@@ -40,4 +40,13 @@ class Database extends MadDbModel {
 		}
 		$this->config->save();
 	}
+	// todo from ts
+	function getIndex() {
+		$q = new ProjectQ("show databases");
+		return $q->toArray();
+	}
+	function getDefineIndex() {
+		$q = new ProjectQ("select * from information_schema.TABLES where TABLE_SCHEMA like '{$this->get->database}'");
+		return $q->toArray();
+	}
 }

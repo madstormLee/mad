@@ -1,0 +1,11 @@
+<h1>Text Write</h1>
+
+<h2>file : <?=$model->getFile()?></h2>
+
+<form id='FileWriteContents' method='post' action='./saveContents'>
+	<input type='hidden' name='target' value='<?=$model->getFile()?>' />
+	<textarea name='contents' id='contents'><?=$model->getContents();?></textarea>
+	<nav class='buttons'>
+		<button type='submit'>Save</button>
+	</nav>
+</form>

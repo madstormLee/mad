@@ -1,0 +1,45 @@
+
+
+<? foreach( $data as $row  ) { ?>
+<div class='confirm'>
+	<b> <?=$row->rows ?> </b>
+	<br/>
+	<span style='font-size:11px;'><?=htmlencode($row->query)?></span>
+</div><br/>
+
+
+<? if( $row->isSelect && ! empty($row->values) ) { ?>
+<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+	<tr>
+		<? foreach($row->headers as $header): ?>
+		<td class='tdheader'> <?=htmlencode($header); ?> </td>
+		<? endforeach; ?>
+	</tr>
+	<? foreach( $row->values as $values ) { ?>
+	<tr>
+		<? foreach( $values as $value ): ?>
+		<td>
+			<? if($value===NULL): ?>
+			<i class='null'>NULL</i>
+			<? else: ?>
+			<?=subString(htmlencode($value)); ?>
+			<? endif; ?>
+		</td>
+		<? endforeach; ?>
+	</tr>
+	<? } ?>
+</table>
+<br/>
+<br/>
+<? } ?>
+<? } ?>
+
+
+<form action='?view=sql' method='post'>
+	<fieldset>
+		<legend><b><?=sprintf($lang['run_sql'],htmlencode($db->getName()))?></b></legend>
+		<textarea style='width:100%; height:300px;' name='queryStr' cols='50' rows='8'><?=htmlencode($post->queryStr)?></textarea>
+		<?=$lang['delimit']?> <input type='text' name='delimiter' value='<?=htmlencode($delimiter)?>' style='width:50px;'/>
+		<input type='submit' name='query' value='<?=$lang['go']?>' class='btn'/>
+	</fieldset>
+</form>

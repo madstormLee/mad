@@ -19,6 +19,22 @@ class MadView extends MadFile {
 		$dir = dirName( $this->file );
 		return preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2~/$dir/", $rv );
 	}
+	// todo: refactory. from MadCacheView
+	function updateCache( $contents ) {
+		return $this->saveContents( $contents );
+	}
+	function clearCache() {
+		if ( $this->cacheExists() ) {
+			return unlink( $this->getFile() );
+		}
+		return false;
+	}
+	function isCache() {
+		return $this->cacheExists();
+	}
+	function cacheExists() {
+		return $this->isFile();
+	}
 	function __toString() {
 		try {
 			return $this->getContents();

@@ -1,3 +1,4 @@
 <?
 include "tools.php";
-print MadFront::temp();
+
+print MadController::front();

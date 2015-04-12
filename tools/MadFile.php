@@ -1,5 +1,5 @@
 <?
-class MadFile implements IteratorAggregate {
+class MadFile implements IteratorAggregate, Countable {
 	protected $file = '';
 	protected $data = array();
 
@@ -9,6 +9,20 @@ class MadFile implements IteratorAggregate {
 
 	function __construct( $file = '' ) {
 		$this->setFile( $file );
+	}
+	/******************* create *******************/
+	function create( $file ) {
+		$this->loaders = array(
+			'ini' => 'MadIni',
+			'csv' => 'MadCsv',
+			'json' => 'MadJson',
+			'xml' => 'MadXml',
+		);
+		$file = new self( $file );
+		if ( $loader = ckKey( $file->getExtension(), $loaders ) ) {
+			return new $loader( $file );
+		}
+		return $file;
 	}
 	/******************* getter/setter *******************/
 	function setFile( $file ) {
@@ -32,8 +46,23 @@ class MadFile implements IteratorAggregate {
 	function getDirname() {
 		return dirName( $this->file );
 	}
-	function size() {
-		return filesize( $this->file );
+	function dirName() {
+		return dirName( $this->file );
+	}
+	function size($precision = 1) { 
+		$bytes = filesize( $this->file );
+		$units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+
+		$bytes = max($bytes, 0); 
+		$pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+		$pow = min($pow, count($units) - 1); 
+
+		$bytes /= pow(1024, $pow);
+
+		return round($bytes, $precision) . ' ' . $units[$pow]; 
+	} 
+	function count() {
+		return count( $this->data );
 	}
 	function date( $format = 'Y-m-d' ) {
 		return date( $format, $this->mtime() );
@@ -177,13 +206,20 @@ class MadFile implements IteratorAggregate {
 	function save() {
 		return file_put_contents( $this->file, $this->getContents() );
 	}
-	function saveAs( $target ) {
-		$this->file = $target;
+	function saveAs( $file ) {
+		$this->file = $file;
 		return $this->save();
 	}
 	function saveContents( $contents ) {
 		$this->contents = $contents;
 		return $this->save();
+	}
+	function append( $data ) {
+		return file_put_contents( $this->file, $contents, FILE_APPEND );
+	}
+	function log( $message ) {
+		$message = date("Y-m-d H:i:s") . " - $message\n";
+		return $this->append( $message );
 	}
 	function rename( $name ) {
 		if ( ! $this->isWritable() ) {
@@ -199,12 +235,16 @@ class MadFile implements IteratorAggregate {
 	}
 	function download() {
 		$basename = $this->getBasename();
+
 		header("Content-Type: text/plain");
-		header("Cache-Control: public");
-		header("Content-Description: File Transfer");
 		header("Content-Disposition: attachment; filename=$basename");
+		header('Expires: 0');
+		header("Pragma: public");
+		header('Cache-Control: must-revalidate');
+		header("Content-Description: File Transfer");
 		header("Content-Transfer-Encoding: binary");
-		print file_get_contents( $model );
+		header("Content-Length: " . filesize($this->file));
+		readfile( $this->file );
 		exit;
 	}
 	function getIndex() {
@@ -241,8 +281,8 @@ class MadFile implements IteratorAggregate {
 		$info = $this->getInfo();
 		if ( $info instanceof SplFileInfo ) {
 			return call_user_func_array(
-					array( $info, $method ),
-					$args);
+				array( $info, $method ),
+				$args);
 		}
 		throw new Exception("There is no $method method in " . get_class($this) . "." );
 	}

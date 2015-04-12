@@ -1,0 +1,10 @@
+
+<form action='./viewDropConfirm' method='post'>
+	<input type='hidden' name='viewname' value='<?=htmlencode($_GET['table'])?>'/>
+	<div class='confirm'>
+		<?=sprintf($lang['ques_drop_view'], htmlencode($_GET['table']))?>
+		<br/><br/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='./'><?=$lang['cancel']?></a>
+	</div>
+</form>

@@ -1,0 +1,26 @@
+
+
+<form action='?table=<?=urlencode($get->table)?>&amp;action=table_sql&amp;view=<?=isset($get->view)?"1":"";?>' method='post'>
+	<fieldset>
+		<legend><b><?=sprintf($lang['run_sql'],htmlencode($db->getName()))?></b></legend>
+
+		<div style='float:left; width:70%;'>
+			<textarea style='width:97%; height:300px;' name='query' id='query' cols='50' rows='8'><?=htmlencode($queryStr)?></textarea>
+		</div>
+
+		<div style='float:left; width:28%; padding-left:10px;'>
+			<br/>
+			<select multiple='multiple' style='width:100%;' id='fieldcontainer'>
+				<? for($i=0; $i<sizeof($tableInfo); $i++) { ?>
+				<option value='<?=htmlencode($tableInfo[$i][1])?>'><?=htmlencode($tableInfo[$i][1])?></option>
+				<? } ?>
+			</select>
+			<input type='button' value='&lt;&lt;' onclick='moveFields();' class='btn'/>
+		</div>
+
+		<div style='clear:both;'></div>
+
+		<input type='text' name='delimiter' value='<?=htmlencode($delimiter)?>' style='width:50px;'/> 
+		<button type='submit'><?=$lang['go']?></button>
+	</fieldset>
+</form>

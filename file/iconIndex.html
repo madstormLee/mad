@@ -1,0 +1,28 @@
+<h1>File Icon Index</h1>
+
+<h2><?=$model->getFile()?></h2>
+
+<ul id='iconIndex' class='small-block-grid-'>
+	<? foreach( $index as $row ): ?>
+	<li>
+	<? if ( $row->isDir() ): ?>
+	<a class='dir' href='./index?file=<?=$row->getFile()?>'>
+		<img src='./icons/chakram2/folder.png' />
+		<?=$row->getBasename()?>
+	</a>
+	<? else: ?>
+	<a class='file' href='./view?file=<?=$row->getFile()?>'>
+		<? $icon = "file/icons/chakram2/file_" . $row->getExtension() . ".png"; ?>
+		<? if ( is_file( $icon ) ): ?>
+		<img src='./icons/chakram2/file_<?=$row->getExtension()?>.png' />
+		<? else : ?>
+		<img src='./icons/chakram2/file_blank.png' />
+		<? endif; ?>
+
+		<?=$row->getBasename()?>
+	</a>
+	<? endif; ?>
+	</li>
+	<? endforeach; ?>
+</ul>
+

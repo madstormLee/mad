@@ -1,0 +1,14 @@
+<div id='loginBox'>
+	<h1><span id='logo'><?=PROJECT?></span> <span id='version'>v<?=VERSION?></span></h1>
+	<div style='padding:15px; text-align:center;'>
+		<? if ($auth->isFailedLogin()): ?>
+		<span class='warning'><?=$lang['passwd_incorrect']?></span><br/><br/>
+		<? endif; ?>
+		<form action='<?=PAGE?>' method='post'>
+			<?=$lang['passwd']?>: <input type='password' name='password'/><br/>
+			<label><input type='checkbox' name='remember' value='yes' checked='checked'/> <?=$lang['remember']?></label><br/><br/>
+			<input type='submit' value='<?=$lang['login']?>' class='btn'/>
+			<input type='hidden' name='login' value='true' />
+		</form>
+	</div>
+</div>

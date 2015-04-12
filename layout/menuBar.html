@@ -1,8 +1,8 @@
-<a id='logo' href='~/'>XP tools</a>
+<a id='logo' href='~/'><?=$sitemap->info->project?></a>
 
 <nav class='menu'>
 	<ul>
-		<? foreach( $sitemap as $row ): ?>
+		<? foreach( $config->sitemap as $row ): ?>
 		<li>
 			<a href='~/<?=$row->component?>'><?=$row->component?></a>
 			<? if ( $row->subs ): ?>

@@ -1,70 +1,94 @@
 <?
 class MadDir extends MadFile {
-	protected $data = array();
-	protected $dir = '';
 	protected $pattern = '*';
 	protected $flag = 0;
 
-	function __construct( $dir = '' ) {
+	function __construct( $dir = '', $pattern='*' ) {
 		$this->setDir( $dir );
+		$this->setPattern( $pattern );
 	}
 	function setDir( $dir ) {
-		$this->dir = $dir;
+		$this->file = $dir;
 		return $this;
 	}
 	function getDir() {
-		return $this->dir;
+		return $this->file;
+	}
+	function getData() {
+		$this->getIndex();
+		return $this->data;
 	}
 	function getParentDir() {
-		return dirName( $this->dir );
+		return dirName( $this->file );
 	}
 	function setPattern( $pattern ) {
+		if ( false !== strpos( $pattern, '{' ) ) {
+			$this->addFlag( GLOB_BRACE );
+		}
 		$this->pattern = $pattern;
 		return $this;
 	}
 	function getPattern( $pattern ) {
 		return $this->pattern;
 	}
-	function scan() {
-		if ( ! empty( $this->data ) ) {
-			return $this;
-		}
-		foreach( $this->getIndex() as $file ) {
-			$this->data[$file] = new MadFile( $file );
-		}
+	function filter( $function='' ) {
+		$function = 'is_file';
+		$this->data = array_filter( $this->getData(), $function );
 
+		return $this;
+	}
+	function addFlag( $flag ) {
+		$this->flag = $this->flag | $flag;
 		return $this;
 	}
 	function setFlag( $flag ) {
 		$this->flag = $flag;
 		return $this;
 	}
+	function order( $order='dirFirst' ) {
+		$data = $this->getData();
+		if ( $order == 'dirFirst' ) {
+			$dirs = array_filter($data, 'is_dir');
+			$files = array_filter($data, 'is_file');
+			$this->data = array_merge( $dirs, $files );
+		}
+	}
 	function getIndex() {
-		if ( $this->dir == '' ) {
+		if ( ! empty( $this->data ) ) {
+			return $this->data;
+		}
+		if ( $this->file == '' ) {
 			$target = "$this->pattern";
 		} else {
-			$target = "$this->dir/$this->pattern";
+			$target = "$this->file/$this->pattern";
 		}
-		$rv = array();
 		foreach( glob( $target, $this->flag ) as $file ) {
-			$rv[] = new MadFile( $file );
+			$this->data[] = new MadFile( $file );
 		}
-		return $rv;
+		return $this->data;
 	}
-	function save() {
+	function mkdir() {
+		varDump($this->isDir()); 
 		if ( ! $this->isDir() ) {
-			mkdir( $dir, 0755, true );
-			chmod( $dir, 0755 );
+			mkdir( $this->file, 0755, true );
 		}
 		return $this;
+	}
+	function rmdir() {
+	}
+	function save() {
+		return $this->mkdir();
 	}
 	function getIterator() {
 		return new ArrayIterator( $this->getIndex() );
 	}
 	/***************** utilities *****************/
-	function getTree($dir, $root = true,$UploadDate) {
+	function getTree($dir='', $root = true,$UploadDate=false) {
 		static $tree;
 		static $base_dir_length;
+		if ( empty( $dir ) ) {
+			$dir = $this->file;
+		}
 
 		if ($root) {
 			$tree = array();
@@ -72,78 +96,85 @@ class MadDir extends MadFile {
 		}
 
 		if (is_file($dir)) {
-			if($UploadDate!=false)
-			{
-				if(filemtime($dir)>strtotime($UploadDate))
+			if($UploadDate!=false) {
+				if(filemtime($dir)>strtotime($UploadDate)) {
 					$tree[substr($dir, $base_dir_length)] = date('Y-m-d H:i:s',filemtime($dir));   
-			}
-			else
+				}
+			} else {
 				$tree[substr($dir, $base_dir_length)] = date('Y-m-d H:i:s',filemtime($dir));
-		}
-		elseif ((is_dir($dir) && substr($dir, -4) != ".svn") && $di = dir($dir) )
-		{
-			if (!$root) $tree[substr($dir, $base_dir_length)] = false;
-			while (($file = $di->read()) !== false)
-				if ($file != "." && $file != "..")
+			}
+		} elseif ((is_dir($dir) && substr($dir, -4) != ".svn") && $di = dir($dir) ) {
+			if (!$root) {
+				$tree[substr($dir, $base_dir_length)] = false;
+			}
+			while (($file = $di->read()) !== false) {
+				if ($file != "." && $file != "..") {
 					$this->getTree("$dir/$file", false,$UploadDate);
+				}
+			}
 			$di->close();
 		}
 		if ($root)
 			return $tree;   
 	}
 	// from : jyotsnachannagiri@gmail.com 
-	function copy($src_dir, $dst_dir,$UploadDate=false, $verbose = false, $use_cached_dir_trees = false) {
+	function copyR(self $dst_dir,$UploadDate=false, $use_cached_dir_trees = false) {
 		static $cached_src_dir;
 		static $src_tree;
 		static $dst_tree;
-		$num = 0;
+		$src_dir = $this->file;
+		$log = array();
 
-		if(($slash = substr($src_dir, -1)) == "\\" || $slash == "/") $src_dir = substr($src_dir, 0, strlen($src_dir) - 1);
-		if(($slash = substr($dst_dir, -1)) == "\\" || $slash == "/") $dst_dir = substr($dst_dir, 0, strlen($dst_dir) - 1);
-		if (!$use_cached_dir_trees || !isset($src_tree) || $cached_src_dir != $src_dir)
-		{
+		if(($slash = substr($src_dir, -1)) == "\\" || $slash == "/") {
+			$src_dir = substr($src_dir, 0, strlen($src_dir) - 1);
+		}
+		if(($slash = substr($dst_dir, -1)) == "\\" || $slash == "/") {
+			$dst_dir = substr($dst_dir, 0, strlen($dst_dir) - 1);
+		}
+
+		if (!$use_cached_dir_trees || !isset($src_tree) || $cached_src_dir != $src_dir) {
 			$src_tree = $this->getTree($src_dir,true,$UploadDate);
 			$cached_src_dir = $src_dir;
 			$src_changed = true;
 		}
-		if (!$use_cached_dir_trees || !isset($dst_tree) || $src_changed)
+		if (!$use_cached_dir_trees || !isset($dst_tree) || $src_changed) {
 			$dst_tree = $this->getTree($dst_dir,true,$UploadDate);
-		if (!is_dir($dst_dir)) mkdir($dst_dir, 0777, true);
+		}
+		if (!is_dir($dst_dir)) {
+			mkdir($dst_dir, 0777, true);
+		}
 
 		foreach ($src_tree as $file => $src_mtime) {
 			if (!isset($dst_tree[$file]) && $src_mtime === false) {
 				mkdir("$dst_dir/$file");
 			} elseif (!isset($dst_tree[$file]) && $src_mtime || isset($dst_tree[$file]) && $src_mtime > $dst_tree[$file]) {
-				if (copy("$src_dir/$file", "$dst_dir/$file")) {
-					if($verbose) {
-						echo "Copied '$src_dir/$file' to '$dst_dir/$file'<br>\r\n";
-					}
-					touch("$dst_dir/$file", strToTime($src_mtime) );
-					$num++;
-				} else
-					echo "<font color='red'>File '$src_dir/$file' could not be copied!</font><br>\r\n";
+				if( ! copy("$src_dir/$file", "$dst_dir/$file")) {
+					throw new Exception("File '$src_dir/$file' could not be copied!");
+				}
+				$log[] = "Copied '$src_dir/$file' to '$dst_dir/$file'";
+				@touch("$dst_dir/$file", strToTime($src_mtime) );
 			}
 		}
-		return $num;
+		return $log;
 	}
-	function deleteAll( $dir='' ) {
-		if ( empty( $dir ) ) {
-			$dir = $this->dir;
-		}
+	function deleteAll() {
+		$dir = $this->file;
 		if ( ! is_dir( $dir ) ) {
 			throw new Exception( $dir . ' is not a directory.' );
 		}
-		$files = glob( $dir . '/*', GLOB_MARK );
+		$files = array_merge( glob( $dir . '/*' ), glob( $dir . '/.*') );
 		foreach ( $files as $file ) {
-			if( substr( $file, -1 ) == '/' ) {
-				$this->removeAll( $file );
+			if( $file == '.' || $file == '..' ) continue;
+			if( is_dir($file) ) {
+				$this->deleteAll( $file );
 			} else {
+				print $file . BR;
 				unlink( $file );
 			}
 		}
 		rmDir( $dir );
 	}
 	function __toString() {
-		return $this->dir;
+		return $this->file;
 	}
 }

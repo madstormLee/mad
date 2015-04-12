@@ -1,0 +1,24 @@
+<? if($directory!==false && is_writable($directory)): ?>
+<div class='confirm' style='margin:20px;'>
+	<?=printf($lang['no_db'], PROJECT, PROJECT); ?>
+</div>	
+<? if(isset($extension_not_allowed)): ?>
+<div class='confirm' style='margin:10px 20px;'>
+	<?=$lang['err']?>: <?=$lang['extension_not_allowed']?>: 
+	<?=implode(', ', array_map('htmlencode', $allowed_extensions)); ?>
+	<br /><?=$lang['add_allowed_extension']; ?>
+</div>
+<br/>
+<? endif; ?>
+<fieldset style='margin:15px;'><legend><b><?=$lang['db_create']?></b></legend>
+	<form name='create_database' method='post' action='<?=PAGE?>'>
+		<input type='text' name='new_dbname' style='width:150px;'/> <input type='submit' value='<?=$lang['create']?>' class='btn'/>
+	</form>
+</fieldset>
+<? else: ?>
+<div class='confirm' style='margin:20px;'>
+	<?=$lang['err']?>: <?=sprintf($lang['no_db2'], PROJECT)?>
+</div>
+<br/>	
+<? endif; ?>
+

@@ -1,10 +1,12 @@
 projects
 data
 .ssh
+.todo
 .subversion
 .lesshst
 .psql_history
 .vimrc.html
 .sass-cache
-thunderstorm
+*.css.map
+ts
 xp

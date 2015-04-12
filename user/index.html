@@ -1,14 +1,5 @@
 <h1>User</h1>
 
-<? foreach( $model->getList() as $file ): ?>
-<? $id = basename( $file, '.json' ); ?>
-<ul>
-	<li>
-		<a href='./write?id=<?=$id?>' title='last access: <?=date('Y-m-d H:i:s', fileatime( $file )) ?>' data-target='main'><?=$id?></a>
-	</li>
-</ul>
-<? endforeach; ?>
-
 <form class='changeSubmit simpleSearch' method='get' action='?'>
 	<input type='radio' id='levelAll' name='level' value='' <?=(! $g->get->level)?'checked':''?> />
 	<label for='levelAll'>모두 보기</label>
@@ -20,93 +11,58 @@
 </form>
 
 
-<form class='list' method='post' action='./mad'>
+<table class='simple'>
+	<thead>
+		<tr>
+			<th>국가</th>
+			<th>이름</th>
 
-	<table class='simple'>
-		<thead>
-			<tr>
-				<th>국가</th>
-				<th>이름</th>
+			<? if ( $g->log->inLevel('0-1') ): ?>
+			<th>아이디</th>
+			<? endif; ?>
 
-				<? if ( $g->log->inLevel('0-1') ): ?>
-				<th>아이디</th>
-				<? endif; ?>
+			<th>Email</th>
+			<th>현재권한</th>
+			<th>요청권한</th>
+			<th>권한 변경</th>
+			<th>Buttons</th>
+		</tr>
+	</thead>
+	<tbody>
+	<? foreach( $index as $row ): ?>
+	<tr>
+		<td><?=$row->locale?></td>
+		<td><a href='./view?id=<?=$row->id?>'><?=$row->name?></a></td>
 
-				<th>Email</th>
-				<th>현재권한</th>
-				<th>요청권한</th>
-				<th>권한 변경</th>
-				<th>Buttons</th>
-			</tr>
-		</thead>
-		<tbody>
-			<? foreach( $list as $row ): ?>
-			<tr>
-				<td><?=$row->locale?></td>
-				<td><a href='./view?id=<?=$row->id?>'><?=$row->name?></a></td>
+		<? if ( $g->log->inLevel('0-1') ): ?>
+		<td><a href='./view?id=<?=$row->id?>'><?=$row->userid?></a></td>
+		<? endif; ?>
 
-				<? if ( $g->log->inLevel('0-1') ): ?>
-				<td><a href='./view?id=<?=$row->id?>'><?=$row->userid?></a></td>
-				<? endif; ?>
-
-				<td><a href='mailto:<?=$row->email?>'><?=$row->email?></a></td>
-				<td><?=$row->levelName?></td>
-				<td>
-					<? if ( $row->level == 100 ): ?>
-					<?=$row->requestName?>
-					<a href='./updateLevel?id=<?=$row->id?>&level=<?=$row->request?>'>가입 승인</a>
-					<? endif; ?>
-				</td>
-				<td class='buttons'>
-					<? foreach( $model->getConfig('level')->data as $level ): ?>
-					<? if ( $level->value <= $g->log->getLevel() ) continue; ?>
-					<a href='./updateLevel?id=<?=$row->id?>&level=<?=$level->value?>'><?=$level->label?></a>
-					<? endforeach; ?>
-				</td>
-				<td class='buttons'>
-					<a href='./write?id=<?=$row->id?>'>수정</a>
-					<a href='./delete?id=<?=$row->id?>'>삭제</a>
-				</td>
-			</tr>
+		<td><a href='mailto:<?=$row->email?>'><?=$row->email?></a></td>
+		<td><?=$row->levelName?></td>
+		<td>
+			<? if ( $row->level == 100 ): ?>
+			<?=$row->requestName?>
+			<a href='./updateLevel?id=<?=$row->id?>&level=<?=$row->request?>'>가입 승인</a>
+			<? endif; ?>
+		</td>
+		<td class='buttons'>
+			<? foreach( $model->getConfig('level')->data as $level ): ?>
+			<? if ( $level->value <= $g->log->getLevel() ) continue; ?>
+			<a href='./updateLevel?id=<?=$row->id?>&level=<?=$level->value?>'><?=$level->label?></a>
 			<? endforeach; ?>
-		</tbody>
-	</table>
+		</td>
+		<td class='buttons'>
+			<a href='./write?id=<?=$row->id?>'>수정</a>
+			<a href='./delete?id=<?=$row->id?>'>삭제</a>
+		</td>
+	</tr>
+	<? endforeach; ?>
+	</tbody>
+</table>
 
-	<? if ( $list->isEmpty() ) : ?>
-	<p class='notice'>No searched list.</p>
-	<? endif; ?>
+<? if ( $index->isEmpty() ) : ?>
+<p class='notice'>No searched list.</p>
+<? endif; ?>
 
-</form>
-
-<?=$list->getPageNavi()?>
-
-<h2>Login History <a href='~/admin/adminUserLog'>more</a></h2>
-
-<section id='AdminUserLogList' class='list'>
-	<table class='simple'>
-		<thead>
-			<tr>
-				<th>Level Name</th>
-				<th>Level</th>
-				<th>User Id</th>
-				<th>Login Time</th>
-				<th>Logout Time</th>
-			</tr>
-		</thead>
-		<tbody>
-			<? foreach( $adminUserLogList as $row ): ?>
-			<tr>
-				<td><?=$row->levelName?></td>
-				<td><?=$row->level?></td>
-				<td><?=$row->userid?></td>
-				<td><?=$row->login_time?></td>
-				<td><?=$row->logout_time?></td>
-			</tr>
-			<? endforeach; ?>
-		</tbody>
-	</table>
-
-	<? if ( $list->isEmpty() ) : ?>
-	<p class='notice'>No search list</p>
-	<? endif; ?>
-</section>
+<?=$index->getPageNavi()?>

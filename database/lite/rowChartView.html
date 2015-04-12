@@ -1,0 +1,101 @@
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', '<?=$result[$_SESSION[$_GET['table'].'chartlabels']]['name']; ?>');
+	data.addColumn('number', '<?=$result[$_SESSION[$_GET['table'].'chartvalues']]['name']; ?>');
+	data.addRows([
+
+			<?php
+			for($i=0; $i<sizeof($arr); $i++) {
+			$label = str_replace("'", "", htmlencode($arr[$i][$_SESSION[$_GET['table'].'chartlabels']]));
+			$value = htmlencode($arr[$i][$_SESSION[$_GET['table'].'chartvalues']]);
+
+			if($value==NULL || $value=="")
+			$value = 0;
+
+			echo "['".$label."', ".$value."]";
+			if($i<sizeof($arr)-1)
+			echo ",";
+			}
+			$height = (sizeof($arr)+1) * 30;
+			if($height>1000)
+			$height = 1000;
+			else if($height<300)
+			$height = 300;
+			if($_SESSION['charttype']=="pie")
+			$height = 800;
+			?>
+
+
+				]);
+			var chartWidth = document.getElementById("main_column").offsetWidth - document.getElementById("chartsettingsbox").offsetWidth - 100;
+			if(chartWidth>1000)
+				chartWidth = 1000;
+
+			var options = {
+				'width':chartWidth,
+				'height':<?=$height; ?>,
+				'title':'<?=$result[$_SESSION[$_GET['table'].'chartlabels']]['name']." vs ".$result[$_SESSION[$_GET['table'].'chartvalues']]['name']; ?>'
+			};
+			<?php
+				if($_SESSION['charttype']=="bar")
+					echo "var chart = new google.visualization.BarChart(document.getElementById('chart_div'));";
+				else if($_SESSION['charttype']=="pie")
+					echo "var chart = new google.visualization.PieChart(document.getElementById('chart_div'));";
+				else
+					echo "var chart = new google.visualization.LineChart(document.getElementById('chart_div'));";
+			?>
+	chart.draw(data, options);
+}
+
+google.load('visualization', '1.0', {'packages':['corechart']});
+google.setOnLoadCallback(drawChart);
+</script>
+
+
+<div id="chart_div" style="float:left;"><?=$lang['no_chart']; ?></div>
+
+<fieldset style='float:right; text-align:center;' id='chartsettingsbox'><legend><b>Chart Settings</b></legend>
+	<form action='?action=row_view&amp;table=<?=urlencode($_GET['table']).$is_view?>' method='post'>
+		echo $lang['chart_type'].": <select name='charttype'>";
+			<option value='bar'
+			if($_SESSION['charttype']=="bar")
+			selected='selected'
+			><?=$lang['chart_bar']?></option>
+			<option value='pie'
+			if($_SESSION['charttype']=="pie")
+			selected='selected'
+			><?=$lang['chart_pie']?></option>
+			<option value='line'
+			if($_SESSION['charttype']=="line")
+			selected='selected'
+			><?=$lang['chart_line']?></option>
+		</select>
+		<br/><br/>
+		<?=$lang['lbl']?>: <select name='chartlabels'>
+			<? for($i=0; $i<sizeof($result); $i++) { ?>
+			<? if(isset($_SESSION[$_GET['table'].'chartlabels']) && $_SESSION[$_GET['table'].'chartlabels']==$i): ?>
+			<option value='<?=$i?>' selected='selected'><?=htmlencode($result[$i]['name'])?></option>
+			<? else: ?>
+			<option value='<?=$i?>'><?=htmlencode($result[$i]['name'])?></option>
+			<? endif; ?>
+			<? } ?>
+		</select>
+		<br/><br/>
+		<?=$lang['val']?>:
+		<select name='chartvalues'>
+			<? for($i=0; $i<sizeof($result); $i++) { ?>
+			<? if(isset($_SESSION[$_GET['table'].'chartvalues']) && $_SESSION[$_GET['table'].'chartvalues']==$i): ?>
+			<option value='<?=$i?>' selected='selected'><?=htmlencode($result[$i]['name'])?></option>
+			<? else: ?>
+			<option value='<?=$i?>'><?=htmlencode($result[$i]['name'])?></option>
+			<? endif; ?>
+			<? } ?>
+		</select>
+		<br/><br/>
+		<input type='submit' name='chartsettings' value='<?=$lang['update']?>' class='btn'/>
+	</form>
+</fieldset>
+
+<div style='clear:both;'></div>

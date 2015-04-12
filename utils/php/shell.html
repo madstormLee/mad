@@ -1,0 +1,15 @@
+<style>
+#shell #command {
+	height: 30rem;
+}
+</style>
+<h1>Php Shell</h1>
+
+<form id='shell' class='medium-6 columns' action='?'>
+	<textarea id='command' name='command'><?=$model->command()?></textarea>
+	<button>Submit</button>
+</form>
+
+<section class='medium-6 columns' id='result'>
+	<?=$model->getResult() ?>
+</section>

@@ -4,6 +4,10 @@ class DatabaseController extends MadController {
 		$configs = new MadJson( $this->projectLog->root . 'json/configs.json' );
 		$this->main->list = $configs->databases;
 	}
+	function databasesAction() {
+	}
+	function definitionListAction() {
+	}
 	function commonTablesAction() {
 		foreach( $this->databases as $localeCode => $dbh ) {
 			if ( $localeCode == 'default' ) {

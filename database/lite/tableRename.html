@@ -1,0 +1,6 @@
+
+<form action='./tableRenameConfirm' method='post'>
+	<input type='hidden' name='oldname' value='<?=htmlencode($_GET['table'])?>'/>
+	<?=printf($lang['rename_tbl'], htmlencode($_GET['table'])) ?>;
+	<input type='text' name='newname' style='width:200px;'/> <input type='submit' value='<?=$lang['rename']?>' name='rename' class='btn'/>
+</form>

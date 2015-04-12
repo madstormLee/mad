@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="~/mad/vendors/codeMirror/lib/codemirror.css">
+<link rel="stylesheet" href="./write.css">
+
+<script src="~/mad/vendors/codeMirror/lib/codemirror.js"></script>
+
+<script src="<?=$modeFile ?>"></script>
+<script src="~/mad/vendors/codeMirror/keymap/vim.js"></script>
+<script src="./write.js"></script>
+
+<h1>File Write</h1>
+
+<form action='./save'>
+	<input type='hidden' id='mode' value='<?=$mode?>' />
+	<textarea id='contents' name='contents'><?=$model->getContents()?></textarea>
+	<div style="font-size: 13px; width: 300px; height: 30px;">Key buffer: <span id="command-display"></span></div>
+	<button>Save</button>
+</form>

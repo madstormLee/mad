@@ -35,7 +35,9 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		return $this->addData( $data );
 	}
 	function addData( $data = array() ) {
-		$this->data = array_merge( $this->data, $data );
+		foreach( $data as $key => $row ) {
+			$this->data[$key] = $row;
+		}
 		return $this;
 	}
 	function clear() {
@@ -143,21 +145,39 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		}
 		return $this;
 	}
-	function getDictionary( $target1='', $target2 = '' ) {
+	function dic( $field1='', $field2 = '' ) {
+		if ( empty( $field2 ) ) {
+			return $this->cols( $field1 );
+		}
 		$rv = array();
 		foreach( $this->data as $key => $row ) {
-			if ( ! empty( $target2 ) ) {
-				$rv[$row[$target1]] = $row[$target2];
-			} else if ( ! empty( $target1 ) ) {
-				$rv[$key] = $row[$target1];
-			} else {
-				$rv[$key] = current($row);
-			}
+			$row = new MadData( (array) $row );
+			$rv[$row[$field1]] = $row[$field2];
 		}
 		return new MadData( $rv );
 	}
-	function dic( $target1='', $target2 = '' ) {
-		return $this->getDictionary( $target1, $target2 );
+	function max() {
+		return max( $this->data );
+	}
+	function maxKey() {
+		return max( array_keys($this->data) );
+	}
+	function getFirsts() {
+		foreach( $this->data as $key => $row ) {
+			$row = new MadData( (array) $row );
+			$rv[$key] = current($row);
+		}
+		return new MadData($rv);
+	}
+	function cols( $field='' ) {
+		if ( empty($field) ) {
+			return $this->getFirsts();
+		}
+		foreach( $this->data as $key => $row ) {
+			$row = new MadData( (array) $row );
+			$rv[$key] = $row[$field];
+		}
+		return new MadData($rv);
 	}
 	function implode( $glue = '' ) {
 		return implode( $glue, $this->data );
@@ -179,13 +199,8 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		$this->data = json_decode($json);
 		return $this;
 	}
-	function walk( $name, $function ) {
-		if ( ! $this->$name ) {
-			return false;
-		}
-		foreach( $this->$name as $key => $value ) {
-			$function( $key, $value, $this );
-		}
+	function walk( $function ) {
+		array_walk( $this->data, $function, $this );
 		return $this;
 	}
 	/************* Countable implements ****************/

@@ -1,0 +1,33 @@
+<h1>Table List</h1>
+
+<ul class='naviButtons'>
+	<li><a href='createFromConfig'>이 프로젝트의 config로 부터 생성</a></li>
+	<li><a href='viewAll?database=<?=$g->get->database?>'>출력용 전체보기</a></li>
+	<li><a href='~/Web2Pdf/download?name=table'>pdf 다운로드</a></li>
+</ul>
+
+<table class='adminTable'>
+<thead>
+	<tr>
+		<th>Table</th>
+		<th>테이블 정의서</th>
+	</tr>
+</thead>
+<tbody>
+	<? foreach ( $list as $table ): ?>
+	<tr>
+		<td><a href='~/table/view?table=<?=$table?>'><?=$table?></a></td>
+		<td>
+			<a href='~/table/definitionList?database=<?=$g->get->database?>&amp;table=<?=$table?>'>보기</a>
+			<a href='~/table/definitionListDownload?table=<?=$table?>'>다운로드</a>
+		</td>
+	</tr>
+	<? endforeach; ?>
+</tbody>
+</table>
+
+<?=$list->getPageNavi()?>
+
+<? if ( $list->isEmpty() ) : ?>
+	<p class='noContent'>리스트가 없습니다.</p>
+<? endif; ?>

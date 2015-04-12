@@ -1,0 +1,59 @@
+
+<form action='./tableSearchDone?table=<?=urlencode($_GET['table'])?>&amp;view=1&amp;done=<?=(!isset($get->view))?'1':'';?>' method='post'>
+
+	<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+		<tr>
+			<td class='tdheader'><?=$lang['fld']?></td>
+			<td class='tdheader'><?=$lang['type']?></td>
+			<td class='tdheader'><?=$lang['operator']?></td>
+			<td class='tdheader'><?=$lang['val']?></td>
+		</tr>
+
+		<? for($i=0; $i<sizeof($result); $i++) { ?>
+		<?
+		$field = $result[$i][1];
+		$type = $result[$i]['type'];
+		$typeAffinity = get_type_affinity($type);
+		?>
+		<tr>
+			<td class='title'>
+				<?=htmlencode($field); ?>
+			</td>
+			<td class='title'>
+				<?=htmlencode($type); ?>
+			</td>
+			<td class='title'>
+				<select name='<?=htmlencode($field)?>:operator' onchange='checkLike(\"<?=htmlencode($field)?>_search\", this.options[this.selectedIndex].value); '>
+					<option value='='>=</option>
+					<? if($typeAffinity=="INTEGER" || $typeAffinity=="REAL" || $typeAffinity=="NUMERIC") { ?>
+					<option value='&gt;'>&gt;</option>
+					<option value='&gt;='>&gt;=</option>
+					<option value='&lt;'>&lt;</option>
+					<option value='&lt;='>&lt;=</option>
+					<? } else if($typeAffinity=="TEXT" || $typeAffinity=="NONE") { ?>
+					<option value='= '''>= ''</option>
+					<option value='!= '''>!= ''</option>
+					<? } ?>
+					<option value='!='>!=</option>
+					<? if($typeAffinity=="TEXT" || $typeAffinity=="NONE"): ?>
+					<option value='LIKE' selected='selected'>LIKE</option>
+					<? else: ?>
+					<option value='LIKE'>LIKE</option>
+					<? endif; ?>
+					<option value='LIKE%'>LIKE %...%</option>
+					<option value='NOT LIKE'>NOT LIKE</option>
+				</select>
+			</td>
+			<td class='title'>
+				<? if($typeAffinity=="INTEGER" || $typeAffinity=="REAL" || $typeAffinity=="NUMERIC"): ?>
+				<input type='text' id='<?=htmlencode($field)?>_search' name='<?=htmlencode($field)?>'/>
+				<? else: ?>
+				<textarea id='<?=htmlencode($field)?>_search' name='<?=htmlencode($field)?>' rows='1' cols='60'></textarea>
+				<? endif; ?>
+			</td>
+		</tr>
+		<? } ?>
+	</table>
+
+	<input type='submit' value='<?=$lang['srch']?>' class='btn'/>
+</form>

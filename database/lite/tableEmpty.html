@@ -1,0 +1,11 @@
+
+
+<form action='./tableEmptyConfirm' method='post'>
+	<input type='hidden' name='tablename' value='<?=htmlencode($_GET['table'])?>'/>
+	<div class='confirm'>
+		<?=sprintf($lang['ques_empty'], htmlencode($_GET['table']))?>
+		<br/><br/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='<?=PAGE?>'><?=$lang['cancel']?></a>
+	</div>
+</form>

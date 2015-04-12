@@ -1,0 +1,11 @@
+.window .titleBar {
+	.menu, .remove, .btnFold {
+		width: 17px;
+		height: 17px;
+		background-repeat: no-repeat;
+		background-position: 0 0;
+	}
+	.menu { background-image: url(button/menu.gif); }
+	.remove { background-image: url(button/remove.gif); }
+	.fold { background-image: url(button/fold.gif); }
+}

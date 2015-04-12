@@ -1,0 +1,33 @@
+<h2><?=$lang['create_trigger']?> '<?=htmlencode($_POST['tablename'])?>'</h2>
+
+<form action='./triggerCreateConfirm?table=<?=urlencode($_POST['tablename'])?> method='post'>
+	<?=$lang['trigger_name']?>: <input type='text' name='trigger_name'/>
+	<br/><br/>
+	<fieldset>
+		<legend><?=$lang['db_event']?></legend>
+		<?=$lang['before']?>/<?=$lang['after']?>;?> :
+		<select name='beforeafter'>
+			<option value=''></option>
+			<option value='BEFORE'><?=$lang['before']?></option>"
+			<option value='AFTER'><?=$lang['after']?></option>"
+			<option value='INSTEAD OF'><?=$lang['instead']?></option>"
+		</select>
+		<br/><br/>
+		echo $lang['event'].": ";
+		<select name='event'>
+			<option value='DELETE'><?=$lang['del']?></option>
+			<option value='INSERT'><?=$lang['insert']?></option>
+			<option value='UPDATE'><?=$lang['update']?></option>
+		</select>
+	</fieldset><br/><br/>
+	<fieldset><legend><?=$lang['trigger_act']?></legend>
+		<label><input type='checkbox' name='foreachrow'/> <?=$lang['each_row']?></label><br/><br/>
+		echo $lang['when_exp'].":<br/>";
+		<textarea name='whenexpression' style='width:500px; height:100px;' rows='8' cols='50'></textarea>
+		<br/><br/>
+		echo $lang['trigger_step'].":<br/>";
+		<textarea name='triggersteps' style='width:500px; height:100px;' rows='8' cols='50'></textarea>
+	</fieldset><br/><br/>
+	<input type='submit' value='<?=$lang['create_trigger2']?>' class='btn'/> 
+	<a href='./columnView?table=<?=urlencode($_POST['tablename'])?>'><?=$lang['cancel']?></a>
+</form>

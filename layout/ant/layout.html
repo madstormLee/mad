@@ -2,14 +2,60 @@
 <!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
 <html class="no-js" lang="en" >
 	<head>
-		<title><?=$config->info->title?></title>
+		<title><?=$config->info->title?> - <?=$config->info->subtitle?></title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<?=$config->css?>
-		<?=$config->js?>
+		<link rel='stylesheet' type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/css/normalize.min.css" media='all' />
+		<link rel='stylesheet' type='text/css' href="./style.css" media='all' />
+		<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/vendor/modernizr.js"></script>
+		<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/vendor/jquery.js"></script>
+		<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.0/js/foundation.min.js"></script>
+		<script type='text/javascript' src="./script.js"></script>
 	</head>
-	<body>
-		<header class='sticky'><?=$config->views->header?></header>
+	<body id='body'>
+		<header class='sticky'>
+			<nav class="top-bar" data-topbar role="navigation">
+				<ul class="title-area">
+					<li class="name"><h1><a id='logo' href="~/"><?=$config->info->title?></a></h1></li>
+					<li class="toggle-topbar menu-icon"><a href="~/"><span>menu</span></a></li>
+				</ul>
+
+				<section class="top-bar-section">
+					<ul class="menu left">
+						sphp foreach( @config_sitemap as @row ): phpe
+						<li><a href='~/@@row_href'>@@row_label</a></li>
+						endforeach
+						<li><a href='~/file'>file</a></li>
+						<li><a href='~/view'>view</a></li>
+						<li><a href='~/history'>history</a></li>
+						<li><a href='~/tools'>tools</a></li>
+
+						<? if ( $config->session->user ) : ?>
+						<li><a href='~/backlog/write'>backlog</a></li>
+						<li><a href='~/user/write'>user</a></li>
+						<li><a href='~/php'>php</a></li>
+						<? endif; ?>
+						<li><a href='~/sitemap'>sitemap</a></li>
+
+						<li class="has-dropdown">
+							<a href='~/help'>help</a>
+							<ul class="dropdown">
+								<li><a href="#">first link in dropdown</a></li>
+								<li class="active"><a href="#">active link in dropdown</a></li>
+							</ul>
+						</li>
+					</ul>
+
+					<ul class="personal right">
+						<? if ( $config->session->user ) : ?>
+						<li><a href='~/sessionUser/logout'>logout</a></li>
+						<? else: ?>
+						<li class="active"><a href='~/sessionUser/login'>login</a></li>
+						<? endif; ?>
+					</ul>
+				</section>
+			</nav>
+		</header>
 		<main class='columns'><?=$main?></main>
 		<footer class='columns'>
 			<?=$config->info->author?> <?=$config->info->year?>::<?=$config->info->project?>

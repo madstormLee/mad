@@ -5,10 +5,7 @@ class MadPgsqlDb extends MadDb {
 	// override
 	function setConnectInfo( $info ) {
 		$this->conn->setConnectInfo( $info );
-/* 		if ( ! empty( $info->schema ) && $this->conn ) {
-			$this->exec( "set schema '$info->schema'" );
-		}
- */		return $this;
+		$this;
 	}
 	function getConnectInfo() {
 		return $this->conn->getConnectInfo();
@@ -20,22 +17,21 @@ class MadPgsqlDb extends MadDb {
 		$query = "SELECT               
 			pg_attribute.attname, 
 			format_type(pg_attribute.atttypid, pg_attribute.atttypmod) 
-				FROM pg_index, pg_class, pg_attribute 
-				WHERE 
-				pg_class.oid = '$table'::regclass AND
-				indrelid = pg_class.oid AND
-				pg_attribute.attrelid = pg_class.oid AND 
-				pg_attribute.attnum = any(pg_index.indkey)
-				AND indisprimary";
+			FROM pg_index, pg_class, pg_attribute 
+			WHERE 
+			pg_class.oid = '$table'::regclass AND
+			indrelid = pg_class.oid AND
+			pg_attribute.attrelid = pg_class.oid AND 
+			pg_attribute.attnum = any(pg_index.indkey)
+			AND indisprimary";
 		return $this->query( $query );
 	}
 	function explain( $table ) {
 		return $this->query( "SELECT * FROM information_schema.columns WHERE table_name = '$table'");
 	}
 	function getEmptyRow( $table ) {
-		$rv = array();
-		$q = self::explain( $table );
-		return $q->getDictionary( 'Field', 'Default' );
+		$data = new MadData($this->explain( $table )->fetchAll());
+		return $data->dic( 'Field', 'Default' );
 	}
 	function getTables( $table_schema = '', $table_type = 'BASE TABLE' ) {
 		$where = array();

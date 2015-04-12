@@ -1,0 +1,62 @@
+<style>
+td {
+	text-align: left;
+}
+td.INTEGER, 
+td.REAL, 
+td.NUMERIC { 
+	text-align: right;
+}
+</style>
+
+<form action='./rowEditorDelete?table=<?=urlencode($table).$is_view?>' method='post' name='checkForm'>
+	<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+		<tr>
+			<? if(!isset($_GET['view'])) ?>
+			<td colspan='3'></td>
+			<? for($i=0; $i<sizeof($result); $i++) { ?>
+			<td class='tdheader'>
+				<a href='?action=row_view&amp;table=<?=urlencode($table)?>&amp;sort=<?=urlencode($result[$i]['name'])?>&amp;view=<?=$get->view?>&amp;order=<?=$orderTag?>'><?=htmlencode($result[$i]['name'])?></a>
+				<? if(isset($_SESSION['sortRows']) && $_SESSION['sortRows']==$result[$i]['name']): ?>
+				<b><?=(($_SESSION['orderRows']=="ASC")?"&uarr;":"&darr;");?></b>
+				<? endif; ?>
+			</td>
+			<? } ?>
+		</tr>
+
+		<? for($i=0; $i<sizeof($arr); $i++) { ?>
+		<? $pk = $arr[$i][$rowidColumn]; ?>
+		<tr>
+			<? if(!isset($_GET['view'])) { ?>
+			<td>
+				<input type='checkbox' name='check[]' value='<?=htmlencode($pk)?>' id='check_<?=htmlencode($i)?>'/>
+			</td>
+			<td>
+				<a href='?table=<?=urlencode($table)?>&amp;action=row_editordelete&amp;pk=<?=urlencode($pk)?>&amp;type=edit' title='<?=$lang['edit']?>' class='edit'><span><?=$lang['edit']?></span></a>
+			</td>
+			<td>
+				<a href='?table=<?=urlencode($table)?>&amp;action=row_editordelete&amp;pk=<?=urlencode($pk)?>&amp;type=delete' title='<?=$lang['del']?>' class='delete'><span><?=$lang['del']?></span></a>
+			</td>
+			<? } ?>
+			<? for($j=0; $j<sizeof($result); $j++) { ?>
+			<? if($arr[$i][$j]===NULL) $arr[$i][$j] = 'NULL'; ?>
+			<td class='<?=get_type_affinity($result[$j]['type'])?>'><?=subString(htmlencode($arr[$i][$j])); ?></td>
+			<? } ?>
+		</tr>
+		<? } ?>
+	</table>
+
+	<? if(!isset($_GET['view'])) { ?>
+	<a onclick='checkAll()'><?=$lang['chk_all']?></a>
+	/
+	<a onclick='uncheckAll()'><?=$lang['unchk_all']?></a>
+	<i><?=$lang['with_sel']?>:</i> 
+
+	<select name='type'>
+		<option value='edit'><?=$lang['edit']?></option>
+		<option value='delete'><?=$lang['del']?></option>
+	</select> 
+	<button name='massGo' type='submit'><?=$lang['go']?></button>
+	<? } ?>
+
+</form>

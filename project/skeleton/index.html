@@ -1,0 +1,6 @@
+<h1>Skeletons</h1>
+
+<? foreach( $model->getIndex() as $row ): ?>
+<a href='./write?id=<?=$row->getFile()?>'><?=$row->getFile()?></a>
+<a href='./skeleton?id=<?=$row->getFile()?>'>skeleton</a>
+<? endforeach; ?>

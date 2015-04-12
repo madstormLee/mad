@@ -8,27 +8,62 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 	protected $statement = null;
 
 	// factory method
-	static function create( $conn = null ) {
+	public static function create( $conn = null ) {
 		if ( $conn == null ) {
-			$conn = MadConfig::getInstance()->database;
+			return MadConfig::getInstance()->db;
 		}
 		if ( is_null($conn) ) {
 			throw new Exception( 'Connection info not found.' );
 		}
+		return new self( $conn );
+	}
+	private static $defaultConn = null;
+	private static $connections = array();
 
-		$dsn = "mysql:host=$conn->host;dbname=$conn->dbname";
-		$options = array();
-		foreach( $conn->options as $key => $value ) {
-			$options[(int)$key] = $value;
+	static function addConnections( $id, PDO $pdo ) {
+		self::$connections[$id] = $pdo;
+	}
+
+	static function setDefaultConn( $conn ) {
+		self::$defaultConn = $conn;
+	}
+	static function getConn() {
+		if ( ! is_null( self::$pdo ) ) {
+			return self::$pdo;
 		}
-
-		$db = new self( $dsn, $conn->username, $conn->password, $options );
-		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		return $db;
+		if ( ! is_file( self::$iniFile ) ) {
+			throw new Exception("DBConnectFile does not exist.");
+		}
+		$ini = new MadIni( self::$iniFile );
+		$info = $ini->database;
+		return self::create( $info );
+	}
+	function __construct( $conn = null ) {
+		if ( is_string( $conn ) ) {
+			$dsn = $conn;
+			return parent::__construct( $conn );
+		}
+		$options = $this->getOptions( $conn->options );
+		parent::__construct( $this->getDsn($conn), $conn->username, $conn->password, $options );
+		if ( $conn->errorMode == 'exception') {
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		}
 	}
 	function query( $query ) {
-		$this->statement = parent::query( $query );
-		return $this;
+		$this->statement = parent::query($query);
+		return $this->statement;
+	}
+	function getOptions( $options ) {
+		if ( ! ( is_array( $options ) || is_object( $options ) ) ) {
+			return false;
+		}
+		$rv = array();
+		foreach( $options as $key => $value ) {
+			$rv[(int)$key] = $value;
+		}
+	}
+	function getDsn( $info ) {
+		return "$info->driver:host=$info->host;port=$info->port;dbname=$info->db";
 	}
 	function setData( $data ) {
 		$this->data->setData( $data );
@@ -38,43 +73,51 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		return $this->data = $this->statement->fetchAll();
 	}
 	/******************* fetches *******************/
-	function fetch( $class = 'StdClass' ) {
+	function fetchObject( $class = 'StdClass' ) {
 		$this->statement->setFetchMode( PDO::FETCH_CLASS, $class );
 		return $this->statement->fetch();
+	}
+	function fetch( $type=0, $class = 'StdClass' ) {
+		if ( empty( $type ) ) {
+			return $this->fetchObject( $class );
+		}
+		return parent::fetch( $type );
 	}
 	function fetchAssoc() {
 		return $this->statement->fetch( PDO::FETCH_ASSOC );
 	}
+	function fetchAll() {
+		return $this->statement->fetchAll( PDO::FETCH_ASSOC );
+	}
 	function row() {
 		return $this->fetch();
 	}
-	function fetchColumn( $fieldName ) {
-		$rv = array();
-		foreach( $this->data as $row ) {
-			$rv[] = $row->$fieldName;
-		}
-		return new MadData( $rv );
-	}
 	function getFirst() {
-		if ( empty( $this->data ) ) {
+		if ( ! $this->statement ) {
 			return false;
 		}
-		$rv = current( $this->data[0] );
-		return $rv;
+		$row = $this->fetchAssoc();
+		return current( $row );
 	}
 	/*********************** utilities ***********************/
-	function rows() {
+	function count() {
+		if ( ! $this->statement ) {
+			return 0;
+		}
 		return $this->statement->rowCount();
 	}
-	function count() {
-		return $this->statement->rowCount();
+	function rows() {
+		return $this->count();
+	}
+	function getRows() {
+		return $this->count();
 	}
 	function getAllColumnMeta() {
 		$rv = array();
-		for( $i = 0; $i < $this->result->columnCount(); ++$i ) {
-			$rv[] = $this->result->getColumnMeta( $i );
+		for( $i = 0; $i < $this->statement->columnCount(); ++$i ) {
+			$rv[] = $this->statement->getColumnMeta( $i );
 		}
-		return $rv;
+		return new MadData($rv);
 	}
 	/******************* getter only ******************/
 	function getStatement() {
@@ -84,22 +127,7 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		return $this->lastInsertId( $key );
 	}
 	function getIterator() {
-		return $this->getData();
-	}
-	/***************** utilities ********************/
-	function total( $from, $where='' ) {
-		$where = trim($where);
-		if ( ! empty ( $where ) ) {
-			$where = str_ireplace( 'where', '', $where );
-			$where = 'where '.$where;
-		}
-		if ( ! empty ( $from ) ) {
-			$from = preg_replace( '/from/i', '', $from, 1 );
-			$from = ' from '.$from;
-		}
-
-		$rv = $this->query("select count(*) $from $where")->getFirst();
-		return ( $rv ) ? $rv : 0;
+		return new ArrayIterator($this->getData());
 	}
 	function max($table, $field, $where = '') {
 		if ( ! empty ( $where ) ) {
@@ -114,29 +142,14 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		}
 		return $rv;;
 	}
-	function truncate( $table ) {
-		return $this->query("truncate $table");
-	}
-	function clear() {
-		$this->data = array();
-		return $this;
-	}
 	function setDebug( $debug ) {
 		$this->debug = ! ! $debug;
 		if ( $this->debug === true ) {
 		}
 		return $this;
 	}
-	static function testColumns( $table ) {
-		self::create()->showColumns( $table )->test();
-	}
-	/***************** magic methods ******************/
-	function __unset( $key ) {
-		unset( $this->data->$key );
-	}
 	function __toString() {
-		// this must view db spec
-		return $this->query;
+		return $this->statement->queryString;
 	}
 	/***************** escapes ******************/
 	public function escapeFields( $data ) {

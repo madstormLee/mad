@@ -1,0 +1,11 @@
+<? if(isset($justrenamed)) { ?>
+<div class='confirm'>
+</div><br/>
+<? } ?>
+
+<form action='./databaseRename' method='post'>
+	<input type='hidden' name='oldname' value='<?=htmlencode($db->getPath())?>'/>
+	<?=$lang['db_rename']?> '<?=htmlencode($db->getPath())?>' <?=$lang['to']?>
+	<input type='text' name='newname' style='width:200px;' value='<?=htmlencode($db->getPath())?>'/>
+	<input type='submit' value='<?=$lang['rename']?>' name='rename' class='btn'/>";
+</form>"

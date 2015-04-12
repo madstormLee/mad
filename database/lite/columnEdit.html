@@ -1,0 +1,39 @@
+<h2><?=sprintf($lang['edit_col'], htmlencode($_GET['pk']))?> <?=$lang['on_tbl']?> '<?=htmlencode($_GET['table'])?>'</h2>
+<?=$lang['sqlite_limit']?>
+<br/>
+<br/>
+
+<form action='./columnEditConfirm?table=<?=urlencode($name)?>' method='post'>
+	<input type='hidden' name='tablename' value='<?=htmlencode($name)?>'/>
+	<input type='hidden' name='oldvalue' value='<?=htmlencode($_GET['pk'])?>'/>
+	<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+		<tr>
+			<? for($k=0; $k<count($headings); $k++) { ?>
+			<td class='tdheader'><?=$headings[$k]?></td>
+			<? } ?>
+		</tr>
+		<tr>
+			<td>
+				<input type='text' name='<?=$i?>_field' style='width:200px;' value='<?=htmlencode($fieldVal)?>'/>
+			</td>
+			<td>
+				<select name='<?=$i?>_type' id='i<?=$i?>_type' onchange='toggleAutoincrement(<?=$i?>);'>
+					<? if(!in_array($typeVal, $sqlite->datatypes() )): ?>
+					<option value='<?=htmlencode($typeVal)?>' selected='selected'><?=htmlencode($typeVal)?></option>
+					<? endif; ?>
+					<? foreach ($sqlite->datatypes() as $t) { ?>
+					<option value='<?=htmlencode($t)?>' <?=($t==$typeVal)?"selected='selected'":'';?>><?=htmlencode($t)?></option>
+					<? } ?>
+				</select>
+			</td>
+		</tr>
+
+		<tr>
+			<td class='tdheader' style='text-align:right;' colspan='6'>
+				<input type='submit' value='<?=$lang['save_ch']?>' class='btn'/> 
+				<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=column_view'><?=$lang['cancel']?></a>
+			</td>
+		</tr>
+
+	</table>
+</form>

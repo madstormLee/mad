@@ -4,15 +4,7 @@ class MadJson extends MadData {
 	protected $file = '';
 
 	function __construct( $file = '' ) {
-		$this->fetch( $file );
-	}
-	function fetch( $file ) {
-		$this->setFile( $file );
-		if( ! is_file($file) ) {
-			return false;
-		}
-		$this->setJson( file_get_contents( $file ) );
-		return $this;
+		$this->load( $file );
 	}
 	function isFile() {
 		return is_file( $this->getFile() );
@@ -35,15 +27,7 @@ class MadJson extends MadData {
 		if ( ! is_file ( $this->file ) ) {
 			return $this;
 		}
-		$temp = array();
-		if ( ! empty( $data ) ) {
-			foreach( $data as $key => $unit ) {
-				$temp['{'.$key.'}'] = (string) $unit;
-			}
-		}
-		$content = file_get_contents( $this->file );
-		$content = str_replace( array_keys( $temp ), array_values( $temp ), $content );
-		$this->setJson( $content );
+		$this->setJson( file_get_contents( $this->file ) );
 		return $this;
 	}
 	function setFromDl( $dl ) {

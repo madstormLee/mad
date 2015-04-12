@@ -1,0 +1,39 @@
+{
+	"views" : {
+		"list" : {
+			"fileName" : "project/template/javaSpring/views/list.jsp",
+			"suffix" : "00_l"
+		},
+		"write" : {
+			"fileName" : "project/template/javaSpring/views/write.jsp",
+			"suffix" : "00_u"
+		},
+		"view" : {
+			"fileName" : "project/template/javaSpring/views/view.jsp",
+			"suffix" : "00_v"
+		}
+	},
+	"queries" : {
+		"qry" : {
+		}
+	},
+	"models" : {
+		"interface" : {
+			"fileName" : "project/template/javaSpring/models/interface.java"
+		},
+		"implementation" : {
+			"fileName" : "project/template/javaSpring/models/implementation.java"
+		}
+	},
+	"controllers" : {
+		"list" : {
+			"fileName" : "project/template/javaSpring/controllers/list.java"
+		},
+		"write" : {
+			"fileName" : "project/template/javaSpring/controllers/write.java"
+		},
+		"view" : {
+			"fileName" : "project/template/javaSpring/controllers/view.java"
+		}
+	}
+}

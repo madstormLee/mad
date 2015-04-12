@@ -1,19 +1,15 @@
 <h1>Manual Write</h1>
 
-<nav class='component'>
-	<a href='./'>Index</a>
-	<a href='./view?id=<?=$g->get->id?>'>view</a>
-</nav>
-
-<h2>about : <?=$g->get->id?></h2>
+<h2>about : <?=$config->params->id?></h2>
 
 <form id='ManualWrite' method='post' action='./save'>
-	<input type='text' id='id' name='id' placeholder='input manual id' required value='<?=$g->get->id?>' />
+	<input type='hidden' id='id' name='id' value='<?=$model->id?>' />
+	<input type='text' id='title' name='title' placeholder='manual title' required value='<?=$model->title?>' />
 
-	<textarea class='ckeditor' id='contents' name='contents'><?=$model?></textarea>
+	<textarea class='ckeditor' id='contents' name='contents'><?=$model->contents?></textarea>
 
 	<nav class='buttons'>
-		<button type='submit'>Save</button>
+		<button>Save</button>
 		<a href='./delete?path=<?=$g->get->path?>' class='btnDelete'>Delete</a></li>
 	</nav>
 </form>

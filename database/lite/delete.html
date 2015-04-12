@@ -1,0 +1,10 @@
+
+<form action='./databaseDelete' method='post'>
+	<div class='confirm'>
+		<?=sprintf($lang['ques_del_db'],htmlencode($db->getPath())) ?>
+		<br/><br/>
+		<input name='database_delete' value='<?=htmlencode($db->getPath())?>' type='hidden'/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='<?=PAGE?>'><?=$lang['cancel']?></a>
+	</div>
+</form>

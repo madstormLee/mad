@@ -1,0 +1,57 @@
+<? if(isset($_POST['import'])) { ?>
+<div class='confirm'>
+	<? if($importSuccess===true) ?>
+	<?=$lang['import_suc'];?>
+	<? else: ?>
+	<?=$lang['err']?>: <?=$importSuccess?>
+	<? endif; ?>
+</div><br/>
+<? } ?>
+
+<form method='post' action='?table=<?=urlencode($_GET['table'])?>&amp;action=table_import' enctype='multipart/form-data'>
+	<fieldset style='float:left; width:260px; margin-right:20px;'>
+		<legend><b><?=$lang['import_into']?> <?=htmlencode($_GET['table'])?></b></legend>
+		<label><input type='radio' name='import_type' checked='checked' value='sql' onclick='toggleImports(\"sql\");'/> <?=$lang['sql']?></label>
+		<br/>
+		<label><input type='radio' name='import_type' value='csv' onclick='toggleImports(\"csv\");'/> <?=$lang['csv']?></label>
+	</fieldset>
+
+	<fieldset style='float:left; max-width:350px;' id='importoptions_sql'><legend><b><?=$lang['options']?></b></legend>
+		<?=$lang['no_opt']; ?>
+	</fieldset>
+
+	<fieldset style='float:left; max-width:350px; display:none;' id='importoptions_csv'>
+		<input type='hidden' value='<?=htmlencode($_GET['table'])?>' name='single_table'/>
+		<legend><b><?=$lang['options']?></b></legend>
+
+		<div style='float:left;'><?=$lang['fld_terminated']?></div>
+		<input type='text' value=';' name='import_csv_fieldsterminated' style='float:right;'/>
+		<div style='clear:both;'></div>
+
+		<div style='float:left;'><?=$lang['fld_enclosed']?></div>
+		<input type='text' value='\"' name='import_csv_fieldsenclosed' style='float:right;'/>
+
+		<div style='clear:both;'></div>
+
+		<div style='float:left;'><?=$lang['fld_escaped']?></div>
+		<input type='text' value='\' name='import_csv_fieldsescaped' style='float:right;'/>
+
+		<div style='clear:both;'></div>
+
+		<div style='float:left;'><?=$lang['rep_null']?></div>
+		<input type='text' value='NULL' name='import_csv_replacenull' style='float:right;'/>
+
+		<div style='clear:both;'></div>
+
+		<label><input type='checkbox' checked='checked' name='import_csv_fieldnames'/> <?=$lang['fld_names']?></label>
+	</fieldset>
+
+	<div style='clear:both;'></div>
+	<br/><br/>
+
+	<fieldset>
+		<legend><b><?=$lang['import_f']?></b></legend>
+		<input type='file' value='<?=$lang['choose_f']?>' name='file' style='background-color:transparent; border-style:none;'/> <input type='submit' value='<?=$lang['import']?>' name='import' class='btn'/>
+	</fieldset>
+
+</form>

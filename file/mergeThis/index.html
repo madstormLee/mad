@@ -1,0 +1,34 @@
+<h1>File Index</h1>
+
+<? if ( isset($files) ) : ?>
+<nav>
+	<? foreach( $files as $file ): ?>
+	<? if ( $file->isDir() ) : ?>
+	<a class='dir' href='./index?target=<?=$file->getInfo()->getRealPath()?>'><?=$file->getInfo()->getBaseName() ?></a>
+	<? else : ?>
+	<a href='./view?target=<?=$file->getInfo()->getRealPath()?>'><?=$file->getInfo()->getBaseName() ?></a>
+	<? endif; ?>
+	<? endforeach; ?>
+</nav>
+<? endif; ?>
+
+<!-- this for new File with FileManual -->
+<ul class='files'>
+	<? foreach( $dir as $file ) : ?>
+	<? if ( $file->isDir() ) : ?>
+	<li class='dir'>
+		<a href='./?dir=<?=$file->getFile()?>'><?=$file->getBaseName()?></a>
+	</li>
+	<? else: ?>
+	<li>
+		<a class='popup' href='./view?file=<?=$file->getFile()?>'><?=$file->getBaseName()?></a>
+		<? if ( $file->isWritable() ): ?>
+		<a class='popup button' href='./rename?file=<?=$file->getFile()?>'>Rename</a>
+		<? endif; ?>
+		<nav class='buttons'>
+			<a href='~/admin/tools/fileManual/view?file=<?=$file->getFile()?>'>Manual</a>
+		</nav>
+	</li>
+	<? endif; ?>
+	<? endforeach; ?>
+</ul>

@@ -6089,10 +6089,19 @@ th.hide-for-touch {
 
   th.show-for-print {
     display: table-cell !important; } }
+/* @override */
+.row {
+  max-width: 100%; }
+
+/* layout */
+main {
+  margin-bottom: 1rem; }
+
 footer {
   background: #000;
   text-align: right;
-  color: #fff; }
+  color: #fff;
+  z-index: 1000; }
 
 section.view {
   border: 1rem solid #999;
@@ -6265,7 +6274,18 @@ table.images tbody tr:hover {
 
 /************************** nav.component ********************/
 nav.component {
-  float: right; }
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 62.5rem;
+  text-align: right; }
+  nav.component:before, nav.component:after {
+    content: " ";
+    display: table; }
+  nav.component:after {
+    clear: both; }
   nav.component a {
     border-style: solid;
     border-width: 0;
@@ -6299,5 +6319,127 @@ nav.component {
       background-color: #007095; }
     nav.component a:hover, nav.component a:focus {
       color: #FFFFFF; }
+  nav.component a.current {
+    background: #cfccfc; }
+
+pre.printR {
+  font-size: 0.75rem; }
+
+/************************** form.write ********************/
+form.write {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 62.5rem; }
+  form.write:before, form.write:after {
+    content: " ";
+    display: table; }
+  form.write:after {
+    clear: both; }
+  form.write .simple label {
+    display: block;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+    font-size: 0.875rem;
+    height: 2.3125rem;
+    line-height: 2.3125rem;
+    background: #f2f2f2;
+    border-right: none;
+    color: #333333;
+    border-color: #cccccc;
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+    width: 33.33333%;
+    float: left; }
+  form.write .simple input {
+    padding-left: 0.9375rem;
+    padding-right: 0.9375rem;
+    width: 66.66667%;
+    float: right;
+    margin-bottom: 0; }
+
+/************************** #right todo: from admin/style.css ********************/
+#right {
+  background: #ffffff;
+  z-index: 1; }
+  #right dl > dt {
+    margin: 0;
+    padding: 2px 10px;
+    font-size: 12px;
+    background: #eeeeee;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    cursor: pointer; }
+  #right dl:first-child > dt {
+    border-top: 0; }
+  #right dl > dd.rightMenu h1 {
+    display: none; }
+  #right dl > dd.rightMenu ul {
+    list-style: none; }
+    #right dl > dd.rightMenu ul li a {
+      display: block;
+      font-size: 12px;
+      color: #000000;
+      padding: 2px 5px;
+      border-bottom: 1px solid #000000; }
+    #right dl > dd.rightMenu ul li a:hover {
+      text-decoration: none;
+      background: #ccccff; }
+  #right dl > dd.rightMenu table.list th, #right dl > dd.rightMenu table.list td {
+    font-size: 12px;
+    border-bottom: 1px solid #000000;
+    vertical-align: middle; }
+  #right dl > dd.rightMenu table.list th {
+    padding: 3px;
+    border-top: 1px solid #000000;
+    background: #cccccc; }
+  #right dl > dd.rightMenu table.list td a {
+    color: #000000;
+    font-size: 12px; }
+  #right dl > dd.rightMenu table.list td img {
+    height: 50px; }
+  #right form.simple dl.targetItem dt {
+    background: transparent;
+    padding: 5px; }
+  #right form.simple dl.targetItem dd {
+    border: 0;
+    border-top: 1px solid #cccccc; }
+
+/***************************** section.summary *****************************/
+section.summary {
+  border-bottom: 1px solid #000000;
+  padding-bottom: 10px;
+  float: left;
+  width: 100%; }
+  section.summary dl {
+    float: left;
+    border: 1px solid #000000;
+    border-left: 0;
+    display: inline-block;
+    font-size: 12px; }
+  section.summary dl.header {
+    border-left: 1px solid #000000; }
+  section.summary dl dt {
+    background: #cccccc; }
+  section.summary dl dt,
+  section.summary dl dd {
+    padding: 3px 20px;
+    border-bottom: 1px solid #000000; }
+  section.summary dl dd {
+    text-align: right; }
+
+p.noContent {
+  padding: 10px;
+  border: 1px solid #000;
+  text-align: center; }
 
 /*# sourceMappingURL=style.css.map */

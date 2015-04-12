@@ -1,0 +1,28 @@
+<h1>User</h1>
+
+<nav class='component'>
+	<a href='./write'>write</a>
+</nav>
+
+<form id='User' method='post' action='./save'>
+	<? foreach( $list as $model ): ?>
+	<ul>
+		<li>
+			<label for='id'>id</label>
+			<input type='text' name='id' id='id' value='<?=$model->id?>' />
+		</li>
+		<li>
+			<label for='name'>name</label>
+			<input type='text' name='name' id='name' value='<?=$model->name?>' />
+		</li>
+		<li>
+			<label for='group'>group</label>
+			<nav class='group'>
+			<? foreach( $model->group as $groupName ): ?>
+			<a href='~/UserGroup/view?id=<?=$groupName?>'><?=$groupName?></a>
+			<? endforeach; ?>
+			</nav>
+		</li>
+	</ul>
+	<? endforeach; ?>
+</form>

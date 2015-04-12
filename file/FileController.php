@@ -1,26 +1,88 @@
 <?
 class FileController extends MadController {
-	function indexAction() {
-		$model = $this->model;
+	function browserAction() {
 		$get = $this->params;
+		$model = $this->model;
 
-		$model->h1 = 'File Index';
-
-		if ( ! $get->dir || ! is_dir( $get->dir ) ) {
-			$get->dir = $_SERVER['DOCUMENT_ROOT'];
+		if ( ! $get->file || ! is_dir( $get->file ) ) {
+			$get->file = '.';
 		}
-		$get->pattern = '*.php';
+
+		$model->name = baseName( realPath( $get->file ) );
+		$history = $this->createModel('FileHistory');
+		$this->view->history = $history;
+		$this->view->get = $get;
+	}
+	function indexAction() {
+		$get = $this->params;
+		$projectPath = realpath('.') . '/';
+
+		// target path
+		if ( ! $get->file || ! is_dir( $get->file ) ) {
+			$get->file = '.';
+		}
+
+		$realPath = realPath( $get->file );
+		if ( 0 !== strpos( $realPath, $projectPath ) ) {
+			$get->file = '';
+		} else {
+			$get->file = str_replace( $projectPath, '', $realPath );
+		}
+
+		// pattern
 		if ( ! isset($get->pattern) ) {
 			$get->pattern = '*';
 		}
-		$model->setDir( $get->dir );
-		$model->setPattern( $get->pattern );
+		$dir = new MadDir( $get->file, $get->pattern );
+
+		// check flag
+		if ( $get->flag == 'onlydir' ) {
+			$dir->setFlag( GLOB_ONLYDIR );
+		} elseif ( $get->flag == 'onlyfile' ) {
+			$dir->filter( 'is_file' );
+		} else {
+			$dir->order('dirFirst');
+		}
+
+		// select view
+		if ( ! $get->view ) {
+			if ( $this->session->view ) {
+				$get->view = $this->session->view;
+			} else {
+				$get->view = 'index';
+			}
+		}
+		$this->view->setFile( "$this->component/$get->view.html" );
+		if ( ! $get->nosave ) {
+			$this->session->view = $get->view;
+		}
+
+		// assign
+		$this->view->index = $dir;
 	}
-	function dirAction() {
-		$this->indexAction();
+	function writeAction() {
+		$model = $this->model;
+		$model->fetch( $this->params->file );
+		if (  $model->isDir() ) {
+			$this->view->setFile('writeDir.html');
+		} else {
+
+			$ext = $model->getExtension();
+			if ( $ext == 'html' ) {
+				$ext = 'htmlembedded';
+			}
+			$file = "mad/vendors/codeMirror/mode/$ext/$ext.js";
+			if ( ! is_file( $file ) ){
+				$ext = 'javascript';
+				$file = "mad/vendors/codeMirror/mode/$ext/$ext.js";
+			}
+			$this->view->mode = "application/x-php";
+			$this->view->modeFile = '~/' . $file;
+		}
 	}
-	function filesAction() {
-		$this->indexAction();
+	function saveAction() {
+		printR( $this->params );
+		die;
 	}
 	function openAction() {
 		$params = $this->params;
@@ -29,22 +91,16 @@ class FileController extends MadController {
 			$this->model->setDir( $params->dir );
 		}
 	}
-	function viewAction() {
+	function infoAction() {
 		$get = $this->params;
 		if ( ! $get->file ) {
 			$get->file = 'data';
 		}
 		$get->file = realpath( $get->file );
-		$model = new MadFile( $get->file );
-		$this->view->model = $model;
-	}
-	function writeContentsAction() {
-	}
-	function saveContentsAction() {
-		throw new Exception( 'not yet' );
+		$this->model->setFile( $get->file );
 	}
 	function viewRawAction() {
-		$contents = htmlSpecialChars( file_get_contents( $this->params->file ) );
+		$contents = htmlEntities( file_get_contents( $this->params->file ) );
 		return "<pre>$contents</pre>";
 	}
 	function renameAction() {
@@ -99,13 +155,13 @@ class FileController extends MadController {
 		$file_extension = "";
 
 		$uploadErrors = array(
-				0=>"There is no error, the file uploaded with success",
-				1=>"The uploaded file exceeds the upload_max_filesize directive in php.ini",
-				2=>"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
-				3=>"The uploaded file was only partially uploaded",
-				4=>"No file was uploaded",
-				6=>"Missing a temporary folder"
-				);
+			0=>"There is no error, the file uploaded with success",
+			1=>"The uploaded file exceeds the upload_max_filesize directive in php.ini",
+			2=>"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
+			3=>"The uploaded file was only partially uploaded",
+			4=>"No file was uploaded",
+			6=>"Missing a temporary folder"
+		);
 
 
 		// Validate the upload
@@ -173,5 +229,19 @@ class FileController extends MadController {
 			exit(0);
 		}
 		exit(0);
+	}
+	function mimeAction() {
+		define('APACHE_MIME_TYPES_URL','http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types');
+
+		function generateUpToDateMimeArray($url){
+			$s=array();
+			foreach(@explode("\n",@file_get_contents($url))as $x)
+				if(isset($x[0])&&$x[0]!=='#'&&preg_match_all('#([^\s]+)#',$x,$out)&&isset($out[1])&&($c=count($out[1]))>1)
+					for($i=1;$i<$c;$i++)
+						$s[]='&nbsp;&nbsp;&nbsp;\''.$out[1][$i].'\' => \''.$out[1][0].'\'';
+			return @sort($s)?'$mime_types = array(<br />'.implode($s,',<br />').'<br />);':false;
+		}
+
+		echo generateUpToDateMimeArray(APACHE_MIME_TYPES_URL);
 	}
 }

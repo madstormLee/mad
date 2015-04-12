@@ -1,0 +1,92 @@
+<div style=''>
+	<? if($_POST['startRow']>0) { ?>
+	<div style='float:left;'>
+		<form action='?action=row_view&amp;table=<?=urlencode($table).$is_view?>' method='post'>
+			<input type='hidden' name='startRow' value='0'/>
+			<input type='hidden' name='numRows' value='<?=$_SESSION['numRows']?>'/> 
+			<input type='submit' value='&larr;&larr;' name='previous' class='btn'/> 
+		</form>
+	</div>
+	<div style='float:left; overflow:hidden; margin-right:20px;'>
+		<form action='?action=row_view&amp;table=<?=urlencode($table).$is_view?>' method='post'>
+			<input type='hidden' name='startRow' value='<?=intval($_POST['startRow']-$_SESSION['numRows'])?>'/>
+			<input type='hidden' name='numRows' value='<?=$_SESSION['numRows']?>'/> 
+			<input type='submit' value='&larr;' name='previous_full' class='btn'/> 
+		</form>
+	</div>
+	<? } ?>
+
+	<div style='float:left;'>
+		<form action='?action=row_view&amp;table=<?=urlencode($table).$is_view?>' method='post'>
+			<input type='submit' value='<?=$lang['show']?> : ' name='show' class='btn'/> 
+			<input type='text' name='numRows' style='width:50px;' value='<?=$_SESSION['numRows']?>'/> 
+			<? echo $lang['rows_records']; ?>
+
+			<? if(intval($_POST['startRow']+$_SESSION['numRows']) < $rowCount): ?>
+			<input type='text' name='startRow' style='width:90px;' value='<?=intval($_POST['startRow']+$_SESSION['numRows'])?>'/>
+			<? else: ?>
+			<input type='text' name='startRow' style='width:90px;' value='0'/> 
+			<? endif; ?>
+			<? echo $lang['as_a']; ?>
+			<select name='viewtype'>
+				<? if(!isset($_SESSION['viewtype']) || $_SESSION['viewtype']=="table") { ?>
+				<option value='table' selected='selected'><?=$lang['tbl']?></option>
+				<option value='chart'><?=$lang['chart']?></option>
+				<? } else { ?>
+				<option value='table'><?=$lang['tbl']?></option>
+				<option value='chart' selected='selected'><?=$lang['chart']?></option>
+				<? } ?>
+			</select>
+		</form>
+	</div>
+
+	<? if(intval($_POST['startRow']+$_SESSION['numRows'])<$rowCount) { ?>
+	<div style='float:left; margin-left:20px; '>
+		<form action='?action=row_view&amp;table=<?=urlencode($table).$is_view?>' method='post'>
+			<input type='hidden' name='startRow' value='<?=intval($_POST['startRow']+$_SESSION['numRows'])?>'/>
+			<input type='hidden' name='numRows' value='<?=$_SESSION['numRows']?>'/> 
+			<input type='submit' value='&rarr;' name='next' class='btn'/> 
+		</form>
+	</div>
+	<div style='float:left; '>
+		<form action='?action=row_view&amp;table=<?=urlencode($table).$is_view?>' method='post'>
+			<input type='hidden' name='startRow' value='<?=intval($rowCount-$remainder)?>'/>
+			<input type='hidden' name='numRows' value='<?=$_SESSION['numRows']?>'/> 
+			<input type='submit' value='&rarr;&rarr;' name='next_full' class='btn'/> 
+		</form>
+	</div>
+	<? } ?>
+	<div style='clear:both;'></div>
+</div>
+
+
+
+
+<? // if no row exists ?>
+<? if($rowCount>0): ?>
+<br/><br/>
+<?=$lang['no_rows']; ?>
+<? elseif( ! $get->view ): ?>
+<br/><br/>
+<?=$lang['empty_tbl']?>
+<a href='./rowCreate?table=<?=urlencode($_GET['table'])?>'><?=$lang['click']?></a>
+<?=$lang['insert_rows'];?>
+<? else: ?>
+
+<div class='confirm'>
+	<b><?=$lang['showing_rows']?> <?=$startRow?> - <?=($startRow + sizeof($arr)-1)?>, <?=$lang['total']?>: <?=$rowCount?> 
+		<? printf($lang['query_time'], $queryTimer); ?>
+	</b>
+	<br/>
+	<span style='font-size:11px;'><?=htmlencode($queryDisp)?></span>
+</div>
+
+<? if($get->view): ?>
+<? sprintf($lang['readonly_tbl'], htmlencode($_GET['table']))?>
+<a href='http://en.wikipedia.org/wiki/View_(database)' target='_blank'>http://en.wikipedia.org/wiki/View_(database)</a>
+<br/><br/>
+<? endif; ?>
+
+<?=$listView; ?>
+
+<? endif; ?>

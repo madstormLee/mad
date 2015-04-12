@@ -3,42 +3,43 @@ class ProjectController extends MadController {
 	function indexAction() {
 	}
 	function viewAction() {
-		$model = new MadJson( $this->params->file );
-		$this->main->model = $model;
+		$this->model->fetch( $this->params->id );
 	}
 	function writeAction() {
-		$get = $this->params;
-		$projects = new MadJson( 'json/projects.json' );
-		if ( ! $project = $projects->{$get->project} ) {
-			$project = new MadData;
-		}
-		$this->main->model = $project;
+		$this->model->fetch( $this->params->id );
+	}
+	// todo: from XP
+	function saveProjectAction() {
+		$post = MadParams::create('post');
+		$fileName = "project/data/$post->title.json";
+		$json = new MadJson($fileName);
+		$post->item->filter();
+		$json->setData( $post );
+		return $json->save();
 	}
 	function saveAction() {
 		$post = $this->params;
+		$model = $this->model;
 
-		$project = new Project( $this->params );
-		$project->setData( $post )->save();
-		if ( $post->skeleton ) {
-			$skeleton = new Skeleton( $project->getDir() );
-			$skeleton->create();
-		}
-		$this->js->replace('./');
+		$model->setData( $post->getData() );
+		return $model->save();
+	}
+	function deleteAction() {
+		$dir = new MadDir( $this->params->id );
+		return $dir->deleteAll();
 	}
 	function openAction() {
-		$project = new Project( $this->params->file );
-		$project->root = dirName( $this->params->file );
-		$project->configs = new MadJson( $project->root . '/configs/default.json' );
-		$this->main->result = $this->projectLog->open( $project )->isOpen();
+		$session = MadSession::getInstance();
+		return $session->set('project', $this->params->id );
 	}
 	function closeAction() {
-		$this->projectLog->close();
+		$session = MadSession::getInstance();
+		unset( $session->project );
 	}
-	// this from madtools project
 	function downloadAction() {
 		$get = $this->params;
 		$targetDir = "project/download/";
-		$model = new ProjectDownloader;
+		$model = $this->model;
 		$model->setData( $get );
 
 		MadHeaders::download( $get->project . $this->ext );

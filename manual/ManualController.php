@@ -1,46 +1,36 @@
 <?
 class ManualController extends MadController {
 	function indexAction() {
-		$list = new MadManual( "manual.json" );
-		$this->main->list = $list;
 	}
 	function viewAction() {
-		$this->js->addNext("http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", 'jquery');
-
-		$model = new Manual( $this->get->id );
-		$this->main->model = $model;
+		$get = $this->params;
+		$model = $this->model;
+		$model->fetch( $get->id );
 
 		//todo if right used.
-		$list = new MadManual( "manual.json" );
-		$this->right->setView( 'views/Manual/viewRight.html' );
-		$this->main->list = new ManualList;
-		$this->right->list = $list;
+		$list = new Manual( "manual.json" );
 
-		$this->main->view = new MadView( "$get->id.html" );
+		$this->view->view = new MadView( "$params->id.html" );
 	}
 	function manualAction() {
-		$get = $this->get;
+		$get = $this->params;
 
-		$this->js->addNext("http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js", 'jquery');
-
-		$this->right->setView( 'views/FileManual/viewRight.html' );
+		$this->right->setView( 'FileManual/viewRight.html' );
 		$this->right->list = $model->getTree();
 
 		$model = new FileManual( $get->file );
 
-		$this->main->model = $model;
+		$this->view->model = $model;
 	}
 	function writeAction() {
+		$get = $this->params;
 		$this->js->add('~/venders/ckeditor/ckeditor.js');
-		$model = new Manual( $this->get->id );
-		$this->main->model = $model;
-		//todo this not right. use fileManual
-		$this->main->view = new MadView( "$get->id.html" );
+		$this->view->model = new Manual( $this->params->id );
 	}
 	function saveAction() {
-		$post = $this->post;
+		$post = $this->params;
 
-		$list = new Manual( "/$this->l10n/manual.json" );
+		$list = new Manual( "/manual.json" );
 
 		$view = new MadView( "/$this->l10n/{$post->id}.html" );
 		$view->saveContents( $post->contents );
@@ -50,5 +40,6 @@ class ManualController extends MadController {
 		$this->js->replace('./view?id=' . $post->id );
 	}
 	function deleteAction() {
+		return $this->model->delete( $this->params->file );
 	}
 }

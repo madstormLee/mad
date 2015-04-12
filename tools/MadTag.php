@@ -81,6 +81,40 @@ class MadTag {
 		}
 		return true;
 	}
+	function setData( $data ) {
+		if ( ! empty( $data ) ) {
+			$this->data = $data;
+		}
+		return $this;
+	}
+	function dl( $data = '' , $depth = 0 ) {
+		if ( empty( $data ) ) {
+			$data = $this->data;
+		}
+		++$depth;
+		$rv = "<dl class='depth$depth'>\n";
+		foreach( $data as $key => $value ){
+			$rv .= "<dt>$key</dt>\n";
+			if ( ! is_array( $value ) ) {
+				$rv .= "<dd>$value</dd>\n";
+			} else {
+				$rv .= "<dd>" . $this->dl( $value, $depth ) ."</dd>\n";
+			}
+		}
+		$rv .= "</dl>\n";
+		return $rv;
+	}
+	function ul() {
+		if ( empty( $this->data ) ) {
+			return '';
+		}
+		$rv = '<ul>';
+		foreach( $this->data as $name => $href ) {
+			$rv .= "<li><a href='$href'>$name</a></li>";
+		}
+		$rv .= '</ul>';
+		return $rv;
+	}
 	public function get() {
 		if ( empty( $this->tagName ) ) {
 			return '';

@@ -1,0 +1,70 @@
+<h1>
+	<a href='./'>
+		<span id='logo'><?=PROJECT?></span>
+		<span id='version'>v<?=VERSION?></span>
+	</a>
+</h1>
+
+<div id='headerlinks' class='breadscrumbs'>
+	<a href='javascript:void' onclick='openHelp("top");'><?=$lang['docu']?></a>
+	<a href='http://www.gnu.org/licenses/gpl.html' target='_blank'><?=$lang['license']?></a>
+	<a href='<?=PROJECT_URL?>' target='_blank'><?=$lang['proj_site']?></a>
+</div>
+
+<fieldset style='margin:15px;'>
+	<legend><b><?=$lang['db_ch']?></b></legend>
+	<? if(sizeof($databases)<10) { ?>
+	<? foreach($databases as $database): ?>
+	[
+	<?=$database['readable']?'r':' ';?>
+	<?=$database['writable'] && $database['writable_dir']?'w':' '?>
+	]
+	<? $url_path = str_replace(DIRECTORY_SEPARATOR,'/',$database['path']); ?>
+	<? if($database == $_SESSION['currentDB']): ?>
+	<a href='?switchdb=<?=urlencode($database['path'])?>' class='active_db'><?=htmlencode($database['name'])?></a>  (<a href='<?=htmlencode($url_path)?>' title='<?=$lang['backup']?>'>&darr;</a>)
+	<? else: ?>
+	<a href='?switchdb=<?=urlencode($database['path'])?>'><?=htmlencode($database['name'])?></a>  (<a href='<?=htmlencode($url_path)?>' title='<?=$lang['backup']?>'>&darr;</a>)
+	<? endif; ?>
+	<? endforeach; ?>
+	<? } else { ?>
+
+	<form action='./' method='post'>
+		<select name='database_switch'>
+			<? foreach($databases as $database) { ?>
+			<? $perms_string = htmlencode('[' . ($database['readable'] ? 'r':' ' ) . ($database['writable'] && $database['writable_dir'] ? 'w':' ' ) . '] '); ?>
+			<option value='<?=htmlencode($database['path'])?>' <?=($database == $_SESSION['currentDB'])?"selected='selected'":''; ?>><?=$perms_string . htmlencode($database['name'])?></option>
+			<? endforeach; ?>
+		</select>
+		<button class='btn'>go</button>
+	</form>
+	<? } ?>
+</fieldset>
+
+<fieldset style='margin:15px;'>
+	<legend>
+		<a href='./' <?=(!isset($_GET['table']))?"class='active_table'":''; ?> ><?=htmlencode($currentDB['name'])?></a>
+	</legend>
+	<?
+	$query = "SELECT type, name FROM sqlite_master WHERE type='table' OR type='view' ORDER BY name";
+	$result = $db->selectArray($query);
+	?>
+	<? $j=0; for($i=0; $i<sizeof($result); $i++) { ?>
+	<? if(substr($result[$i]['name'], 0, 7)!="sqlite_" && $result[$i]['name']!="") { ?>
+	<span class='sidebar_table'>[<?=$lang[$result[$i]['type']=='table'?'tbl':'view']?>]</span> 
+	<a href='?action=row_view&amp;table=<?=urlencode($result[$i]['name'])?><?=$result[$i]['type']=='view'?'&amp;view=1':'')?>'
+		<? if(isset($_GET['table']) && $_GET['table']==$result[$i]['name']): ?>
+		class='active_table'
+		<? endif; ?>
+		><?=htmlencode($result[$i]['name'])?></a><br/>
+	<? $j++; } ?> 
+	<? } ?>
+	<?=($j==0)? $lang['no_tbl']:''; ?>
+</fieldset>
+
+<? if($config->info->directory!==false && is_writable($config->info->directory)) { ?>
+<section id='createDatabase' data-herf='./createDatabase'></section>
+<? } ?>
+
+<div style='text-align:center;'>
+	<a href='./logout' type='submit'><?=$lang['logout']?>class='btn'/>
+</div>

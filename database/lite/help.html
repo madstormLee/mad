@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<!-- Copyright <?=date("Y").' '.PROJECT.' ('.PROJECT_URL.')'; ?> -->
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+<link rel="shortcut icon" href="?resource=favicon" />
+<title><?=PROJECT ?></title>
+
+<link href='/ts/dev/database/liteadmin/style.css' rel='stylesheet' type='text/css' />
+</head>
+<body style="direction:<?=$lang['direction']; ?>;">
+<div id='help_container'>
+	<div class='help_list'>
+		<span style='font-size:18px;'><?=PROJECT?> v<?=VERSION?> <?=$lang['help_doc']?></span>
+		<br/>
+		<br/>
+		<? foreach((array)$help as $key => $val) { ?>
+		<a href='#<?=$key?>'><?=$key?></a>
+		<br/>
+		<? } ?>
+	</div>
+	<br/>
+	<br/>
+	<? foreach((array)$help as $key => $val): ?>
+	<div class='help_outer'>
+		<a class='headd' name='".$key."'><?=$key?></a>
+		<div class='help_inner'>
+			<?=$val; ?>
+		</div>
+		<a class='help_top' href='#top'><?=$lang['back_top']?></a>
+	</div>
+	<? endforeach; ?>
+</div>
+</body>
+</html>

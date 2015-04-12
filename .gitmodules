@@ -1,0 +1,12 @@
+[submodule "vendors/foundation"]
+	path = vendors/foundation
+	url = https://github.com/zurb/foundation.git
+[submodule "vendors/ckeditor"]
+	path = vendors/ckeditor
+	url = https://github.com/ckeditor/ckeditor-releases.git
+[submodule "vendors/codeMirror"]
+	path = vendors/codeMirror
+	url = https://github.com/codemirror/CodeMirror.git
+[submodule "vendors/datetimepicker"]
+	path = vendors/datetimepicker
+	url = https://github.com/xdan/datetimepicker.git

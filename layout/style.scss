@@ -1,9 +1,58 @@
-@import "../scss/foundation.scss";
+@import "../../ts/dev/scss/foundation.scss";
+
+/**********************************************************
+	Html Tags :
+		yes. this part use html5resetter. html is defaulted.
+		but some point has different taste.
+***********************************************************/
+
+table {
+	width: 100%;
+}
+h1 , h2 , h3 {
+	margin: 0;
+	position: relative;
+}
+h1 {
+	font: 500 25px sans-serif;
+	color: #6666ff;
+	text-align: right;
+}
+h1 strong {
+	color: red;
+}
+h2 {
+	font: 500 20px sans-serif;
+	color: white;
+	text-indent: 10px;
+	background: #6666ff;
+	margin-top: 20px;
+}
+
+ol, ul {
+	list-style-position: inside;
+}
+
+
+
+
+
+
+/* @override */
+.row {
+	max-width: 100%;
+}
+
+/* layout */
+main {
+	margin-bottom: 1rem;
+}
 
 footer {
 	background: #000;
 	text-align: right;
 	color: #fff;
+	z-index: 1000;
 }
 
 section.view {
@@ -161,10 +210,147 @@ table.images {
 
 /************************** nav.component ********************/
 nav.component {
-	float: right;
+	@include grid-row();
+	text-align: right;
 	a {
 		@include button();
 		@include button-size($padding:$button-tny);
 		@include button-style($bg:false, $radius:$button-round);
 	}
+	a.current {
+		background: #cfccfc;
+	}
+}
+pre.printR {
+	font-size: 0.75rem;
+}
+/************************** form.write ********************/
+form.write {
+	@include grid-row();
+	.simple {
+		label {
+			@include prefix-postfix-base();
+			@include prefix();
+			@include grid-column(
+			$columns: 4,
+			$float: left
+			);
+		}
+		input {
+			@include grid-column(
+			$columns: 8,
+			$float: right
+			);
+			margin-bottom: 0;
+		}
+	}
+}
+
+
+
+/************************** #right todo: from admin/style.css ********************/
+#right {
+	background: #ffffff;
+	z-index: 1;
+	dl > dt {
+		margin: 0;
+		padding: 2px 10px;
+		font-size: 12px;
+		background: #eeeeee;
+		border-top: 2px solid #000000;
+		border-bottom: 2px solid #000000;
+		cursor: pointer;
+	}
+	dl:first-child > dt {
+		border-top: 0;
+	}
+	dl > dd.rightMenu {
+		h1 {
+			display: none;
+		}
+
+		ul {
+			list-style: none;
+			li {
+				a {
+					display: block;
+					font-size: 12px;
+					color: #000000;
+					padding: 2px 5px;
+					border-bottom: 1px solid #000000;
+				}
+				a:hover {
+					text-decoration: none;
+					background: #ccccff;
+				}
+			}
+		}
+
+		table.list {
+			th , td {
+				font-size: 12px;
+				border-bottom: 1px solid #000000;
+				vertical-align: middle;
+			}
+			th {
+				padding: 3px;
+				border-top: 1px solid #000000;
+				background: #cccccc;
+			}
+			td {
+				a {
+					color: #000000;
+					font-size: 12px;
+				}
+				img {
+					height: 50px;
+				}
+			}
+		}
+	}
+
+
+	form.simple dl.targetItem dt {
+		background: transparent;
+		padding: 5px;
+	}
+	form.simple dl.targetItem dd {
+		border: 0;
+		border-top: 1px solid #cccccc;
+	}
+}
+
+/***************************** section.summary *****************************/
+section.summary {
+	border-bottom: 1px solid #000000;
+	padding-bottom: 10px;
+	float: left;
+	width: 100%;
+	dl {
+		float: left;
+		border: 1px solid #000000;
+		border-left: 0;
+		display: inline-block;
+		font-size: 12px;
+	}
+	dl.header {
+		border-left: 1px solid #000000;
+	}
+
+	dl dt {
+		background: #cccccc;
+	}
+	dl dt ,
+	dl dd {
+		padding: 3px 20px;
+		border-bottom: 1px solid #000000;
+	}
+	dl dd {
+		text-align: right;
+	}
+}
+p.noContent {
+	padding: 10px;
+	border: 1px solid #000;
+	text-align: center;
 }

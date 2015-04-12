@@ -1,0 +1,65 @@
+
+<form action='./rowEditConfirm?table=<?=urlencode($_GET['table'])?>&amp;pk=<?=urlencode($pkVal)?>' method='post'>
+
+	<input type='hidden' name='fieldArray' value='<?=htmlencode($fieldStr)?>'/>
+
+	<? for($j=0; $j<sizeof($pks); $j++) { ?>
+	<? if(!is_numeric($pks[$j])) continue; ?>
+
+	<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+		<tr>
+			<td class='tdheader'><?=$lang['fld']?></td>
+			<td class='tdheader'><?=$lang['type']?></td>
+			<td class='tdheader'><?=$lang['func']?></td>
+			<td class='tdheader'>Null</td>
+			<td class='tdheader'><?=$lang['val']?></td>
+		</tr>
+
+		<? for($i=0; $i<sizeof($result); $i++) { ?>
+		<?
+		$field = $result[$i][1];
+		$type = $result[$i]['type'];
+		$typeAffinity = get_type_affinity($type);
+		$value = $result[$i]['result1']
+		?>
+		<tr>
+			<td>
+				<? echo htmlencode($field); ?>
+			</td>
+			<td>
+				<? echo htmlencode($type); ?>
+			</td>
+			<td class='title'>
+				<select name='function_<?=htmlencode($pks[$j])?>_<?=htmlencode($field)?>' onchange='notNull("<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>_null");'>
+					<option value=''></option>
+					<? foreach( $sqlite->functions() as $function ): ?>
+					<option value='<?=htmlencode($function)?>'><?=htmlencode($function)?></option>
+					<? endforeach; ?>
+				</select>
+			</td>
+			<td class='title'>
+				<? if($result[$i][3]==0) { ?>
+				<input type='checkbox' name='<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>_null' id='<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>_null' <?=($value===NULL)?"checked='checked'":'';?> />
+				<? } ?>
+			</td>
+			<td class='<?=$typeAffinity?>'>
+				<? if($typeAffinity=="INTEGER" || $typeAffinity=="REAL" || $typeAffinity=="NUMERIC"): ?>
+				<input type='text' name='<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>' value='<?=htmlencode($value)?>' onblur='changeIgnore(this, "<?=$j?>", "<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>_null")' />
+				<?  else: ?>
+				<textarea name='<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>' rows='1' cols='60' class='<?=htmlencode($field)?>_textarea' onblur='changeIgnore(this, "<?=$j?>", "<?=htmlencode($pks[$j])?>:<?=htmlencode($field)?>_null")'><?=htmlencode($value)?></textarea>
+				<? endif; ?>
+			</td>
+		</tr>
+		<? } ?>
+		<tr>
+			<td class='tdheader' style='text-align:right;' colspan='5'>
+				<? // Note: the 'Save changes' button must be first in the code so it is the one used when submitting the form with the Enter key (issue #215) ?>
+				<input type='submit' value='<?=$lang['save_ch']?>' class='btn'/> 
+				<input type='submit' name='new_row' value='<?=$lang['new_insert']?>' class='btn'/> 
+				<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=row_view'><?=$lang['cancel']?></a>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<? } ?>
+</form>

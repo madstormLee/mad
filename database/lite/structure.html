@@ -1,0 +1,154 @@
+<? if(isset($dbexists)) { ?>
+<div class='confirm' style='margin:10px 20px;'>
+	<?=$lang['err']?>: <? sprintf($lang['db_exists'], htmlencode($dbname));?>
+</div>
+<br/>
+<? } ?>
+
+<? if($db->isWritable() && !$db->isDirWritable()) { ?>
+<div class='confirm' style='margin:10px 20px;'>
+	<?=$lang['attention']?>: <?=$lang['directory_not_writable'];?>
+</div>
+<br/>
+<? } ?>
+
+<? if(isset($extension_not_allowed)) { ?>
+<div class='confirm' style='margin:10px 20px;'>
+	<?=$lang['extension_not_allowed'].': ';?>
+	<?=implode(', ', array_map('htmlencode', $allowed_extensions));?>
+	<br />
+	<?=$lang['add_allowed_extension'];?>
+</div>
+<br/>
+<? } ?>
+
+<? if ($auth->isPasswordDefault()) { ?>
+<div class='confirm' style='margin:20px 0px;'>
+	<?=sprintf($lang['warn_passwd'],(is_readable('phpliteadmin.config.php')?'phpliteadmin.config.php':PAGE))?>
+	<br />
+	<?=$lang['warn0']?>
+</div>
+<? } ?>
+
+
+
+<b><?=$lang['db_name']?></b>: <?=htmlencode($db->getName())?><br/>
+<b><?=$lang['db_path']?></b>: <?=htmlencode($db->getPath())?><br/>
+<b><?=$lang['db_size']?></b>: <?=$db->getSize()?> KB<br/>
+<b><?=$lang['db_mod']?></b>: <?=$db->getDate()?><br/>
+<b><?=$lang['sqlite_v']?></b>: <?=$realVersion?><br/>
+<b><?=$lang['sqlite_ext']?></b> <?=helpLink($lang['help1'])?>: <?=$db->getType()?><br/>"
+<b><?=$lang['php_v']?></b>: <?=phpversion()?><br/><br/>
+
+
+<? if(sizeof($result)==0){ ?>
+<?=$lang['no_tbl']?>
+<br/><br/>
+<? } else { ?>
+
+
+<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+	<tr>
+		<td class='tdheader'>
+			<a href='?sort=type
+				if(isset($_SESSION['sortTables']))
+				$orderTag = ($_SESSION['sortTables']=="type" && $_SESSION['orderTables']=="ASC") ? "DESC" : "ASC";
+				else
+				$orderTag = "ASC";
+				&amp;order=<?=$orderTag?>'><?=$lang['type']?></a> <?=helpLink($lang['help3'])?>
+			<? if(isset($_SESSION['sortTables']) && $_SESSION['sortTables']=="type"): ?>
+			<b><?=($_SESSION['orderTables']=="ASC")?"&uarr;":"&darr;";?></b>
+			<? endif; ?>
+		</td>
+
+		<td class='tdheader'>
+			<a href='?sort=name&amp;order=<?=$orderTag?>'><?=$lang['name']?></a>
+			<b><?=$sortArrow?></b>
+		</td>
+
+		<td class='tdheader' colspan='10'><?=$lang['act']?></td>
+		<td class='tdheader'><?=$lang['rec']?></td>
+	</tr>
+
+
+	<? for($i=0; $i<sizeof($result); $i++) { ?>
+
+	<? if($result[$i]['type']=="table") { ?>
+	<tr>
+		<td class='title'> <?=$lang['tbl'];?> </td>
+		<td class='title'> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=row_view'><?=htmlencode($result[$i]['name'])?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=row_view'><?=$lang['browse']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=column_view'><?=$lang['struct']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_sql'><?=$lang['sql']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_search'><?=$lang['srch']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=row_create'><?=$lang['insert']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_export'><?=$lang['export']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_import'><?=$lang['import']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_rename'><?=$lang['rename']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_empty' class='empty'><?=$lang['empty']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_drop' class='drop'><?=$lang['drop']?></a> </td>
+		<td> <?=$records;?> </td>
+	</tr>
+	<? } else { ?>
+	<tr>
+		<td class='title'> View </td>
+		<td class='title'> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=row_view&amp;view=1'><?=htmlencode($result[$i]['name'])?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=row_view&amp;view=1'><?=$lang['browse']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=column_view&amp;view=1'><?=$lang['struct']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_sql&amp;view=1'><?=$lang['sql']?></a> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_search&amp;view=1'><?=$lang['srch']?></a> </td>
+		<td> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=table_export&amp;view=1'><?=$lang['export']?></a> </td>
+		<td> </td>
+		<td> </td>
+		<td> </td>
+		<td> <a href='?table=<?=urlencode($result[$i]['name'])?>&amp;action=view_drop&amp;view=1' class='drop'><?=$lang['drop']?></a> </td>
+		<td> <?=$records;?> </td>
+	</tr>
+	<? } ?>
+
+	<? } ?>
+	<tr>
+		<td class='tdheader' colspan='12'><?=sizeof($result)?> total</td>
+		<td class='tdheader' colspan='1' style='text-align:right;'>
+			<?=$totalRecords?>
+			<? if ( $skippedTables): ?>
+			<a href='?forceCount=1'>+ ?</a>
+			<? endif; ?>
+		</td>
+	</tr>
+</table>
+
+
+<br/>
+
+
+<? if($skippedTables): ?>
+<div class='confirm' style='margin-bottom:20px;'>
+	<?=$lang["counting_skipped"]?>
+	<a href='?forceCount=1'>force counting</a>
+</div>
+<? endif; ?>
+<? } ?>
+
+<fieldset>
+	<legend><b><?=$lang['create_tbl_db']?> '<?=htmlencode($db->getName())?>'</b></legend>
+	<form action='?action=table_create' method='post'>
+		<?=$lang['name']?>: <input type='text' name='tablename' style='width:200px;'/>
+		<?=$lang['fld_num']?>: <input type='text' name='tablefields' style='width:90px;'/>
+		<input type='submit' name='createtable' value='<?=$lang['go']?>' class='btn'/>
+	</form>
+</fieldset>
+
+
+<br/>
+
+
+<fieldset>
+	<legend><b><?=$lang['create_view']?> '<?=htmlencode($db->getName())?>'</b></legend>
+	<form action='?action=view_create&amp;confirm=1' method='post'>
+		<?=$lang['name']?>: <input type='text' name='viewname' style='width:200px;'/> ";
+		<?=$lang['sel_state']?> <?=helpLink($lang['help4'])?>: <input type='text' name='select' style='width:400px;'/> "; 
+		<input type='submit' name='createtable' value='<?=$lang['go']?>' class='btn'/>
+	</form>
+</fieldset>

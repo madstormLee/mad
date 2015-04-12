@@ -5,23 +5,26 @@
 </nav>
 
 <table class='index'>
-	<thead>
-		<tr>
-			<th>Dir</th>
-			<th>Mtime</th>
-			<th>Buttons</th>
-		</tr>
-	</thead>
-	<tbody>
-		<? foreach( $model->getIndex() as $row ): ?>
-		<tr>
-			<td><a href='<?=$row->getFile()?>'><?=$row->name?></a></td>
-			<td><?=$row->date?></a></td>
-			<td class='buttons'>
-				<a href='./view?file=<?=$row->getFile()?>'>view</a>
-				<a href='./open?file=<?=$row->getFile()?>'>open</a>
-			</td>
-		</tr>
-		<? endforeach; ?>
-	</tbody>
+	<tr>
+		<th>Name</th>
+		<th>Date</th>
+		<th>Buttons</th>
+	</tr>
+	<? foreach( $model->getIndex() as $row ) : ?>
+	<tr>
+		<td><a href='~/<?=$row->id?>'><?=$row->name?></a></td>
+		<td><?=$row->date?></a></td>
+		<td class='buttons'>
+			<a href='./open?id=<?=$row->id?>'>open</a>
+			<a href='./skeleton?id=<?=$row->id?>'>Skeleton</a>
+			<a href='./view?id=<?=$row->id?>'>view</a>
+			<a href='./write?id=<?=$row->id?>'>변경</a>
+			<a href='./delete?id=<?=$row->id?>'>삭제</a>
+		</td>
+	</tr>
+	<? endforeach; ?>
 </table>
+
+<? if ( $model->getIndex()->isEmpty() ) : ?>
+<p class='notice'>리스트가 없습니다.</p>
+<? endif; ?>

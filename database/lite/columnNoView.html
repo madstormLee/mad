@@ -1,0 +1,98 @@
+<? if(sizeof($index)>0) { ?>
+			echo "<br/><hr/><br/>";
+
+				echo "<h2>".$lang['indexes'].":</h2>";
+				echo "<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>";
+				echo "<tr>";
+				echo "<td colspan='1'>";
+				echo "</td>";
+				echo "<td class='tdheader'>".$lang['name']."</td>";
+				echo "<td class='tdheader'>".$lang['unique']."</td>";
+				echo "<td class='tdheader'>".$lang['seq_no']."</td>";
+				echo "<td class='tdheader'>".$lang['col']." #</td>";
+				echo "<td class='tdheader'>".$lang['fld']."</td>";
+				echo "</tr>";
+			<? for($i=0; $i<sizeof($index); $i++) { ?>
+			<?
+					if($index[$i]['unique']==0)
+						$unique = $lang['no'];
+					else
+						$unique = $lang['yes'];
+
+					$query = "PRAGMA index_info(".$db->quote_id($index[$i]['name']).")";
+					$info = $db->selectArray($query);
+					$span = sizeof($info);
+					?>
+
+					echo "<tr>";
+					<td class='td".($i%2 ? "1" : "2")."' rowspan='".$span."'>
+					echo "<a href='?table=".urlencode($_GET['table'])."&amp;action=index_delete&amp;pk=".urlencode($index[$i]['name'])."' title='".$lang['del']."' class='delete'><span>".$lang['del']."</span></a>";
+					echo "</td>";
+					<td class='td".($i%2 ? "1" : "2")."' style='text-align:left;' rowspan='".$span."'>
+					echo $index[$i]['name'];
+					echo "</td>";
+					<td class='td".($i%2 ? "1" : "2")."' style='text-align:left;' rowspan='".$span."'>
+					echo $unique;
+					echo "</td>";
+					for($j=0; $j<$span; $j++)
+					{
+						if($j!=0)
+							echo "<tr>";
+						<td class='title'>
+						echo htmlencode($info[$j]['seqno']);
+						echo "</td>";
+						<td class='title'>
+						echo htmlencode($info[$j]['cid']);
+						echo "</td>";
+						<td class='title'>
+						echo htmlencode($info[$j]['name']);
+						echo "</td>";
+						echo "</tr>";
+					}
+			<? } ?>
+				echo "</table><br/><br/>";
+
+<? } ?>
+
+
+
+
+<? if(sizeof($triggers)>0) { ?>
+				echo "<h2>".$lang['triggers'].":</h2>";
+				echo "<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>";
+				echo "<tr>";
+				echo "<td colspan='1'>";
+				echo "</td>";
+				echo "<td class='tdheader'>".$lang['name']."</td>";
+				echo "<td class='tdheader'>".$lang['sql']."</td>";
+				echo "</tr>";
+				for($i=0; $i<sizeof($triggers); $i++)
+				{
+					$tdWithClass = "<td class='td".($i%2 ? "1" : "2")."'>";
+					echo "<tr>";
+					echo $tdWithClass;
+					echo "<a href='?table=".urlencode($_GET['table'])."&amp;action=trigger_delete&amp;pk=".urlencode($triggers[$i]['name'])."' title='".$lang['del']."' class='delete'><span>".$lang['del']."</span></a>";
+					echo "</td>";
+					echo $tdWithClass;
+					echo htmlencode($triggers[$i]['name']);
+					echo "</td>";
+					echo $tdWithClass;
+					echo htmlencode($triggers[$i]['sql']);
+					echo "</td>";
+				}
+				echo "</table><br/><br/>";
+<? } ?>
+
+			echo "<form action='?table=".urlencode($_GET['table'])."&amp;action=index_create' method='post'>";
+			echo "<input type='hidden' name='tablename' value='".htmlencode($_GET['table'])."'/>";
+			echo "<br/><div class='tdheader'>";
+			echo $lang['create_index2']." <input type='text' name='numcolumns' style='width:30px;' value='1'/> ".$lang['cols']." <input type='submit' value='".$lang['go']."' name='addindex' class='btn'/>";
+			echo "</div>";
+			echo "</form>";
+
+			echo "<form action='?table=".urlencode($_GET['table'])."&amp;action=trigger_create' method='post'>";
+			echo "<input type='hidden' name='tablename' value='".htmlencode($_GET['table'])."'/>";
+			echo "<br/><div class='tdheader'>";
+			echo $lang['create_trigger2']." <input type='submit' value='".$lang['go']."' name='addindex' class='btn'/>";
+			echo "</div>";
+			echo "</form>";

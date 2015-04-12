@@ -9,7 +9,7 @@ class MadDbConn {
 
 	public static function setDefault( PDO $connect = null ) {
 		if ( is_null( $connect ) ) {
-			$info = MadGlobals::getInstance()->databases->default;
+			$info = MadConfig::getInstance()->databases->default;
 			self::createPdo( $info );
 		}
 		self::$default = $connect;
@@ -24,9 +24,6 @@ class MadDbConn {
 			self::addConnections( $info->name, $pdo );
 		}
 		return $pdo;
-	}
-	private static function addConnections( $id, PDO $pdo ) {
-		self::$connections[$id] = $pdo;
 	}
 	function getInsertId( $key = '' ) {
 		return $this->getConnect()->lastInsertId( $key );

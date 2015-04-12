@@ -2,10 +2,7 @@
 
 <h1>Sitemap</h1>
 
-<nav class='component'>
-	<a class='write' href='./write'>Create Tree</a>
-</nav>
-
+<section class='left medium-9 columns'>
 <dl id='SitemapIndex'>
 	<dt class='hasDic root current' href='#root'>/root</dt>
 	<dd class='tree dic'>
@@ -33,12 +30,26 @@
 		</dl>
 	</dd>
 </dl>
+</section>
 
 
+<section id='right' class='right medium-3 columns'>
 <section id='controllers' class='tools' data-href='~/controller/index'>
 </section>
 
 
+<section id='left' class='medium-3 columns'>
+<? $treeIterator=function( $data, $path='' ) use ( &$treeIterator ) { ?>
+<ul>
+	<? foreach( $data as $key => $row ): ?>
+	<li>
+	<a <?=( $row->path == $path )?"class='on'":'';?> href="?path=<?=$row->path?>"><?=$row->label?></a>
+		<? if ( isset( $row->subs ) ) $treeIterator( $row->subs, $path ); ?>
+	</li>
+	<? endforeach; ?>
+</ul>
+<? }; $treeIterator( $config->sitemap, $params->path ); ?>
+</section>
 <section class='treeContainer'>
 	<section class='tree subs'>
 	<? $treeIterator = function( $tree ) use ( &$treeIterator ) { ?>
@@ -93,3 +104,5 @@
 	<? }; $treeIterator( $config->sitemap );?>
 </section>
 
+<section data-href='./write'></section>
+</section>

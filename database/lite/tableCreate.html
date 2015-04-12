@@ -1,0 +1,60 @@
+<h2><?=$lang['create_tbl']?>: '<?=htmlencode($_POST['tablename'])?>'</h2>
+
+<form action='./tableCreateConfirm' method='post'>
+	<input type='hidden' name='tablename' value='<?=htmlencode($name)?>'/>
+	<input type='hidden' name='rows' value='<?=$num?>'/>
+
+	<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+		<tr>
+			<? for($k=0; $k<count($headings); $k++): ?>
+			<td class='tdheader'><?=$headings[$k]?></td>
+			<? endif; ?>
+		</tr>
+
+		<? for($i=0; $i<$num; $i++) { ?>
+		<tr>
+			<td>
+				<input type='text' name='<?=$i?>_field' style='width:200px;'/>
+			</td>
+			<td>
+				<select name='<?=$i?>_type' id='i<?=$i?>_type' onchange='toggleAutoincrement(<?=$i?>);'>
+					<? foreach ($sqlite->datatypes() as $t) : ?>
+					<option value='<?=htmlencode($t)?>'><?=htmlencode($t)?></option>
+					<? endforeach; ?>
+				</select>
+			</td>
+			<td>
+				<label><input type='checkbox' name='<?=$i?>_primarykey' id='i<?=$i?>_primarykey' onclick='toggleNull(<?=$i?>); toggleAutoincrement(<?=$i?>);'/> <?=$lang['yes']?></label>
+			</td>
+
+			<? if($db->getType() != "SQLiteDatabase"): ?>
+			<td>
+				<label><input type='checkbox' name='<?=$i?>_autoincrement' id='i<?=$i?>_autoincrement'/> <?=$lang['yes']?></label>
+			</td>
+			<? endif; ?>
+
+			<td>
+				<label><input type='checkbox' name='<?=$i?>_notnull' id='i<?=$i?>_notnull'/> <?=$lang['yes']?></label>
+			</td>
+			<td>
+				<select name='<?=$i?>_defaultoption' id='i<?=$i?>_defaultoption' onchange=\"if(this.value!='defined' && this.value!='expr') document.getElementById('i<?=$i?>_defaultvalue').value='';\">
+					<option value='none'><?=$lang['none']?></option><option value='defined'><?=$lang['as_defined']?>:</option><option>NULL</option><option>CURRENT_TIME</option><option>CURRENT_DATE</option><option>CURRENT_TIMESTAMP</option><option value='expr'><?=$lang['expression']?>:</option>
+				</select>
+				<input type='text' name='<?=$i?>_defaultvalue' id='i<?=$i?>_defaultvalue' style='width:100px;' onchange=\"if(document.getElementById('i<?=$i?>_defaultoption').value!='expr') document.getElementById('i<?=$i?>_defaultoption').value='defined';\"/>
+			</td>
+		</tr>
+		<? } ?>
+
+		<tr>
+			<td class='tdheader' style='text-align:right;' colspan='6'>
+				<input type='submit' value='<?=$lang['create']?>' class='btn'/> 
+				<a href='./'><?=$lang['cancel']?></a>
+			</td>
+		</tr>
+
+	</table>
+</form>
+
+<?  if($db->getType() != "SQLiteDatabase") : ?>
+<script type='text/javascript'>window.onload=initAutoincrement;</script>
+<? endif; ?>

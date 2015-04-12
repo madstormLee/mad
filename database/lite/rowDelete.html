@@ -1,0 +1,8 @@
+<form action='./row_deleteConfirm?table=<?=urlencode($_GET['table'])?>&amp;pk=<?=urlencode($pkVal)?>' method='post'>
+	<div class='confirm'>
+		<? printf($lang['ques_del_rows'], htmlencode($pkVal), htmlencode($_GET['table'])); ?>
+		<br/><br/>
+		<input type='submit' value='<?=$lang['confirm']?>' class='btn'/> 
+		<a href='?table=<?=urlencode($_GET['table'])?>&amp;action=row_view'><?=$lang['cancel']?></a>
+	</div>
+</form>

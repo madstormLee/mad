@@ -1,0 +1,63 @@
+<div class='confirm'>
+	<? if($result!==false) { ?>
+	<? $affected = sizeof($result); ?>
+	<b>
+		<?=$lang['showing']?> <?=$affected?> <?=$lang['rows']?>.
+		<? printf($lang['query_time'], $queryTimer); ?>
+	</b>
+	<? } else { ?>
+	<b><?=$lang['err']?>: <?=$db->getError()?>.</b>
+	<br/>
+	<?=$lang['bug_report']?> <?=PROJECT_BUGTRACKER_LINK?>
+	<? } ?>
+	<br/>
+	<span style='font-size:11px;'><?=htmlencode($query)?></span>
+</div>
+
+<br/>
+
+<? if(sizeof($result)>0) { ?>
+<? $headers = array_keys($result[0]); ?>
+
+<table border='0' cellpadding='2' cellspacing='1' class='viewTable'>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<? for($j=0; $j<sizeof($headers); $j++) { ?>
+		<td class='tdheader'>
+			<?=htmlencode($headers[$j]); ?>
+		</td>
+		<? } ?>
+	</tr>
+
+	<? $pkid = getRowId($table, $whereTo); ?>
+	<? for($j=0; $j<sizeof($result); $j++) { ?>
+	<?
+	$pk = $pkid[$j][0];
+	$cVal = 0;
+	?>
+	<tr>
+		<td>
+			<a href='?table=<?=urlencode($table)?>&amp;action=row_editordelete&amp;pk=<?=urlencode($pk)?>&amp;type=edit' title='<?=$lang['edit']?>' class='edit'><span><?=$lang['edit']?></span></a></td>
+		<td>
+			<a href='?table=<?=urlencode($table)?>&amp;action=row_editordelete&amp;pk=<?=urlencode($pk)?>&amp;type=delete' title='<?=$lang['del']?>' class='delete'><span><?=$lang['del']?></span></a></td>
+		<? for($z=0; $z<sizeof($headers); $z++) { ?>
+		<td>
+			<? $fldResult = $result[$j][$headers[$z]]; ?>
+			<? if(!empty($foundVal) and in_array($headers[$z], $fieldArr)){ ?>
+			<? 
+			$foundVal = str_replace('%', '', $foundVal);
+			$fldResult = str_ireplace($foundVal[$cVal], '[fnd]<?=$foundVal[$cVal]?>[/fnd]', $fldResult);
+			$cVal++;
+			?>
+			<? } ?>
+			<?=str_replace(array('[fnd]', '[/fnd]'), array('<u class="found">', '</u>'), htmlencode($fldResult)); ?>
+		</td>
+		<? } ?>
+	</tr>
+	<? } ?>
+</table>
+<br/><br/>
+<? } ?>
+
+<a href='./tableSearch&amp;?table=<?=urlencode($_GET['table'])?>&amp;view=<?=$get->view?>'><?=$lang['srch_again']?></a>

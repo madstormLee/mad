@@ -1,15 +1,14 @@
 <?
-class MadSession extends MadSingletonData {
+class MadSession extends MadAbstractData {
 	private static $instance;
 	protected $data;
 
 	protected function __construct() {
+		session_start();
 		$this->data = &$_SESSION;
 	}
 	public static function getInstance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self;
-		}
+		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
 	public static function start() {
@@ -23,7 +22,6 @@ class MadSession extends MadSingletonData {
 			session_id( trim( $_GET["PHPSESSID"] ) );
 		}
 		*/
-		session_start();
 		return 0;
 	}
 	public static function destroy() {

@@ -9,8 +9,8 @@ class MadMysqlDb extends MadDb {
 		); 
 		parent::__construct( $dsn, $conn->username, $conn->password, $options );
 	}
-	function isTable($table_name){
-		$query = "show tables like '%$table_name%'";
+	function isTable($table){
+		$query = "show tables like '$table'";
 		return $this->query( $query )->rows();
 	}
 	function explain( $table ) {
@@ -26,12 +26,12 @@ class MadMysqlDb extends MadDb {
 			return $value;
 		}
 		$value = mysql_real_escape_string( $value );
-		if ( false === strpos($value , '::') ) {
+		if ( false === strpos($value , '.') ) {
 			return "'$value'";
 		}
-		$temp = explode( '::', $value );
+		$temp = explode( '.', $value );
 		$temp[0] = "'$temp[0]'";
-		return implode( '::', $temp );
+		return implode( '.', $temp );
 	}
 	function escapeField( $value ) {
 		return  "`$value`";

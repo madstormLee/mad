@@ -1,49 +1,103 @@
 <?
 class UserController extends MadController {
+	function init() {
+		parent::init();
+		if ( ! strpos($this->router->backUrl, 'sessionUser' ) ) {
+			$this->session->after = $this->router->backUrl;
+		}
+	}
 	function indexAction() {
+		$get = $this->params;
+		$model = $this->model;
+		$sessionUser = $model::getSession();
+
+		$query = new MadQuery('User');
+		$query->where( "( level > $sessionUser->level or id = $sessionUser->id )" );
+
+		if ( $get->level ) {
+			$query->where( "level=$get->level" );
+		} else {
+			$query->where( 'level <= 100' );
+		}
+
+		$query->order("utime desc");
+
+		$this->view->index = $query;
+	}
+	function historyAction() {
 	}
 	function viewAction() {
 	}
 	function writeAction() {
 	}
+	function signupAction() {
+	}
+	function saveSignupAction() {
+		$post = $this->params;
+		$model = $this->model;
+
+		if ( $model->idExists( $post->userid ) ) {
+			throw new Exception('이미 사용중인 아이디입니다.');
+		}
+		$post->level = 100;
+		$post->pw = md5( $post->pw );
+
+		$model->setData( $post )->save();
+		$this->js->alert('가입 승인이 요청되었습니다.')->replace('./login');
+	}
+	function signoffAction() {
+	}
 	function saveAction() {
+		$post = $this->params;
+		$model = $this->model;
+
+		$model->setData( $post );
+		$model->pw = md5( $model->pw );
+
 		return $model->setData( $this->params )->save();
 	}
 	function deleteAction() {
-		return $model->delete();
+		return $this->model->delete( $this->get->id );
 	}
+
 	function loginAction() {
-		$this->layout->setView('views/layouts/mainOnly.html');
+		$this->layout->setFile('views/layouts/viewOnly.html');
+		if ($this->session->user ) {
+			$this->js->replace( '~/' );
+		}
 	}
 	function logoutAction() {
-		return $this->userLog->logout();
+		unset( MadSession::getInstance()->user );
+		$this->js->replace( $this->session->after );
+		return 'session user logout';
 	}
 	function addRoleAction() {
 		$post = $this->post;
 		$log = $this->log->login( $post );
 		$this->js->alert( "you logged in as $log->label" )->replace('~/');
 	}
-	function setAction() {
-		$user = new User( $this->params->id );
+	function registSessionAction() {
+		$post = $this->params;
+		$user = new MadUser;
+		$user->fetchLogin( $post->userId, $post->userPw );
 
 		if ( ! $user->id ) {
-			return 'No user' ;
+			throw new Exception('No user');
 		}
 		if( $user->password != sha1( $this->params->password ) ) {
-			return 'No matching password' ;
+			throw new Exception('No matching password');
 		}
 
-		$_SESSION['User'] = $user;
-		return 'logged in ' . $user->id;
+		$this->session->user = $user;
+		$this->js->replace( $this->session->after );
+		// 'session user registed';
 	}
-	function isIdAction() { 
+	function isIdAction() {
 		$post = $this->params;
 		if ( ! $post->id ) {
-			return 'illigal appoach';
+			throw new Exception( 'illigal appoach' );
 		}
-		$query = "select count(*) as cnt from MadLog_user where id like '$post->id' limit 1";
-		$q = new Q($query);
-		return $q->getFirst();
+		return ! ! $this->query->count("userid like '$post->id'");
 	}
 	function isEmailAction() {
 		$post = $this->params;
@@ -82,11 +136,11 @@ class UserController extends MadController {
 
 
 		if ( $project = $this->session->currentProject ) {
-			$list = new MadJson( "projects/$project/persona.json" );
+			$index = new MadJson( "projects/$project/persona.json" );
 		} else {
-			$list = new MadData;
+			$index = new MadData;
 		}
-		$this->main->list = $list;
+		$this->view->index = $index;
 	}
 	function personaRegistSessionAction() {
 		$this->persona->isProject();

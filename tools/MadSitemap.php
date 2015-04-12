@@ -51,6 +51,7 @@ class MadSitemap extends MadAbstractData {
 	function setCurrent() {
 		$router = MadRouter::getInstance();
 		$cursor = &$this;
+		return $this;
 		foreach( $router->args as $id ) {
 			if ( isset( $cursor->subs ) ) {
 				$cursor = $cursor->subs;
