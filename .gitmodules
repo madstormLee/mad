@@ -13,3 +13,6 @@
 [submodule "vendors/jQueryFileUpload"]
 	path = vendors/jQueryFileUpload
 	url = https://github.com/blueimp/jQuery-File-Upload.git
+[submodule "vendors/bootstrap-sass"]
+	path = vendors/bootstrap-sass
+	url = https://github.com/twbs/bootstrap-sass.git
