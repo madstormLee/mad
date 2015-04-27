@@ -1,0 +1,27 @@
+<script src='./script.js'></script>
+<style>
+dd.data {
+	background: #ccc;
+}
+</style>
+
+<h1>Autosave</h1>
+
+<form id='autosaveWrite' method='post' action='./save'>
+		<label for='domain'>domain</label>
+		<input type='text' value='<?=$params->domain?>' />
+		<label for='formData'>Form Data</label>
+		<textarea id='formData' name='formData'><?=$model->formData?></textarea>
+
+		<label for='interval'>interval</label>
+		<input type='number' name='interval' id='interval' value='<?=$model->getInterval() ?>' /> seconds left
+
+	<nav class=''>
+		<a class='load' href='#load'>load</a>
+		<a class='save' href='#save'>save</a>
+		<a class='start' href='#stop'>start</a>
+		<a class='stop' href='#stop'>stop</a>
+		<a class='delete' href='./delete'>delete</a>
+	</nav>
+</form>
+

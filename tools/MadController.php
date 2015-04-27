@@ -29,7 +29,8 @@ class MadController {
 		}
 		$controllerName = $name . 'Controller';
 		
-		if ( is_file( $file = "$baseDir/$controllerName.php" ) ) {
+		$file = "$baseDir/$controllerName.php";
+		if ( is_file( $file  ) ) {
 			include_once $file;
 			return new $controllerName($component, $params);
 		}
@@ -52,6 +53,7 @@ class MadController {
 		$this->view = new MadView( "$this->component/$this->action.html" );
 		$this->model = $this->createModel();
 		$this->view->model = $this->model;
+		$this->view->params = $this->params;
 		$this->info->subtitle = $this->name;
 	}
 	function createModel( $modelName='' ) {
@@ -100,29 +102,33 @@ class MadController {
 		return null;
 	}
 	function __toString() {
-		MadHeaders::utf8();
+		try {
+			MadHeaders::utf8();
 
-		$action = trim($this->action);
-		if ( empty($action) ) {
-			throw new BadMethodCallException;
-		}
-		$actionName = $action . 'Action';
-		$result = $this->$actionName();
+			$action = trim($this->action);
+			if ( empty($action) ) {
+				throw new BadMethodCallException;
+			}
+			$actionName = $action . 'Action';
+			$result = $this->$actionName();
 
-		if ( $result === null && ! $this->view->isFile() ) {
-			http_response_code(404);
-			$this->view->setFile('mad/layout/404.html');
-		}
+			if ( $result === null && ! $this->view->isFile() ) {
+				http_response_code(404);
+				$this->view->setFile('mad/layout/404.html');
+			}
 
-		if ( null === $result ) {
-			$result = $this->view;
-		}
+			if ( null === $result ) {
+				$result = $this->view;
+			}
 
-		if( $this->router->ajax || ! isset( $this->layout ) ) {
-			return (string)$result;
+			if( $this->router->ajax || ! isset( $this->layout ) ) {
+				return (string)$result;
+			}
+			$layout = $this->layout;
+			$layout->main = $result;
+			return (string)$layout;
+		} catch( Exception $e ) {
+			return $e->getMessage();
 		}
-		$layout = $this->layout;
-		$layout->main = $result;
-		return (string)$layout;
 	}
 }

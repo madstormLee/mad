@@ -5,6 +5,7 @@ class User extends MadModel {
 	protected $level = 1000;
 
 	function __construct( $id='' ) {
+		$this->setSetting( __dir__ . '/model.json');
 		$this->initLevels();
 		$this->fetch( $id );
 	}
@@ -27,25 +28,27 @@ class User extends MadModel {
 			) );
 		}
 	}
+	function install() {
+		$query = new MadScheme( $this );
+		$db = $this->getDb();
+		return $db->exec( $query );
+	}
+	function setData( $data=array() ) {
+		parent::setData( $data );
+	}
+	function save() {
+		$this->userPw = sha1($this->userPw);
+		if ( empty($this->id) ) {
+			$this->wDate = date('Y-m-d H:i:s');
+		}
+		$this->uDate = date('Y-m-d H:i:s');
+		return parent::save();
+	}
 	function getNameLevel( $name = '' ) {
 		return $this->getLevels()->$name;
 	}
 	function getLevelName( $level ) {
 		return $this->getLevels()->find($level);
-	}
-	function getScheme() {
-		return "
-			create table User (
-				id integer unsigned auto_increment primary key,
-				userId char(20) not null unique,
-				userPassword char(42) not null,
-				userLevel tinyint unsigned not null default 255,
-				name char(20) not null,
-				email char(255) not null,
-				uDate timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-				wDate date
-			);
-		";
 	}
 	function getIndex() {
 		return glob( "$this->dir/*$this->extension");
@@ -79,24 +82,30 @@ class User extends MadModel {
 	function hasAuth( $level = 0 ) {
 		return $this->getLevel() <= $level ;
 	}
+	function getDb() {
+		return MadDb::create();
+	}
 	function fetch( $id='' ) {
 		if ( empty( $id ) ) {
 			return $this;
 		}
-		$json = new MadJson( "user/data/$id.json" );
-		$this->data = $json->getData();
-		$this->setLevel( $json->level );
+		$query = "select * from User where id=:id";
+		$stmt = $this->getDb()->prepare( $query );
+		$stmt->execute( array( ':id' => $id ) )->fetch(PDO::FETCH_ASSOC);
 		return $this;
 	}
-	function fetchLogin( $id, $pw ) {
-		$this->fetch( $id );
-		if ( $this->password != sha1( $pw ) ) {
-			throw new Exception('Wrong id/password.');
+	function fetchUserId( $userId ) {
+		$query = "select * from User where userId=:userId";
+		$stmt = $this->getDb()->prepare( $query );
+		if( ! $stmt->execute( array( 'userId' => $userId ) ) ) {
+			throw new Exception('No user : ' . $userId);
 		}
-		if ( ! $info = $users->{$data->id} ) {
-			throw new Exception('No User!');
-		}
-		if ( $info->pw != sha1( $data->pw ) ) {
+		$this->data = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $this;
+	}
+	function fetchLogin( $userId, $userPw ) {
+		$this->fetchUserId( $userId );
+		if( $this->userPw != sha1( $userPw ) ) {
 			throw new Exception('Wrong password!');
 		}
 		return $this;

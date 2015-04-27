@@ -1,13 +1,19 @@
 <h1>Project Write</h1>
 
-<form class='write' method='post' action='./save'>
-	<ul class='adminForm'>
-		<? foreach( $model->getForms() as $row ): ?>
-		<li> <?=$row->label?> <?=$row->form?> </li>
-		<? endforeach; ?>
-	</ul>
-
-	<nav class='buttons'>
-		<button type='submit'>Submit</button>
-	</nav>
+<form class="write" method="post" action="/mad/project/save">
+	<label for="id">프로젝트 아이디</label>
+	<input id="id" name="id" value="<?=$model->id?>" placeholder="myProject" type="text">
+	<label for="name">프로젝트명</label>
+	<input id="name" name="name" value="<?=$model->name?>" placeholder="myProject" type="text">
+	<label for="label">프로젝트 표시이름</label>
+	<input id="label" name="label" value="<?=$model->label?>" placeholder="내 프로젝트" type="text">
+	<label for="team">프로젝트 팀명</label>
+	<input id="team" name="team" value="<?=$model->team?>" placeholder="내 프로젝트 구축팀" type="text">
+	<label for="author">저자</label>
+	<input id="author" name="author" value="<?=$model->author?>" placeholder="madstorm" type="text">
+	<label for="wDate">생성일</label>
+	<input id="wDate" name="wDate" value="<?=$model->wDate?>" placeholder="YYYY-MM-DD HH:II:SS" type="text">
+	<label for="uDate">업데이트일</label>
+	<input id="uDate" name="uDate" value="<?=$model->uDate?>" placeholder="YYYY-MM-DD HH:II:SS" type="text">	
+	<button type="submit">Submit</button>
 </form>

@@ -1,0 +1,26 @@
+<h1>Index</h1>
+
+<table>
+	<thead>
+		<tr>
+			<? foreach( $model->getHeaders() as $header ): ?>
+			<th><?=$header?></th>
+			<? endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<?='<? foreach( $model->getIndex() as $row ): ?>'."\n";?>
+		<tr>
+			<? foreach( $model->getSetting() as $row ): ?>
+			<td><?='<?=$row->'.$row->name.'?>';?></td>
+			<? endforeach; ?>
+		<tr>
+		<?='<? endforeach; ?>'."\n"?>
+	</tbody>
+</table>
+
+<?='<?=$model->getPageNavi() ?>'."\n";?>
+
+<?='<? if( $model->isEmpty() ): ?>'."\n";?>
+<p class='notice'>No Lists</p>
+<?='<? endif; ?>';?>

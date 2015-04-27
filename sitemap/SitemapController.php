@@ -1,8 +1,8 @@
 <?
 class SitemapController extends MadController {
-	function indexOldAction() {
-		$get = MadParams::create('get');
-		$this->model->fetch( $get->id );
+	function indexAction() {
+		$index = new MadJson( 'sitemap.json' );
+		$this->view->index = $index;
 	}
 	function treeAction() {
 		$this->js->addFirst('/mad/js/prototype');

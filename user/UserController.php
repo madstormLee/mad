@@ -2,8 +2,12 @@
 class UserController extends MadController {
 	function init() {
 		parent::init();
-		if ( ! strpos($this->router->backUrl, 'sessionUser' ) ) {
+		if ( ! strpos($this->router->backUrl, 'user' ) ) {
 			$this->session->after = $this->router->backUrl;
+		}
+		$query = new MadQuery('User');
+		if ( ! $query->isTable() ) {
+			$this->installAction();
 		}
 	}
 	function indexAction() {
@@ -24,11 +28,16 @@ class UserController extends MadController {
 
 		$this->view->index = $query;
 	}
-	function historyAction() {
-	}
 	function viewAction() {
 	}
 	function writeAction() {
+		$this->model->fetch( $this->get->id );
+	}
+	function saveAction() {
+		return $this->model->setData( $this->params )->save();
+	}
+	function deleteAction() {
+		return $this->model->delete( $this->get->id );
 	}
 	function signupAction() {
 	}
@@ -47,50 +56,32 @@ class UserController extends MadController {
 	}
 	function signoffAction() {
 	}
-	function saveAction() {
+	function loginAction() {
+	}
+	function registSessionAction() {
 		$post = $this->params;
 		$model = $this->model;
 
-		$model->setData( $post );
-		$model->pw = md5( $model->pw );
+		$model->fetchLogin( $post->userId, $post->userPw );
 
-		return $model->setData( $this->params )->save();
-	}
-	function deleteAction() {
-		return $this->model->delete( $this->get->id );
-	}
-
-	function loginAction() {
-		$this->layout->setFile('views/layouts/viewOnly.html');
-		if ($this->session->user ) {
-			$this->js->replace( '~/' );
-		}
+		$this->session->user = $model;
+		$this->js->replace( $this->router->project );
 	}
 	function logoutAction() {
 		unset( MadSession::getInstance()->user );
 		$this->js->replace( $this->session->after );
 		return 'session user logout';
 	}
+	function findIdAction() {
+	}
+	function findPwAction() {
+	}
+	function historyAction() {
+	}
 	function addRoleAction() {
 		$post = $this->post;
 		$log = $this->log->login( $post );
 		$this->js->alert( "you logged in as $log->label" )->replace('~/');
-	}
-	function registSessionAction() {
-		$post = $this->params;
-		$user = new MadUser;
-		$user->fetchLogin( $post->userId, $post->userPw );
-
-		if ( ! $user->id ) {
-			throw new Exception('No user');
-		}
-		if( $user->password != sha1( $this->params->password ) ) {
-			throw new Exception('No matching password');
-		}
-
-		$this->session->user = $user;
-		$this->js->replace( $this->session->after );
-		// 'session user registed';
 	}
 	function isIdAction() {
 		$post = $this->params;
@@ -154,5 +145,15 @@ class UserController extends MadController {
 		}
 
 		$this->js->alert( "you logged in as " . $this->persona->label )->replace( $referer );
+	}
+
+	function installAction() {
+		$this->dropAction();
+		$query = new MadScheme( $this->model );
+		return $this->db->exec( $query );
+	}
+	function dropAction() {
+		$query = "drop table " . get_class($this->model);
+		return $this->db->exec( $query );
 	}
 }

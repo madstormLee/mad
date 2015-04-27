@@ -12,8 +12,6 @@ class MadQuery implements IteratorAggregate, Countable {
 	public $limit = '10';
 	protected $offset = 0;
 
-	protected $set = array();
-
 	protected $on = array();
 	protected $group;
 
@@ -25,6 +23,8 @@ class MadQuery implements IteratorAggregate, Countable {
 
 	protected $model = null;
 	protected $statement;
+
+	protected $pKey = 'id';
 
 	function __construct( $table = '' ) {
 		$this->db = MadDb::create();
@@ -45,12 +45,12 @@ class MadQuery implements IteratorAggregate, Countable {
 	}
 	function insert( $data ) {
 		$this->command = 'insert';
-		$this->set = $data;
+		$this->data = $data;
 		return $this;
 	}
 	function update( $data ) {
 		$this->command = 'update';
-		$this->set = $data;
+		$this->data = $data;
 		return $this;
 	}
 	function delete() {
@@ -155,14 +155,13 @@ class MadQuery implements IteratorAggregate, Countable {
  		if ( ! $query ) {
  			$query = $this->getQuery();
  		}
-		$this->createRollback();
-		return $this->execQuery( $query, array_values($this->set) );
- 	}
-	function execQuery( $query, $values = array() ) {
 		$statement = $this->db->prepare( $query );
-		$statement->execute( $values );
+		$statement->execute( $this->data );
+		if ( $this->command == 'insert' ) {
+			return $statement->getInsertId();
+		}
 		return $statement->rowCount();
-	}
+ 	}
 	/************************* getters **************************/
 	function getDb() {
 		return $this->db;
@@ -214,7 +213,7 @@ class MadQuery implements IteratorAggregate, Countable {
 	/************************** queries ************************/
 	function getQuery() {
 		$action = 'get' . ucFirst( $this->command ) . 'Query';
-		return $this->$action();
+		return (string)$this->$action();
 	}
 	function getSelectQuery() {
 		$from = $this->getFrom();
@@ -226,22 +225,17 @@ class MadQuery implements IteratorAggregate, Countable {
 		return "select $this->select from $from $on $where $order $limit";
 	}
 	function getInsertQuery() {
-		$set = $this->set;
-		unset( $set[$this->pKey] );
-
-		$keys = array_keys( $set );
 		$table = $this->db->escapeField( $this->table );
-		$set = implode( ',', $this->db->escapeFields( $keys ) );
-		$placeholders = implode(',', array_fill( 0, count($keys), '?' ) );
-		return "insert into $table ($set) values ($placeholders)";
+		$fields = $this->getFields();
+		$placeholder = $this->getPlaceholders();
+		return "insert into $table ($fields) values ($placeholder)";
 	}
 	function getUpdateQuery() {
-		$set = $this->set;
+		$set = $this->data;
 		if ( ! $key = ckKey( $this->pKey, $set ) ) {
 			return false;
 		}
-		$key = $this->db->escape( $key );
-		$set = $this->getSet( $this->data );
+		$set = $this->getSet();
 		$where = $this->getWhere();
 		return "update $this->table set $set $where";
 	}
@@ -276,8 +270,8 @@ class MadQuery implements IteratorAggregate, Countable {
 		return count( $this->data );
 	}
 	/******************* getter/setter *****************/
-	function getData() {
-		return $this->db->getData();
+	function data() {
+		return $this->data;
 	}
 	function setData( $data ) {
 		$this->data = $data;
@@ -309,10 +303,41 @@ class MadQuery implements IteratorAggregate, Countable {
 		return empty( $this->data );
 	}
 	function isTable(){
-		$query = "show tables like '$this->table'";
-		return $this->db->query( $query )->rows();
+		/*
+		if ( $this->db->getDriver() == 'mysql' ) {
+			$query = "show tables like '$this->table'";
+		} else {
+		}
+		 */
+		$query = "select name from sqlite_master where type='table' AND name='$this->table'";
+		return ! empty( $this->db->query( $query )->fetch() );
 	}
 	/*************************** utilities ***************************/
+	function getFields() {
+		$set = $this->data;
+		unset( $set[$this->pKey] );
+
+		$keys = array_keys( $set );
+		return implode( ',', $this->db->escapeFields( $keys ) );
+	}
+	function getPlaceholders() {
+		$rv = array();
+		foreach( $this->data as $key => $value ) {
+			$rv[] = ':' . $key;
+		}
+		return implode(',', $rv );
+	}
+	function getSet() {
+		$rv = array();
+		foreach( $this->data as $key => $value ) {
+			if ( $key == $this->pKey ) {
+				$this->where( "id=:id" );
+				continue;
+			}
+			$rv[] = "$key=:$key";
+		}
+		return implode(', ', $rv );
+	}
 	function total( $where='' ) {
 		$where = $this->formatWhere( $where );
 		$query = "select count(*) from $this->table $where";

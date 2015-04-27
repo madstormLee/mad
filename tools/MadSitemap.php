@@ -26,22 +26,9 @@ class MadSitemap extends MadAbstractData {
 			}
 			if ( ! isset( $row->component ) ) {
 				$row->component = $component;
-				/*
-				if ( is_dir( $path ) ) {
-					$row->component = $path;
-				}
-				 */
 			}
 			if ( ! isset( $row->setting ) ) {
 				$row->setting = $setting;
-			}
-			if ( ! isset( $row->view ) ) {
-				$file = "$row->path.html";
-				if ( is_file( $file ) ) {
-					$row->view = $file;
-				} else {
-					$row->view = "views/$row->path.html";
-				}
 			}
 			if ( isset($row->subs) ) {
 				$this->init( $row->subs, $row->path, $row->component, $row->setting );
@@ -71,14 +58,23 @@ class MadSitemap extends MadAbstractData {
 	function fetch( $path ) {
 		$paths = array_filter( explode( '/', $path ) );
 		$cursor = &$this;
+		$i=0;
+		$count = count($paths);
 		foreach( $paths as $id ) {
-			if ( isset( $cursor->subs ) ) {
+			++$i;
+			if ( isset($cursor->subs) ) {
 				$cursor = $cursor->subs;
 			}
-			if ( ! isset( $cursor->$id ) ) {
-				throw new Exception( 'Path not exists.' );
+			if ( ! isset($cursor->$id) ) {
+				return $cursor;
 			}
 			$cursor = $cursor->$id;
+			if ( ! isset($cursor->subs) ) {
+				if ( $i < $count ) {
+					$cursor->action = $paths[$i];
+				}
+				return $cursor;
+			}
 		}
 		return $cursor;
 	}

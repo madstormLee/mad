@@ -52,6 +52,7 @@ class MadDir extends MadFile {
 			$files = array_filter($data, 'is_file');
 			$this->data = array_merge( $dirs, $files );
 		}
+		return $this;
 	}
 	function getIndex() {
 		if ( ! empty( $this->data ) ) {
@@ -68,7 +69,6 @@ class MadDir extends MadFile {
 		return $this->data;
 	}
 	function mkdir() {
-		varDump($this->isDir()); 
 		if ( ! $this->isDir() ) {
 			mkdir( $this->file, 0755, true );
 		}
@@ -157,22 +157,26 @@ class MadDir extends MadFile {
 		}
 		return $log;
 	}
-	function deleteAll() {
-		$dir = $this->file;
+	function deleteAll( $file='' ) {
+		if ( empty( $file ) ) {
+			$dir = $this->file;
+		} else {
+			$dir = $file;
+		}
 		if ( ! is_dir( $dir ) ) {
 			throw new Exception( $dir . ' is not a directory.' );
 		}
-		$files = array_merge( glob( $dir . '/*' ), glob( $dir . '/.*') );
+		$files = array_filter( glob( $dir . '/{*,.*}', GLOB_BRACE ), function( $file ) {
+			return ( is_dir( $file ) && substr( $file, -1 ) == '.' ) ? false:true;
+		});
 		foreach ( $files as $file ) {
-			if( $file == '.' || $file == '..' ) continue;
 			if( is_dir($file) ) {
 				$this->deleteAll( $file );
 			} else {
-				print $file . BR;
 				unlink( $file );
 			}
 		}
-		rmDir( $dir );
+		return rmDir( $dir );
 	}
 	function __toString() {
 		return $this->file;

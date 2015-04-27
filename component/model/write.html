@@ -2,36 +2,27 @@
 $madform = new MadForm();
 $types = 'int,float,varchar,text,password';
 ?>
-<form method='post' id='modeler'>
-<b>모델명 : </b><input type='text' name='ini' value='' />
-<table class='table01'>
-	<thead>
-		<tr>
-			<th>이름</th>
-			<th>닉네임</th>
-			<th>타입</th>
-			<th>min</th>
-			<th>max</th>
-			<th>저장</th>
-			<th>기본값</th>
-			<th>추가</th>
-			<th>삭제</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td><?=$madform->text('name[]')?></td>
-			<td><?=$madform->text('nickName[]')?></td>
-			<td><?=$madform->select('type[]',$types)?></td>
-			<td><?=$madform->text('min[]')?></td>
-			<td><?=$madform->text('max[]')?></td>
-			<td><?=$madform->checkbox('save[]')?></td>
-			<td><?=$madform->text('default[]')?></td>
-			<td class='addRow'>+</td>
-			<td class='removeRow'>X</td>
-		</tr>
-	</tbody>
-</table>
+
+<form method='post' id='modeler' action='./save'>
+	<label for='name'>모델명</label>
+	<input type='text' name='name' value='<?=$model->name?>' />
+
+	<label for='mad'>이름</label> <input type='text' name='name[]' id='name<?=$i?>' value='<?=$row->name?>' />
+	<label for='mad'>닉네임</label> <input type='text' name='label[]' id='label<?=$i?>' value='<?=$row->label?>' />
+	<label for='mad'>타입</label> <input type='select' name='type[]',$types id='type<?=$i?>' value='<?=$row->type?>' />
+	<label for='mad'>min</label> <input type='text' name='min[]' id='min<?=$i?>' value='<?=$row->min?>' />
+	<label for='mad'>max</label> <input type='text' name='max[]' id='max<?=$i?>' value='<?=$row->max?>' />
+	<label for='readonly'>저장</label> <input type='checkbox' name='readonly[]' id='readonly<?=$i?>' value='<?=$row->readonly?>' />
+	<label for='mad'>기본값</label> <input type='text' name='default[]' id='default<?=$i?>' value='<?=$row->default?>' />
+
+	<fieldset>
+		<legend>fields</legend>
+		<? $i=1; foreach( $model->getDefaultFields() as $row ): ?>
+		<label for='field<?=$i?>'>field<?=$i?></label>
+		<input type='text' name='field[]' id='field<?=$i?>' value='<?=$row->name?> <?=$row->type?>' />
+		<? ++$i; endforeach; ?>
+	</fieldset>
+
 <div class='buttons'>
 	<a class='btnSubmit'>확인</a>
 </div>

@@ -1,132 +1,19 @@
 <h1>User Login</h1>
 
-<form id="Login" method='post' action='./registSession'>
-	<label for='userId'>아이디</label>
-	<input id="userId" name="userId" type="text" tabindex= "1" />
-	<label for='userPw'>비밀번호</label>
-	<input id="userPw" name="userPw" type="password" tabindex= "2" />
+<form id="Login" class='medium-9 columns' method='post' action='registSession'>
+	<input type='hidden' name='returnUrl' value='<?=$params->returnUrl?>' />
+
+	<label for='userId'>User ID</label>
+	<input id="userId" name="userId" type="text" tabindex= "1" required />
+	<label for='userPw'>Password</label>
+	<input id="userPw" name="userPw" type="password" tabindex= "2" required />
+
 	<button tabindex="3">로그인</button>
 </form>
 
-
-<?/*
-<form id='LocaleSelector' class='changeSubmit' method='get' action='~/admin/locale/select'>
-	<label for='locale'>국가 선택</label>
-	<select id='code' name='code'>
-		<? foreach( $g->l10n->getLocales() as $row ): ?>
-		<? if ( ! $row->open ) continue; ?>
-		<option value='<?=$row->code?>' <?=($row->id == $g->l10n->id ) ? "selected": "" ?> ><?=$row->label?></option>
-		<? endforeach; ?>
-	</select>
-</form>
-
-<form id='UserLogin' method='post' action='./registSession'>
-	<input type='hidden' name='returnUrl' value='<?=$g->get->returnUrl?>' />
-	<ul>
-		<li>
-			<label for='id'>ID</label>
-			<input type='text' id='id' name='id' required />
-		</li>
-		<li>
-			<label for='pw'>Password</label>
-			<input type='password' id='pw' name='pw' required />
-		</li>
-	</ul>
-
-	<button>Login</button>
-
-	<nav class='buttons'>
+<section id='right'>
+	<nav class='buttons breadcrumbs'>
 		<a href='./findIdPw'>ID/PWD 찾기</a>
-		<a href='./askToAdmin'>관리자 문의하기</a>
-		<a href='./request'>신규가입</a>
-		<a href='~/'>project Root</a>
+		<a href='./signup'>신규가입</a>
 	</nav>
-
-</form>
-
-
-
-<form class='login' method='post' action='./set'>
-	<ul>
-		<li>
-			<label for='id'>ID</label>
-			<input type='text' id='id' name='id' required />
-		</li>
-		<li>
-			<label for='password'>Password</label>
-			<input type='password' id='password' name='password' required />
-		</li>
-	</ul>
-
-	<button>Login</button>
-</form>
-
-
-<form method='post' id='<?=$this->table?>' class='<?=$this->program?>'>
-	<input type='hidden' name='<?=$this->program?>' value='login' />
-	<dl>
-		<dt>ID</dt>
-		<dd><input type='text' class='id-input' name='id' /></dd>
-		<dt>PW</dt>
-		<dd><input type='password' class='pw-input' name='pw' /></dd>
-	</dl>
-	<button type='submit'>Submit</button>
-</form>
-
-
-<form id='LoginForm' method='post'>
-	<input type='hidden' name='<?=$className?>' value='login' />
-	<dl>
-		<dt>ID</dt>
-		<dd><input type='text' id='id' name='id' /></dd>
-		<dt>PW</dt>
-		<dd><input type='password' id='pw' name='pw' /></dd>
-	</dl>
-	<button type='submit'>Submit</button>
-</form>
-
-
-
-<h1>ROOT Login</h1>
-<form id='LogRoot' method='post' action='loginRoot'>
-	<fieldset>
-	<legend>Root Login Form</legend>
-	<ul class='items'>
-		<li>
-			<label for='id'>ID</label>
-			<input type='text' name='id' id='id' />
-		</li>
-		<li>
-			<label for='pw'>Password</label>
-			<input type='password' name='pw' id='pw' />
-		</li>
-	</ul>
-	<ul class='buttons'>
-		<li><button type='submit'>Login</button></li>
-		<li><button type='reset'>Reset</button></li>
-	</ul>
-	</fieldset>
-</form>
-
-
-
-<h1>Persona Login</h1>
-<h2>after login : <?=$_SESSION['referer'] ?></h2>
-
-<form id='UserLogin' method='post' action='./registSession'>
-	<ul>
-		<li>
-			<label for='id'>ID</label>
-			<input type='text' id='id' name='id' required />
-		</li>
-		<li>
-			<label for='pw'>Password</label>
-			<input type='password' id='pw' name='pw' required />
-		</li>
-	</ul>
-
-	<nav class='buttons'>
-		<button>Login</button>
-	</nav>
-</form>
-*/?>
+</section>

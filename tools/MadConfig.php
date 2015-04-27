@@ -23,7 +23,11 @@ class MadConfig extends MadAbstractData {
 		$this->router = MadRouter::getInstance();
 		$this->sitemap = MadSitemap::create();
 
-		$this->addConfig();
+		$file = 'config.json';
+		if ( ! is_file( $file ) ) {
+			$file = 'mad/config.json';
+		}
+		$this->addConfig( $file );
 	}
 	function addConfig( $file = 'config.json' ) {
 		$this->dir = dirName( $file ) . '/';

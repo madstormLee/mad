@@ -15,8 +15,6 @@ class MadIndex extends MadData {
 		}
 	}
 	function init() {
-		$this->page = 1;
-		$this->pages = 1;
 		$this->searchTotal = $this->query->searchTotal();
 		$this->pageNavi = '';
 		return $this;

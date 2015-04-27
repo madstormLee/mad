@@ -1,4 +1,5 @@
 <?
+// this is going based Model;
 class MadScheme {
 	private static $force = false;
 	private $file;
@@ -6,9 +7,12 @@ class MadScheme {
 	private $scheme;
 	private $tail = '';
 
-	function __construct( $file = '' ) {
+	private $model;
+	private $types;
+
+	function __construct( MadModel $model ) {
 		$this->db = MadDb::create();
-		$this->file = $file;
+		$this->model = $model;
 	}
 	function setFile( $file ) {
 		$this->file = $file;
@@ -70,7 +74,35 @@ class MadScheme {
 		}
 		return $query;
 	}
+	// todo from Contents. refactory this.
+	function initType() {
+		$this->types = new MadJson('mad/component/model/types.json');
+	}
+	function getType( $type ) {
+		if ( empty( $this->types ) ) {
+			$this->initType();
+		}
+		return isset($this->types->$type)?$this->types->$type:'varchar';
+	}
+	function getScheme() {
+		$data = array();
+		foreach( $this->model->getSetting() as $row ) {
+			$row = new MadData( $row );
+			if ( $row->id == 'id' && $row->extra == 'auto_increment' ) {
+				$data[] = "`$row->id` $row->type primary key";
+				continue;
+			}
+			$type = $this->getType( $row->type );
+			$default = (isset($row->default))?"default '$row->default'":'';
+			// $comment = (isset($row->label))?"comment '$row->label'":'';
+			$data[] = "`$row->name` $type $default";
+		}
+		$definition = implode( ",\n", $data );
+		$table = get_class($this->model);
+		$query = "create table `$table`( $definition );";
+		return $query;
+	}
 	function __toString() {
-		return $this->getQuery();
+		return $this->getScheme();
 	}
 }

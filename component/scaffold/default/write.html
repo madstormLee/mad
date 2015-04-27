@@ -1,0 +1,9 @@
+<h1>Write</h1>
+
+<form method='post' action='./save'>
+	<? foreach( $model->getForms() as $row ): ?>
+	<label for='<?=$row->id?>'><?=$row->label?></label>
+	<?=$row->form."\n"?>
+	<? endforeach; ?>
+	<button type='submit'>Save</button>
+</form>

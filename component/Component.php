@@ -1,12 +1,30 @@
 <?
-class Component extends MadJson {
+class Component extends MadModel {
 	private $project = null;
 	private $scaffold = null;
 
-	function __construct( $file = '' ) {
-		parent::__construct( $file );
-		$this->project = ProjectSession::getInstance();
-		$this->scaffold = new Scaffold;
+	function getIndex( $path='' ) {
+		$rv = new MadData;
+		$index = glob( "$path/*", GLOB_ONLYDIR );
+		foreach( $index as $file ) {
+			$row = new MadData;
+			$row->id = baseName($file);
+			$row->files = (new MadDir( $file ))->order();
+			$rv->$file = $row;
+		}
+		return $rv;
+	}
+	function getScaffolds() {
+		$rv = new MadData;
+		foreach( glob('component/scaffold/*', GLOB_ONLYDIR) as $dir ) {
+			$id = basename($dir);
+			$rv->dir = new MadData( array(
+				'id' => $id . 'Scaffold', 
+				'value' => $id, 
+				'label' => $id, 
+			));
+		}
+		return $rv;
 	}
 	function defaulting() {
 		if ( ! $this->id ) {
@@ -14,28 +32,9 @@ class Component extends MadJson {
 		}
 		$project = $this->project;
 
-		$this->dirs = array(
-			'css' => $project->getDir('css') . $this->id . '/',
-			'js' => $project->getDir('js') . $this->id . '/',
-			'views' => $project->getDir('views') . $this->id . '/',
-			'component' => $project->getDir('components') . $this->id . '/',
-			'controllers' => $project->getDir('controllers'),
-			'models' => $project->getDir('models'),
-		);
-
-		$this->files = array(
-			'views' => array(
-				'index' => $this->dirs->views . "index.html",
-				'write' => $this->dirs->views . "write.html",
-				'view' => $this->dirs->views . "view.html",
-			),
-			'controller' => $this->dirs->controllers . $this->id . 'Controller.php',
-			'listModel' => $this->dirs->models . $this->id . 'List.php',
-			'model' => $this->dirs->models . $this->id . '.php',
-		);
 		return $this;
 	}
-	function delete() {
+	function delete( $id='' ) {
 		$root = $this->project->root;
 		$this->removeFile( $root . $this->files->controller );
 		$this->removeFile( $root . $this->files->model );

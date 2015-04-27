@@ -3,6 +3,7 @@
 		"id": "id",
 		"name": "id",
 		"label": "프로젝트 아이디",
+		"value": "myProject",
 		"placeholder": "myProject",
 		"type": "text"
 	},
@@ -10,6 +11,7 @@
 		"id": "name",
 		"name": "name",
 		"label": "프로젝트명",
+		"value": "myProject",
 		"placeholder": "myProject",
 		"type": "text"
 	},
@@ -17,6 +19,7 @@
 		"id": "label",
 		"name": "label",
 		"label": "프로젝트 표시이름",
+		"value": "내 프로젝트",
 		"placeholder": "내 프로젝트",
 		"type": "text"
 	},
@@ -24,6 +27,7 @@
 		"id": "team",
 		"name": "team",
 		"label": "프로젝트 팀명",
+		"value": "myTeam",
 		"placeholder": "내 프로젝트 구축팀",
 		"type": "text"
 	},
@@ -47,30 +51,6 @@
 		"name": "uDate",
 		"label": "업데이트일",
 		"placeholder": "2011-07-22 21:19:35",
-		"type": "text"
-	},
-	"diagrams": {
-		"id": "diagrams",
-		"name": "diagrams",
-		"label": "다이어그램 파일",
-		"placeholder": "json/diagrams/",
-		"value": "json/diagrams/",
-		"type": "text"
-	},
-	"database": {
-		"id": "database",
-		"name": "database",
-		"label": "데이터베이스",
-		"placeholder": "sqlite:data.db",
-		"value": "sqlite:data.db",
-		"type": "text"
-	},
-	"sitemap": {
-		"id": "sitemap",
-		"name": "sitemap",
-		"label": "Sitemap",
-		"placeholder": "sitemap.json",
-		"value": "sitemap.json",
 		"type": "text"
 	}
 }

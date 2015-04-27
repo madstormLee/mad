@@ -1,9 +1,6 @@
 <h1>Projects</h1>
 
-<nav class='component right'>
-	<a class='tiny round button' href='./write'>write</a>
-</nav>
-
+<section id='index'>
 <table class='index'>
 	<tr>
 		<th>Name</th>
@@ -16,7 +13,6 @@
 		<td><?=$row->date?></a></td>
 		<td class='buttons'>
 			<a href='./open?id=<?=$row->id?>'>open</a>
-			<a href='./skeleton?id=<?=$row->id?>'>Skeleton</a>
 			<a href='./view?id=<?=$row->id?>'>view</a>
 			<a href='./write?id=<?=$row->id?>'>변경</a>
 			<a href='./delete?id=<?=$row->id?>'>삭제</a>
@@ -26,5 +22,14 @@
 </table>
 
 <? if ( $model->getIndex()->isEmpty() ) : ?>
-<p class='notice'>리스트가 없습니다.</p>
+<p class='caution'>리스트가 없습니다.</p>
 <? endif; ?>
+</section>
+
+
+<section id='right'>
+	<nav class='component'>
+		<a href='./index'>index</a>
+		<a href='./write' data-target='#index'>write</a>
+	</nav>
+</section>

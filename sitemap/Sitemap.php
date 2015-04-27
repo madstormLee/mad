@@ -1,3 +1,6 @@
 <?
-class Sitemap extends MadSitemap {
+class Sitemap extends MadModel {
+	function fetch( $id='' ) {
+		print $id;
+	}
 }

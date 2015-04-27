@@ -96,6 +96,10 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		}
 		return $this;
 	}
+	function intersect( $data ) {
+		$this->data = array_intersect( $this->data, $data );
+		return $this;
+	}
 	function sort() {
 		sort( $this->data );
 		return $this;
@@ -127,13 +131,16 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		return $this;
 	}
 	function getKeys() {
-		return new MadData( array_keys($this->data) );
+		return new MadData( $this->keys() );
 	}
 	function getValues() {
-		return new MadData( array_values($this->data) );
+		return new MadData( $this->values() );
 	}
-	function getArrayKeys() {
+	function keys() {
 		return array_keys($this->data);
+	}
+	function values() {
+		return array_values($this->data);
 	}
 	function getArrayValues() {
 		return array_values($this->data);
@@ -173,6 +180,7 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		if ( empty($field) ) {
 			return $this->getFirsts();
 		}
+		$rv = array();
 		foreach( $this->data as $key => $row ) {
 			$row = new MadData( (array) $row );
 			$rv[$key] = $row[$field];

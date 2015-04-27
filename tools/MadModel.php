@@ -1,6 +1,7 @@
 <?
 class MadModel extends MadAbstractData {
 	protected $data = array();
+	protected $setting = array();
 
 	public static final function create( $class, $id = null ) {
 		$class = ucFirst( $class );
@@ -10,7 +11,38 @@ class MadModel extends MadAbstractData {
 		$this->fetch( $id );
 	}
 	function getIndex() {
+		return new MadIndex( $this );
+	}
+	function setSetting( $jsonFile ) {
+		$this->setting = new MadJson( $jsonFile );
+	}
+	function getSetting( $id='' ) {
+		if ( ! empty( $id ) ) {
+			if ( isset($this->setting->$id) ) {
+				return $this->setting->$id;
+			} else {
+				return new MadData;
+			}
+		}
+		return $this->setting;
+	}
+	function getHeaders() {
+		return $this->setting->dic('label');
+	}
+	function getForms() {
 		$rv = new MadData;
+		foreach( $this->setting as $row ) {
+			$row = new MadData( $row );
+			if( $row->type == 'textarea' ) {
+				$row->form = "<textarea name='$row->name' id='$row->id'>$row->value</textarea>";
+			} else if( $row->type == 'radio' ) {
+			} else if( $row->type == 'checkbox' ) {
+			} else if( $row->type == 'select' ) {
+			} else {
+				$row->form = "<input type='$row->type' name='$row->name' id='$row->id' value='$row->value' />";
+			}
+			$rv->{$row->name} = $row;
+		}
 		return $rv;
 	}
 	function fetch( $id = '' ) {
@@ -23,6 +55,7 @@ class MadModel extends MadAbstractData {
 	}
 	function delete( $id = '' ) {
 	}
+	// todo: remove this method.
 	function getComponentNavi() {
 		$router = MadRouter::getInstance();
 ?>

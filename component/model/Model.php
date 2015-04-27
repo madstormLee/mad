@@ -10,6 +10,9 @@ class Model {
 	function getFile() {
 		return $this->file;
 	}
+	function getDefaultFields() {
+		return new MadJson('component/model/defaultFields.json');
+	}
 	function getExtends() {
 		$cnt = preg_match('/(?<=extends )[A-ZA-z0-9_]+/', $this->data, $matches );
 		if ( $cnt > 0 ) {

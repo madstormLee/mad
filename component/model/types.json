@@ -1,0 +1,15 @@
+{
+	"text": "varchar",
+	"textarea": "text",
+
+	"integer": "integer",
+	"smallint": "integer",
+	"tinyint": "integer",
+	"number": "integer",
+
+	"datetime": "datetime",
+	"date": "date",
+	"time": "time",
+	"radio": "varchar",
+	"checkbox": "varchar"
+}

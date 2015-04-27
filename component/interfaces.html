@@ -1,0 +1,19 @@
+<h1>Component interfaces</h1>
+
+<? foreach( $list as $row ): ?>
+<dl class='component'>
+	<dt><a class='btnMove' href='./unit?id=<?=$row->id?>'><?=$row->id?></a></dt>
+	<dd>
+	<? if ( $row->interfaces ): ?>
+	<ul>
+		<? foreach( $row->interfaces as $interface ): ?>
+		<li><a href='/<?=$row->id?>/<?=$interface?>'><?=$interface?></a></li>
+		<? endforeach; ?>
+	</ul>
+	<? endif; ?>
+	</dd>
+</dl>
+<? endforeach; ?>
+<? if ( $list->isEmpty() ) : ?>
+<p class='notice'>No searched list.</p>
+<? endif; ?>

@@ -14,7 +14,9 @@ class UploaderController extends MadController {
 		$result = move_uploaded_file($tmp_name, ROOT."$targetDir/$name");
 		$this->url = "$targetDir/$name";
 	}
-	function insertAction() {
+	function writeTestAction() {
+	}
+	function insertOldAction() {
 		foreach ($_FILES['files']['error'] as $key => $error) {
 			if ($error != UPLOAD_ERR_OK) { continue; }
 

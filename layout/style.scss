@@ -1,4 +1,4 @@
-@import "../../ts/dev/scss/foundation.scss";
+@import "../vendors/foundation/scss/foundation.scss";
 
 /**********************************************************
 	Html Tags :
@@ -9,17 +9,8 @@
 table {
 	width: 100%;
 }
-h1 , h2 , h3 {
-	margin: 0;
+h1,h2,h3,h4,h5,h6 {
 	position: relative;
-}
-h1 {
-	font: 500 25px sans-serif;
-	color: #6666ff;
-	text-align: right;
-}
-h1 strong {
-	color: red;
 }
 h2 {
 	font: 500 20px sans-serif;
@@ -46,6 +37,9 @@ ol, ul {
 /* layout */
 main {
 	margin-bottom: 1rem;
+}
+main h1 {
+	font-size: 1rem;
 }
 
 footer {
@@ -249,9 +243,19 @@ form.write {
 
 
 /************************** #right todo: from admin/style.css ********************/
+#index {
+	@include grid-column(
+	$columns: 9,
+	$float: left
+	);
+}
 #right {
 	background: #ffffff;
 	z-index: 1;
+	@include grid-column(
+	$columns: 3,
+	$float: right
+	);
 	dl > dt {
 		margin: 0;
 		padding: 2px 10px;

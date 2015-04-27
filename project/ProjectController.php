@@ -21,7 +21,7 @@ class ProjectController extends MadController {
 		$post = $this->params;
 		$model = $this->model;
 
-		$model->setData( $post->getData() );
+		$model->setData( $post );
 		return $model->save();
 	}
 	function deleteAction() {
