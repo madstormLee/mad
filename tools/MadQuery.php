@@ -310,7 +310,8 @@ class MadQuery implements IteratorAggregate, Countable {
 		}
 		 */
 		$query = "select name from sqlite_master where type='table' AND name='$this->table'";
-		return ! empty( $this->db->query( $query )->fetch() );
+		$result = $this->db->query( $query )->fetch();
+		return ! empty( $result );
 	}
 	/*************************** utilities ***************************/
 	function getFields() {
