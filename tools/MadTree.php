@@ -2,54 +2,29 @@
 class MadTree implements IteratorAggregate {
 	private $data;
 	private $tree;
-	private $parentid = 'parentid';
+	private $parentid = 'parentId';
 
 	public function __construct( $data, $relNo = 0, $depth = 0 ) {
-		$this->data = $data->getData();
-		$this->tree = $this->makeTree2($data, $relNo, $depth);
+		$data = new MadData($data);
+		$data->index('id');
+		$this->data = $data;
+		$this->makeTree();
 	}
-	private function makeTree2( $data ) {
-		$data = new MadData( $data );
-		$i=0; foreach ( $data as $key => &$row ) {
-			if( $row->$parentid == 0 ) {
-				continue;
+	function makeTree() {
+		foreach( $this->data as &$row ) {
+			if ( $row->parentId ) {
+				$parent = &$this->data->{$row->parentId};
+				if ( ! $parent->subs ) {
+					$parent->subs = new MadData;
+				}
+				$parent->subs->{$row->id} = $row;
 			}
-			if( empty( $data->{$row->$parentid}->subs ) ) {
-				$data->{$row->$parentid}->subs = array();
-			}
-			$data->{$row->$parentid}->subs[$row->id] = $row;
-			unset( $data->$key );
 		}
-		return $data;
-	}
-	private function makeTree( $data, $relNo=0, $depth=0 ) {
-		$rv = new MadData;
-		++$depth;
-		$order = 1;
-		foreach ( $data as $key => &$row ) {
-			unset( $data->$key );
-			if ( $row->parentid != $relNo ) {
-				continue;
+		foreach( $this->data as &$row ) {
+			if ( $row->parentId ) {
+				unset( $this->data->{$row->id} );
 			}
-			$row->depth = $depth;
-			$row->order = $order;
-			if( $subs = $this->makeTree( $data, $row->id, $depth ) ) {
-				$row->subs = $subs;
-				$row->subcount = count( $row->subs );
-			} else {
-				$row->subcount = 0;
-			}
-
-
-			$this->data->{$row->id} = $row;
-			$rv->{$row->id} = $row;
-
-			++$order;
 		}
-		if ( $rv->isEmpty() ) {
-			return false;
-		}
-		return $rv;
 	}
 	public function getSub( $relNo ) {
 		$tuple = $this->data;
@@ -110,7 +85,7 @@ class MadTree implements IteratorAggregate {
 		return $this->data;
 	}
 	function getIterator() {
-		return $this->tree;
+		return $this->data;
 	}
 	function __set( $key, $value ) {
 		$this->data[$key] = $value;
