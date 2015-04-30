@@ -46,10 +46,7 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		$options = $this->getOptions( $conn->options );
 		parent::__construct( $this->getDsn($conn), $conn->username, $conn->password, $options );
 
-		// alwasy use exception.
-		if ( $conn->errorMode == 'exception') {
-		}
-		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	function query( $query ) {
 		$this->statement = parent::query($query);

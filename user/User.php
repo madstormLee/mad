@@ -33,9 +33,6 @@ class User extends MadModel {
 		$db = $this->getDb();
 		return $db->exec( $query );
 	}
-	function setData( $data=array() ) {
-		parent::setData( $data );
-	}
 	function save() {
 		$this->userPw = sha1($this->userPw);
 		if ( empty($this->id) ) {
@@ -43,6 +40,19 @@ class User extends MadModel {
 		}
 		$this->uDate = date('Y-m-d H:i:s');
 		return parent::save();
+	}
+	function insert() {
+		$this->wDate = date('Y-m-d H:i:s');
+		$this->uDate = date('Y-m-d H:i:s');
+
+		$query = new MadQuery( get_class($this) );
+		$query->insert( array_filter($this->data) );
+
+		$db = $this->getDb();
+
+		$stmt = $db->prepare( $query );
+		$result = $stmt->execute( $query->data() );
+		return $db->lastInsertId();
 	}
 	function getNameLevel( $name = '' ) {
 		return $this->getLevels()->$name;
@@ -136,9 +146,6 @@ class User extends MadModel {
 			$this->levels->default = 300;
 		}
 		return $this->levels->default;
-	}
-	function __set( $key, $value ) {
-		throw new Exception( 'No Access to ' . $key );
 	}
 	public function __call( $method, $args ) {
 		if ( 0 !== strpos( $method , 'is' ) ) {

@@ -1,5 +1,6 @@
 <?
 class MadModel extends MadAbstractData {
+	protected $name = 'MadModel';
 	protected $data = array();
 	protected $setting = array();
 
@@ -8,7 +9,15 @@ class MadModel extends MadAbstractData {
 		return class_exists( $class )? new $class($id): new self($id);
 	}
 	function __construct( $id = '' ) {
+		$this->setName();
 		$this->fetch( $id );
+	}
+	function getName() {
+		return $this->name;
+	}
+	function setName( $name = '' ) {
+		$this->name = empty($name) ? get_class($this) : $name;
+		return $this;
 	}
 	function getIndex() {
 		return new MadIndex( $this );
@@ -23,6 +32,9 @@ class MadModel extends MadAbstractData {
 			} else {
 				return new MadData;
 			}
+		}
+		if ( empty( $this->setting ) ) {
+			$this->setSetting();
 		}
 		return $this->setting;
 	}
@@ -51,9 +63,26 @@ class MadModel extends MadAbstractData {
 		}
 		$this->id = $id;
 	}
-	function save() {
+	function getDb() {
+		return MadConfig::getInstance()->db;
 	}
+	function save() {
+		if ( $this->id ) {
+			return $this->update();
+		}
+		return $this->insert();
+	}
+	// override this
+	function insert() {
+		return false;
+	}
+	// override this
+	function update() {
+		return false;
+	}
+	// override this
 	function delete( $id = '' ) {
+		return false;
 	}
 	// todo: remove this method.
 	function getComponentNavi() {

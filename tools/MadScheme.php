@@ -98,7 +98,7 @@ class MadScheme {
 			$data[] = "`$row->name` $type $default";
 		}
 		$definition = implode( ",\n", $data );
-		$table = get_class($this->model);
+		$table = $this->model->getName();
 		$query = "create table `$table`( $definition );";
 		return $query;
 	}

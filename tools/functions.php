@@ -304,6 +304,9 @@ if ( ! function_exists('globR')) {
 		$files = glob($pattern, $flags);
 
 		foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+			if ( is_link( $dir ) ) {
+				continue;
+			}
 			$files = array_merge($files, globR($dir.'/'.basename($pattern), $flags));
 		}
 

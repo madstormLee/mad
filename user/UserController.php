@@ -31,7 +31,7 @@ class UserController extends MadController {
 	function viewAction() {
 	}
 	function writeAction() {
-		$this->model->fetch( $this->get->id );
+		$this->model->fetch( $this->params->id );
 	}
 	function saveAction() {
 		return $this->model->setData( $this->params )->save();
@@ -65,7 +65,7 @@ class UserController extends MadController {
 		$model->fetchLogin( $post->userId, $post->userPw );
 
 		$this->session->user = $model;
-		$this->js->replace( $this->router->project );
+		$this->js->replace( $this->router->project . '/' );
 	}
 	function logoutAction() {
 		unset( MadSession::getInstance()->user );
@@ -147,6 +147,27 @@ class UserController extends MadController {
 		$this->js->alert( "you logged in as " . $this->persona->label )->replace( $referer );
 	}
 
+	function migrateAction() {
+		$table = get_class($this->model);
+		$mg = $table . '_migrate';
+
+		$query = "alter table $table rename to $mg";
+		// $this->db->exec( $query );
+		$scheme = new MadScheme( $this->model );
+		$result = $this->db->exec( $scheme );
+
+		$query = "PRAGMA table_info($mg)";
+		$mgInfo = new MadData($this->db->query( $query)->fetchAll(PDO::FETCH_CLASS));
+
+		$query = "PRAGMA table_info($table)";
+		$info = new MadData($this->db->query( $query)->fetchAll(PDO::FETCH_CLASS));
+
+		$columns = $mgInfo->dic('name')->intersect($info->dic('name')->getData() )->implode(',');
+
+		$query = "insert into $table ($columns) select $columns from $mg";
+		$result = $this->db->exec( $query );
+		return $result;
+	}
 	function installAction() {
 		$this->dropAction();
 		$query = new MadScheme( $this->model );

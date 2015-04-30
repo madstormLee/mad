@@ -40,6 +40,8 @@ class MadController {
 		try {
 			$router = MadRouter::getInstance();
 			return MadController::create( $router->componentPath );
+		} catch ( PDOException $e ) {
+			return printR($e);
 		} catch ( Exception $e ) {
 			return $e->getMessage();
 		}

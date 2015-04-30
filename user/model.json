@@ -24,9 +24,41 @@
 	"userLevel": {
 		"id": "userLevel",
 		"name": "userLevel",
-		"type": "tinyint",
+		"type": "radio",
 		"constraint": "not null",
-		"default": "255"
+		"default": "255",
+		"options": {
+			"root": {
+				"id": "root",
+				"label": "Root",
+				"value": 0
+			},
+			"admin": {
+				"id": "admin",
+				"label": "Admin",
+				"value": 1
+			},
+			"localAdmin": {
+				"id": "localAdmin",
+				"label": "LocalAdmin",
+				"value": 5
+			},
+			"dealer": {
+				"id": "dealer",
+				"label": "Dealer",
+				"value": 10
+			},
+			"shopOwner": {
+				"id": "shopOwner",
+				"label": "Shop Owner",
+				"value": 50
+			},
+			"request": {
+				"id": "request",
+				"label": "request",
+				"value": 100
+			}
+		}
 	},
 	"email": {
 		"id": "email",
