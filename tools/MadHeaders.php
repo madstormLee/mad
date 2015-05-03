@@ -28,9 +28,7 @@ class MadHeaders {
 		header("Content-Transfer-Encoding: binary");
 	}
 	public static function replace( $location ) {
-		if ( 0 !== strpos( $location, 'http' ) ) {
-			$location = 'http://' . $_SERVER['HTTP_HOST'] . MadRegex::parseUrl( $location );
-		}
+		$location = MadRouter::getInstance()->url( $location );
 		header("Location: $location");
 		die;
 	}

@@ -48,7 +48,9 @@ class MadController {
 	}
 	function init() {
 		$this->config = MadConfig::getInstance();
-		$this->config->addConfig( "$this->component/config.json" );
+		if ( $this->component !== '.' ) {
+			$this->config->addConfig( "$this->component/config.json" );
+		}
 
 		$this->addData( $this->config->getData() );
 

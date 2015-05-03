@@ -123,7 +123,7 @@ class MadConfig extends MadAbstractData {
 		$args = $this->getArgs( $parts[1] );
 
 		if ( ! class_exists( $func[0] ) ) {
-			return new MadNull;
+			throw new Exception( "Class not found : " . $func[0] );
 		}
 		return call_user_func_array( $func, $args );
 	}

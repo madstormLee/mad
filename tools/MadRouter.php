@@ -141,11 +141,18 @@ class MadRouter extends MadAbstractData {
 			$this->routeSitemap( $sitemap );
 		}
 	}
+	public function replace( $location ) {
+		header("Location: " . $this->url( $location ));
+		die;
+	}
 	public function pathAdjust( $value ) {
 		return str_replace('~', $this->cwd, $value );
 	}
 	public function path2url( $value ) {
 		return str_replace($this->document, '', realpath($value) );
+	}
+	public function url( $value ) {
+		return str_replace('~', $this->project, $value );
 	}
 	public function urlAdjust( $value ) {
 		$value = preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2~/{$this->component}", "$value" );
