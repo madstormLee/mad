@@ -1,7 +1,10 @@
-<h1>Model index</h1>
+<h1>Model</h1>
 
-<section class='list'>
-	<? foreach( $list as $model ) : ?>
+<section class='index'>
+</section>
+
+<section id='right'>
+	<? foreach( $model->getIndex() as $model ) : ?>
 	<dl class='classDiagramUnit'>
 		<dt class='name'>
 			<a href='./view?<?=$model->getFile()?>'><?=$model->getName() ?></a>

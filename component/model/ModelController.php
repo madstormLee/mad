@@ -2,16 +2,14 @@
 class ModelController extends MadController {
 	function indexAction() {
 		$get = $this->params;
-		if ( ! isset( $get->dir ) ) {
-			$get->dir = 'model';
+	}
+	function presetAction() {
+	}
+	function writeAction() {
+		$get = $this->params;
+		if ( 0 === strpos($get->file, '/') ) {
+			$get->file = $this->router->document . $get->file;
 		}
-		$dir = new MadFile( $get->dir );
-
-		$data = new MadData;
-		foreach( $dir as $row ) {
-			$data[] = new Model( $row );
-		}
-
-		$this->view->index = $data;
+		$this->fetch( $get->file );
 	}
 }

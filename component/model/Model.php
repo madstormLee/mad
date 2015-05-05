@@ -1,14 +1,20 @@
 <?
-class Model {
-	private $file;
-	private $data;
+class Model extends MadModel {
+	protected $file;
+	protected $data;
 
-	function __construct( $file ) {
+	function __construct( $file='' ) {
+		$this->fetch( $file );
+	}
+	function getIndex() {
+		return new MadData;
+	}
+	function fetch($file='') {
+		if ( empty( $file ) ) {
+			return false;
+		}
 		$this->file = $file;
 		$this->data = file_get_contents( $file );
-	}
-	function getFile() {
-		return $this->file;
 	}
 	function getDefaultFields() {
 		return new MadJson('component/model/defaultFields.json');

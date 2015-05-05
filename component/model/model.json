@@ -1,0 +1,90 @@
+{
+	"id": {
+		"id": "id",
+		"name": "id",
+		"label": "id",
+		"type": "number",
+		"extra": "auto_increment",
+		"key": "primary"
+	},
+	"name": {
+		"id": "name",
+		"name": "name",
+		"label": "name",
+		"type": "text"
+	},
+	"label": {
+		"id": "label",
+		"name": "label",
+		"label": "label",
+		"type": "text"
+	},
+	"type": {
+		"id": "type",
+		"name": "type",
+		"label": "type",
+		"type": "radio",
+		"default": "typeInt",
+		"options": {
+			"number": {
+				"id": "typeint",
+				"label": "number"
+				"value": "number"
+			},
+			"text": {
+				"id": "typetext",
+				"label": "text"
+				"value": "text"
+			},
+			"textarea": {
+				"id": "typetextarea",
+				"label": "textarea"
+				"value": "textarea"
+			},
+			"email": {
+				"id": "typeemail",
+				"label": "email"
+				"value": "email"
+			},
+			"password": {
+				"id": "typepassword",
+				"label": "password"
+				"value": "password"
+			},
+			"datetime": {
+				"id": "typedatetime",
+				"label": "datetime"
+				"value": "datetime"
+			},
+			"date": {
+				"id": "typedate",
+				"label": "date"
+				"value": "date"
+			}
+		}
+	},
+	"min": {
+		"id": "min",
+		"name": "min",
+		"label": "min",
+		"type": "number"
+	},
+	"max": {
+		"id": "max",
+		"name": "max",
+		"label": "max",
+		"type": "number"
+	},
+	"default": {
+		"id": "default",
+		"name": "default",
+		"label": "default",
+		"type": "text"
+	},
+	"comment": {
+		"id": "comment",
+		"name": "comment",
+		"label": "comment",
+		"type": "text"
+	}
+}

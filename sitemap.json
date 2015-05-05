@@ -6,9 +6,5 @@
 	"project": {
 		"label": "project",
 		"component": "project"
-	},
-	"component": {
-		"label": "component",
-		"component": "component"
 	}
 }
