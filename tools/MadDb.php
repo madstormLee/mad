@@ -49,8 +49,7 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	function query( $query ) {
-		$this->statement = parent::query($query);
-		return $this->statement;
+		return $this->statement = parent::query($query);
 	}
 	function getOptions( $options ) {
 		if ( ! ( is_array( $options ) || is_object( $options ) ) ) {
@@ -86,6 +85,9 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		return $this->statement->fetch( PDO::FETCH_ASSOC );
 	}
 	function fetchAll( $class=null) {
+		if ( empty( $this->statement ) ) {
+			return array();
+		}
 		if ( is_null( $class ) ) {
 			return $this->statement->fetchAll( PDO::FETCH_ASSOC );
 		}
