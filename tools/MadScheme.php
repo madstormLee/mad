@@ -88,11 +88,11 @@ class MadScheme {
 		$data = array();
 		foreach( $this->model->getSetting() as $row ) {
 			$row = new MadData( $row );
+			$type = $this->getType( $row->type );
 			if ( $row->id == 'id' && $row->extra == 'auto_increment' ) {
-				$data[] = "`$row->id` $row->type primary key";
+				$data[] = "`$row->id` $type primary key";
 				continue;
 			}
-			$type = $this->getType( $row->type );
 			$default = (isset($row->default))?"default '$row->default'":'';
 			// $comment = (isset($row->label))?"comment '$row->label'":'';
 			$data[] = "`$row->name` $type $default";

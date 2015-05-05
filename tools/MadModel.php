@@ -22,10 +22,14 @@ class MadModel extends MadAbstractData {
 	function getIndex() {
 		return new MadIndex( $this );
 	}
-	function setSetting( $jsonFile ) {
-		$this->setting = new MadJson( $jsonFile );
+	function setSetting( $file ) {
+		$this->setting = new MadJson( $file );
 	}
 	function getSetting( $id='' ) {
+		if ( empty( $this->setting ) ) {
+			$file = lcFirst($this->name) . '/model.json';
+			$this->setSetting( $file );
+		}
 		if ( ! empty( $id ) ) {
 			if ( isset($this->setting->$id) ) {
 				return $this->setting->$id;
@@ -57,12 +61,6 @@ class MadModel extends MadAbstractData {
 		}
 		return $rv;
 	}
-	function fetch( $id = '' ) {
-		if ( empty( $id ) ) {
-			return false;
-		}
-		$this->id = $id;
-	}
 	function getDb() {
 		return MadConfig::getInstance()->db;
 	}
@@ -72,32 +70,56 @@ class MadModel extends MadAbstractData {
 		}
 		return $this->insert();
 	}
-	// override this
+	// @override this
+	function fetch( $id = '' ) {
+		if ( empty( $id ) ) {
+			return false;
+		}
+		$query = new MadQuery( get_class( $this ) );
+		$query->where( "id=:id");
+		$statement = $this->getDb()->prepare( $query );
+		$result = $statement->execute( array( 'id' => $id ) );
+		$this->data = $statement->fetch(PDO::FETCH_ASSOC); 
+		return $this;
+	}
+	// @override this
 	function insert() {
-		return false;
+		$this->wDate = date('Y-m-d H:i:s');
+		$this->uDate = date('Y-m-d H:i:s');
+
+		$query = new MadQuery( get_class($this) );
+		$query->insert( array_filter($this->data) );
+
+		$db = $this->getDb();
+
+		$statement = $db->prepare( $query );
+		$result = $statement->execute( $query->data() );
+		return $db->lastInsertId();
 	}
-	// override this
+	// @override this
 	function update() {
-		return false;
+		$this->uDate = date('Y-m-d H:i:s');
+
+		$query = new MadQuery( get_class($this) );
+		$query->update( $this->data );
+
+		$db = $this->getDb();
+
+		$statement = $db->prepare( $query );
+		$result = $statement->execute( $query->data() );
+
+		return $statement->rowCount();
 	}
-	// override this
+	// @override this
 	function delete( $id = '' ) {
-		return false;
-	}
-	// todo: remove this method.
-	function getComponentNavi() {
-		$router = MadRouter::getInstance();
-?>
-<nav class='component'>
-	<a class='index' href='./index'>Index</a></li>
-	<? if ( $router->action != 'view' ): ?>
-	<a class='write' href='./write'>Write</a></li>
-	<? elseif ( $router->action == 'view' ): ?>
-	<a class='edit' href='./write?id=<?=$this->id?>'>Edit</a></li>
-	<a class='delete' href='./delete?id=<?=$this->id?>' data-confirm='Remove file?'>Delete</a></li>
-	<? endif; ?>
-</nav>
-<?
+		$query = "delete from Contents where id=?";
+
+		$db = $this->getDb();
+
+		$statement = $db->prepare( $query );
+		$result = $statement->execute( array($id) );
+
+		return $statement->rowCount();
 	}
 	function __toString() {
 		return $this->id;

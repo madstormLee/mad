@@ -237,11 +237,11 @@ class MadQuery implements IteratorAggregate, Countable {
 		}
 		$set = $this->getSet();
 		$where = $this->getWhere();
-		return "update $this->table set $set $where";
+		return "update `$this->table` set $set $where";
 	}
 	function getDeleteQuery() {
 		$where = $this->getWhere();
-		return "delete from $this->table $where";
+		return "delete from `$this->table` $where";
 	}
 	// this is not right.
 	function __get( $key ) {
