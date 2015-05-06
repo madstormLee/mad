@@ -38,7 +38,7 @@ class SitemapController extends MadController {
 		$this->js->replace('back');
 	}
 	function saveAction() {
-		$target = $this->projectLog->root . $this->projectLog->configs->dirs->json . 'sitemap.json';
+		$target = 'sitemap.json';
 		$sitemap = new Sitemap( $target );
 		$sitemap->setFromDl( $this->post->content );
 		$sitemap->save();

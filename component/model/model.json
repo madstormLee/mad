@@ -28,37 +28,37 @@
 		"options": {
 			"number": {
 				"id": "typeint",
-				"label": "number"
+				"label": "number",
 				"value": "number"
 			},
 			"text": {
 				"id": "typetext",
-				"label": "text"
+				"label": "text",
 				"value": "text"
 			},
 			"textarea": {
 				"id": "typetextarea",
-				"label": "textarea"
+				"label": "textarea",
 				"value": "textarea"
 			},
 			"email": {
 				"id": "typeemail",
-				"label": "email"
+				"label": "email",
 				"value": "email"
 			},
 			"password": {
 				"id": "typepassword",
-				"label": "password"
+				"label": "password",
 				"value": "password"
 			},
 			"datetime": {
 				"id": "typedatetime",
-				"label": "datetime"
+				"label": "datetime",
 				"value": "datetime"
 			},
 			"date": {
 				"id": "typedate",
-				"label": "date"
+				"label": "date",
 				"value": "date"
 			}
 		}
