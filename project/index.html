@@ -1,30 +1,6 @@
 <h1>Projects</h1>
 
-<section id='index'>
-<table class='index'>
-	<tr>
-		<th>Name</th>
-		<th>Date</th>
-		<th>Buttons</th>
-	</tr>
-	<? foreach( $model->getIndex() as $row ) : ?>
-	<tr>
-		<td><a href='~/<?=$row->id?>'><?=$row->name?></a></td>
-		<td><?=$row->date?></a></td>
-		<td class='buttons'>
-			<a href='./open?id=<?=$row->id?>'>open</a>
-			<a href='./view?id=<?=$row->id?>'>view</a>
-			<a href='./write?id=<?=$row->id?>'>변경</a>
-			<a href='./delete?id=<?=$row->id?>'>삭제</a>
-		</td>
-	</tr>
-	<? endforeach; ?>
-</table>
-
-<? if ( $model->getIndex()->isEmpty() ) : ?>
-<p class='caution'>리스트가 없습니다.</p>
-<? endif; ?>
-</section>
+<section id='index' data-href='./list'></section>
 
 
 <section id='right'>
