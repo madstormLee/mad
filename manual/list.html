@@ -1,0 +1,7 @@
+<h1>list</h1>
+
+<ul>
+	<? foreach( $model->getIndex() as $file ): ?>
+	<li><a href='~/manual/view?id=<?=$file?>'><?=baseName($file, '.php')?></a></li>
+	<? endforeach; ?>
+</ul>

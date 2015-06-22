@@ -2,6 +2,14 @@
 class ManualController extends MadController {
 	function indexAction() {
 	}
+	function listAction() {
+		$get = $this->params;
+		if ( empty( $get->domain ) ) {
+			$get->domain = '/mad/tools';
+		}
+		$model = $this->model;
+		$model->setDomain( $get->domain );
+	}
 	function viewAction() {
 		$get = $this->params;
 		$model = $this->model;
@@ -14,10 +22,6 @@ class ManualController extends MadController {
 	}
 	function manualAction() {
 		$get = $this->params;
-
-		$this->right->setView( 'FileManual/viewRight.html' );
-		$this->right->list = $model->getTree();
-
 		$model = new FileManual( $get->file );
 
 		$this->view->model = $model;
@@ -28,16 +32,6 @@ class ManualController extends MadController {
 		$this->view->model = new Manual( $this->params->id );
 	}
 	function saveAction() {
-		$post = $this->params;
-
-		$list = new Manual( "/manual.json" );
-
-		$view = new MadView( "/$this->l10n/{$post->id}.html" );
-		$view->saveContents( $post->contents );
-
-		$list->rescan()->save();
-
-		$this->js->replace('./view?id=' . $post->id );
 	}
 	function deleteAction() {
 		return $this->model->delete( $this->params->file );

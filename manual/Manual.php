@@ -2,66 +2,35 @@
 class Manual extends MadModel {
 	protected $dir = 'manual/data/';
 	protected $file = "manual/data/manual.html";
-	protected $id = "manual";
 
-	function __construct( $id='' ) {
-		if ( empty( $id ) ) {
-		}
-		$this->fetch( $id );
-		parent::__construct( "manual/data/$id.html" );
-	}
-	function fetch( $id = '' ) {
-		$this->id = $id;
-		if ( empty( $id ) ) {
-			$domain = get_class( $this );
-			$this->id = "manual/$domain/data/manual.json";
-		} else {
-			$this->id = $file;
-		}
-	}
-	function getIndex() {
-		$dir = new MadDir( $this->dir );
+	protected $id = "/mad/tools";
 
-		foreach( $dir as $file ) {
-			$ctime = $file->getCtime();
-			$name = $file->getBasename( '.' . $this->extension );
-
-			if ( $file->isDir() ||
-					$file->getExtension() != $this->extension ||
-					( $this->$name && $this->$name->ctime == $ctime )
-			   ) {
-				continue;
-			}
-			$brief = ( new MadString( implode( $contents ) ))->stripTags()->cut( 100 );
-			$title = $brief->cut( 20 );
-
-			$this->$name = array(
-					'title' => $title,
-					'brief' => $brief,
-					'file' => $file->getFile(),
-					'ctime' => $ctime,
-					);
-		}
+	function setDomain( $domain ) {
+		$this->domain = $domain;
 		return $this;
 	}
+	function getDomain() {
+		return $this->domain;
+	}
 	function getIndex() {
-		$list = new MadDir( "$this->dir", "*.html" );
-		foreach( $list as $file ) {
-			$path = $dir . $file;
-			if ( is_dir( $path ) ) {
-				continue;
-			}
-			$chunk = explode('.', $file);
-			if ( end( $chunk ) != $this->extension ) {
-				continue;
-			}
-			$ctime = filectime($path);
-			$name = implode( '.', array_slice( $chunk, 0, -1 ) );
-
-			if ( $this->$name && $this->$name->ctime == $ctime ) {
-				continue;
-			}
-
+		$query = new MadQuery( $this->getName() );
+		if ( $query->total() == 0 && is_dir( $this->getDomainDir() ) ) {
+			// temporally;
+			return $this->initDomain();
+		}
+		return new MadData;
+	}
+	function getDomainDir() {
+		if ( 0 === strpos( $this->domain, '/' ) ) {
+			return $_SERVER['DOCUMENT_ROOT'] . $this->domain;
+		}
+		return $this->domain;
+	}
+	function initDomain() {
+		$dir = new MadDir( $this->getDomainDir() );
+		printR( $dir );
+		die;
+		foreach( $dir as $file ) {
 			$title = '';
 			$contents = file($path);
 			foreach( $contents as &$row ) {
@@ -80,7 +49,33 @@ class Manual extends MadModel {
 				'ctime' => $ctime,
 			) );
 		}
-		$this->save();
+		print 'end';
+		die;
+	}
+	function getIndexFail() {
+		$dir = new MadDir( $this->dir );
+
+		foreach( $dir as $file ) {
+			$ctime = $file->getCtime();
+			$name = $file->getBasename( '.' . $this->extension );
+
+			if ( $file->isDir() ||
+				$file->getExtension() != $this->extension ||
+				( $this->$name && $this->$name->ctime == $ctime )
+			) {
+				continue;
+			}
+			$brief = ( new MadString( implode( $contents ) ))->stripTags()->cut( 100 );
+			$title = $brief->cut( 20 );
+
+			$this->$name = array(
+				'title' => $title,
+				'brief' => $brief,
+				'file' => $file->getFile(),
+				'ctime' => $ctime,
+			);
+		}
+		return $this;
 	}
 	function getContents() {
 		$file = file($this->file);

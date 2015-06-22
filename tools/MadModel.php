@@ -129,4 +129,8 @@ class MadModel extends MadAbstractData {
 	function __toString() {
 		return $this->id;
 	}
+	function createTable() {
+		$scheme = new MadScheme( $this );
+		return $this->getDb()->exec( $scheme );
+	}
 }
