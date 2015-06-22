@@ -24,6 +24,11 @@ class MadModel extends MadAbstractData {
 	}
 	function setSetting( $file ) {
 		$this->setting = new MadJson( $file );
+		return $this;
+	}
+	function isInstall() {
+		$query = new MadQuery( $this->getName() );
+		return $query->isTable();
 	}
 	function getSetting( $id='' ) {
 		if ( empty( $this->setting ) ) {

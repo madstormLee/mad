@@ -302,14 +302,16 @@ class MadQuery implements IteratorAggregate, Countable {
 	function isEmpty() {
 		return empty( $this->data );
 	}
+	function getDriver() {
+		return $this->db->getAttribute(PDO::ATTR_DRIVER_NAME);
+	}
 	function isTable(){
-		/*
-		if ( $this->db->getDriver() == 'mysql' ) {
+		$driver = $this->getDriver();
+		if ( $driver == 'sqlite' ) {
+			$query = "select name from sqlite_master where type='table' AND name='$this->table'";
+		} elseif ( $driver == 'mysql' ) {
 			$query = "show tables like '$this->table'";
-		} else {
 		}
-		 */
-		$query = "select name from sqlite_master where type='table' AND name='$this->table'";
 		$result = $this->db->query( $query )->fetch();
 		return ! empty( $result );
 	}

@@ -4,8 +4,8 @@ class MadSession extends MadAbstractData {
 	protected $data;
 
 	protected function __construct() {
-		session_start();
 		$this->data = &$_SESSION;
+		self::start();
 	}
 	public static function getInstance() {
 		self::$instance || self::$instance = new self;
@@ -22,7 +22,7 @@ class MadSession extends MadAbstractData {
 			session_id( trim( $_GET["PHPSESSID"] ) );
 		}
 		*/
-		return 0;
+		return session_start();
 	}
 	public static function destroy() {
 		return session_destroy();

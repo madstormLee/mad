@@ -2,6 +2,26 @@
 class ComponentController extends MadController {
 	function indexAction() {
 	}
+	function installAction() {
+		$componentName = $this->params->model;
+		if ( 0 === strpos($componentName, '/') ) {
+			$dir = $_SERVER['DOCUMENT_ROOT'] . $componentName;
+		} else {
+			$dir = $componentName;
+		}
+		$model = new MadModel;
+		$model->setName( ucFirst(baseName($componentName)) );
+
+		if ( $model->isInstall() ) {
+			throw new Exception('Already installed: ' . $model->getName());
+		}
+
+		$model->setSetting("$dir/model.json");
+		$scheme = new MadScheme( $model );
+		$this->db->exec( $scheme );
+
+		return $model->isInstall();
+	}
 	function listAction() {
 		$get = $this->params;
 		if ( ! $get->path ) {

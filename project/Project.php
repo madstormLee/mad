@@ -1,10 +1,20 @@
 <?
 class Project extends MadModel {
-	protected $projectDir = 'project/data';
+	protected $projectDir = '/projects/data';
 
+	function __construct( $id = '' ) {
+		parent::__construct( $id );
+		if ( ! $this->isInstall() ) {
+			$model = '/mad/project';
+			MadJs::getInstance()->replace('/mad/component/model/install?model=' . $model);
+		}
+	}
+	function isInstall() {
+		$query = new MadQuery('Project');
+		return $query->isTable();
+	}
 	function fetch( $id='' ) {
 		if ( empty( $id ) ) {
-			$file = '.madProject';
 			$file = new MadJson('project/write.json');
 			$this->data = $file->dic('value');
 			$this->wDate = date('Y-m-d H:i:s');
@@ -15,11 +25,19 @@ class Project extends MadModel {
 		}
 		return $this;
 	}
-	public static function getDatabase() {
-		if ( isset( $_SESSION['project'] ) ) {
-			return MadDb::create( "sqlite:{$_SESSION['project']}/.mad.db");
+	function getProjectDir() {
+		if ( 0 === strpos( $this->projectDir, '/' ) ) {
+			return $_SERVER['DOCUMENT_ROOT'] . $this->projectDir;
 		}
-		return MadDb::create('sqlite:.mad.db');
+		return $this->projectDir;
+	}
+	function getDb() {
+		if ( isset( $_SESSION['project'] ) ) {
+			return $_SESSION['project']->getDb();
+		}
+		$dir = $this->getProjectDir();
+		
+		return MadDb::create("sqlite:$dir/.mad.db");
 	}
 	public static function session() {
 		$session = MadSession::getInstance();
@@ -61,10 +79,6 @@ class Project extends MadModel {
 		}
 
 		$this->createHtaccess( $dir );
-		unlink( "$dir/mad" );
-		if ( ! is_dir( "$dir/mad" ) ) {
-			symlink( getcwd(), "$dir/mad" );
-		}
 		$this->createFront( $dir );
 		$this->createIndex( $dir );
 		$this->createConfig( $dir, $json );
@@ -128,59 +142,5 @@ class Project extends MadModel {
 			$data[] = $json;
 		}
 		return $data;
-	}
-	private function getDefault( $file ) {
-		$json = new MadJson( $file );
-		$basename = baseName( dirName( $file ) );
-		$json->id = $basename;
-		$json->name = $basename;
-		$json->label = $basename;
-		$json->description = $basename;
-		return $json;
-	}
-	function registProject() {
-		$projects = new MadJson( 'json/projects.json' );
-		$projects->{$this->id} = $this->data;
-		$projects->save();
-	}
-	function getForms() {
-		$json = new MadJson( 'project/write.json' );
-		return new MadForm( $json );
-	}
-
-	// from ProjectDownloader
-	private $target = array();
-	private $ext = '.tar.gz';
-	function findHead( $targetDir, $project ) {
-		$lastVersionName = '';
-		$lastVersionFile = '';
-		$dir = new MadDir($targetDir);
-
-		$dir->setType( $project );
-		foreach( $dir as $file ) {
-			$currentName = strstr( baseName($file), $this->ext, true );
-			if ( $lastVersionName < $currentName ) {
-				$lastVersionName = $currentName;
-			}
-			$lastVersionFile = $file;
-		}
-		return $lastVersionFile;
-	}
-	function getTarget() {
-		if ( ! $this->project ) {
-			throw new Exception('need project');
-		}
-		if ( (! $this->version) || $this->version == 'head') {
-			$target = $model->findHead( $targetDir, $this->project );
-		} else {
-			$fileName = $this->project . $this->version . $this->ext;
-			$target = $targetDir . $fileName;
-		}
-		if ( ! is_file( $target ) ) {
-			throw new Exception( $fileName . ' file not found.');
-		}
-	}
-	function getContents() {
-		return file_get_contents( $this->getTarget() );
 	}
 }

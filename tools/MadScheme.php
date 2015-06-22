@@ -76,7 +76,7 @@ class MadScheme {
 	}
 	// todo from Contents. refactory this.
 	function initType() {
-		$this->types = new MadJson('mad/component/model/types.json');
+		$this->types = new MadJson($_SERVER['DOCUMENT_ROOT'] . '/mad/component/model/types.json');
 	}
 	function getType( $type ) {
 		if ( empty( $this->types ) ) {
@@ -86,21 +86,28 @@ class MadScheme {
 	}
 	function getScheme() {
 		$data = array();
-		foreach( $this->model->getSetting() as $row ) {
+		$setting = $this->model->getSetting();
+		foreach( $setting as $row ) {
 			$row = new MadData( $row );
 			$type = $this->getType( $row->type );
-			if ( $row->id == 'id' && $row->extra == 'auto_increment' ) {
-				$data[] = "`$row->id` $type primary key";
-				continue;
-			}
 			$default = (isset($row->default))?"default '$row->default'":'';
 			// $comment = (isset($row->label))?"comment '$row->label'":'';
 			$data[] = "`$row->name` $type $default";
 		}
+
+		$data = array_merge( $data , $this->getIndexes( $setting ) );
+
 		$definition = implode( ",\n", $data );
 		$table = $this->model->getName();
 		$query = "create table `$table`( $definition );";
 		return $query;
+	}
+	function getIndexes( $setting ) {
+		$rv = array();
+		foreach( $setting->dic('id', 'key' )->filter() as $id => $indexType ) {
+			$rv[] = "$indexType key($id)";
+		}
+		return $rv;
 	}
 	function __toString() {
 		return $this->getScheme();
