@@ -1,10 +1,10 @@
 {
-	"sitemap": {
-		"label": "sitemap",
-		"component": "sitemap"
-	},
 	"project": {
 		"label": "project",
 		"component": "project"
+	},
+	"sitemap": {
+		"label": "sitemap",
+		"component": "sitemap"
 	}
 }

@@ -1,4 +1,3 @@
 <?
-include "tools.php";
-
+include $_SERVER['DOCUMENT_ROOT']."/mad/tools.php";
 print MadController::front();

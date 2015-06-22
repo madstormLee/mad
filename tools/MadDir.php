@@ -170,6 +170,10 @@ class MadDir extends MadFile {
 			return ( is_dir( $file ) && substr( $file, -1 ) == '.' ) ? false:true;
 		});
 		foreach ( $files as $file ) {
+			if ( is_link( $file ) ) {
+				unlink( $file );
+				continue;
+			}
 			if( is_dir($file) ) {
 				$this->deleteAll( $file );
 			} else {

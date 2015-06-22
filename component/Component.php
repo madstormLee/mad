@@ -35,7 +35,8 @@ class Component extends MadModel {
 		return $this;
 	}
 	function delete( $id='' ) {
-		$root = $this->project->root;
+		$project = $this->getProject();
+		$root = $project->getDir() . '/' . $id;
 		$this->removeFile( $root . $this->files->controller );
 		$this->removeFile( $root . $this->files->model );
 
