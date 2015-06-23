@@ -1,7 +1,12 @@
-<h1>list</h1>
+<h1>Index of <?=$model->domain?></h1>
 
-<ul>
-	<? foreach( $model->getIndex() as $file ): ?>
-	<li><a href='~/manual/view?id=<?=$file?>'><?=baseName($file, '.php')?></a></li>
+<dl>
+	<? foreach( $index = $model->getIndex() as $row ): ?>
+	<dt><a href='#contents<?=$row->id?>' data-reveal-id='contents<?=$row->id?>'><?=$row->title?></a></dt>
+	<dd id='contents<?=$row->id?>' class="reveal-modal" data-reveal aria-labelledby="firstModalTitle" aria-hidden="true" role="dialog">
+		<?=$row->contents?>
+	</dd>
 	<? endforeach; ?>
-</ul>
+</dl>
+
+<?=$index->getPageNavi(); ?>

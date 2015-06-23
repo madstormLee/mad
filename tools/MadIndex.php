@@ -10,11 +10,15 @@ class MadIndex extends MadData {
 
 	function __construct( MadModel $model=null ) {
 		if ( ! empty( $model ) ) {
-			$this->query = new MadQuery( get_class($model) );
+			$this->query = new MadQuery( $model->getName() );
 			$this->setModel( $model );
 		}
 	}
 	function init() {
+		$get = MadRouter::getInstance()->params;
+		if ( $get->page ) {
+			$this->query->limit( 10, $get->page );
+		}
 		$this->searchTotal = $this->query->searchTotal();
 		$this->pageNavi = '';
 		return $this;
@@ -24,6 +28,7 @@ class MadIndex extends MadData {
 		return $this;
 	}
 	function getQuery() {
+		$this->init();
 		return $this->query;
 	}
 	function setModel( $model ) {
@@ -31,7 +36,12 @@ class MadIndex extends MadData {
 		return $this;
 	}
 	function getIterator() {
-		return $this->query;
+		return $this->getQuery();
+	}
+	function getPageNavi() {
+		if ( empty( $this->pageNavi ) ) {
+			$this->pageNavi = new MadPageNavi( $this->query );
+		}
+		return $this->pageNavi;
 	}
 }
-

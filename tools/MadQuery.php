@@ -118,6 +118,9 @@ class MadQuery implements IteratorAggregate, Countable {
 		}
 		return $this;
 	}
+	function page( $page ) {
+		$this->page = $page;
+	}
 	function limit( $limit = '', $page = 1 ) {
 		if ( $limit > 0 ) {
 			$this->limit = $limit;
@@ -129,7 +132,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		}
 		// convention
 		$page = 1;
-		if ( ! $page = MadParams::create('get')->page ) {
+		if ( ! $page = ckKey('page', $_GET) ) {
 			$page = 1;
 		}
 		$this->offset = ( $page -1 ) * $this->limit;

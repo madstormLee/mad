@@ -248,7 +248,10 @@ class MadFile implements IteratorAggregate, Countable {
 		exit;
 	}
 	function getIndex() {
-		return new MadDir( $this->file );
+		return $this->getIterator();
+	}
+	function getLines() {
+		return file( $this->file );
 	}
 	function getIterator() {
 		if ( $this->isDir() ) {
@@ -257,7 +260,7 @@ class MadFile implements IteratorAggregate, Countable {
 		if ( ! $this->isFile() ) {
 			return new ArrayIterator( array() );
 		}
-		return new ArrayIterator( file( $this->file ) );
+		return new ArrayIterator( $this->getLines() );
 	}
 	function __set( $key, $value ) {
 		$this->data[$key] = $value;

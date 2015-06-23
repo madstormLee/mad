@@ -30,4 +30,6 @@ class ViewController extends MadController {
 	}
 	function viewAction() {
 	}
+	function pageNaviAction() {
+	}
 }

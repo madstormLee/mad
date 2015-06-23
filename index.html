@@ -1,12 +1,6 @@
 <h1>Index</h1>
 
-<article class='medium-9 columns'>
-	<ul>
-		<? foreach( glob('tools/*.php') as $file ): ?>
-		<li><a href='~/manual/view?id=<?=$file?>'><?=baseName($file, '.php')?></a></li>
-		<? endforeach; ?>
-	</ul>
-</article>
+<section class='medium-9 columns' data-href='~/manual/list'></section>
 
 <section class='right medium-3 columns'>
 	<dl class='user myself'>

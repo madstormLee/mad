@@ -1,11 +1,11 @@
 <?
 class MadPageNavi extends MadView {
 	private $list = null;
+	private $pages = 10;
 
 	function __construct( $list, $pages = 10 ) {
-		parent::__construct( 'pageNavi/pageNavi.html' );
+		parent::__construct( MAD . '/component/view/pageNavi.html' );
 		$this->list = $list;
-		$this->pages = $pages;
 	}
 	function __toString() {
 		$list = $this->list;
@@ -40,7 +40,8 @@ class MadPageNavi extends MadView {
 			$this->nextPage = $this->startPage + $this->pages;
 		}
 
-		$this->queryString = MadParams::except( 'page' );
+		$get = MadRouter::getInstance()->params;
+		$this->queryString = $get->except( 'page' );
 
 		return parent::__toString();
 	}

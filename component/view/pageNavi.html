@@ -1,0 +1,23 @@
+<ul class='pagination'>
+
+	<? if ( $this->page != 1 ) : ?>
+	<li class='arrow'><a class='first' href='?<?=$queryString?>&page=1'>처음 페이지</a></li>
+	<? endif; ?>
+
+	<? if ( ! empty ( $prevPage ) ) : ?>
+	<li class='arrow'><a class='prev' href='?<?=$queryString?>&page=<?=$prevPage?>'>&laquo;</a></li>
+	<? endif; ?>
+
+	<? $i=0; foreach( $pageUnits as $page): ?>
+	<li <?=( $page == $this->page )?"class='current'":'';?>><a href='?<?=$queryString?>&page=<?=$page?>'><?=$page?></a></li>
+	<? ++$i; endforeach; ?>
+
+	<? if ( ! empty ( $nextPage ) ) : ?>
+	<li class='arrow'><a href='?<?=$queryString?>&page=<?=$nextPage?>'>&raquo;</a></li>
+	<? endif; ?>
+
+	<? if ( $this->page != $lastPage ) : ?>
+	<li class='arrow'><a class='last' href='?<?=$queryString?>&page=<?=$lastPage?>'>마지막 페이지</a></li>
+	<? endif; ?>
+
+</ul>

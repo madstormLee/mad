@@ -1,0 +1,34 @@
+<h1><?=$model->title?></h1>
+
+<h2>class definition</h2>
+<dl>
+	<? foreach( $class->classes as $line => $row ): ?>
+<dt>line <?=$line + 1?>: <?=$row?></dt>
+<dd> - class definition</dd>
+<? endforeach; ?>
+</dl>
+
+<h2>class constant</h2>
+<dl>
+	<? foreach( $class->constants as $line => $row ): ?>
+<dt>line <?=$line + 1?>: <?=$row?></dt>
+<dd> - class constant</dd>
+<? endforeach; ?>
+</dl>
+
+
+<h2>properties</h2>
+<dl>
+	<? foreach( $class->properties as $line => $row ): ?>
+<dt>line <?=$line + 1?>: <?=$row?></dt>
+<dd> - member variable</dd>
+<? endforeach; ?>
+</dl>
+
+<h2>methods</h2>
+<dl>
+	<? foreach( $class->methods as $line => $row ): ?>
+<dt>line <?=$line + 1?>: <?=$row?></dt>
+<dd> - 이 method는 something을 합니다.</dd>
+<? endforeach; ?>
+</dl>

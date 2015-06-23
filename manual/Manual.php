@@ -3,8 +3,6 @@ class Manual extends MadModel {
 	protected $dir = 'manual/data/';
 	protected $file = "manual/data/manual.html";
 
-	protected $id = "/mad/tools";
-
 	function setDomain( $domain ) {
 		$this->domain = $domain;
 		return $this;
@@ -13,12 +11,12 @@ class Manual extends MadModel {
 		return $this->domain;
 	}
 	function getIndex() {
-		$query = new MadQuery( $this->getName() );
-		if ( $query->total() == 0 && is_dir( $this->getDomainDir() ) ) {
-			// temporally;
-			return $this->initDomain();
+		$index = new MadIndex( $this );
+		$total = $index->getQuery()->total();
+		if ( $total == 0 && is_dir( $this->getDomainDir() ) ) {
+			$this->initDomain();
 		}
-		return new MadData;
+		return new MadIndex( $this );
 	}
 	function getDomainDir() {
 		if ( 0 === strpos( $this->domain, '/' ) ) {
@@ -26,54 +24,39 @@ class Manual extends MadModel {
 		}
 		return $this->domain;
 	}
-	function initDomain() {
-		$dir = new MadDir( $this->getDomainDir() );
-		printR( $dir );
-		die;
-		foreach( $dir as $file ) {
-			$title = '';
-			$contents = file($path);
-			foreach( $contents as &$row ) {
-				$row = new MadString( $row );
-				$row = $row->trim();
-				if ( empty( $title ) && ! $row->isEmpty() ) {
-					$title = $row->stripTags()->cut( 20, '...' );
+	function getClass( $file ) {
+		$lines = $file->getLines();
+		$rv = new MadData;
+		$rv->classes = new MadData(preg_grep( '/class /', $lines ) );
+		$rv->properties = new MadData(preg_grep( '/(protected|private|public)[ ]*(static)*[ ]*\$[a-zA-Z0-9_]+/', $lines ) );
+		$rv->constants = new MadData(preg_grep( '/const /', $lines ) );
+		$rv->methods = new MadData(preg_grep( '/function /', $lines ) );
+		foreach( $rv as $name => &$data ) {
+			foreach( $data as $key => &$row ) {
+				$row = trim( $row );
+				if ( $name == 'methods' || $name == 'classes' ) {
+					$row = preg_replace( '/[ ]*{$/', '', $row );
 				}
+				$data->$key = $row;
 			}
-			$brief = ( new MadString( implode( $contents ) ))->stripTags()->cut( 100 );
-
-			$this->data[$name] = new MadData( array(
-				'title' => $title,
-				'file' => $path,
-				'brief' => $brief,
-				'ctime' => $ctime,
-			) );
 		}
-		print 'end';
-		die;
+
+		return $rv;
 	}
-	function getIndexFail() {
-		$dir = new MadDir( $this->dir );
+	function initDomain() {
+		$this->wDate = date('Y-m-d H:i:s');
+		$this->uDate = date('Y-m-d H:i:s');
+
+		$dir = new MadDir( $this->getDomainDir() );
 
 		foreach( $dir as $file ) {
-			$ctime = $file->getCtime();
-			$name = $file->getBasename( '.' . $this->extension );
+			$this->title = basename( $file );
+			$contents = new MadView( __dir__ . '/classManual.html' );
+			$contents->model = $this;
+			$contents->class = $this->getClass( $file );
 
-			if ( $file->isDir() ||
-				$file->getExtension() != $this->extension ||
-				( $this->$name && $this->$name->ctime == $ctime )
-			) {
-				continue;
-			}
-			$brief = ( new MadString( implode( $contents ) ))->stripTags()->cut( 100 );
-			$title = $brief->cut( 20 );
-
-			$this->$name = array(
-				'title' => $title,
-				'brief' => $brief,
-				'file' => $file->getFile(),
-				'ctime' => $ctime,
-			);
+			$this->contents = $contents;
+			$this->insert();
 		}
 		return $this;
 	}
