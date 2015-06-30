@@ -6,10 +6,10 @@
 		<th>Date</th>
 		<th>Buttons</th>
 	</tr>
-	<? foreach( $model->getIndex() as $row ) : ?>
+	<? foreach( $index = $model->getIndex() as $row ) : ?>
 	<tr>
-		<td><a href='~/<?=$row->id?>'><?=$row->name?></a></td>
-		<td><?=$row->date?></a></td>
+		<td><a href='<?=$row->domain?>/'><?=$row->title?></a></td>
+		<td><?=$row->wDate?></a></td>
 		<td class='buttons'>
 			<a href='./open?id=<?=$row->id?>'>open</a>
 			<a href='./view?id=<?=$row->id?>'>view</a>
@@ -20,6 +20,6 @@
 	<? endforeach; ?>
 </table>
 
-<? if ( $model->getIndex()->isEmpty() ) : ?>
+<? if ( $index->isEmpty() ) : ?>
 <p class='caution'>리스트가 없습니다.</p>
 <? endif; ?>

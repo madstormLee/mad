@@ -5,11 +5,6 @@
 		"year": "2014",
 		"project": "ThunderStorm"
 	},
-	"auth": {
-		"level": 1,
-		"component": "sessionUser",
-		"url": "~/sessionUser/login"
-	},
 	"instances": {
 		"db": "MadDb::create('sqlite:data.db')",
 		"debug": "MadDebug::getInstance()",

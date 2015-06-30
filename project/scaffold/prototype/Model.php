@@ -1,3 +1,0 @@
-<?
-class {id} extends MadModel {
-}

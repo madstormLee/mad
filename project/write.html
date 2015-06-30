@@ -1,15 +1,19 @@
 <h1>Project Write</h1>
 
 <form class="write" method="post" action="/mad/project/save">
-	<label for="id">프로젝트 아이디</label>
-	<input id="id" name="id" value="<?=$model->id?>" placeholder="myProject" type="text">
-	<label for="name">프로젝트명</label>
-	<input id="name" name="name" value="<?=$model->name?>" placeholder="myProject" type="text">
-	<label for="label">프로젝트 표시이름</label>
-	<input id="label" name="label" value="<?=$model->label?>" placeholder="내 프로젝트" type="text">
-	<label for="team">프로젝트 팀명</label>
-	<input id="team" name="team" value="<?=$model->team?>" placeholder="내 프로젝트 구축팀" type="text">
-	<label for="author">저자</label>
-	<input id="author" name="author" value="<?=$model->author?>" placeholder="madstorm" type="text">
+	<input type="hidden" id="id" name="id" value="<?=$model->id?>" />
+
+	<label for="title">title</label>
+	<input id="title" name="title" value="<?=$model->title?>" placeholder="myProject" type="text" />
+
+	<label for="contents">contents</label>
+	<textarea id="contents" name="contents"><?=$model->contents?></textarea>
+
+	<select id="skeleton" name='skeleton'>
+		<? foreach( $model->getSkeletons() as $row ): ?>
+		<option value='<?=$row->value?>'><?=$row->label?></option>
+		<? endforeach; ?>
+	</select>
+
 	<button type="submit">Submit</button>
 </form>

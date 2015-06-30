@@ -1,0 +1,27 @@
+<h1>Write Config</h1>
+
+<form class="write" method="post" action="./saveConfig">
+
+	<fieldset>
+		<legend title='Search Engine Optimization'>SEO</legend>
+		<label for='description'>description</label>
+		<input type='text' id="description" name="seo[description]" value='<?=$model->seo->description?>'>
+		<label for='google'>google</label>
+		<input type='text' id="google" seo[name="google]" value='<?=$model->seo->google?>'>
+		<label for='googlebot'>googlebot</label>
+		<input type='text' id="googlebot" name="seo[googlebot]" value='<?=$model->seo->googlebot?>'>
+		<label for='keywords'>keywords</label>
+		<input type='text' id="keywords" name="seo[keywords]" value='<?=$model->seo->keywords?>'>
+		<label for='robots'>robots</label>
+		<input type='text' id="robots" name="seo[robots]" value='<?=$model->seo->robots?>'>
+		<label for='verify'>verify</label>
+		<input type='text' id="verify" name="seo[verify]" value='<?=$model->seo->verify?>'>
+	</fieldset>
+
+	<label for="author">저자</label>
+	<input id="author" name="author" value="<?=$model->author?>" placeholder="madstorm" type="text">
+	<label for="team">프로젝트 팀</label>
+	<input id="team" name="team" value="<?=$model->team?>" placeholder="프로젝트 팀" type="text">
+
+	<button type="submit">Submit</button>
+</form>

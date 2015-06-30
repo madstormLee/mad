@@ -14,7 +14,7 @@
 		"type": "text",
 		"min": 0,
 		"max": 255,
-		"default": "contents"
+		"default": "/projects/newProject"
 	},
 	"title": {
 		"id": "title",

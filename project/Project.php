@@ -1,6 +1,6 @@
 <?
 class Project extends MadModel {
-	protected $projectDir = '/projects/data';
+	protected $projectDir = '/projects';
 
 	function __construct( $id = '' ) {
 		parent::__construct( $id );
@@ -13,27 +13,15 @@ class Project extends MadModel {
 		$query = new MadQuery('Project');
 		return $query->isTable();
 	}
-	function fetch( $id='' ) {
-		if ( empty( $id ) ) {
-			$file = new MadJson('project/write.json');
-			$this->data = $file->dic('value');
-			$this->wDate = date('Y-m-d H:i:s');
-			$this->uDate = date('Y-m-d H:i:s');
-		} else {
-			$file = "$id/.madProject";
-			$this->data = new MadJson( $file );
-		}
-		return $this;
-	}
 	function getProjectDir() {
 		if ( 0 === strpos( $this->projectDir, '/' ) ) {
 			return $_SERVER['DOCUMENT_ROOT'] . $this->projectDir;
 		}
 		return $this->projectDir;
 	}
-	function getDb() {
+	function getProjectDb() {
 		if ( isset( $_SESSION['project'] ) ) {
-			return $_SESSION['project']->getDb();
+			return $_SESSION['project']->getProjectDb();
 		}
 		$dir = $this->getProjectDir();
 		
@@ -46,22 +34,31 @@ class Project extends MadModel {
 		}
 		return new self( $session->project );
 	}
-	function getIndex() {
-		$rv = array();
+	function getSkeletons() {
+		$rv = new MadData;
 
-		$dir = glob( 'project/data/*/.madProject' );
-		foreach( $dir as $file ) {
-			$row = new MadFile( $file );
-			$row->date = $row->date();
-			$row->id = $row->getDirname();
-			$row->name = $row->getDirname();
-			$row->href = $row->getDirname();
-			$rv[] = $row;
+		$dirs = new MadDir( __DIR__ . '/skeleton/data' );
+		foreach( $dirs as $dir ) {
+			$rv[] = new MadData( array(
+				'value' => $dir->getFile(),
+				'label' => $dir->getBasename(),
+			 	) );
 		}
-		return new MadData($rv);
+		return $rv;
 	}
-	function save( $data = '' ) {
-		$dir = new MadDir($this->projectDir . "/$this->id");
+	function save() {
+		$this->domain = "/projects/$this->title";
+		$targetDir = new MadDir( $this->skeleton );
+
+		$destDir = new MadDir($this->getProjectDir() . "/$this->title");
+		$targetDir->copyFiles( $destDir );
+		unset( $this->skeleton );
+		parent::save();
+	}
+	function saveOld() {
+		$dir = new MadDir($this->getProjectDir() . "/$this->id");
+		print $dir;
+		die;
 		if ( ! $dir->isDir() ) {
 			$dir->mkDir();
 		}
@@ -114,33 +111,5 @@ class Project extends MadModel {
 			RewriteCond %{REQUEST_URI}  !(codeMirror) [NC]\n
 			RewriteRule !\.(js|jpg|png|gif|css|swf)$ index.php [NC]";
 		file_put_contents( "$dir/.htaccess", $contents );
-	}
-	/************* from mergeThis *************/
-	function getIndexTemp() {
-		$dirs = new MadDir();
-		// $dirs->setPattern( '*/.madProject' );
-		$dirs->setFlag( GLOB_ONLYDIR );
-
-		return $dirs;
-
-		$dirs = new MadFile( $this->dir );
-		if ( ! $dirs->isDir() ) {
-			return $this;
-		}
-		$dirs->filter('^\.');
-
-		$data = array();
-
-		foreach( $dirs as $dir ) {
-			$file = $dir->getFile() . '/.madProject';
-			if ( ! is_file( $file ) ) {
-				$json = $this->getDefault( $file );
-			} else {
-				$json = new MadJson( $file );
-			}
-			$json->dir = $dir->getFile();
-			$data[] = $json;
-		}
-		return $data;
 	}
 }

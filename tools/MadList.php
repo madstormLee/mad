@@ -27,7 +27,6 @@ class MadList extends MadData {
 			return $this;
 		}
 		$this->initFlag = true;
-		$this->setSearchTotal();
 
 		$this->data = $this->query->query();
 		return $this;
@@ -69,6 +68,7 @@ class MadList extends MadData {
 	}
 	/*********************** utility methods **********************/
 	function isEmpty() {
+		print $this->getSearchTotal();
 		return ! $this->getSearchTotal();
 	}
 	function getData() {

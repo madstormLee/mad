@@ -117,6 +117,21 @@ class MadDir extends MadFile {
 		if ($root)
 			return $tree;   
 	}
+	function copyFiles( MadDir $destDir ) {
+		if ( ! $destDir->isDir() ) {
+			$destDir->mkDir();
+		}
+		$files = array_filter( glob( $this->file . '/{*,.[a-z]*}', GLOB_BRACE ), 'is_file' );
+		$i = 0;
+		foreach( $files as $file ) {
+			$destFile = $destDir . '/' . basename($file);
+			if ( ! copy( $file, $destFile ) ) {
+				throw new Exception( 'copy error occured.' );
+			}
+			++$i;
+		}
+		return $i;
+	}
 	// from : jyotsnachannagiri@gmail.com 
 	function copyR(self $dst_dir,$UploadDate=false, $use_cached_dir_trees = false) {
 		static $cached_src_dir;
