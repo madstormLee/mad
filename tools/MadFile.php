@@ -137,6 +137,15 @@ class MadFile implements IteratorAggregate, Countable {
 	function isDir() {
 		return is_dir( $this->file );
 	}
+	function hasDir() {
+		if ( ! $this->isDir() ) {
+			return false;
+		}
+		foreach( $this as $row ) {
+			if( $row->isDir() ) return true;
+		}
+		return false;
+	}
 	/******************* crud *******************/
 	function fetch( $file ) {
 		return $this->setFile( $file );

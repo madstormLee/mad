@@ -18,6 +18,20 @@ class MadDir extends MadFile {
 		$this->getIndex();
 		return $this->data;
 	}
+	function getIndex() {
+		if ( ! empty( $this->data ) ) {
+			return $this->data;
+		}
+		if ( $this->file == '' ) {
+			$target = "$this->pattern";
+		} else {
+			$target = "$this->file/$this->pattern";
+		}
+		foreach( glob( $target, $this->flag ) as $file ) {
+			$this->data[] = new MadFile( $file );
+		}
+		return $this->data;
+	}
 	function getParentDir() {
 		return dirName( $this->file );
 	}
@@ -45,6 +59,12 @@ class MadDir extends MadFile {
 		$this->flag = $flag;
 		return $this;
 	}
+	function flag( $flag='' ) {
+		if ( empty( $flag ) ) {
+			return $this->getFlag();
+		}
+		return $this->addFlag( $flag );
+	}
 	function order( $order='dirFirst' ) {
 		$data = $this->getData();
 		if ( $order == 'dirFirst' ) {
@@ -53,20 +73,6 @@ class MadDir extends MadFile {
 			$this->data = array_merge( $dirs, $files );
 		}
 		return $this;
-	}
-	function getIndex() {
-		if ( ! empty( $this->data ) ) {
-			return $this->data;
-		}
-		if ( $this->file == '' ) {
-			$target = "$this->pattern";
-		} else {
-			$target = "$this->file/$this->pattern";
-		}
-		foreach( glob( $target, $this->flag ) as $file ) {
-			$this->data[] = new MadFile( $file );
-		}
-		return $this->data;
 	}
 	function mkdir() {
 		if ( ! $this->isDir() ) {

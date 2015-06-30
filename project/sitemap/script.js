@@ -1,55 +1,27 @@
-var MadSitemap = function() {
-	this.init= function(){
-		$$('.addMethod').each(function(unit){
-			unit.observe('click',MadSitemap.addMethod);
-		});
-		$('addClass').observe('click',MadSitemap.addClass);
-		$('newMethod').observe('focus',function(event){
-			event.element().value='';
-		});
-		$('formAddMethod').observe('submit',function(event){
-			return false;
-		});
-	};
-	this.addClass= function( event ) {
-		$('formAddMethod').hide();
-		var el = $('formAddClass').show();
-		el.style.left = Event.pointerX(event) -220 + 'px';
-		el.style.top = Event.pointerY(event) -10 + 'px';
-	};
-	this.addMethod= function( event ) {
-		$('formAddClass').hide();
-		$('className').value = event.element().previous('.controller').innerHTML;
-		var el = $('formAddMethod').show();
-		el.style.left = Event.pointerX(event) -220 + 'px';
-		el.style.top = Event.pointerY(event) -10 + 'px';
-	};
-};
-
 var Controllers = function() {
 	// initialize
-	var me = this;
+	var my = this;
 	this.sitemap = new Sitemap;
 
 	// events assign
 	$('#controllers').click( function( ev ) {
 		ev.preventDefault();
-		me.sitemap.add( $(ev.target) );
+		my.sitemap.add( $(ev.target) );
 	});
 };
 
 var SitemapWrite = function() {
-	var me = this;
+	var my = this;
 	this.container = $('#SitemapWrite');
 
 	this.container.submit( function( ev ) {
 		ev.preventDefault();
-		var target = $(ev.target);
+		var el = $(ev.target);
 		$('#content').val( $('#SitemapIndex .content').html() );
 		jQuery.ajax({
-			url: target.attr('action'),
-			type: target.attr('method'),
-			data: target.serialize(),
+			url: el.attr('action'),
+			type: el.attr('method'),
+			data: el.serialize(),
 			success: function( result ) {
 				$('#console').html( result );
 			}
@@ -59,7 +31,7 @@ var SitemapWrite = function() {
 
 var Sitemap = function() {
 	// initialize
-	var me = this;
+	var my = this;
 	this.container = $('#SitemapIndex');
 	this.current = this.container.find('dt.root');
 	// assign events
@@ -67,9 +39,9 @@ var Sitemap = function() {
 		ev.preventDefault();
 		var el = $(ev.target);
 		if ( ( el.hasClass('hasDic') || el.hasClass('hasValue') ) && el.html() != 'subs' ) {
-			me.container.find('.current').removeClass('current');
+			my.container.find('.current').removeClass('current');
 			el.addClass('current');
-			me.current = el;
+			my.current = el;
 
 			$('#floatMenu').css({
 				top: el.position().top
@@ -77,7 +49,7 @@ var Sitemap = function() {
 		}
 	});
 	$('#remove').click( function( ev ){
-		me.remove( $(ev.target) );
+		my.remove( $(ev.target) );
 	})
 	$('#addSub').click( function( ev ){
 		alert( 'not yet' );
@@ -101,25 +73,25 @@ var Sitemap = function() {
 
 	// methods
 	this.remove = function( el ) {
-		if ( me.current.hasClass('root') ) {
+		if ( my.current.hasClass('root') ) {
 			alert('you cannot remove root');
 			return false;
 		}
-		me.current.next('dd').remove();
-		me.current.remove();
+		my.current.next('dd').remove();
+		my.current.remove();
 	};
 
 	this.add = function ( el ) {
-		if ( ! me.hasSubs() ) {
-			me.createSub();
+		if ( ! my.hasSubs() ) {
+			my.createSub();
 		}
 		var domain = el.html().charAt(0).toLowerCase() + el.html().slice(1);
 		var value = el.html();
-		me.getSubs().append( $('<dt class="hasDic">' + domain + '</dt><dd class="dic"><dl><dt class="hasValue">controller</dt><dd class="value">' + value + '</dd></dl></dd>') );
+		my.getSubs().append( $('<dt class="hasDic">' + domain + '</dt><dd class="dic"><dl><dt class="hasValue">controller</dt><dd class="value">' + value + '</dd></dl></dd>') );
 	};
 	this.hasSubs = function() {
 		var rv = false;
-		me.current.next('dd').find('.hasDic').each( function( num, unit ) {
+		my.current.next('dd').find('.hasDic').each( function( num, unit ) {
 			if ( unit.innerHTML == 'subs' ) {
 				rv = true;
 				return false;
@@ -129,7 +101,7 @@ var Sitemap = function() {
 	};
 	this.getSubs = function() {
 		var rv = undefined;
-		me.current.next('dd').find('.hasDic').each( function( num, unit ) {
+		my.current.next('dd').find('.hasDic').each( function( num, unit ) {
 			if ( unit.innerHTML == 'subs' ) {
 				rv = $(unit).next('dd').children('dl');
 				return false;
@@ -138,10 +110,10 @@ var Sitemap = function() {
 		return rv;
 	};
 	this.createSub = function() {
-		if ( me.current.next('dd').children('dl').length == 0 ) {
-			me.current.next('dd').append( $('<dl></dl>') );
+		if ( my.current.next('dd').children('dl').length == 0 ) {
+			my.current.next('dd').append( $('<dl></dl>') );
 		}
-		var target = me.current.next('dd').children('dl');
+		var target = my.current.next('dd').children('dl');
 		target.append( $('<dt class="hasDic">subs</dt><dd class="dic"><dl></dl></dd>') );
 	};
 }
