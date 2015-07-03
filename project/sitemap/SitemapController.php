@@ -1,18 +1,18 @@
 <?
 class SitemapController extends MadController {
 	function indexAction() {
-		$index = new MadJson( 'sitemap.json' );
-		$this->view->index = $index;
+	}
+	function orderAction() {
+	}
+	function reorderAction() {
+		$text = trim($this->params->contents);
+		$text = "<dd>$text</dd>";
+
+		$json = new MadJson('sitemap.json');
+		$json->setFromDl( $text );
+		return $json->save();
 	}
 	function treeAction() {
-		$this->js->addFirst('/mad/js/prototype');
-		$this->main->sitemap = $this->sitemap;
-
-		$mvcManager = new MadView('views/MvcManager/widget');
-		$mvcManager->controllers = new Controllers;
-		$this->main->mvcManager = $mvcManager;
-
-		return $this->main;
 	}
 	function viewAction() {
 		$current = $this->sitemap->getPath( $this->get->href );
@@ -20,7 +20,6 @@ class SitemapController extends MadController {
 		return $this->main;
 	}
 	function writeAction() {
-		$this->js->addFirst('/mad/js/prototype');
 		$sitemap = $this->sitemap;
 		$current = $sitemap->getPath( $this->get->href );
 

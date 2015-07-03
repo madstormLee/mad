@@ -3,7 +3,7 @@ class MadSitemap extends MadAbstractData {
 	protected $file = 'sitemap.json';
 	protected $json;
 
-	function __construct( $file='nositemap.json' ) {
+	function __construct( $file='sitemap.json' ) {
 		$this->file = $file;
 		$json = new MadJson( $file );
 		if ( ! $json->isFile() ) {
@@ -12,11 +12,14 @@ class MadSitemap extends MadAbstractData {
 			$this->setData( $json->getData() );
 		}
 		$this->init( $this->data );
+		if ( ! $json->isFile() ) {
+			$json->setData( $this->data )->save();
+		}
 	}
 	public static function create() {
-		$sitemap = new self;
-		$sitemap->setCurrent();
-		return $sitemap;
+		$instance = new self;
+		// $sitemap->setCurrent();
+		return $instance;
 	}
 	function initFromComponent( $dir = '' ) {
 		$dirs = new MadDir($dir);
@@ -48,12 +51,7 @@ class MadSitemap extends MadAbstractData {
 			if ( ! isset( $row->href ) ) {
 				$row->href = "~/$row->path";
 			}
-			if ( ! isset( $row->component ) ) {
-				$row->component = $component;
-			}
-			if ( ! isset( $row->setting ) ) {
-				$row->setting = $setting;
-			}
+			$row->component = $row->path;
 			if ( isset($row->subs) ) {
 				$this->init( $row->subs, $row->path, $row->component, $row->setting );
 			}

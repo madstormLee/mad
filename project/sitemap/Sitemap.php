@@ -1,6 +1,6 @@
 <?
 class Sitemap extends MadModel {
-	function fetch( $id='' ) {
-		print $id;
+	function getIndex() {
+		return new MadJson( 'sitemap.json' );
 	}
 }

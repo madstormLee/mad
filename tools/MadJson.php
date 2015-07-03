@@ -30,42 +30,38 @@ class MadJson extends MadData {
 		$this->setJson( file_get_contents( $this->file ) );
 		return $this;
 	}
+
+
 	function setFromDl( $dl ) {
 		$this->setData( $this->dl2Array( $dl ) );
 		return $this;
 	}
-	private function dl2Array( $data ) {
-		$data = preg_replace('/<(dl|dt|dd) \w+\s*=\s*[\'"][^\'"]*[\'"]>/', "<$1>", $data );
+	function removeAttributes( $text ) {
+		return preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/i",'<$1$2>', $text);
+	}
+	function dl2Array( $data ) {
+		// $data = preg_replace('/<(dl|dt|dd) \w+\s*=\s*[\'"][^\'"]*[\'"]>/', "<$1>", $data );
+		$data = $this->removeAttributes( $data );
 		$data = json_decode( json_encode( new SimpleXMLElement( $data ) ) );
-		return $this->parseDl( $data );
+		$rv = $this->parseDl( $data->dl );
+		return $rv;
 	}
 	private function parseDl( $data ) {
 		$rv = array();
-		if ( ! isset( $data['dt'] ) ) {
-			return array();
-		}
-		$dt = $data['dt'];
-		$dd = $data['dd'];
-		if ( ! is_array( $dt ) ) {
-			if ( isset( $dd['dl'] ) ) {
-				$rv[$dt] = $this->parseDl( $dd['dl'] );
-			} else {
-				$rv[$dt] = $dd;
-			}
-			return $rv;
-		}
-		foreach( $dt as $key => $value ) {
-			if ( is_array( $dd[$key] ) ) {
-				if( isset( $dd[$key]['dl'] ) ) {
-					$dd[$key] = $this->parseDl( $dd[$key]['dl'] );
-				} else if ( empty( $dd[$key] ) ) {
-					$dd[$key] = '';
+		foreach( $data as $row ) {
+			if ( is_object( $row->dd ) || is_array( $row->dd ) ) {
+				$dl = $row->dd->dl;
+				if ( ! is_array( $dl ) ) {
+					$dl = array( $dl );
 				}
+				$rv[$row->dt] = $this->parseDl($dl);
+			} else {
+				$rv[$row->dt] = $row->dd;
 			}
-			$rv[$value] = $dd[$key];
 		}
 		return $rv;
 	}
+
 	function setJson( $json ) {
 		$json = json_decode( $json );
 		if( function_exists( 'json_last_error' ) && $errorNo = json_last_error() ) {
