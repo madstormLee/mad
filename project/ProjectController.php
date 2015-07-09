@@ -2,6 +2,8 @@
 class ProjectController extends MadController {
 	function indexAction() {
 	}
+	function listAction() {
+	}
 	function viewAction() {
 		$this->model->fetch( $this->params->id );
 	}
@@ -16,8 +18,8 @@ class ProjectController extends MadController {
 		return $dir->deleteAll();
 	}
 	function openAction() {
-		$project = new Project( $this->params->id );
-		return $this->session->set('project', $project );
+		$project = $this->model->fetch( $this->params->id );
+		return $this->session->set('project', $project )->__isset('project');
 	}
 	function closeAction() {
 		return $this->session->__unset( 'project' );

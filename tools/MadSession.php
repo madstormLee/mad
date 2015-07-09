@@ -4,24 +4,17 @@ class MadSession extends MadAbstractData {
 	protected $data;
 
 	protected function __construct() {
-		$this->data = &$_SESSION;
 		self::start();
+		$this->data = &$_SESSION;
 	}
 	public static function getInstance() {
 		self::$instance || self::$instance = new self;
 		return self::$instance;
 	}
-	public static function start() {
-		/*
-		header('P3P: CP="ALL CURa ADMa DEVa TAIa OUR BUS IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE LOC OTC"');
-		$server = PxParams::create('_SERVER');
-		session_set_cookie_params (0,"/", $server->SERVER_NAME );
-		if ( isset( $_POST["PHPSESSID"] ) ) {
-			session_id( trim( $_POST["PHPSESSID"] ) );
-		} elseif ( isset( $_GET["PHPSESSID"] ) ) {
-			session_id( trim( $_GET["PHPSESSID"] ) );
+	public static function start( $id = '' ) {
+		if ( ! empty($id) ) {
+			session_id( $id );
 		}
-		*/
 		return session_start();
 	}
 	public static function destroy() {

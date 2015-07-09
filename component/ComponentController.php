@@ -2,26 +2,6 @@
 class ComponentController extends MadController {
 	function indexAction() {
 	}
-	function installAction() {
-		$componentName = $this->params->model;
-		if ( 0 === strpos($componentName, '/') ) {
-			$dir = $_SERVER['DOCUMENT_ROOT'] . $componentName;
-		} else {
-			$dir = $componentName;
-		}
-		$model = new MadModel;
-		$model->setName( ucFirst(baseName($componentName)) );
-
-		if ( $model->isInstall() ) {
-			throw new Exception('Already installed: ' . $model->getName());
-		}
-
-		$model->setSetting("$dir/model.json");
-		$scheme = new MadScheme( $model );
-		$this->db->exec( $scheme );
-
-		return $model->isInstall();
-	}
 	function listAction() {
 		$get = $this->params;
 		if ( ! $get->path ) {
@@ -33,25 +13,6 @@ class ComponentController extends MadController {
 		}
 
 		$this->view->index = $this->model->getIndex( $get->path );
-	}
-	function interfacesAction() {
-		$list = new ComponentList( $this->params );
-		foreach( $list as $row ) {
-			$file = $this->projectLog->root . $row->files->controller;
-			if ( ! is_file( $file ) ) {
-				continue;
-			}
-			include_once $file;
-
-			$controllerName = baseName( $row->files->controller, '.php' );
-			try {
-				$controller = new $controllerName;
-			} catch ( Exception $e ) {
-				continue;
-			}
-			$row->interfaces = $controller->getActions();
-		}
-		$this->view->list = $list;
 	}
 	function writeAction() {
 		$get = $this->params;
@@ -70,48 +31,33 @@ class ComponentController extends MadController {
 		} else {
 			$post->path = '.';
 		}
+
 		$dir = new MadDir("$post->path/$post->name");
 		if ( $dir->exists() ) {
 			// throw new Exception( $dir . ' is already exists.');
 		}
 		if ( ! $dir->mkdir() ) {
-			// throw new Exception( $dir . ' cannot be created.');
+			throw new Exception( $dir . ' cannot be created.');
 		}
 		if ( ! $post->scaffold ) {
 			$post->scaffold = 'default';
 		}
-		$post->scaffold = 'default';
 		// copy all dir.
-		$targetDir = new MadDir("component/scaffold/$post->scaffold");
-		foreach( $targetDir as $file ) {
+		$files = new MadDir("component/scaffold/data/$post->scaffold");
+		$rv = 0;
+		foreach( $files as $file ) {
 			$ext = $file->getExtension();
-			if ( $ext == 'php' ) {
-				$view = new MadView( $file );
-				$view->phpOpen = "<?\n";
-				$view->name = ucFirst($post->name);
-
-				$baseName = $file->getBasename();
-				if ( $baseName == 'Model.php' ) {
-					$destFile = "$post->path/$post->name/" . ucFirst( $post->name ) . '.php';
-				} elseif ( $baseName == 'Controller.php' ) {
-					$destFile = "$post->path/$post->name/" . ucFirst( $post->name ) . $baseName;
-				} else {
-					$destFile = "$post->path/$post->name/$baseName.php";
-				}
-				$file = new MadFile( $destFile );
-				$file->saveContents( $view );
-			} elseif ( $ext == 'html' ) {
-				$view = new MadView( $file );
-				$model = new MadModel;
-				$model->setSetting( 'component/model/defaultFields.json' );
-				$view->model = $model;
-
-				$destFile = "$post->path/$post->name/" . $file->getBasename();
-				$file = new MadFile( $destFile );
-				$file->saveContents( $view );
-			}
+			$file = new MadFile( $file );
+			$name = ucFirst($post->name);
+			$data = array(
+				'name' => $name,
+			);
+			$contents = $file->template( $data );
+			$destFile = "$post->path/$post->name/" . str_replace('Model', $name, $file->getBasename() );
+			$file->setFile( $destFile );
+			$rv += !! $file->saveContents( $contents );
 		}
-		die;
+		return $rv;
 	}
 	function saveTempAction() {
 		$post = $this->post;
@@ -158,5 +104,44 @@ class ComponentController extends MadController {
 		$model = new Component( $this->params->id );
 		throw new Exception('dont do that');
 		return $model->delete();
+	}
+	function installAction() {
+		$componentName = $this->params->model;
+		if ( 0 === strpos($componentName, '/') ) {
+			$dir = $_SERVER['DOCUMENT_ROOT'] . $componentName;
+		} else {
+			$dir = $componentName;
+		}
+		$model = new MadModel;
+		$model->setName( ucFirst(baseName($componentName)) );
+
+		if ( $model->isInstall() ) {
+			throw new Exception('Already installed: ' . $model->getName());
+		}
+
+		$model->setSetting("$dir/model.json");
+		$scheme = new MadScheme( $model );
+		$this->db->exec( $scheme );
+
+		return $model->isInstall();
+	}
+	function interfacesAction() {
+		$list = new ComponentList( $this->params );
+		foreach( $list as $row ) {
+			$file = $this->projectLog->root . $row->files->controller;
+			if ( ! is_file( $file ) ) {
+				continue;
+			}
+			include_once $file;
+
+			$controllerName = baseName( $row->files->controller, '.php' );
+			try {
+				$controller = new $controllerName;
+			} catch ( Exception $e ) {
+				continue;
+			}
+			$row->interfaces = $controller->getActions();
+		}
+		$this->view->list = $list;
 	}
 }

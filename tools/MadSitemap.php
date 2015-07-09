@@ -84,11 +84,11 @@ class MadSitemap extends MadAbstractData {
 		$count = count($paths);
 		foreach( $paths as $id ) {
 			++$i;
+			if ( ! isset($cursor->subs->$id) ) {
+				return $cursor;
+			}
 			if ( isset($cursor->subs) ) {
 				$cursor = $cursor->subs;
-			}
-			if ( ! isset($cursor->$id) ) {
-				return $cursor;
 			}
 			$cursor = $cursor->$id;
 			if ( ! isset($cursor->subs) ) {

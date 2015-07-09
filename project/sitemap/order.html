@@ -1,0 +1,27 @@
+<link rel='stylesheet' type='text/css' href='./orderStyle.css' />
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='./orderScript.js'></script>
+
+<h1>order</h1>
+
+<form id='reorder' method='post' action='./reorder'>
+	<textarea id='contents' name='contents'></textarea>
+	<button>save</button>
+</form>
+
+<section id='index' class='subs'>
+	<? function treeIterator( $data ) { ?>
+	<? foreach( $data as $key => $value ): ?>
+	<? $subs = is_array($value) || is_object( $value ); ?>
+
+	<dl class='<?=$subs?"subs":"value";?>'>
+		<dt><?=$key?></dt>
+		<? if ( $subs ): ?>
+		<dd><? treeIterator( $value ); ?></dd>
+		<? else: ?>
+		<dd><?=$value ?></dd>
+		<? endif; ?>
+	</dl>
+	<? endforeach; ?>
+	<? }; treeIterator( $model->getIndex() ); ?>
+</section>

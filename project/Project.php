@@ -9,6 +9,32 @@ class Project extends MadModel {
 			MadJs::getInstance()->replace('/mad/component/model/install?model=' . $model);
 		}
 	}
+	function getIndex() {
+		$dirs = new MadDir( $this->getProjectDir() );
+		$dirs->flag( GLOB_ONLYDIR );
+
+		$rv = new MadData;
+		foreach( $dirs as $row ) {
+			$row = new self( $row );
+			$rv->add( $row );
+		}
+		return $rv;
+	}
+	function fetch( $id = '' ) {
+		if ( $id instanceof MadFile ) {
+			$file = $id;
+		} else {
+			$file = new MadFile( $id );
+		}
+		$router = MadRouter::getInstance();
+
+		$this->id = $file->getFile();
+		$this->title = $file->getBasename();
+		$this->wDate = $file->date();
+		$this->href = $router->path2Url( $file );
+
+		return $this;
+	}
 	function isInstall() {
 		$query = new MadQuery('Project');
 		return $query->isTable();

@@ -163,6 +163,14 @@ class MadFile implements IteratorAggregate, Countable {
 		$this->contents = $contents;
 		return $this;
 	}
+	function template( $data = array() ) {
+		$assign = array();
+		foreach( $data as $key => $value ) {
+			$assign['{'.$key.'}'] = $value;
+		}
+		$rv = str_replace( array_keys($assign), array_values($assign), $this->getContents() );
+		return $rv;
+	}
 	function phpTemplate() {
 		$phpReplaces = array( '<?' => '{{', '?>' => '}}' );
 		$keys = array_keys( $phpReplaces );

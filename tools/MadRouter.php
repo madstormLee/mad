@@ -57,6 +57,9 @@ class MadRouter extends MadAbstractData {
 		$this->addHistory();
 		$this->backUrl = isset( $server->HTTP_REFERER )? $server->HTTP_REFERER:'~/';
 	}
+	function toUrl( $path ) {
+		return str_replace( $this->document, '', $path);
+	}
 	function setComponentPath() {
 		// todo: exception. just trying.
 		if ( is_file( 'sitemap.json') ) {
