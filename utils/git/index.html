@@ -8,25 +8,27 @@
 </nav>
 
 <form method='post' action='./commitAll'>
-	<textarea id='comment' name='comment'>Update All Works</textarea>
-	<button>Commit All</button>
-</form>
-
-<form id='ListSearch' class='listSearch' method='get' action='?'>
-	<button class='btnSubmit' type='submit'>검색</button>
+	<dl class='row collapse'>
+		<dt class='left small-9 columns'>
+			<input type='text' id='message' name='message' value='Update All Works' />
+		</dt>
+		<dd class='left small-3 columns'>
+			<button class='postfix'>Commit All</button>
+		</dd>
+	</dl>
 </form>
 
 <section id='status'>
-<dl>
-	<? foreach( $model->status() as $domain => $data ): ?>
-	<dt><?=$domain?></dt>
-	<dd>
-		<ul>
-			<? foreach( $data as $file ): ?>
-			<li><?=$file?></li>
-			<? endforeach; ?>
-		</ul>
-	</dd>
-	<? endforeach; ?>
-</dl>
+	<dl>
+		<? foreach( $model->status() as $domain => $data ): ?>
+		<dt><?=$domain?></dt>
+		<dd>
+			<ul>
+				<? foreach( $data as $file ): ?>
+				<li><?=$file?></li>
+				<? endforeach; ?>
+			</ul>
+		</dd>
+		<? endforeach; ?>
+	</dl>
 </section>

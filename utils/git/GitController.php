@@ -29,8 +29,8 @@ class GitController extends MadController {
 		return `git add --all`;
 	}
 	function commitAllAction() {
-		$comment = $this->params->comment;
-		$command = "git commit -a -m '$comment'";
+		$message = $this->params->message;
+		$command = "git commit -a -m '$message'";
 		return `$command`;
 	}
 }
