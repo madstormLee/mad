@@ -25,7 +25,7 @@ class MadConfig extends MadAbstractData {
 
 		$file = 'config.json';
 		if ( ! is_file( $file ) ) {
-			$file = 'mad/config.json';
+			$file = $_SERVER['DOCUMENT_ROOT'] . '/mad/config.json';
 		}
 		$this->addConfig( $file );
 	}

@@ -3,6 +3,7 @@ class GitController extends MadController {
 	function indexAction() {
 		$model = $this->model;
 		$get = $this->params;
+		// $get->dir = $_SERVER['DOCUMENT_ROOT'] . '/xp';
 		if ( $get->dir ) {
 			$model->setDir( $get->dir );
 		}

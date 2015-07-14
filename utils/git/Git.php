@@ -4,6 +4,9 @@ class Git {
 
 	function __construct() {
 	}
+	function gitExists() {
+		return is_dir( '.git' );
+	}
 	function command( $command ) {
 		$this->lastCommand = $command;
 		$rv = trim( `$command` );
@@ -11,10 +14,6 @@ class Git {
 	}
 	function getLastCommand() {
 		return $this->lastCommand;
-	}
-	function delegate( $command ) {
-		$this->lastCommand = $command;
-		return file_put_contents( "data/Svn/delegate.command", $command, FILE_APPEND );
 	}
 	function add( $files ) {
 		if ( ! $files instanceof MadData ) {
@@ -41,21 +40,18 @@ class Git {
 		}
 		return $files;
 	}
-	private $dir = '';
+	private $dir = '.';
 	function setDir( $dir ) {
 		$this->dir = $dir;
 	}
 
 	private $status = array();
 	function setStatus() {
-		if ( ! empty( $this->dir ) ) {
-			$org = getcwd();
-			chdir( $this->dir );
-			$result = trim( `git status` );
-			chdir( $org );
-		} else {
-			$result = trim( `git status` );
-		}
+		$org = getcwd();
+		chdir( $this->dir );
+		$result = trim( `git status` );
+		chdir( $org );
+
 		if ( empty( $result ) ) {
 			return false;
 		}
