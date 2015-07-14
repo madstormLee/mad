@@ -2,13 +2,6 @@
 class Project extends MadModel {
 	protected $projectDir = '/projects';
 
-	function __construct( $id = '' ) {
-		parent::__construct( $id );
-		if ( ! $this->isInstall() ) {
-			$model = '/mad/project';
-			MadJs::getInstance()->replace('/mad/component/model/install?model=' . $model);
-		}
-	}
 	function getIndex() {
 		$dirs = new MadDir( $this->getProjectDir() );
 		$dirs->flag( GLOB_ONLYDIR );
@@ -35,10 +28,6 @@ class Project extends MadModel {
 
 		return $this;
 	}
-	function isInstall() {
-		$query = new MadQuery('Project');
-		return $query->isTable();
-	}
 	function getProjectDir() {
 		if ( 0 === strpos( $this->projectDir, '/' ) ) {
 			return $_SERVER['DOCUMENT_ROOT'] . $this->projectDir;
@@ -56,9 +45,9 @@ class Project extends MadModel {
 	public static function session() {
 		$session = MadSession::getInstance();
 		if ( ! isset( $session->project ) ) {
-			$session->project = '.';
+			$session->project = new self(MAD);
 		}
-		return new self( $session->project );
+		return $session->project;
 	}
 	function getSkeletons() {
 		$rv = new MadData;
@@ -128,7 +117,7 @@ class Project extends MadModel {
 			'db' => "MadDb::create('sqlite:data.db')",
 			"debug" => "MadDebug::getInstance()",
 			"session" => "MadSession::getInstance()",
-			"layout" => "new MadView('mad/layout/default.html')",
+			"layout" => "new MadView('mad/project/layout/default.html')",
 		);
 		$json->save();
 	}

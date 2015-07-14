@@ -1,6 +1,6 @@
 <?
 class FileController extends MadController {
-	function browserAction() {
+	function indexAction() {
 		$get = $this->params;
 		$model = $this->model;
 
@@ -13,7 +13,7 @@ class FileController extends MadController {
 		$this->view->history = $history;
 		$this->view->get = $get;
 	}
-	function indexAction() {
+	function listAction() {
 		$get = $this->params;
 		$projectPath = realpath('.') . '/';
 
@@ -49,7 +49,7 @@ class FileController extends MadController {
 			if ( $this->session->view ) {
 				$get->view = $this->session->view;
 			} else {
-				$get->view = 'index';
+				$get->view = 'list';
 			}
 		}
 		$this->view->setFile( "$this->component/$get->view.html" );

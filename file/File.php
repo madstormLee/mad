@@ -1,6 +1,10 @@
 <?
 class File extends MadFile {
 	// @override
+	function setPattern( $pattern ) {
+		$this->pattern = $pattern;
+		return $this;
+	}
 	function getIndex() {
 		$rv = new MadDir( $path, $pattern );
 		return $rv;

@@ -1,28 +1,24 @@
-<h1>File List Index</h1>
+<h1>List</h1>
 
-<h2><?=$model->getFile()?></h2>
-
-<table class='index'>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Size</th>
-			<th>Type</th>
-			<th>Date Modified</th>
-		</tr>
-	</thead>
-	<tbody>
-		<? foreach( $index as $row ) : ?>
-		<tr>
-			<? if( $row->isDir() ): ?>
-			<td class='title'><a href='<?=$row->href?>'><?=$row?></a></td>
-			<? else: ?>
-			<td class='title'><?=$row?></td>
-			<? endif; ?>
-			<td><?=$row->size()?></td>
-			<td><?=$row->getType()?></td>
-			<td><?=$row->date('Y-m-d H:i:s')?></td>
-		</tr>
-		<? endforeach; ?>
-	</tbody>
-</table>
+<ul class='index fileIndex'>
+	<? foreach( $index as $row ): ?>
+	<li>
+	<? if ( $row->isDir() ): ?>
+	<img src='./icons/chakram2/folder.png'  />
+	<a class='dir' href='./list?file=<?=$row->getFile()?>'><?=$row->getBasename()?></a>
+	<? else: ?>
+	<? $icon = "file/icons/chakram2/file_" . $row->getExtension() . ".png"; ?>
+	<? if ( is_file( $icon ) ): ?>
+	<img src='./icons/chakram2/file_<?=$row->getExtension()?>.png' />
+	<? else : ?>
+	<img src='./icons/chakram2/file_blank.png' />
+	<? endif; ?>
+	<a class='file' href='./write?file=<?=$row->getFile()?>'><?=$row->getBasename()?></a>
+	<? endif; ?>
+	<nav class='buttons'>
+		<a href='./write?file=<?=$row?>'>write</a>
+		<a href='./delete?file=<?=$row?>'>delete</a>
+	</nav>
+	</li>
+	<? endforeach; ?>
+</ul>

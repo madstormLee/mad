@@ -1,0 +1,12 @@
+<h1>status</h1>
+
+<dl class='user myself'>
+	<? if ( $user = $config->session->user ): ?>
+	<dt><?=$user->id?></dt>
+	<dd>name: <?=$user->name?></dd>
+	<dd>email: <?=$user->email?></dd>
+	<? else: ?>
+	<dt>나</dt>
+	<dd data-href='./login'></dd>
+	<? endif; ?>
+</dl>

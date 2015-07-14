@@ -1,0 +1,28 @@
+<link rel='stylesheet' type='text/css' href='./style.css' />
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src='./tree.js'></script>
+
+<h1>SitemapTree</h1>
+
+<dl class='tree'>
+	<dt>/</dt>
+	<dd class='sortable root'>
+	<? $treeIterator = function( $tree ) use ( &$treeIterator ) { ?>
+	<? foreach( $tree as $row ): ?>
+	<dl>
+		<dt class='<?=isset($row->subs)?'subs':'noSubs'; ?>'>
+			<? if ( ! empty( $row->subs ) ): ?>
+			<a class='toggleSubs' href='#subs' title='toggle sub'>+</a>
+			<? endif; ?>
+			<b><?=$row->label?></b>
+			<a class='createSubs' href='./write?parentid=<?=$row->id?>' title='create sub'>AddSub</a>
+			<a class='delete' href='./delete?id=<?=$row->id?>' data-confirm='delete tree'>Delete</a>
+		</dt>
+		<? if ( ! empty( $row->subs ) ): ?>
+		<dd class='subs sortable'><? $treeIterator( $row->subs ); ?></dd>
+		<? endif; ?>
+	</dl>
+	<? endforeach; ?>
+	<? }; $treeIterator( $model->getIndex() ); ?>
+	</dd>
+</dl>

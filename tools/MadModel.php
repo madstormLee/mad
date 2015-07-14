@@ -23,6 +23,9 @@ class MadModel extends MadAbstractData {
 		return new MadIndex( $this );
 	}
 	function setSetting( $file ) {
+		if ( ! is_file( $file ) ) {
+			return $this;
+		}
 		$this->setting = new MadJson( $file );
 		return $this;
 	}

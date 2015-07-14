@@ -68,6 +68,12 @@ $( function() {
 		$( $(ev.target).attr('href') ).toggle();
 		return false;
 	});
+	$('nav.tab a').click( function( ev ) {
+		$(ev.target).addClass('current').siblings().removeClass('current');
+		var target = $( $(ev.target).attr('href') );
+		target.show().siblings().hide();
+		return false;
+	});
 	/************************* form **************************/
 	$('form input.ckAll').click( function( ev ) {
 		$(ev.target).up('form').find('[type=checkbox]').attr('prop', this.checked );

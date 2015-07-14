@@ -1,18 +1,18 @@
-#index dl {
+dl.tree {
 	margin: 0;
 }
-#index dt {
+dl.tree dt {
 	border: 1px solid #000;
 	padding: 0 0.5rem;
 	border-radius: 1rem;
 	font-size: .8rem;
 }
-#index dd {
+dl.tree dd {
 	margin: 0 0 0 1rem;
 }
-#index dd.sortable {
+dl.tree dd.sortable {
 	cursor: move;
 }
-#index dd.subs {
+dl.tree dd.subs {
 	display: none;
 }

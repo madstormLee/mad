@@ -118,7 +118,7 @@ class MadController {
 
 			if ( $result === null && ! $this->view->isFile() ) {
 				http_response_code(404);
-				$this->view->setFile('mad/layout/404.html');
+				$this->view->setFile('mad/project/layout/404.html');
 			}
 
 			if ( null === $result ) {

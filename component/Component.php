@@ -16,13 +16,14 @@ class Component extends MadModel {
 	}
 	function getScaffolds() {
 		$rv = new MadData;
-		foreach( glob('component/scaffold/*', GLOB_ONLYDIR) as $dir ) {
+		foreach( glob('component/scaffold/data/*', GLOB_ONLYDIR) as $dir ) {
 			$id = basename($dir);
-			$rv->dir = new MadData( array(
+			$row = new MadData( array(
 				'id' => $id . 'Scaffold', 
 				'value' => $id, 
 				'label' => $id, 
 			));
+			$rv->add( $row );
 		}
 		return $rv;
 	}

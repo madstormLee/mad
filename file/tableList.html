@@ -1,0 +1,28 @@
+<h1>Table List</h1>
+
+<h2><?=$model->getFile()?></h2>
+
+<table class='index'>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Size</th>
+			<th>Type</th>
+			<th>Date Modified</th>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $index as $row ) : ?>
+		<tr>
+			<? if( $row->isDir() ): ?>
+			<td class='title'><a href='<?=$row->href?>'><?=$row?></a></td>
+			<? else: ?>
+			<td class='title'><?=$row?></td>
+			<? endif; ?>
+			<td><?=$row->size()?></td>
+			<td><?=$row->getType()?></td>
+			<td><?=$row->date('Y-m-d H:i:s')?></td>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>

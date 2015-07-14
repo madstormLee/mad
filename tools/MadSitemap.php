@@ -38,22 +38,18 @@ class MadSitemap extends MadAbstractData {
 		}
 		return new MadData($rv);
 	}
-	function init( &$data, $path='', $component='', $setting='' ) {
+	function init( &$data, $path='') {
 		if ( empty( $data ) ) {
 			array();
 		}
 		foreach( $data as $id => &$row ) {
-			if ( empty( $path ) ) {
-				$row->path = "$id";
-			} else {
-				$row->path = "$path/$id";
-			}
+			$row->path = empty( $path ) ? "$id" : "$path/$id";
+			$row->component = $row->path;
 			if ( ! isset( $row->href ) ) {
 				$row->href = "~/$row->path";
 			}
-			$row->component = $row->path;
 			if ( isset($row->subs) ) {
-				$this->init( $row->subs, $row->path, $row->component, $row->setting );
+				$this->init( $row->subs, $row->path );
 			}
 		}
 	}

@@ -9,6 +9,7 @@
 		"db": "MadDb::create('sqlite:data.db')",
 		"debug": "MadDebug::getInstance()",
 		"session": "MadSession::getInstance()",
-		"layout": "new MadView('layout/default.html')"
+		"project": "Project::session()",
+		"layout": "new MadView('layout.html')"
 	}
 }
