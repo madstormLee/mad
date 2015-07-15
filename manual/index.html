@@ -1,22 +1,6 @@
-<h1>Manual Index</h1>
+<h1>Manual</h1>
 
-<section id='manualIndex' class='left medium-9 columns'>
-<? function manualIterator( $data, $path='' ) { ?>
-	<dl>
-	<? foreach( $data as $key => $row ) : ?>
-		<? $currentPath = $path . '/' . $key?>
-		<dt>
-			<a href='./view?path=<?=$currentPath?>'><?=$row->title?></a>
-			<a href='./write?path=<?=$currentPath?>'>편집</a>
-			<a href='./delete?path=<?=$currentPath?>'>삭제</a>
-		</dt>
-		<? if ( $row->sub ) : ?>
-		<dd><? manualIterator( $row->sub, $currentPath ) ?></dd>
-		<? endif; ?>
-	<? endforeach; ?>
-	</dl>
-<? }; manualIterator( $index ); // end function ?>
-</section>
+<section id='index' class='left medium-9 columns' data-href='./list'></section>
 
 <section class='right medium-3 columns'>
 	<form id='newForm' method='post' action='./new'>

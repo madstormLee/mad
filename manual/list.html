@@ -1,12 +1,15 @@
 <h1>Index of <?=$model->domain?></h1>
 
+<? if ( $index = $model->getIndex() ) : ?>
 <dl>
-	<? foreach( $index = $model->getIndex() as $row ): ?>
+	<? foreach( $index as $row ): ?>
 	<dt><a href='#contents<?=$row->id?>' data-reveal-id='contents<?=$row->id?>'><?=$row->title?></a></dt>
 	<dd id='contents<?=$row->id?>' class="reveal-modal" data-reveal aria-labelledby="firstModalTitle" aria-hidden="true" role="dialog">
 		<?=$row->contents?>
 	</dd>
 	<? endforeach; ?>
 </dl>
+<? else: ?>
+<? endif; ?>
 
 <?=$index->getPageNavi(); ?>
