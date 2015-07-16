@@ -1,5 +1,5 @@
 <?
-class Database extends MadDbModel {
+class Db extends MadModel {
 	/*********************** config **********************/
 	function getConfig( $target = '' ) {
 		if ( empty( $target ) ) {

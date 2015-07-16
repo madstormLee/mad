@@ -40,7 +40,4 @@ class MadIni extends MadFile {
 		}
 		return file_put_contents($this->file, $contents) ? 1:0;
 	}
-	function __toString() {
-		return $this->getContents();
-	}
 }

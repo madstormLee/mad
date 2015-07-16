@@ -1,0 +1,19 @@
+<h1><?=$ini->getBasename()?></h1>
+
+<form id='IniWriteForm' method='post' action='./save'>
+
+	<input type='hidden' name='file' value='<?=$ini->getFile()?>' />
+
+	<? foreach( $model as $legend => $data ): ?>
+	<fieldset>
+		<legend><?=$legend?></legend>
+		<? foreach( $data as $key => $value ): ?>
+		<label for='<?=$legend?><?=$key?>'><?=$key?></label>
+		<input id='<?=$legend?><?=$key?>' name='<?=$legend?>[<?=$key?>]' type='text' value='<?=$value?>' /><
+		<? endforeach; ?>
+	</fieldset>
+	<? endforeach; ?>
+
+	<button type='submit'>확인</button>
+
+</form>

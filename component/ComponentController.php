@@ -1,8 +1,20 @@
 <?
 class ComponentController extends MadController {
 	function indexAction() {
+		$get = $this->params;
+		if ( ! $get->path ) {
+			if ( isset($this->session->project) ) {
+				$get->path = $this->session->project;
+			} else {
+				$get->path = '.';
+			}
+		}
+
+		$this->view->index = $this->model->getIndex( $get->path );
 	}
-	function listAction() {
+	function treeAction() {
+	}
+	function fileListAction() {
 		$get = $this->params;
 		if ( ! $get->path ) {
 			if ( isset($this->session->project) ) {

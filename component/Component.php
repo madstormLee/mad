@@ -7,12 +7,46 @@ class Component extends MadModel {
 		$rv = new MadData;
 		$index = glob( "$path/*", GLOB_ONLYDIR );
 		foreach( $index as $file ) {
-			$row = new MadData;
-			$row->id = baseName($file);
-			$row->files = (new MadDir( $file ))->order();
-			$rv->$file = $row;
+			$row = new self( $file );
+			$rv->add( $row );
 		}
 		return $rv;
+	}
+	function fetch( $id='' ) {
+		$this->id = $id;
+		$this->file = baseName( $id );
+		return $this;
+	}
+	function getFiles() {
+		$rv = (new MadDir( $this->id ));
+		return $rv->order();
+	}
+	function getInterfaces() {
+		$rv = new MadData;
+		$rv->addData( $this->getActions() );
+		$rv->addData( $this->getViews() );
+		return $rv;
+	}
+	function getViews() {
+		$dir = new MadDir( $this->id, "*.html" );
+		$rv = new MadData;
+		foreach( $dir as $file ) {
+			$rv->add( $file->getBasename('.html') );
+		}
+		return $rv;
+	}
+	function getActions() {
+		$fileName = ucFirst(baseName( $this->id )) . 'Controller.php';
+		$file = "$this->id/$fileName";
+		if ( ! is_file( $file ) ) {
+			return array();
+		}
+		$file = new MadFile( $file );
+		$contents = $file->getContents();
+		if( ! preg_match_all( '/(?<=function )[a-zA-Z0-9_]+(?=Action)/', $contents, $matches ) ) {
+			return array();
+		}
+		return $matches[0];
 	}
 	function getScaffolds() {
 		$rv = new MadData;

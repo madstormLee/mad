@@ -1,5 +1,5 @@
 <script src="/venders/swfUploader/swfupload.js"></script>
-<script src="./write.js"></script>
+<script src="./upload.js"></script>
 
 <h1>File Write</h1>
 
@@ -9,14 +9,14 @@
 		<input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
 		<input type="hidden" name="dir" value="<?=$model->dir?>" />
 		<input type='file'
-		accept="images/*"
-		title='Image Files'
-		data-upload-href='~/<?=$model->dir?>'
-		data-swf-href="~/swf/swfupload.swf"
-		data-types='*.jpg;*.gif;*.png'
-		data-uploadLimit='1'
-		data-queueLimit='1'
-		/>
+			accept="images/*"
+			title='Image Files'
+			data-upload-href='~/<?=$model->dir?>'
+			data-swf-href="~/swf/swfupload.swf"
+			data-types='*.jpg;*.gif;*.png'
+			data-uploadLimit='1'
+			data-queueLimit='1'
+			/>
 
 		<button id='btnUpload'>
 			Select Source <b>(2 MB Max)</b>

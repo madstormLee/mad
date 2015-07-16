@@ -1,7 +1,6 @@
 <?
 class ModelController extends MadController {
 	function indexAction() {
-		$get = $this->params;
 	}
 	function presetAction() {
 	}

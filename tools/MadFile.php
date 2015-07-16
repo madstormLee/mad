@@ -36,12 +36,7 @@ class MadFile implements IteratorAggregate, Countable {
 		return $this->file;
 	}
 	function getBasename( $tail = '' ) {
-		$rv = explode( '/', $this->file );
-		$rv = end( $rv );
-		if ( $tail ) {
-			$rv = rtrim( $rv, $tail );
-		}
-		return $rv;
+		return basename( $this->file, $tail );
 	}
 	function getDirname() {
 		return dirName( $this->file );

@@ -63,11 +63,13 @@ class FileController extends MadController {
 	function writeAction() {
 		$model = $this->model;
 		$model->fetch( $this->params->file );
+		$ext = $model->getExtension();
+
 		if (  $model->isDir() ) {
 			$this->view->setFile('writeDir.html');
+		} else if ( $ext == 'ini' ) {
+			$this->view->setFile('iniWrite.html');
 		} else {
-
-			$ext = $model->getExtension();
 			if ( $ext == 'html' ) {
 				$ext = 'htmlembedded';
 			}
@@ -80,16 +82,43 @@ class FileController extends MadController {
 			$this->view->modeFile = '~/' . $file;
 		}
 	}
+	function viewAction() {
+		$get = $this->params;
+		if ( ! is_file( $get->file ) ) {
+			throw new Exception('파일이 존재하지 않습니다.', 'back', 'replace');
+		}
+		$model = $this->model->fetch( $get->file );
+		$ext = $model->getExtension();
+
+		if ( $ext == 'xml' ) {
+			MadHeaders::xml();
+			return file_get_contents( $get->file );
+		}
+		$view = new MadView;
+		return $view->setData( $this->model );
+	}
 	function saveAction() {
 		printR( $this->params );
 		die;
-	}
-	function openAction() {
-		$params = $this->params;
-		$model = $this->model;
-		if ( $params->dir ) {
-			$this->model->setDir( $params->dir );
+
+		$model = $this->model->fetch( $this->params->file );
+		$ext = $model->getExtension();
+
+		if ( $model->isDir() ) {
+			return $model->mkDir();
+		} elseif ( $ext == 'ini' ) {
+			$ini = new MadIni($this->params->file);
+			$ini->setData( $this->params );
+		} elseif ( $ext == 'json' ) {
+			$post = $this->post;
+			$model = new MadJson( $post->file );
+			$model->setFromDl( $post->data );
+			return $this->model->save();
 		}
+		return $model->save();
+	}
+	function deleteAction() {
+		return $this->model->delete( $this->params->file );
 	}
 	function infoAction() {
 		$get = $this->params;

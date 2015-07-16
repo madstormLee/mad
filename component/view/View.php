@@ -1,7 +1,7 @@
 <?
-// not done anything
-class Form {
-	function getIterator() {
+class View extends MadModel {
+	// testing...
+	function formFromDb() {
 		$dbname = 'designstory';
 		$tablename = 'request';
 		$result = mysql_list_fields($dbname,$tablename);

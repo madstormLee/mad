@@ -1,50 +1,21 @@
-/* index */
-#ComponentList {
+dl.component {
+	border: 1px solid #000;
+	background: url(component.png) no-repeat top 1rem right 1rem;
+	padding: 1rem;
 }
-#ComponentList td {
-padding: 5px 10px;
+dl.component dt.title {
+	text-align: center;
 }
-#ComponentList dl {
-padding-left: 10px;
-text-align: left;
+dl.component dt.title a {
+	color: #008CBA;
 }
-#ComponentList dl dt {
-margin-top: 1px;
-border: 1px solid #000;
+dl.component dt a {
+	display: inline;
+	color: #000;
 }
-#ComponentList dl dt span {
-display: inline-block;
-padding: 2px 10px;
-text-align: right;
-width: 70px;
-background: #ccf;
+dl.component dd.interfaces {
 }
-#ComponentList dl dt b {
-padding-left: 10px;
-}
-/************************ from old Component ***********************/
-#scaffold .buttons {
-margin-top: 20px;
-text-align: right;
-}
-#scaffold .buttons li {
-display: inline;
-}
-#scaffold ul li {
-margin-top: 7px;
-}
-/***************** form units *******************/
-#scaffold ul li>label {
-display: inline-block;
-width: 100px;
-background: #ccc;
-padding: 2px 10px;
-text-align: right;
-}
-#scaffold ul li input[type='text'] {
-border: 1px solid #666;
-padding: 3px;
-}
-#description {
-width: 500px;
+dl.component dd.interfaces ,
+dl.component dd.files {
+	display: none;
 }

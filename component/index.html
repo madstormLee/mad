@@ -1,6 +1,48 @@
+<link rel='stylesheet' href='./style.css' />
 <h1>Component</h1>
 
-<section id='index' data-href='./list'></section>
+<section id='index'>
+	<h1>List</h1>
+
+	<ul class='medium-block-grid-3 small-block-grid-2'>
+		<? foreach( $index as $row ): ?>
+		<li>
+			<dl class='component'>
+				<dt class='title'><a href='./view?id=<?=$row->file?>'><?=$row->file?></a></dt>
+				<dt><a class='toggleId' href='#<?=$row->file?>Interfaces'>Interfaces</a></dt>
+				<dd id='<?=$row->file?>Interfaces' class='interfaces'>
+					<ul>
+						<? foreach( $row->getInterfaces() as $interface ): ?>
+						<li><?=$interface?></li>
+						<? endforeach; ?>
+					</ul>
+				</dd>
+				<dt><a class='toggleId' href='#<?=$row->file?>Files'>Files</a></dt>
+				<dd id='<?=$row->file?>Files' class='files'>
+					<ul>
+						<? foreach( $row->getFiles() as $file ): ?>
+						<? if ( is_dir($file) ) : ?>
+						<li><a href='./index?file=<?=$file?>'><?=$file->getBasename()?></a></li>
+						<? else: ?>
+						<li><?=$file->getBasename()?></li>
+						<? endif; ?>
+						<? endforeach; ?>
+					</ul>
+				</dd>
+				<dd class='breadcrumb'>
+					<a href='./view?id=<?=$row->id?>'>View</a>
+					<a href='./write?id=<?=$row->id?>'>Edit</a>
+					<a href='./delete?id=<?=$row->id?>'>Delete</a>
+				</dd>
+			</dl>
+		</li>
+	<? endforeach; ?>
+	</ul>
+
+	<? if ( $index->isEmpty() ) : ?>
+	<p class='notice'>No searched list.</p>
+	<? endif; ?>
+</section>
 
 <section id='right'>
 	<nav class='breadcrumbs'>

@@ -1,3 +1,0 @@
-<?
-class Controller extends MadModel {
-}

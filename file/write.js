@@ -19,4 +19,3 @@ $( function() {
 		commandDisplay.innerHTML = keys;
 	});
 });
-

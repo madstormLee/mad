@@ -1,8 +1,8 @@
 <?
-class DatabaseController extends MadController {
+class DbController extends MadController {
 	function indexAction() {
-		$configs = new MadJson( $this->projectLog->root . 'json/configs.json' );
-		$this->main->list = $configs->databases;
+		$config = new MadJson( $this->project->id . '/config.json' );
+		$this->view->list = $config->databases;
 	}
 	function databasesAction() {
 	}
@@ -28,8 +28,6 @@ class DatabaseController extends MadController {
 			$json->setData($tables)->save();
 		}
 
-
-
 		/****************** getCommonTable *******************/
 		$list = new MadJson("json/LocaleTable/commonTable.json");
 		if ( ! $list->isFile() ) {
@@ -48,7 +46,7 @@ class DatabaseController extends MadController {
 			sort( $commonTable );
 			$list->setData( $commonTable )->save();
 		}
-		$this->main->list = $list;
+		$this->view->list = $list;
 
 	}
 	function globalizeTableAction() {
@@ -116,6 +114,6 @@ class DatabaseController extends MadController {
 						);
 			}
 		}
-		$this->main->list = new MadData( $list );
+		$this->view->list = new MadData( $list );
 	}
 }
