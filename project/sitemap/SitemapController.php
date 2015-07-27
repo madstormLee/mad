@@ -13,6 +13,7 @@ class SitemapController extends MadController {
 		return $json->save();
 	}
 	function treeAction() {
+		$this->model->setDir( $this->project->id );
 	}
 	function viewAction() {
 		$current = $this->sitemap->getPath( $this->get->href );

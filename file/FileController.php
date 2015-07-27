@@ -4,6 +4,20 @@ class FileController extends MadController {
 		$get = $this->params;
 		$model = $this->model;
 
+		if ( ! $get->file ) {
+			$get->file = $this->project->id . '/';
+		}
+		$model->setFile( $get->file );
+		$model->setPattern( $get->pattern );
+		$model->setOption( $get->flag );
+
+		$model->setView( $get->view );
+		$this->view->setFile( $model->getView() );
+	}
+	function browserAction() {
+		$get = $this->params;
+		$model = $this->model;
+
 		if ( ! $get->file || ! is_dir( $get->file ) ) {
 			$get->file = '.';
 		}
@@ -11,54 +25,6 @@ class FileController extends MadController {
 		$model->name = baseName( realPath( $get->file ) );
 		$history = $this->createModel('FileHistory');
 		$this->view->history = $history;
-		$this->view->get = $get;
-	}
-	function listAction() {
-		$get = $this->params;
-		$projectPath = realpath('.') . '/';
-
-		// target path
-		if ( ! $get->file || ! is_dir( $get->file ) ) {
-			$get->file = '.';
-		}
-
-		$realPath = realPath( $get->file );
-		if ( 0 !== strpos( $realPath, $projectPath ) ) {
-			$get->file = '';
-		} else {
-			$get->file = str_replace( $projectPath, '', $realPath );
-		}
-
-		// pattern
-		if ( ! isset($get->pattern) ) {
-			$get->pattern = '*';
-		}
-		$dir = new MadDir( $get->file, $get->pattern );
-
-		// check flag
-		if ( $get->flag == 'onlydir' ) {
-			$dir->setFlag( GLOB_ONLYDIR );
-		} elseif ( $get->flag == 'onlyfile' ) {
-			$dir->filter( 'is_file' );
-		} else {
-			$dir->order('dirFirst');
-		}
-
-		// select view
-		if ( ! $get->view ) {
-			if ( $this->session->view ) {
-				$get->view = $this->session->view;
-			} else {
-				$get->view = 'list';
-			}
-		}
-		$this->view->setFile( "$this->component/$get->view.html" );
-		if ( ! $get->nosave ) {
-			$this->session->view = $get->view;
-		}
-
-		// assign
-		$this->view->index = $dir;
 	}
 	function writeAction() {
 		$model = $this->model;
@@ -85,7 +51,7 @@ class FileController extends MadController {
 	function viewAction() {
 		$get = $this->params;
 		if ( ! is_file( $get->file ) ) {
-			throw new Exception('파일이 존재하지 않습니다.', 'back', 'replace');
+			throw new Exception('파일이 존재하지 않습니다.');
 		}
 		$model = $this->model->fetch( $get->file );
 		$ext = $model->getExtension();
@@ -94,8 +60,6 @@ class FileController extends MadController {
 			MadHeaders::xml();
 			return file_get_contents( $get->file );
 		}
-		$view = new MadView;
-		return $view->setData( $this->model );
 	}
 	function saveAction() {
 		printR( $this->params );
@@ -119,6 +83,17 @@ class FileController extends MadController {
 	}
 	function deleteAction() {
 		return $this->model->delete( $this->params->file );
+	}
+	function cssAction() {
+		$get = $this->params;
+		if ( empty( $get->file ) ) {
+			throw new Exception('parameter error.');
+		}
+		$file = new MadFile( "$this->component/data/css/$get->file" );
+		if ( ! $file->isFile() ) {
+			throw new Exception('no file.');
+		}
+		exit( $file->getContents() );
 	}
 	function infoAction() {
 		$get = $this->params;

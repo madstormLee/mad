@@ -39,6 +39,9 @@ class MadDir extends MadFile {
 		if ( false !== strpos( $pattern, '{' ) ) {
 			$this->addFlag( GLOB_BRACE );
 		}
+		if( empty( $pattern ) ) {
+			$pattern = '*';
+		}
 		$this->pattern = $pattern;
 		return $this;
 	}

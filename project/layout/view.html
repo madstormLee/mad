@@ -1,0 +1,32 @@
+<h1>This is view page</h1>
+
+<p class='panel'>
+Don't look at me. look layout.<br />
+You can <a href='./change?id=<?=$model->id?>'>click here for chage Layout.</a>
+</p>
+
+<section id='layout'>
+<h1>Current layout is "<?=$model->title?>"</h1>
+
+<section id='files' data-href='~/file?file=project/layout/data/ant&view=tableList&flag=onlyfile'></section>
+
+</section>
+
+<section id='project'>
+<h1>Current project is "<?=$config->project->title?>"</h1>
+
+<table>
+	<tr>
+		<th>title</th>
+		<td><?=$config->project->title ?></td>
+	</tr>
+	<tr>
+		<th>path</th>
+		<td><?=$config->project->id ?></td>
+	</tr>
+	<tr>
+		<th>Href</th>
+		<td><a href='<?=$config->project->href?>'><?=$config->project->href?></a></td>
+	</tr>
+</table>
+</section>

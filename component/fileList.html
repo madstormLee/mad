@@ -11,10 +11,10 @@
 	<tbody>
 	<? foreach( $index as $row ): ?>
 	<tr>
-		<th class='title'><a href='./view?id=<?=$row->id?>'><?=$row->id?></a></th>
+		<th class='title'><a href='./view?id=<?=$row->id?>'><?=basename($row)?></a></th>
 		<td>
 			<ul>
-				<? foreach( $row->files as $file ): ?>
+				<? foreach( $row->getFiles() as $file ): ?>
 				<? if ( is_dir($file) ) : ?>
 				<li><a href='./index?file=<?=$file?>'><?=$file->getBasename()?></a></li>
 				<? else: ?>

@@ -2,34 +2,25 @@
 class ComponentController extends MadController {
 	function indexAction() {
 		$get = $this->params;
-		if ( ! $get->path ) {
-			if ( isset($this->session->project) ) {
-				$get->path = $this->session->project;
-			} else {
-				$get->path = '.';
-			}
-		}
+		$model = $this->model;
 
-		$this->view->index = $this->model->getIndex( $get->path );
+		if ( ! $get->id ) {
+			$get->id = $this->project;
+		}
+		$model->id = $get->id;
+
+		$view = $model->getView( $get->view );
+		$this->view->setFile( "$this->component/$view.html" );
 	}
-	function treeAction() {
-	}
-	function fileListAction() {
+	function overviewAction() {
 		$get = $this->params;
-		if ( ! $get->path ) {
-			if ( isset($this->session->project) ) {
-				$get->path = $this->session->project;
-			} else {
-				$get->path = '.';
-			}
-		}
+		$model = $this->model;
 
-		$this->view->index = $this->model->getIndex( $get->path );
+		$model->fetch( $get->id );
 	}
 	function writeAction() {
 		$get = $this->params;
 		$get->id = ucFirst( $get->id );
-		$this->right = new MadView( 'views/Component/right.html' );
 		if ( $get->id ) {
 			$file = $this->projectLog->getAbsDir('components') . "$get->id/component.json";
 		}

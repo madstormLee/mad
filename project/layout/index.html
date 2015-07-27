@@ -1,0 +1,14 @@
+<link rel='stylesheet' href='./indexStyle.css'>
+<h1>Layout</h1>
+
+<section>
+<ul class='breadcrumbs'>
+	<? foreach( $model->getIndex() as $row ): ?>
+	<li>
+		<a href='./view?id=<?=$row->id?>' target='preview'><?=$row->title?></a>
+	</li>
+	<? endforeach; ?>
+</ul>
+</section>
+
+<iframe id='preview' name='preview' src='./view?id=ant'></iframe>

@@ -1,26 +1,41 @@
 <?
-class File extends MadFile {
+class File extends MadDir {
+	private $views = array('dirView','index','');
+	private $view = 'index';
 	// @override
-	function setPattern( $pattern ) {
-		$this->pattern = $pattern;
+	function setView( $view ) {
+		if ( empty($view) ) {
+			$this->view = 'index';
+			return $this;
+		}
+		$this->view = $view;
 		return $this;
 	}
-	function getIndex() {
-		$rv = new MadDir( $path, $pattern );
-		return $rv;
-		$rv = array();
-
-		$dir = glob( '*', GLOB_ONLYDIR );
-		foreach( $dir as $file ) {
-			$row = new MadFile( $file );
-			$row->date = $row->date();
-			$row->name = $row->getBasename();
-			$row->href = $row->getBasename();
-			$rv[] = $row;
+	function getView() {
+		if ( $this->isFile() ) {
+			return __DIR__ . "/view.html";
 		}
-		return $rv;
+		return __DIR__ . "/$this->view.html";
 	}
-	function getPwd() {
-		return array();
+	function setOption( $option ) {
+		if ( $option == 'onlydir' ) {
+			$this->setFlag( GLOB_ONLYDIR );
+		} elseif ( $option == 'onlyfile' ) {
+			$this->filter( 'is_file' );
+		} else {
+			$this->order('dirFirst');
+		}
+		return $this;
+	}
+	function setFile( $file='' ) {
+		parent::setFile( $file );
+		$router = MadRouter::getInstance();
+
+		if ( 0 !== strpos( realpath($this->file), realPath( $router->document ) ) ) {
+			$this->file = '';
+		} else {
+			$this->file = $this->file;
+		}
+		return $this;
 	}
 }

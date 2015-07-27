@@ -155,6 +155,9 @@ class MadRouter extends MadAbstractData {
 		return str_replace($this->document, '', realpath($value) );
 	}
 	public function url( $value ) {
+		if ( preg_match( '!^/!', $value ) ) {
+			return str_replace( realPath( $this->document ) . '/', '/', realpath($value) );
+		}
 		return str_replace('~', $this->project, $value );
 	}
 	public function urlAdjust( $value ) {

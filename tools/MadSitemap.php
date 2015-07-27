@@ -7,7 +7,7 @@ class MadSitemap extends MadAbstractData {
 		$this->file = $file;
 		$json = new MadJson( $file );
 		if ( ! $json->isFile() ) {
-			$this->setData( $this->initFromComponent() );
+			$this->setData( $this->initFromComponent( dirName( $file )) );
 		} else {
 			$this->setData( $json->getData() );
 		}
@@ -17,9 +17,7 @@ class MadSitemap extends MadAbstractData {
 		}
 	}
 	public static function create() {
-		$instance = new self;
-		// $sitemap->setCurrent();
-		return $instance;
+		return new self;
 	}
 	function initFromComponent( $dir = '' ) {
 		$dirs = new MadDir($dir);

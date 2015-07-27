@@ -5,7 +5,7 @@
 	<h1>List</h1>
 
 	<ul class='medium-block-grid-3 small-block-grid-2'>
-		<? foreach( $index as $row ): ?>
+		<? foreach( $index = $model->getIndex() as $row ): ?>
 		<li>
 			<dl class='component'>
 				<dt class='title'><a href='./view?id=<?=$row->file?>'><?=$row->file?></a></dt>

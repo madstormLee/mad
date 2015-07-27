@@ -1,43 +1,24 @@
-<link rel='stylesheet' type='text/css' href='./style.css' />
-<script src='./script.js'></script>
+<h1>File List</h1>
 
-<h1> <?=$model->getDirname()?> </h1>
-
-<section id='menuBar' class='row' style='width: 100%'>
-	<nav class='history medium-3 columns'>
-		<a href='<?=$history->prev()?>'>Prev</a>
-		<a href='<?=$history->next()?>'>Next</a>
-		<a href='<?=$history->parent()?>'>Parent</a>
-		<a href='<?=$history->home()?>'>Home</a>
+<ul class='index fileIndex'>
+	<? foreach( $model as $row ): ?>
+	<li>
+	<? if ( $row->isDir() ): ?>
+		<img src='./icons/chakram2/folder.png'  />
+		<a class='dir' href='./?file=<?=$row->getFile()?>'><?=$row->getBasename()?></a>
+	<? else: ?>
+		<? $icon = "file/icons/chakram2/file_" . $row->getExtension() . ".png"; ?>
+		<? if ( is_file( $icon ) ): ?>
+		<img src='./icons/chakram2/file_<?=$row->getExtension()?>.png' />
+		<? else : ?>
+		<img src='./icons/chakram2/file_blank.png' />
+		<? endif; ?>
+		<a class='file' href='./view?file=<?=$row->getFile()?>'><?=$row->getBasename()?></a>
+	<? endif; ?>
+	<nav class='buttons'>
+		<a href='./write?file=<?=$row?>'>write</a>
+		<a href='./delete?file=<?=$row?>'>delete</a>
 	</nav>
-	<nav class='fileView medium-2 columns'>
-		<a href='./list?view=iconIndex' data-target='#fileView'>icon</a>
-		<a href='./list?view=tableList' data-target='#fileView'>list</a>
-		<a href='./list?view=list' data-target='#fileView'>compact</a>
-	</nav>
-
-	<nav class='pwd medium-3 columns'>
-		<? foreach( $model->getPwd() as $row ): ?>
-		<a href='<?=$row?>'><?=$row->getBasename()?></a>
-		<? endforeach; ?>
-	</nav>
-
-	<div class='medium-4 columns'>
-		<form class='row collapse' data-target='#fileView' action='./list'>
-			<div class='small-9 columns'>
-				<input type='search' name='searchWord' value='<?=$get->searchWord?>' />
-			</div>
-			<div class='small-3 columns'>
-				<button class='postfix'>Search</button>
-			</div>
-		</form>
-	</div>
-</section>
-
-<nav id='contextMenu'>
-	<a href='./writeDir'>write dir</a>
-	<a href='./writeFile'>write file</a>
-</nav>
-
-<section id='dirView' class='medium-3 columns dirs' data-href='./list?dir=<?=$model->dir?>&flag=onlydir&view=list&nosave=true'></section>
-<section id='fileView' class='medium-9 columns files' data-href='./list?dir=<?=$model->dir?>'></section>
+	</li>
+	<? endforeach; ?>
+</ul>

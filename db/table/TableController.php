@@ -9,14 +9,13 @@ class TableController extends MadController {
 		$this->main->list = $list;
 	}
 	function columnAction() {
-		$get = $this->get;
+		$get = $this->params;
 		$list = new MadListModel;
 		$list->from($get->table_name);
 		$this->main->list = $list;
 	}
 	function view10rowsAction() {
-		$db = MadDb::create();
-		$this->main->q = $db->query( "select * from userinfo limit 10" )->getData();
+		$this->main->q = $this->db->query( "select * from userinfo limit 10" )->getData();
 	}
 	function schemeAction() {
 	}
@@ -24,7 +23,9 @@ class TableController extends MadController {
 		if ( IS_AJAX ) {
 			$this->main->setView( 'views/Table/entity.html' );
 		}
-		$get = $this->get;
 		$this->main->table = new Table( $get->table );
+	}
+	function columnsAction() {
+		$this->main->table = $this->model->fetch( $this->params->table );
 	}
 }

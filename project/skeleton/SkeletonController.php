@@ -1,7 +1,6 @@
 <?
 class SkeletonController extends MadController {
 	function indexAction() {
-		$this->config->session->project;
 	}
 	function writeAction() {
 		$get = $this->params;
@@ -11,7 +10,8 @@ class SkeletonController extends MadController {
 		$get = $this->params;
 
 		$dir = new MadDir( $get->id );
-		$dest = new MadDir( dirName($this->config->session->project) );
+		$dest = new MadDir( dirName($this->project->id) );
+		return 'not yet';
 		return implode('<br />', $dir->copyR( $dest ) );
 	}
 }

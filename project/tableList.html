@@ -1,0 +1,27 @@
+<h1>List</h1>
+
+<table class='index'>
+	<tr>
+		<th>Name</th>
+		<th>Url</th>
+		<th>Date</th>
+		<th>Buttons</th>
+	</tr>
+	<? foreach( $index = $model->getIndex() as $row ) : ?>
+	<tr>
+		<td><a href='<?=$row->href?>/'><?=$row->title?></a></td>
+		<td><?=$row->href?></td>
+		<td><?=$row->wDate?></td>
+		<td class='buttons'>
+			<a href='./open?id=<?=$row->id?>'>open</a>
+			<a href='./view?id=<?=$row->id?>'>view</a>
+			<a href='./write?id=<?=$row->id?>'>변경</a>
+			<a href='./delete?id=<?=$row->id?>'>삭제</a>
+		</td>
+	</tr>
+	<? endforeach; ?>
+</table>
+
+<? if ( $index->isEmpty() ) : ?>
+<p class='caution'>리스트가 없습니다.</p>
+<? endif; ?>

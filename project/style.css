@@ -1,0 +1,16 @@
+dl.project dt {
+	margin: 0;
+	padding: 1px 1rem;
+	display: inline-block;
+	border: 1px solid #000;
+	border-bottom: 0;
+}
+dl.project dd {
+	margin: 0;
+	padding: 1rem;
+	border: 1px solid #000;
+}
+dl.project.current dt ,
+dl.project.current dd {
+	background: #ccc;
+}

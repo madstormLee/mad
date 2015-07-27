@@ -2,19 +2,27 @@
 class Component extends MadModel {
 	private $project = null;
 	private $scaffold = null;
+	private $views = array(
+		'index', 'fileList', 'componentList',
+	);
 
-	function getIndex( $path='' ) {
+	function getView( $view = '' ) {
+		if ( ! in_array( $view, $this->views ) ) {
+			return 'index';
+		}
+		return $view;
+	}
+	function getIndex() {
 		$rv = new MadData;
-		$index = glob( "$path/*", GLOB_ONLYDIR );
+		$index = glob( "$this->id/*", GLOB_ONLYDIR );
 		foreach( $index as $file ) {
-			$row = new self( $file );
-			$rv->add( $row );
+			$rv->add( new self( $file ) );
 		}
 		return $rv;
 	}
 	function fetch( $id='' ) {
 		$this->id = $id;
-		$this->file = baseName( $id );
+		$this->file = basename( $id );
 		return $this;
 	}
 	function getFiles() {
@@ -70,6 +78,7 @@ class Component extends MadModel {
 		return $this;
 	}
 	function delete( $id='' ) {
+		$dir = new MadDir( $id );
 		$project = $this->getProject();
 		$root = $project->getDir() . '/' . $id;
 		$this->removeFile( $root . $this->files->controller );
@@ -81,12 +90,6 @@ class Component extends MadModel {
 		foreach( $this->dirs as $dir ) {
 			$this->delTree( $root . $dir );
 		}
-	}
-	private function removeFile( $path ) {
-		if ( is_file( $path ) ) {
-			return unlink( $path );
-		}
-		return false;
 	}
 	private function delTree($dir) {
 		$files = array_diff( scandir($dir), array('.','..') );

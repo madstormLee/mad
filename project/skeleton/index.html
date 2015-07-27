@@ -1,6 +1,18 @@
 <h1>Skeletons</h1>
 
-<? foreach( $model->getIndex() as $row ): ?>
-<a href='./write?id=<?=$row->getFile()?>'><?=$row->getFile()?></a>
-<a href='./skeleton?id=<?=$row->getFile()?>'>skeleton</a>
-<? endforeach; ?>
+<section>
+<ul class='small-block-grid-3'>
+	<? foreach( $model->getIndex() as $row ): ?>
+	<li style='border: 1px solid #000;'>
+		<a href='./write?id=<?=$row->getFile()?>'><?=$row->getBasename()?></a>
+		<br />
+		<ul class='files'>
+			<? foreach( $row as $file ): ?>
+			<li><?=$file->getBasename(); ?></li>
+			<? endforeach; ?>
+		</ul>
+		<a href='./skeleton?id=<?=$row->getFile()?>'>skeleton</a>
+	</li>
+	<? endforeach; ?>
+</ul>
+</section>

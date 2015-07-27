@@ -1,6 +1,5 @@
-<h1>Table List</h1>
-
-<h2><?=$model->getFile()?></h2>
+<? $router = $config->router; ?>
+<h1><?=$router->url($model->getFile())?> List</h1>
 
 <table class='index'>
 	<thead>
@@ -14,11 +13,7 @@
 	<tbody>
 		<? foreach( $index as $row ) : ?>
 		<tr>
-			<? if( $row->isDir() ): ?>
-			<td class='title'><a href='<?=$row->href?>'><?=$row?></a></td>
-			<? else: ?>
-			<td class='title'><?=$row?></td>
-			<? endif; ?>
+			<td class='title'><a href='./?file=<?=$row->getFile()?>'><?=$router->url($row)?></a></td>
 			<td><?=$row->size()?></td>
 			<td><?=$row->getType()?></td>
 			<td><?=$row->date('Y-m-d H:i:s')?></td>

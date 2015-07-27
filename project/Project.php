@@ -7,6 +7,7 @@ class Project extends MadModel {
 		$dirs->flag( GLOB_ONLYDIR );
 
 		$rv = new MadData;
+		$rv->add( new self(MAD) );
 		foreach( $dirs as $row ) {
 			$row = new self( $row );
 			$rv->add( $row );
@@ -117,7 +118,7 @@ class Project extends MadModel {
 			'db' => "MadDb::create('sqlite:data.db')",
 			"debug" => "MadDebug::getInstance()",
 			"session" => "MadSession::getInstance()",
-			"layout" => "new MadView('mad/project/layout/default.html')",
+			"layout" => "new MadView('layout.html')",
 		);
 		$json->save();
 	}

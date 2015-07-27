@@ -1,6 +1,11 @@
 <?
 class Sitemap extends MadModel {
+	private $dir='.';
+	function setDir( $dir ) {
+		$this->dir = $dir;
+	}
 	function getIndex() {
-		return new MadJson( 'sitemap.json' );
+		$rv = new MadSitemap( $this->dir . '/sitemap.json' );
+		return $rv;
 	}
 }
