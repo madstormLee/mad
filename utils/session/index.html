@@ -1,8 +1,8 @@
-<h1><?=_( $g->sitemap->getInfo()->label ) ?></h1>
+<h1>Session</h1>
 
 <nav class='component'>
-	<a href='./'><?=_("목록")?></a>
+	<a href='./'>index</a>
 	<a href='./write'>write</a>
 </nav>
 
-<?=printR( $_SESSION, true )?>
+<? printR( $_SESSION )?>
