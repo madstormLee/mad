@@ -1,7 +1,7 @@
 <?
 class Backup {
 	private $froms;
-	private $dir = 'backup/data';
+	private $dir = 'utils/backup/data';
 
 	function __construct() {
 		$this->froms = new MadData( array(
@@ -9,7 +9,6 @@ class Backup {
 			'backup' => ROOT . '../patchBackup/',
 		) );
 		$this->backupFiles = array();
-		$this->ini = new MadIniManager( MADINI.'backup/backup.ini');
 	}
 	function getIndex() {
 		$rv = array();
@@ -19,10 +18,14 @@ class Backup {
 			$row['md5'] = md5_file( $dir );
 			$rv[] = $row;
 		}
-		return $rv;
+		return new MadData($rv);
+	}
+	function getLastDate() {
+		return date('Y-m-d H:i:s');
 	}
 	// todo: from ts/backup
 	function getIndexTemp() {
+		return new MadData;
 		$json = new MadJson( "json/BackupList" );
 		if ( ! is_dir( $json->dir ) ) {
 			$this->mkdir( $json->dir );

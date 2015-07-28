@@ -2,8 +2,6 @@
 class ProjectController extends MadController {
 	function indexAction() {
 	}
-	function listAction() {
-	}
 	function viewAction() {
 		$this->model->fetch( $this->params->id );
 	}
@@ -17,6 +15,7 @@ class ProjectController extends MadController {
 		$dir = new MadDir( $this->params->id );
 		return $dir->deleteAll();
 	}
+
 	function openAction() {
 		$project = $this->model->fetch( $this->params->id );
 		return $this->session->set('project', $project )->__isset('project');
@@ -26,8 +25,9 @@ class ProjectController extends MadController {
 	}
 	function downloadAction() {
 		$get = $this->params;
-		$targetDir = "project/download/";
 		$model = $this->model;
+
+		$targetDir = "project/download/";
 		$model->setData( $get );
 
 		MadHeaders::download( $get->project . $this->ext );

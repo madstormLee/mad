@@ -1,12 +1,23 @@
 <link rel='stylesheet' href='./style.css' />
 
-<h1>Projects</h1>
+<h1>Project <a href='./write'>write</a></h1>
 
-<section id='index' data-href='./list'></section>
-
-<section id='right'>
-	<nav class='breadcrumbs'>
-		<a href='./index'>index</a>
-		<a href='./write'>write</a>
-	</nav>
-</section>
+<ul class='large-block-grid-3 medium-block-grid-2'>
+	<? foreach( $index = $model->getIndex() as $row ) : ?>
+	<li>
+	<dl class='project <?=($row->id == $config->project->id)?'current':''; ?>'>
+		<dt><a href='<?=$row->href?>/'><?=$row->title?></a></dt>
+		<dd>
+			<p>href: <a href='<?=$row->href?>/'><?=$row->href?></a></p>
+			<p>date: <?=$row->wDate?></p>
+			<nav>
+				<a href='./open?id=<?=$row->id?>'>open</a>
+				<a href='./view?id=<?=$row->id?>'>view</a>
+				<a href='./write?id=<?=$row->id?>'>변경</a>
+				<a href='./delete?id=<?=$row->id?>'>삭제</a>
+			</nav>
+		</dd>
+	</dl>
+	</li>
+	<? endforeach; ?>
+</ul>

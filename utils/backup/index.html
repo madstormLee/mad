@@ -1,6 +1,6 @@
 <h1>Backup List</h1>
-
-<h2>마지막 백업일 : <?=$model->getLastBackupDate()?></h2>
+<h2>마지막 백업일 : <?=$model->getLastDate()?></h2>
+<a href='backup?'>지금 백업하기</a>
 
 <table class='adminTable'>
 	<thead>
@@ -13,20 +13,17 @@
 		</tr>
 	</thead>
 	<tbody>
-		<? foreach ( $model->getList() as $file ): ?>
+		<? foreach ( $index = $model->getIndex() as $file ): ?>
 		<tr>
 			<td><?=$file->getBasename()?></td>
 			<td><?=$file->getSize()?></td>
-			<td><?=date('Y-m-d H:i:s', $file->getCTime())?></td>
+			<td><?=$file->date()?></td>
 			<td><?=md5_file( $file->getRealPath() )?></td>
 		</tr>
 		<? endforeach; ?>
 	</tbody>
 </table>
 
-<? if ( $model->isEmpty() ) : ?>
+<? if ( $index->isEmpty() ) : ?>
 	<p class='noContent'>리스트가 없습니다.</p>
 <? endif; ?>
-<?=$model->getPageNavi()?>
-
-<a href='backup?'>지금 백업하기</a>

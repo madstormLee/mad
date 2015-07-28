@@ -161,12 +161,12 @@ class MadRouter extends MadAbstractData {
 		return str_replace('~', $this->project, $value );
 	}
 	public function urlAdjust( $value ) {
-		$value = preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2~/{$this->component}", "$value" );
+		$value = preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2~/{$this->component}/", "$value" );
 		$project = $this->project;
 		if( $project == '/' ) {
 			$project = '';
 		}
-		$value = preg_replace('!(action|background|src|href)=(["\'])~!i', "$1=$2{$project}", "$value" );
+		$value = preg_replace('!(action|background|src|href)=(["\'])~/!i', "$1=$2{$project}/", "$value" );
 		return $value;
 	}
 	public function routeSitemap( $sitemap ) {

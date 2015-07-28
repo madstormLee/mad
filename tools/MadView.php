@@ -15,9 +15,15 @@ class MadView extends MadFile {
 		$rv = $this->urlAdjust( $rv );
 		return $config->router->urlAdjust( $rv );
 	}
-	function urlAdjust( $rv ) {
+	function urlAdjust( $value ) {
 		$dir = dirName( $this->file );
-		return preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2~/$dir/", $rv );
+		if ( ! preg_match( '!^/!', $dir ) ) {
+			$dir = "~/$dir";
+		} else {
+			$router = MadRouter::getInstance();
+			$dir = $router->url( $dir );
+		}
+		return preg_replace('!(action|background|src|href)=(["\'])\./!i', "$1=$2$dir/", $value );
 	}
 	// todo: refactory. from MadCacheView
 	function updateCache( $contents ) {
