@@ -93,7 +93,9 @@ class FileController extends MadController {
 		if ( ! $file->isFile() ) {
 			throw new Exception('no file.');
 		}
-		exit( $file->getContents() );
+		header("Content-Type: text/css");
+		print $file->getContents();
+		die;
 	}
 	function infoAction() {
 		$get = $this->params;

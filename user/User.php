@@ -2,31 +2,16 @@
 class User extends MadModel {
 	protected $data = array();
 	protected $levels = null;
-	protected $level = 1000;
 
 	function __construct( $id='' ) {
-		$this->setSetting( __dir__ . '/model.json');
-		$this->initLevels();
-		$this->fetch( $id );
+		$this->userLevel = 1000;
+		parent::__construct( $id );
 	}
-	public static function getSession() {
+	public static function session() {
 		if ( isset( $_SESSION['user'] ) ) {
 			return $_SESSION['user'];
 		}
 		return new self;
-	}
-	protected function initLevels() {
-		$this->levels = new MadJson( "user/levels.json" );
-		if ( ! $this->levels->isFile() ) {
-			$this->levels->setData( array(
-				'root' => 0,
-				'admin' => 1,
-				'localAdmin' => 5,
-				'member' => 200,
-				'user' => 255,
-				'default' => 300,
-			) );
-		}
 	}
 	function install() {
 		$query = new MadScheme( $this );
@@ -60,11 +45,26 @@ class User extends MadModel {
 	function getLevelName( $level ) {
 		return $this->getLevels()->find($level);
 	}
+	private $findLevel = '<=100';
+	function setFindLevel( $findLevel = '<=100' ) {
+		$this->findLevel = $findLevel;
+	}
 	function getIndex() {
-		return glob( "$this->dir/*$this->extension");
+		$index = new MadIndex( $this );
+		$query = $index->getQuery();
+		$my = self::session();
+
+		if ( $my->id ) {
+			$query->where( "( userLevel > $my->userLevel or id = $my->id )" );
+		} else {
+			$query->where( "userLevel > $my->userLevel" );
+		}
+
+		$query->order("uDate desc");
+		return $index;
 	}
 	public function getLevels() {
-		return $this->levels;
+		return $this->getSetting('userLevel')->options;
 	}
 	function isLogin() {
 		return $this->getLevel() <= $this->getLevel('member');

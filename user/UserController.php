@@ -13,20 +13,10 @@ class UserController extends MadController {
 	function indexAction() {
 		$get = $this->params;
 		$model = $this->model;
-		$sessionUser = $model::getSession();
-
-		$query = new MadQuery('User');
-		$query->where( "( level > $sessionUser->level or id = $sessionUser->id )" );
 
 		if ( $get->level ) {
-			$query->where( "level=$get->level" );
-		} else {
-			$query->where( 'level <= 100' );
+			$model->setFindLevel( "=$get->level" );
 		}
-
-		$query->order("utime desc");
-
-		$this->view->index = $query;
 	}
 	function viewAction() {
 	}
@@ -147,34 +137,4 @@ class UserController extends MadController {
 		$this->js->alert( "you logged in as " . $this->persona->label )->replace( $referer );
 	}
 
-	function migrateAction() {
-		$table = get_class($this->model);
-		$mg = $table . '_migrate';
-
-		$query = "alter table $table rename to $mg";
-		// $this->db->exec( $query );
-		$scheme = new MadScheme( $this->model );
-		$result = $this->db->exec( $scheme );
-
-		$query = "PRAGMA table_info($mg)";
-		$mgInfo = new MadData($this->db->query( $query)->fetchAll(PDO::FETCH_CLASS));
-
-		$query = "PRAGMA table_info($table)";
-		$info = new MadData($this->db->query( $query)->fetchAll(PDO::FETCH_CLASS));
-
-		$columns = $mgInfo->dic('name')->intersect($info->dic('name')->getData() )->implode(',');
-
-		$query = "insert into $table ($columns) select $columns from $mg";
-		$result = $this->db->exec( $query );
-		return $result;
-	}
-	function installAction() {
-		$this->dropAction();
-		$query = new MadScheme( $this->model );
-		return $this->db->exec( $query );
-	}
-	function dropAction() {
-		$query = "drop table " . get_class($this->model);
-		return $this->db->exec( $query );
-	}
 }

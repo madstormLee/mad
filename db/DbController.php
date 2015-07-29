@@ -1,8 +1,16 @@
 <?
 class DbController extends MadController {
 	function indexAction() {
+		$model = $this->model;
 		$config = new MadJson( $this->project->id . '/config.json' );
-		$this->view->list = $config->databases;
+
+		if( isset( $config->instances->db ) ) {
+			$result = preg_match( "/(?<=sqlite:|mysql:|pgsql:)[a-zA-Z0-9.]+/", $config->instances->db, $matches );
+			$file = $result ? $matches[0] : 'data.db';
+			$model->fetch( 'sqlite:' . $this->project->id . "/$file" );
+			// mysql test
+			// $model->fetch( 'mysql:host=localhost;dbname=stormfactory','stormfactory', 'madstorm5dsaya');
+		}
 	}
 	function databasesAction() {
 	}
@@ -108,12 +116,65 @@ class DbController extends MadController {
 		foreach( $tables as $row ) {
 			if ( $commonTable->in( $row->table_name) ) {
 				$list[] = array(
-						'table' => $row->table_name,
-						'total' => $db->total( $row->table_name ),
-						'isScheme' => is_file( "schemes/$row->table_name.sql" ) ? 'yes': 'no',
-						);
+					'table' => $row->table_name,
+					'total' => $db->total( $row->table_name ),
+					'isScheme' => is_file( "schemes/$row->table_name.sql" ) ? 'yes': 'no',
+				);
 			}
 		}
 		$this->view->list = new MadData( $list );
+	}
+	function schemeAction() {
+		$get = $this->params;
+		if ( ! $get->dir ) {
+			$get->dir = 'schemes';
+		}
+
+		$dir = new MadDir( $this->dir );
+		$installed = $this->db->getTables();
+
+		$index = new MadData;
+		foreach( $dir as $file ) {
+			$name = current( explode('.', $file->getBasename() ) ); 
+
+			$index->$name = array(
+				'filename' => $this->dir . '/' . $file->getFilename(),
+				'basename' => $file->getBasename(),
+				'installed' => $installed->in( $name ) ? 'installed' : false,
+				'total' => $installed->in( $name ) ? $this->db->total( $name ) : 0,
+			);
+		}
+
+		$this->view->index = $index;
+	}
+	function migrateAction() {
+		$table = get_class($this->model);
+		$mg = $table . '_migrate';
+
+		$query = "alter table $table rename to $mg";
+		// $this->db->exec( $query );
+		$scheme = new MadScheme( $this->model );
+		$result = $this->db->exec( $scheme );
+
+		$query = "PRAGMA table_info($mg)";
+		$mgInfo = new MadData($this->db->query( $query)->fetchAll(PDO::FETCH_CLASS));
+
+		$query = "PRAGMA table_info($table)";
+		$info = new MadData($this->db->query( $query)->fetchAll(PDO::FETCH_CLASS));
+
+		$columns = $mgInfo->dic('name')->intersect($info->dic('name')->getData() )->implode(',');
+
+		$query = "insert into $table ($columns) select $columns from $mg";
+		$result = $this->db->exec( $query );
+		return $result;
+	}
+	function installAction() {
+		$this->dropAction();
+		$query = new MadScheme( $this->model );
+		return $this->db->exec( $query );
+	}
+	function dropAction() {
+		$query = "drop table " . get_class($this->model);
+		return $this->db->exec( $query );
 	}
 }

@@ -3,8 +3,8 @@
 <form class='simpleSearch changeSubmit' method='get' action='?'>
 	<input type='radio' id='levelAll' name='level' value='' <?=(! $params->level)?'checked':''?> />
 	<label for='levelAll'>모두 보기</label>
-	<? foreach( $model->getConfig('level')->data as $row ): ?>
-	<? if ( $row->value <= $config->session->user->getLevel() ) continue; ?>
+	<? foreach( $model->getLevels() as $row ): ?>
+	<? if ( $row->value <= $config->user->getLevel() ) continue; ?>
 	<input type='radio' id='level<?=$row->value?>' name='level' value='<?=$row->value?>' <?=($row->value == $params->get->level)?'checked':''?> />
 	<label for='level<?=$row->value?>'><?=$row->label?></label>
 	<? endforeach; ?>
@@ -41,10 +41,4 @@
 	<? endif; ?>
 
 	<?=$index->getPageNavi()?>
-</section>
-
-<section id='right'>
-	<nav class='component'>
-		<a href='./write'>write</a>
-	</nav>
 </section>

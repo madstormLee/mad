@@ -1,7 +1,6 @@
 <?
-class StatisticsController extends MadController {
+class StatsController extends MadController {
 	function indexAction() {
-		$this->main->index = new MadJson('statistics/index.json');
 	}
 	function viewAction() {
 		$get = $this->get;

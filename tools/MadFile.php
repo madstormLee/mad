@@ -245,6 +245,9 @@ class MadFile implements IteratorAggregate, Countable {
 		$this->file = $dest;
 		return $this;
 	}
+	function stat() {
+		return new MadData( stat( $this->file ) );
+	}
 	function download() {
 		$basename = $this->getBasename();
 

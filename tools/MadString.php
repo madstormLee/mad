@@ -38,18 +38,19 @@ class MadString implements IteratorAggregate {
 	}
 	function format( $formatter='' ) {
 		if ( empty( $formatter ) ) {
-			return $rv;
+			return $this;
 		}
 		$methods = explode( '|', $formatter );
 		foreach( $methods as $method ) {
-			$rv->$method();
+			$this->$method();
 		}
-		return $rv;
+		return $this;
 	}
 	function underscore() {
 		$this->lcFirst();
 		$func = create_function('$c', 'return "_" . mb_strToLower($c[1]);');
 		$this->string = preg_replace_callback('/([A-Z])/', $func, $this->string);
+		return $this;
 	}
 	function camel($capitalise_first_char = false) {
 		if($capitalise_first_char) {
@@ -57,6 +58,10 @@ class MadString implements IteratorAggregate {
 		}
 		$func = create_function('$c', 'return mb_strToUpper($c[1]);');
 		$this->string = preg_replace_callback('/_([a-z])/', $func, $this->string);
+		return $this;
+	}
+	function upper() {
+		$this->string = mb_strToUpper($this->string);
 		return $this;
 	}
 	function ucFirst() {

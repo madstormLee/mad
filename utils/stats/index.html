@@ -1,0 +1,10 @@
+<link rel='stylesheet' href='./style.css' />
+<script src='./script.js'></script>
+
+<h1>Statistics Index</h1>
+
+<nav id='StatisticsIndex'>
+	<? foreach( $model->getIndex() as $row ): ?>
+	<a href='./view?dataModel=<?=$row->dataModel?>'><?=$row->label?></a>
+	<? endforeach; ?>
+</nav>

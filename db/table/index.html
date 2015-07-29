@@ -3,6 +3,12 @@
 <nav class='component'>
 	<a href='./'>Locale Db</a>
 	<a href='?locale=<?=$g->get->locale?>'>Index All</a>
+
+	<!-- from ts -->
+	<a href='./createFromConfig'>이 프로젝트의 config로 부터 생성</a>
+	<a href='./viewAll?database=<?=$g->get->database?>'>출력용 전체보기</a>
+	<a href='~/Web2Pdf/download?name=table'>pdf 다운로드</a>
+
 	<form class='search' method='get' action='?'>
 		<input type='hidden' name='locale' value='<?=$g->get->locale?>' />
 		<fieldset class='quick'>
@@ -14,6 +20,7 @@
 </nav>
 
 <table class='simple limitable'>
+
 	<caption>
 		<span class='title'>List</span>
 		<span class='total'>[registers :  <?=$list->getSearchTotal() ?>]</span>
@@ -28,6 +35,7 @@
 		<? endforeach; ?>
 		</nav>
 	</caption>
+
 	<thead>
 		<tr>
 			<th>table_catalog</th>
@@ -35,6 +43,7 @@
 			<th>table_name</th>
 			<th>View Column</th>
 			<th>table_type</th>
+			<th>buttons</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -45,10 +54,15 @@
 			<td><a href='~/localeTable/index?locale=<?=$g->get->locale?>&table_name=<?=$row->table_name?>'?><?=$row->table_name?></a></td>
 			<td><a href='./showColumn?locale=<?=$g->get->locale?>&table_name=<?=$row->table_name?>'?>컬럼 보기</a></td>
 			<td><?=$row->table_type?></td>
+			<td>
+				<a href='~/table/view?table=<?=$table?>'><?=$table?></a>
+				<a href='~/table/definitionList?database=<?=$g->get->database?>&amp;table=<?=$table?>'>보기</a>
+				<a href='~/table/definitionListDownload?table=<?=$table?>'>다운로드</a>
+			</td>
 		</tr>
 		<? endforeach; ?>
 	</tbody>
-	
+
 </table>
 
 <? if ( $list->isEmpty() ): ?>

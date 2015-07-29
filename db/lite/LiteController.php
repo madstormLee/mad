@@ -1,38 +1,41 @@
 <?
-$config_filename = "$this->component/phpliteadmin.config.php";
-if (is_readable($config_filename)) {
-	include_once $config_filename;
-}
-
-define("PROJECT", "phpLiteAdmin");
-define("VERSION", "1.9.5");
-define("PAGE", basename(__FILE__));
-define("FORCETYPE", false); //force the extension that will be used (set to false in almost all circumstances except debugging)
-define("SYSTEMPASSWORD", $password); // Makes things easier.
-define('PROJECT_URL','http://phpliteadmin.googlecode.com');
-define('PROJECT_BUGTRACKER_LINK','<a href="http://code.google.com/p/phpliteadmin/issues/list" target="_blank">http://code.google.com/p/phpliteadmin/issues/list</a>');
-define("COOKIENAME", preg_replace('/[^a-zA-Z0-9_]/', '_', $cookie_name) . '_' . VERSION );
-
-
-if($language != 'en') {
-	if(is_file('languages/lang_'.$language.'.php')) {
-		include('languages/lang_'.$language.'.php');
-	} elseif(is_file('lang_'.$language.'.php')) {
-		include('lang_'.$language.'.php');
-	}
-}
-
-include "$this->component/functions.php";
-include "$this->component/lang.php";
-include "$this->component/Resources.php";
-include "$this->component/MicroTimer.php";
-include "$this->component/Authorization.php";
-include "$this->component/Database.php";
-
-
+error_reporting(E_ALL);
+ini_set('display_errors', 'on');
 class LiteController extends MadController {
 	function init() {
 		parent::init();
+
+
+		$config_filename = "$this->component/phpliteadmin.config.php";
+		if (is_readable($config_filename)) {
+			include_once $config_filename;
+		}
+
+		define("PROJECT", "phpLiteAdmin");
+		define("VERSION", "1.9.5");
+		define("PAGE", basename(__FILE__));
+		define("FORCETYPE", false); //force the extension that will be used (set to false in almost all circumstances except debugging)
+		define("SYSTEMPASSWORD", $password); // Makes things easier.
+		define('PROJECT_URL','http://phpliteadmin.googlecode.com');
+		define('PROJECT_BUGTRACKER_LINK','<a href="http://code.google.com/p/phpliteadmin/issues/list" target="_blank">http://code.google.com/p/phpliteadmin/issues/list</a>');
+		define("COOKIENAME", preg_replace('/[^a-zA-Z0-9_]/', '_', $cookie_name) . '_' . VERSION );
+
+
+		if($language != 'en') {
+			if(is_file('languages/lang_'.$language.'.php')) {
+				include('languages/lang_'.$language.'.php');
+			} elseif(is_file('lang_'.$language.'.php')) {
+				include('lang_'.$language.'.php');
+			}
+		}
+
+		include "$this->component/functions.php";
+		include "$this->component/lang.php";
+		include "$this->component/Resources.php";
+		include "$this->component/MicroTimer.php";
+		include "$this->component/Authorization.php";
+		include "$this->component/Database.php";
+
 
 		if(ini_get("register_globals") == "on" || ini_get("register_globals")=="1") {
 			throw new Exception( $lang['bad_php_directive'] );

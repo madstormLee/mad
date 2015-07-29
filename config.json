@@ -10,6 +10,7 @@
 		"debug": "MadDebug::getInstance()",
 		"session": "MadSession::getInstance()",
 		"project": "Project::session()",
+		"user": "User::session()",
 		"layout": "new MadView('layout.html')"
 	}
 }

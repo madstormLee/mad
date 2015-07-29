@@ -44,10 +44,9 @@
 		<label><input type='checkbox' checked='checked' name='import_csv_fieldnames'/> <?=$lang['fld_names']?></label>
 	</fieldset>
 
-	<div style='clear:both;'></div>
-	<br/><br/>
-
-	<fieldset><legend><b><?=$lang['import_f']?></b></legend>
-		<input type='file' value='<?=$lang['choose_f']?>' name='file' style='background-color:transparent; border-style:none;'/> <input type='submit' value='<?=$lang['import']?>' name='import' class='btn'/>
+	<fieldset>
+		<legend><?=$lang['import_f']?></legend>
+		<input type='file' value='<?=$lang['choose_f']?>' name='file' style='background-color:transparent; border-style:none;'/>
+		<input type='submit' value='<?=$lang['import']?>' name='import' class='btn'/>
 	</fieldset>
 </form>

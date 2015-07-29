@@ -38,10 +38,10 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		$info = $ini->database;
 		return self::create( $info );
 	}
-	function __construct( $conn = null ) {
+	function __construct( $conn = null, $username='', $password='', $options=array() ) {
 		if ( is_string( $conn ) ) {
 			$dsn = $conn;
-			return parent::__construct( $conn );
+			return parent::__construct( $conn, $username, $password, $options );
 		}
 		$options = $this->getOptions( $conn->options );
 		parent::__construct( $this->getDsn($conn), $conn->username, $conn->password, $options );
