@@ -33,6 +33,9 @@ class MadModel extends MadAbstractData {
 		$query = new MadQuery( $this->getName() );
 		return $query->isTable();
 	}
+	function install() {
+		return $this->getDb()->exec( new MadScheme( $this ) );
+	}
 	function getSetting( $id='' ) {
 		if ( empty( $this->setting ) ) {
 			$file = lcFirst($this->name) . '/model.json';

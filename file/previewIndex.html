@@ -1,8 +1,8 @@
-<h1>File Icon Index</h1>
+<h1>file preview list</h1>
 
 <h2><?=$model->getFile()?></h2>
 
-<ul id='iconIndex' class='small-block-grid-'>
+<ul id='iconIndex' class='medium-block-grid-5'>
 	<? foreach( $model->getIndex() as $row ): ?>
 	<li>
 	<? if ( $row->isDir() ): ?>
@@ -12,9 +12,9 @@
 	</a>
 	<? else: ?>
 	<a class='file' href='./view?file=<?=$row->getFile()?>'>
-		<? $icon = "file/icons/chakram2/file_" . $row->getExtension() . ".png"; ?>
-		<? if ( is_file( $icon ) ): ?>
-		<img src='./icons/chakram2/file_<?=$row->getExtension()?>.png' />
+		<? $preview = $config->router->url( $row->getFile() ); ?>
+		<? if ( preg_match( '/(jpg|jpeg|png|gif)$/i', $preview ) ): ?>
+		<img src='<?=$preview?>' />
 		<? else : ?>
 		<img src='./icons/chakram2/file_blank.png' />
 		<? endif; ?>
@@ -25,4 +25,3 @@
 	</li>
 	<? endforeach; ?>
 </ul>
-

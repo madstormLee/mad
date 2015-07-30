@@ -148,6 +148,8 @@ class DbController extends MadController {
 		$this->view->index = $index;
 	}
 	function migrateAction() {
+		if ( ! isset( $this->session->user ) ) throw new Exception('need login');
+
 		$table = get_class($this->model);
 		$mg = $table . '_migrate';
 
@@ -169,11 +171,19 @@ class DbController extends MadController {
 		return $result;
 	}
 	function installAction() {
+		if ( ! isset( $this->session->user ) ) throw new Exception('need login');
+
 		$this->dropAction();
 		$query = new MadScheme( $this->model );
 		return $this->db->exec( $query );
+		// return $this->model->fetch( $this->params->file )->install();
+	}
+	function uninstallAction() {
+		return $this->model->fetch( $this->params->file )->uninstall();
 	}
 	function dropAction() {
+		if ( ! isset( $this->session->user ) ) throw new Exception('need login');
+
 		$query = "drop table " . get_class($this->model);
 		return $this->db->exec( $query );
 	}

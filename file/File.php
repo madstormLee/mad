@@ -31,10 +31,15 @@ class File extends MadDir {
 		parent::setFile( $file );
 		$router = MadRouter::getInstance();
 
-		if ( 0 !== strpos( realpath($this->file), realPath( $router->document ) ) ) {
+		if ( ! $realpath = realpath($this->file) &&
+			0 === strpos( $this->path, '/' ) &&
+			file_exists( $router->document.$this->file ) ) {
+				$this->file = $router->document.$this->file;
+				$realpath = realpath( $this->file );
+			}
+
+		if ( 0 !== strpos( $realpath, realPath( $router->document ) ) ) {
 			$this->file = '';
-		} else {
-			$this->file = $this->file;
 		}
 		return $this;
 	}

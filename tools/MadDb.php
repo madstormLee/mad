@@ -1,7 +1,7 @@
 <?
 class MadDb extends PDO implements IteratorAggregate, Countable {
-	protected $defaultDriver = 'mysql';
 	protected $driver = 'mysql';
+	protected $conn = null;
 
 	protected $data = array();
 	protected $rows = 0;
