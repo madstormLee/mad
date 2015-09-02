@@ -7,6 +7,22 @@ class MadCookie extends MadAbstractData {
 	protected $path = '/';
 	protected $domain = '';
 
+	public static function addHistory() {
+		$history = new self('history');
+		$router = MadRouter::getInstance();
+
+		if ( $history->isEmpty() ) {
+			$history->set( 0, '/' );
+		}
+
+		if ( $router->ajax || $router->method == 'POST' || $history->end() == $router->request ) {
+			return false;
+		}
+		if ( $history->count() > 10 ) {
+			$history->shift();
+		}
+		$history->push( $router->request );
+	}
 	function __construct( $key = 'cookie' ) {
 		$this->key = $key;
 		if ( ! isset( $_COOKIE[$key] ) ) {

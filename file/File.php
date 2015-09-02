@@ -30,6 +30,8 @@ class File extends MadDir {
 	function setFile( $file='' ) {
 		parent::setFile( $file );
 		$router = MadRouter::getInstance();
+		// $router = MadParams::create('route');
+		// $router = MadGlobals::create('get');
 
 		if ( ! $realpath = realpath($this->file) &&
 			0 === strpos( $this->path, '/' ) &&

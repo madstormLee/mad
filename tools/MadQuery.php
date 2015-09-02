@@ -53,9 +53,15 @@ class MadQuery implements IteratorAggregate, Countable {
 		$this->data = $data;
 		return $this;
 	}
-	function delete() {
+	function delete( $where='' ) {
+		if ( ! empty( $where ) ) {
+			$this->where( $where );
+		}
 		$this->command = 'delete';
 		return $this;
+	}
+	function result() {
+		return $this->exec();
 	}
 	function from( $table = '' ) {
 		$this->table = $table;
@@ -90,7 +96,13 @@ class MadQuery implements IteratorAggregate, Countable {
 		if ( empty( $where ) ) {
 			$this->where = array();
 		} else {
-			$this->where[] = $where;
+			if ( strpos( $where,  '=' ) ) {
+				list($key, $value) = explode('=', $where);
+				$this->data[$key] = $value;
+				$this->where[] = "$key=:$key";
+			} else {
+				$this->where[] = $where;
+			}
 		}
 		return $this;
 	}
@@ -267,7 +279,7 @@ class MadQuery implements IteratorAggregate, Countable {
 			$this->statement = $this->db->getStatement();
 			$this->statement->setFetchMode( PDO::FETCH_CLASS, $this->model );
 		}
-		return $this->statement;
+		return new ArrayIterator( $this->statement->fetchAll() );
 	}
 	function count() {
 		return count( $this->data );
@@ -337,8 +349,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		$rv = array();
 		foreach( $this->data as $key => $value ) {
 			if ( $key == $this->pKey ) {
-				$this->where( "id=:id" );
-				continue;
+				$this->where( "id=$value" );
 			}
 			$rv[] = "$key=:$key";
 		}
@@ -375,6 +386,15 @@ class MadQuery implements IteratorAggregate, Countable {
 	function getDefaults() {
 		$data = new MadData( $this->explain() );
 		return $data->dic( 'Field', 'Default' );
+	}
+	/************************ todo: refactorying. from MadDbModel ************************/
+	function getNextId() {
+		$query = "select min( $this->pKey ) from $this->table where $this->pKey > $this->id";
+		return $this->db->query( $query )->getFirst();
+	}
+	function getPrevId() {
+		$query = "select max( $this->pKey ) from $this->table where $this->pKey < $this->id";
+		return $this->db->query( $query )->getFirst();
 	}
 	/**************************** query and rollback ****************************/
 	public function setRollback( $flag = true ) {

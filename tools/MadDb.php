@@ -9,11 +9,11 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 
 	// factory method
 	public static function create( $conn = null ) {
-		if ( $conn == null ) {
-			return MadConfig::getInstance()->db;
-		}
 		if ( is_null($conn) ) {
-			throw new Exception( 'Connection info not found.' );
+			if ( ! $rv = MadConfig::getInstance()->db ) {
+				throw new Exception( 'Connection info not found.' );
+			}
+			return $rv;
 		}
 		return new self( $conn );
 	}
@@ -145,6 +145,45 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 			return 0;
 		}
 		return $rv;;
+	}
+	// CRUD
+	function read( $id, $model ) {
+		$query = new MadQuery( $model->getName() );
+		$query->where( "id=:id");
+
+		$statement = $this->prepare( $query );
+		$result = $statement->execute( array( 'id' => $id ) );
+		$model->setData( $statement->fetch(PDO::FETCH_ASSOC) );
+	}
+	function save( MadModel $model ) {
+		$model->uDate = date('Y-m-d H:i:s');
+		if ( ! $model->id ) {
+			$model->wDate = date('Y-m-d H:i:s');
+			return $this->insert( $model );
+		}
+		return $this->update( $model );
+	}
+	function insert( MadModel $model ) {
+		$query = new MadQuery( $model->getName() );
+		$query->insert( array_filter($model->getData()) );
+
+		$statement = $this->prepare( $query );
+		$result = $statement->execute( $query->data() );
+		return $this->lastInsertId();
+	}
+	function update( MadModel $model ) {
+		$query = new MadQuery( $model->getName() );
+		$query->update( $model->getData() );
+
+		$statement = $this->prepare( $query );
+		$result = $statement->execute( $query->data() );
+
+		return $statement->rowCount();
+	}
+	function delete( MadModel $model ) {
+		$query = new MadQuery( $model->getName() );
+		$query->delete("id=$model->id");
+		return $query->result();
 	}
 	function setDebug( $debug ) {
 		$this->debug = ! ! $debug;

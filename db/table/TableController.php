@@ -20,7 +20,7 @@ class TableController extends MadController {
 	}
 	function columnAction() {
 		$get = $this->params;
-		$list = new MadListModel;
+		$list = new MadIndex;
 		$list->from($get->table_name);
 		$this->view->list = $list;
 	}

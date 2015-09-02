@@ -7,7 +7,7 @@ class ViewController extends MadController {
 		if ( ! is_file( $get->id ) ) {
 			throw new Exception('no model like ' . $get->id);
 		}
-		$this->view->index = new MadList( new $get->id );
+		$this->view->index = new MadIndex( new $get->id );
 	}
 	function viewAction() {
 		$file = $this->get->file;

@@ -1,25 +1,9 @@
 <?
 class MadForm implements IteratorAggregate {
-	private $data;
-
 	private $model = null;
-	private $types = null;
 
-	function __construct( $data = null ) {
-		MadAutoload::getInstance()->add( MADTOOLS . 'forms/' );
-		$types = array(
-				'hidden' => 'MadFormElement_Hidden',
-				'text' => 'MadFormElement_Text',
-				'email' => 'MadFormElement_Email',
-				'radio' => 'MadFormElement_Radio',
-				'select' => 'MadFormElement_Select',
-				'checkbox' => 'MadFormElement_Checkbox',
-				'file' => 'MadFormElement_File',
-				'textarea' => 'MadFormElement_Textarea',
-				'default' => 'MadFormElement_Text',
-				);
-		$this->types = new MadData( $types );
-		$this->data = $data;
+	function __construct( MadModel $model = null ) {
+		$this->model = $model;
 	}
 	function isEmpty() {
 		return $this->data->isEmpty();
@@ -80,8 +64,17 @@ class MadForm implements IteratorAggregate {
 	}
 	function getUnits() {
 		$rv = new MadData;
-		foreach( $this->data as $key => $data ) {
-			$rv->$key = $this->getUnit( $key );
+		foreach( $this->model->getSetting() as $row ) {
+			$row = new MadData( $row );
+			if( $row->type == 'textarea' ) {
+				$row->form = "<textarea name='$row->name' id='$row->id'>$row->value</textarea>";
+			} else if( $row->type == 'radio' ) {
+			} else if( $row->type == 'checkbox' ) {
+			} else if( $row->type == 'select' ) {
+			} else {
+				$row->form = "<input type='$row->type' name='$row->name' id='$row->id' value='$row->value' />";
+			}
+			$rv->{$row->name} = $row;
 		}
 		return $rv;
 	}
@@ -99,21 +92,6 @@ class MadForm implements IteratorAggregate {
 		$rv->label = "<label for='$data->id'>$data->label</label>";
 		$rv->form = "<input type='$data->type' id='$data->id' name='$data->name' value='$data->value' placeholder='$data->placeholder' />";
 		return $rv;
-	}
-	// from MadFormFactory
-	public function create( $type ) {
-		if ( ! $formElement = $this->types->$type ) {
-			$formElement = $this->types->default;
-		}
-		return new $formElement;
-	}
-	public function createWithData( $data ) {
-		$form = $this->create( $data->type );
-		if ( ! $data->label ) {
-			$data->label = ( $data->kName ) ?  $data->kName : $form->name;
-		}
-		$form->setData( $data );
-		return $form;
 	}
 	private function getDefaultUnit( $key ) {
 		$data = new MadData( array(

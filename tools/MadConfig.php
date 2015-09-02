@@ -29,7 +29,22 @@ class MadConfig extends MadAbstractData {
 		}
 		$this->addConfig( $file );
 	}
+	private $loaded = array();
+	function isLoaded( $file ) {
+		if ( ! is_file( $file ) ) {
+			return true;
+		}
+		$path = realpath( $file );
+		if ( ckValue( $path, $this->loaded ) ) {
+			return true;
+		}
+		$this->loaded[] = $path;
+		return false;
+	}
 	function addConfig( $file = 'config.json' ) {
+		if ( $this->isLoaded( $file ) ) {
+			return $this;
+		}
 		$this->dir = dirName( $file ) . '/';
 
 		$json = new MadJson( $file );

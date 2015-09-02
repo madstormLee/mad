@@ -1,9 +1,16 @@
-<?=$e->getCode() ?>
-<br />
-<?=$e->getFile() ?>
-<br />
-<?=$e->getLine() ?>
-<br />
-<?=$e->getMessage() ?>
-<br />
-<?=$e->getTraceAsString() ?>
+<h1>Exception</h1>
+
+<dl>
+	<dt>code</dt>
+	<dd><?=$e->getCode() ?></dd>
+	<dt>file</dt>
+	<dd><?=$e->getFile() ?></dd>
+	<dt>line</dt>
+	<dd><?=$e->getLine() ?></dd>
+	<dt>message</dt>
+	<dd><?=$e->getMessage() ?></dd>
+	<dt>traceAsString</dt>
+	<dd>
+		<pre><?=$e->getTraceAsString() ?></pre>
+	</dd>
+</dl>

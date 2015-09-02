@@ -3,25 +3,20 @@ class MadController {
 	protected $name = 'Mad';
 	protected $data = array();
 
-	function __construct( $component='', $params = null ) {
-		$explodeComponent = explode( '/', $component );
-		$action = array_pop( $explodeComponent );
-		$component = implode('/', $explodeComponent);
-
-		$this->name = subStr( get_class($this), 0, -10 );
-		$this->request = "$component/$action";
-		$this->component = $component;
-		$this->action = $action;
-
-		if ( null === $params ) {
-			$this->params = MadRouter::getInstance()->params;
-		} else {
-			$this->params = $params;
+	public static function front() {
+		try {
+			return self::create();
+		} catch ( PDOException $e ) {
+			return printR($e, true);
+		} catch ( Exception $e ) {
+			return $e->getMessage();
 		}
-
-		$this->init();
 	}
-	public static function create( $component, $params = null ) {
+	public static function create( $component='', $params = null ) {
+		MadConfig::getInstance();
+		if ( empty( $component ) ) {
+			$component = MadRouter::getInstance()->getComponentPath();
+		}
 		$baseDir = dirname( $component );
 		$name = ucFirst( baseName( $baseDir ) );
 		if ( $name == '.' ) {
@@ -36,21 +31,22 @@ class MadController {
 		}
 		return new self($component, $params);
 	}
-	public static function front() {
-		try {
-			$router = MadRouter::getInstance();
-			return MadController::create( $router->componentPath );
-		} catch ( PDOException $e ) {
-			return printR($e);
-		} catch ( Exception $e ) {
-			return $e->getMessage();
+	function __construct( $component='', $params = null ) {
+		$explodeComponent = explode( '/', $component );
+		$action = array_pop( $explodeComponent );
+		$component = implode('/', $explodeComponent);
+
+		$this->component = $component;
+		$this->action = $action;
+
+		if ( null === $params ) {
+			$this->params = MadRouter::getInstance()->params;
+		} else {
+			$this->params = $params;
 		}
-	}
-	function init() {
+
 		$this->config = MadConfig::getInstance();
-		if ( $this->component !== '.' ) {
-			$this->config->addConfig( "$this->component/config.json" );
-		}
+		$this->config->addConfig( "$this->component/config.json" );
 
 		$this->addData( $this->config->getData() );
 
@@ -58,7 +54,6 @@ class MadController {
 		$this->model = $this->createModel();
 		$this->view->model = $this->model;
 		$this->view->params = $this->params;
-		$this->info->subtitle = $this->name;
 	}
 	function createModel( $modelName='' ) {
 		if ( empty($modelName) ) {
@@ -85,12 +80,8 @@ class MadController {
 		return $this->data;
 	}
 	function getActions() {
-		$methods = preg_grep( '/Action$/', get_class_methods( $this ) );
-		$actions = new MadData( $methods );
-		$actions->walk( function( &$value ) {
-			$value = subStr( $value, 0, -6 );
-		});
-		return $actions;
+		$actions = new MadData( preg_grep( '/Action$/', get_class_methods( $this ) ) );
+		return $actions->walk( function( &$value ) { $value = subStr( $value, 0, -6 ); });
 	}
 	/*************** magic methods *******************/
 	function __set( $key, $value ) {
@@ -103,36 +94,50 @@ class MadController {
 		return isset( $this->data[$key] );
 	}
 	function __call( $action, $args ) {
+		if ( ! $this->view->isFile() ) {
+			throw new BadMethodCallException("$action not found!");
+		}
 		return null;
 	}
-	function __toString() {
-		try {
-			MadHeaders::utf8();
+	private function interpret( $result ) {
+		if ( $result == 0 ) {
+			$rv = "$this->action failed.";
+		} elseif ( $result > 0 ) {
+			$rv = "$this->action succeeded.";
+		}
+		$this->layout->setFile(MAD . '/project/layout/script.html' );
+		return $rv;
+	}
+	private function getResult() {
+		$action = trim($this->action) . 'Action';
+		$result = $this->$action();
 
-			$action = trim($this->action);
-			if ( empty($action) ) {
-				throw new BadMethodCallException;
-			}
-			$actionName = $action . 'Action';
-			$result = $this->$actionName();
-
-			if ( $result === null && ! $this->view->isFile() ) {
+		if ( null === $result ) {
+			$result = $this->view;
+			if ( ! $result->isFile() ) {
 				http_response_code(404);
-				$this->view->setFile( MAD . '/project/layout/404.html' );
+				$result->setFile( MAD . '/project/layout/404.html' );
 			}
+		} else {
+			$result = $this->interpret( $result );
+		}
+		return $result;
+	}
+	function __toString() {
+		MadHeaders::utf8();
 
-			if ( null === $result ) {
-				$result = $this->view;
-			}
+		try {
+			$result = $this->getResult();
 
 			if( $this->router->ajax || ! isset( $this->layout ) ) {
 				return (string)$result;
 			}
-			$layout = $this->layout;
-			$layout->main = $result;
-			return (string)$layout;
+			$this->layout->main = $result;
 		} catch( Exception $e ) {
-			return $e->getMessage();
+			$this->view->setFile( MAD . '/project/layout/exception.html' );
+			$this->view->e = $e;
+			$this->layout->main = $this->view;
 		}
+		return (string)$this->layout;
 	}
 }

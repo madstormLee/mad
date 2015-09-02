@@ -4,6 +4,11 @@ class MadDebug {
 	private $runtime = 0;
 	private $mode = 'dev';
 
+	public static function getInstance() {
+		self::$instance || self::$instance = new self;
+		return self::$instance;
+	}
+
 	private function __construct() {
 		$this->setMode();
 	}
@@ -16,10 +21,6 @@ class MadDebug {
 		header('Content-Type:text/html; charset=UTF-8');
 		ini_set('display_errors', !! $reporting );
 		date_default_timezone_set('Asia/Seoul');
-	}
-	public static function getInstance() {
-		self::$instance || self::$instance = new self;
-		return self::$instance;
 	}
 	public function runtime() {
 		return microtime(true) - $this->runtime;

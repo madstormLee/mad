@@ -8,9 +8,8 @@ class MadModel extends MadAbstractData {
 		$class = ucFirst( $class );
 		return class_exists( $class )? new $class($id): new self($id);
 	}
-	function __construct( $id = '' ) {
+	function __construct() {
 		$this->setName();
-		$this->fetch( $id );
 	}
 	function getName() {
 		return $this->name;
@@ -19,13 +18,21 @@ class MadModel extends MadAbstractData {
 		$this->name = empty($name) ? get_class($this) : $name;
 		return $this;
 	}
-	function getIndex() {
-		return new MadIndex( $this );
-	}
-	function setSetting( $file ) {
-		if ( ! is_file( $file ) ) {
-			return $this;
+	function getSetting( $id='' ) {
+		if ( empty( $this->setting ) ) {
+			$file = lcFirst($this->getName()) . '/model.json';
+			$this->setSetting( $file );
 		}
+		if ( ! empty( $id ) ) {
+			if ( isset($this->setting->$id) ) {
+				return $this->setting->$id;
+			} else {
+				return new MadData;
+			}
+		}
+		return $this->setting;
+	}
+	function setSetting( $file='' ) {
 		$this->setting = new MadJson( $file );
 		return $this;
 	}
@@ -36,107 +43,42 @@ class MadModel extends MadAbstractData {
 	function install() {
 		return $this->getDb()->exec( new MadScheme( $this ) );
 	}
-	function getSetting( $id='' ) {
-		if ( empty( $this->setting ) ) {
-			$file = lcFirst($this->name) . '/model.json';
-			$this->setSetting( $file );
-		}
-		if ( ! empty( $id ) ) {
-			if ( isset($this->setting->$id) ) {
-				return $this->setting->$id;
-			} else {
-				return new MadData;
-			}
-		}
-		if ( empty( $this->setting ) ) {
-			$this->setSetting();
-		}
-		return $this->setting;
+	function createTable() {
+		return $this->getDb()->exec( new MadScheme( $this ) );
 	}
 	function getHeaders() {
-		return $this->setting->dic('label');
+		return $this->getSetting()->dic('label');
+	}
+	function getIndex() {
+		return new MadIndex( $this );
 	}
 	function getForms() {
-		$rv = new MadData;
-		foreach( $this->setting as $row ) {
-			$row = new MadData( $row );
-			if( $row->type == 'textarea' ) {
-				$row->form = "<textarea name='$row->name' id='$row->id'>$row->value</textarea>";
-			} else if( $row->type == 'radio' ) {
-			} else if( $row->type == 'checkbox' ) {
-			} else if( $row->type == 'select' ) {
-			} else {
-				$row->form = "<input type='$row->type' name='$row->name' id='$row->id' value='$row->value' />";
-			}
-			$rv->{$row->name} = $row;
-		}
-		return $rv;
-	}
-	function getDb() {
-		return MadConfig::getInstance()->db;
-	}
-	function save() {
-		if ( $this->id ) {
-			return $this->update();
-		}
-		return $this->insert();
+		return new MadForm( $this );
 	}
 	// @override this
 	function fetch( $id = '' ) {
 		if ( empty( $id ) ) {
-			return false;
+			return $this->fetchDefault();
 		}
-		$query = new MadQuery( get_class( $this ) );
-		$query->where( "id=:id");
-		$statement = $this->getDb()->prepare( $query );
-		$result = $statement->execute( array( 'id' => $id ) );
-		$this->data = $statement->fetch(PDO::FETCH_ASSOC); 
+		MadDb::create()->read( $id, $this );
 		return $this;
 	}
-	// @override this
-	function insert() {
-		$this->wDate = date('Y-m-d H:i:s');
-		$this->uDate = date('Y-m-d H:i:s');
-
-		$query = new MadQuery( get_class($this) );
-		$query->insert( array_filter($this->data) );
-
-		$db = $this->getDb();
-
-		$statement = $db->prepare( $query );
-		$result = $statement->execute( $query->data() );
-		return $db->lastInsertId();
+	function fetchDefault() {
+		$this->data = $this->getSetting()->dic('default')->getData();
+		return $this;
 	}
-	// @override this
-	function update() {
-		$this->uDate = date('Y-m-d H:i:s');
-
-		$query = new MadQuery( get_class($this) );
-		$query->update( $this->data );
-
-		$db = $this->getDb();
-
-		$statement = $db->prepare( $query );
-		$result = $statement->execute( $query->data() );
-
-		return $statement->rowCount();
+	function save( $data = null ) {
+		if ( ! is_null( $data ) ) {
+			$this->setData( $data );
+		}
+		return MadDb::create()->save( $this );
 	}
-	// @override this
 	function delete( $id = '' ) {
-		$query = "delete from Contents where id=?";
-
-		$db = $this->getDb();
-
-		$statement = $db->prepare( $query );
-		$result = $statement->execute( array($id) );
-
-		return $statement->rowCount();
+		$this->id = $id;
+		return MadDb::create()->delete( $this );
 	}
+	// @override this
 	function __toString() {
 		return $this->id;
-	}
-	function createTable() {
-		$scheme = new MadScheme( $this );
-		return $this->getDb()->exec( $scheme );
 	}
 }

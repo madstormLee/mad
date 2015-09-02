@@ -21,24 +21,8 @@ class MadRouter extends MadAbstractData {
 		$this->project = dirName( $server->SCRIPT_NAME );
 		$this->cwd = getCwd();
 
-		// shell mode
 		if ( $server->argv ) {
-			$this->ajax = true;
-			if ( $server->argc > 1 ) {
-				$url = parse_url($server->argv[1]);
-				$this->args = explode('/', $url['path']);
-				parse_str($url['query'], $queries);
-				$this->params = new MadParams( $queries );
-			}
-			for( $i=2; $i < $server->argc; ++$i ) {
-				$option = str_replace('-', '', $server->argv[$i]);
-				if ( strpos( $option, '=' ) ) {
-					list($key, $value) = explode( '=', $option );
-					$this->$key = $value;
-				} else {
-					$this->$option = false;
-				}
-			}
+			$this->shellRoute();
 		} else {
 			// browser mode
 			$this->args = $this->getArgs();
@@ -50,15 +34,34 @@ class MadRouter extends MadAbstractData {
 		if ( count( $this->args ) > 0 ) {
 			$this->component = $this->args[0];
 		}
-		// todo: this is potential member
-		$this->setComponentPath();
-		$this->checkAuth();
-
-		$this->addHistory();
-		$this->backUrl = isset( $server->HTTP_REFERER )? $server->HTTP_REFERER:'~/';
+		$this->backUrl = isset( $server->HTTP_REFERER ) ? $server->HTTP_REFERER:'~/';
+	}
+	function shellRoute() {
+		$this->ajax = true;
+		if ( $server->argc > 1 ) {
+			$url = parse_url($server->argv[1]);
+			$this->args = explode('/', $url['path']);
+			parse_str($url['query'], $queries);
+			$this->params = new MadParams( $queries );
+		}
+		for( $i=2; $i < $server->argc; ++$i ) {
+			$option = str_replace('-', '', $server->argv[$i]);
+			if ( strpos( $option, '=' ) ) {
+				list($key, $value) = explode( '=', $option );
+				$this->$key = $value;
+			} else {
+				$this->$option = false;
+			}
+		}
 	}
 	function toUrl( $path ) {
 		return str_replace( $this->document, '', $path);
+	}
+	function getComponentPath() {
+		if ( ! $this->componentPath ) {
+			$this->setComponentPath();
+		}
+		return $this->componentPath;
 	}
 	function setComponentPath() {
 		// todo: exception. just trying.
@@ -73,6 +76,7 @@ class MadRouter extends MadAbstractData {
 				$this->args = explode('/', $path->component);
 			}
 		}
+
 		$componentPath = array();
 		$this->action = 'index';
 		// find request matching.
@@ -90,54 +94,11 @@ class MadRouter extends MadAbstractData {
 			$component = '.';
 		}
 		$this->componentPath = "$component/$this->action";
-	}
-	// todo: fill auth info from sitemap, first.
-	function checkAuth() {
-		if ( ! isset( $this->auth ) ) {
-			return false;
-		}
-		if ( ! $user = MadSession::getInstance()->user ) {
-			return false;
-		}
-		if ( $user->hasAuth( $this->authLevel ) ) {
-			return false;
-		}
-		if ( $this->authPath == $this->componentPath ) {
-			return false;
-		}
-		header( "Location: $this->authPath" );
-		// throw new Exception('권한이 부족합니다.');;
-	}
-	// todo: user this for sitemap routing(as access list).
-	function sitemapException() {
-		$sitemapFile = 'sitemap.json';
-		if ( is_file( $sitemapFile ) ) {
-			$sitemap = MadSitemap::create($sitemapFile);
-			$sitemap->setCurrent();
-			$current = $sitemap->getCurrent();
-		} else {
-			$current = $router;
-		}
-	}
-	function addHistory() {
-		$history = new MadCookie('history');
-
-		if ( $history->isEmpty() ) {
-			$history->set( 0, '/' );
-		}
-
-		if ( $this->ajax || $this->method == 'POST' || $history->end() == $this->request ) {
-			return false;
-		}
-		if ( $history->count() > 10 ) {
-			$history->shift();
-		}
-		$history->push( $this->request );
+		return $this;
 	}
 	/********************** routes **********************/
 	public function route() {
-		// $sitemap = new MadSitemap;
-		$sitemap = new MadData;
+		$sitemap = new MadSitemap;
 		if ( $sitemap->isEmpty() ) {
 			$this->routeConvention();
 		} else {
@@ -146,7 +107,7 @@ class MadRouter extends MadAbstractData {
 	}
 	public function replace( $location ) {
 		header("Location: " . $this->url( $location ));
-		die;
+die;
 	}
 	public function pathAdjust( $value ) {
 		return str_replace('~', $this->cwd, $value );
@@ -188,11 +149,21 @@ class MadRouter extends MadAbstractData {
 		}
 		unset( $this->subs );
 	}
-	/********************** history **********************/
-
 	/********************** utils **********************/
 	public function arg( $number ) {
-		return $this->args->$number;
+		if ( isset( $this->args[$number] ) ) {
+			return $this->args[$number];
+		}
+		return false;
+	}
+	public function argShift() {
+		if( count($this->args) > 0 ) {
+			$args = $this->args;
+			$rv = array_shift( $args );
+			$this->args = $args;
+			return $rv;
+		}
+		return '';
 	}
 	/********************** privates **********************/
 	private function getArgs() {

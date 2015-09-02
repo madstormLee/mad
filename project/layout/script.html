@@ -1,0 +1,11 @@
+<?
+$msg = addSlashes($main);
+$msg = str_replace( "\n", '\n', $msg );
+?>
+
+<script>alert('<?=$msg?>');</script>
+<? if ( isset($url) ) : ?>
+<script>location.replace('<?=$url?>');</script>
+<? else: ?>
+<script>history.back();</script>
+<? endif; ?>

@@ -88,12 +88,12 @@ class MadJs extends MadAbstractData {
 		return $this;
 	}
 	function replace( $url ) {
-		$url = $this->router->urlAdjust( $url );
+		$url = $this->router->url( $url );
 		print  "<script>location.replace('$url');</script>";
 		exit;
 	}
 	function move( $url ) {
-		$url = $this->router->urlAdjust( $url );
+		$url = $this->router->url( $url );
 		print  "<script>location.href=('$url');</script>";
 		exit;
 	}

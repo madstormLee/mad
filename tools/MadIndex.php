@@ -1,12 +1,15 @@
 <?
 class MadIndex extends MadData {
-	private $model = null;
-	private $query = null;
-	private $params = null;
-	public $page = 1;
-	public $pages = 1;
-	public $searchTotal = 0;
-	public $pageNavi = '';
+	protected $model = null;
+
+	protected $query = null;
+
+	protected $page = 1;
+	protected $pages = 1;
+
+	protected $searchTotal = 0;
+	protected $total = false;
+	protected $pageNavi = null;
 
 	function __construct( MadModel $model=null ) {
 		if ( ! empty( $model ) ) {
@@ -19,29 +22,162 @@ class MadIndex extends MadData {
 		if ( $get->page ) {
 			$this->query->limit( 10, $get->page );
 		}
-		$this->searchTotal = $this->query->searchTotal();
+		$this->setSearchTotal();
 		$this->pageNavi = '';
 		return $this;
 	}
-	function setParams( $params ) {
-		$this->params = $params;
+	function getSearchTotal() {
+		return $this->setSearchTotal()->searchTotal;
+	}
+	function setSearchTotal() {
+		if ( $this->searchTotal === false ) {
+			$this->searchTotal = $this->query->searchTotal();
+		}
 		return $this;
+	}
+	function getTotal() {
+		return $this->setTotal()->total;
+	}
+	function setTotal() {
+		if ( $this->total === false ) {
+			$this->total = $this->query->total();
+		}
+		return $this;
+	}
+	// @override
+	function isEmpty() {
+		return ! $this->getSearchTotal();
 	}
 	function getQuery() {
 		$this->init();
 		return $this->query;
 	}
+	function setQuery( MadQuery $query ) {
+		$this->query = $query;
+		return $this;
+	}
 	function setModel( $model ) {
 		$this->model = $model;
 		return $this;
 	}
+	protected $iterator = null;
 	function getIterator() {
-		return $this->getQuery();
+		if ( is_null( $this->iterator ) ) {
+			$db = MadDb::create();
+			$statement = $db->query( $this->query );
+			$statement->setFetchMode( PDO::FETCH_CLASS, $this->model->getName() );
+			$this->iterator = new MadData( $statement->fetchAll() );
+		}
+		return $this->iterator;
+	}
+	function getRows() {
+		return $this->query->limit();
+	}
+	function setRows( $limit ) {
+		$this->query->limit( $limit );
+		return $this;
+	}
+	function setPages( $pages = 10 ) {
+		$this->pageNavi->pages = $pages;
 	}
 	function getPageNavi() {
 		if ( empty( $this->pageNavi ) ) {
 			$this->pageNavi = new MadPageNavi( $this->query );
 		}
 		return $this->pageNavi;
+	}
+	function getMoreNavi( $href = './list', $param = '' ) {
+		$view = new MadView('views/moreNavi.html');
+		$view->rows = $this->query->limit;
+		if ( $view->rows == 0 ) {
+			return '';
+		}
+		$view->href = $href;
+		$view->param = $param;
+		$view->list = $this;
+		if ( ! $page = MadParams::create('get')->page ) {
+			$page = 1;
+		}
+		$view->page = $page;
+		$view->nextPage = $view->page + 1;
+		$view->total = $this->getSearchTotal();
+
+		if(  $view->page * $view->rows > $view->total ) {
+			return '';
+		}
+		return $view;
+	}
+	/************************ todo: refactorying. from ListModel ****************/
+	function curry( $listName, $column, $searchKey = 'id' ) {
+		if ( ! class_exists( $listName ) ) {
+			throw new Exception("no $listName class");
+		}
+		$this->init();
+		$list = new $listName;
+		$name = $list->getTable();
+
+		$ids = $this->getData()->dic( $column )->filter()->implode(',');
+		if ( empty( $ids ) ) {
+			return false;
+		}
+		$list->where( "$searchKey in ( $ids )" )->limit();
+		$listdata = $list->getData()->index( $searchKey );
+
+		foreach( $this->data as &$row ) {
+			if ( $target = $row->$column ) {;
+				$row->$name = $list->$target;
+			} else {
+				$row->$name = array();
+			}
+		}
+
+		return $this;
+	}
+	function searchField( $field, $values ) {
+		if ( ! $this->isField( $field ) ) {
+			throw new Exception('Search field not exists!');
+		}
+		$type = $this->model->getConfig()->$field->type;
+
+		if ( $type == 'date' ) {
+			$this->searchDate( $field, $values );
+		} elseif ( in_array( $type, array( 'radio', 'checkbox', 'select' ) ) ) {
+			$this->searchIn( $field, $values );
+		} else {
+			$this->searchText( $field, $values );
+		}
+		return $this;
+	}
+	function searchText( $field, $value ) {
+		if ( ! $this->isField( $field ) ) {
+			throw new Exception('Search field not exists!');
+		}
+		$this->query->where( "$field like '$value%'" );
+		return $this;
+	}
+	function searchFulltext( $field, $value ) {
+		$this->query->where( "$field like '%$value%'" );
+		return $this;
+	}
+	function searchIn( $field, $values = '' ) {
+		if ( empty( $values ) ) {
+			return $this;
+		}
+		if ( ! $values instanceof MadData ) {
+			if ( ! is_array( $values ) ) {
+				$values = array( $values );
+			}
+			$values = new MadData( $values );
+		}
+		$data = filter_var_array( $values->getData(), FILTER_SANITIZE_STRING );
+		$values = implode( "','", $values->getData() );
+		$this->query->where( "$field in ($values)" );
+		return $this;
+	}
+	function searchInNumeric( $field, MadData $values) {
+		$values = filter_var_array( $values->getData(), FILTER_SANITIZE_NUMBER_INT );
+		$values = implode( ',', $values );
+		$this->query->where( "$field in ($values)" );
+		return $this;
 	}
 }
