@@ -8,22 +8,6 @@ function ckValue( $value, $arr ) {
 	}
 	return false;
 }
-function ckGet( $key, $default=false ) {
-	return ckKey( $key, $_GET, $default );
-}
-function ckPost( $key, $default=false ) {
-	return ckKey( $key, $_POST, $default );
-}
-function ckSess( $key, $expected = '' ) {
-	$rv = false;
-	if ( isset($_SESSION[$key]) ) {
-		$rv = $_SESSION[$key];
-		if ( ! empty($expected) && $rv != $expected ) {
-			$rv = false;
-		}
-	}
-	return $rv;
-}
 function kNatSort( &$array ) {
 	$rv = array();
 	$keys = array_keys( $array );
@@ -48,16 +32,6 @@ function isArray( &$array ) {
 		is_array($array)
 		);
 }
-function equals( $a , $b ) {
-	return isset($a) && $a == $b;
-}
-function test( $testName ) {
-	include "tests/$testName.php";
-	$test = new $testName;
-	foreach( $test as $action ) {
-		$test->$action();
-	}
-}
 function printPre( $data ) {
 	print '<pre class="printPre">';
 	print $data;
@@ -80,11 +54,6 @@ if ( ! function_exists( 'varDump' ) ) {
 		var_dump( $data );
 		print '</pre>';
 	}
-}
-function blank( $value ) {
-	$value = trim($value);
-	if ( empty($value) ) return true;
-	else return false;
 }
 function sqlin($string){
 	if( is_array($string) ){
@@ -300,28 +269,8 @@ if(function_exists('lcFirst') === false) {
 	}
 }
 if ( ! function_exists('globR')) {
-	function globR($pattern, $flags = 0) {
-		$files = glob($pattern, $flags);
-
-		foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-			if ( is_link( $dir ) ) {
-				continue;
-			}
-			$files = array_merge($files, globR($dir.'/'.basename($pattern), $flags));
-		}
-
-		return $files;
-	}
 }
 /***************************** date ****************************/
-function isDate( $date ) {
-	if ( preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', $date) ) {
-		return true;
-	}
-	return false;
-}
-
-
 if (!function_exists('http_response_code')) {
 	function http_response_code($code = NULL) {
 		if ( $code === NULL) {

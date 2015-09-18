@@ -21,8 +21,8 @@ class Model extends MadModel {
 	function getIndex() {
 		$rv = new MadData;
 
-		$data = globR('model.json');
-		$data = array_merge( $data, globR('mad/*/model.json') );
+		$data = MadDir::globR('model.json');
+		$data = array_merge( $data, MadDir::globR('mad/*/model.json') );
 
 		foreach( $data as $file ) {
 			$table = $this->getTableName( $file );
