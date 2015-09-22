@@ -67,7 +67,7 @@ class MadRouter extends MadAbstractData {
 		// todo: exception. just trying.
 		if ( is_file( 'sitemap.json') ) {
 			$sitemap = new MadSitemap;
-			$path = $sitemap->fetch( implode('/', $this->args) );
+			$path = $sitemap->fetch( $this->args->implode('/') );
 
 			if( ! $path instanceof MadSitemap ) {
 				if ( isset($path->action) ) {
@@ -158,10 +158,7 @@ die;
 	}
 	public function argShift() {
 		if( count($this->args) > 0 ) {
-			$args = $this->args;
-			$rv = array_shift( $args );
-			$this->args = $args;
-			return $rv;
+			return $this->args->shift();
 		}
 		return '';
 	}

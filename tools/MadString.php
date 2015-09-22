@@ -84,6 +84,15 @@ class MadString implements IteratorAggregate {
 	function blank() {
 		return $this->string;
 	}
+	function __call( $method, $args ) {
+		$func = 'str_' . $method;
+		if ( function_exists( $func ) ) {
+			array_push( $args,$this->string );
+			$this->string = call_user_func_array( $func, $args );
+			return $this;
+		}
+		throw new Exception('Method not found.');
+	}
 	function __toString() {
 		return $this->string;
 	}

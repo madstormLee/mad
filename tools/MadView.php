@@ -1,5 +1,10 @@
 <?
 class MadView extends MadFile {
+	public static function index( MadIndex $index ) {
+		$view = new self( MAD . 'component/view/index.html' );
+		$view->index = $index;
+		return $view;
+	}
 	// @override
 	function getContents() {
 		if ( ! $this->isFile() ) {

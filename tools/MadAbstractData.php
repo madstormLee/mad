@@ -17,7 +17,11 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		return $this->data[$key];
 	}
 	function set( $key, $value ) {
-		$this->data[$key] = $value;
+		if ( is_array( $value ) ) {
+			$this->data[$key] = new MadData($value);
+		} else {
+			$this->data[$key] = $value;
+		}
 		return $this;
 	}
 	function remove( $key ) {
@@ -35,8 +39,8 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 		return $this->addData( $data );
 	}
 	function addData( $data = array() ) {
-		foreach( $data as $key => $row ) {
-			$this->data[$key] = $row;
+		foreach( $data as $key => $value ) {
+			$this->set($key,$value);
 		}
 		return $this;
 	}
@@ -72,6 +76,9 @@ abstract class MadAbstractData implements IteratorAggregate, ArrayAccess, Counta
 	}
 	function pop() {
 		return array_pop( $this->data );
+	}
+	function shift() {
+		return array_shift( $this->data );
 	}
 	function unshift( $value ) {
 		array_unshift( $this->data, $value );

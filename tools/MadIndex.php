@@ -7,15 +7,23 @@ class MadIndex extends MadData {
 	protected $page = 1;
 	protected $pages = 1;
 
-	protected $searchTotal = 0;
+	protected $searchTotal = false;
 	protected $total = false;
 	protected $pageNavi = null;
 
 	function __construct( MadModel $model=null ) {
-		if ( ! empty( $model ) ) {
-			$this->query = new MadQuery( $model->getName() );
-			$this->setModel( $model );
+		$this->setModel( $model );
+		$this->query = new MadQuery( $this->model->getName() );
+	}
+	function getModel() {
+		return $this->model;
+	}
+	function setModel( MadModel $model=null ) {
+		if ( is_null( $model ) ) {
+			$model = new MadModel;
 		}
+		$this->model = $model;
+		return $this;
 	}
 	function init() {
 		$get = MadRouter::getInstance()->params;
@@ -54,10 +62,6 @@ class MadIndex extends MadData {
 	}
 	function setQuery( MadQuery $query ) {
 		$this->query = $query;
-		return $this;
-	}
-	function setModel( $model ) {
-		$this->model = $model;
 		return $this;
 	}
 	protected $iterator = null;
@@ -108,6 +112,27 @@ class MadIndex extends MadData {
 		return $view;
 	}
 	/************************ todo: refactorying. from ListModel ****************/
+	protected $searchables=null;
+
+	function isSearchable() {
+		return $this->getSearchables()->count();
+	}
+
+	function getSearchables() {
+		if ( is_null($this->searchables) ) {
+			$this->setSearchables();
+		}
+		return $this->searchables;
+	}
+	function setSearchables() {
+		$setting = clone $this->model->getSetting();
+		$this->searchables = $setting->filter( function( $row ){ return isset($row->search); });
+		return $this;
+	}
+	function search( $where ) {
+		$this->getQuery()->where( $where );
+		return $this;
+	}
 	function curry( $listName, $column, $searchKey = 'id' ) {
 		if ( ! class_exists( $listName ) ) {
 			throw new Exception("no $listName class");
@@ -149,14 +174,7 @@ class MadIndex extends MadData {
 		return $this;
 	}
 	function searchText( $field, $value ) {
-		if ( ! $this->isField( $field ) ) {
-			throw new Exception('Search field not exists!');
-		}
-		$this->query->where( "$field like '$value%'" );
-		return $this;
-	}
-	function searchFulltext( $field, $value ) {
-		$this->query->where( "$field like '%$value%'" );
+		$this->query->where( "$field like '$value'" );
 		return $this;
 	}
 	function searchIn( $field, $values = '' ) {

@@ -6,7 +6,7 @@ class MadModel extends MadAbstractData {
 
 	public static final function create( $class, $id = null ) {
 		$class = ucFirst( $class );
-		return class_exists( $class )? new $class($id): new self($id);
+		return class_exists( $class ) ? new $class: new self;
 	}
 	function __construct() {
 		$this->setName();

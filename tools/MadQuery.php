@@ -1,7 +1,7 @@
 <?
 class MadQuery implements IteratorAggregate, Countable {
 	protected $server = 'mysql';
- 	protected $db = 'null';
+ 	protected $db = null;
 	protected $command = 'select';
  	protected $table = '';
  	protected $tables = array();
@@ -27,7 +27,6 @@ class MadQuery implements IteratorAggregate, Countable {
 	protected $pKey = 'id';
 
 	function __construct( $table = '' ) {
-		$this->db = MadDb::create();
 		$this->from( $table );
 	}
 	function getCommand() {
@@ -65,7 +64,6 @@ class MadQuery implements IteratorAggregate, Countable {
 	}
 	function from( $table = '' ) {
 		$this->table = $table;
-		$this->model = $table;
 		if ( empty( $table ) ) {
 			$this->tables = array();
 		} else {
@@ -155,34 +153,61 @@ class MadQuery implements IteratorAggregate, Countable {
 		return $this;
 	}
 	/*************************** db involed ***************************/
-	function setModel( $model ) {
-		$this->model = $model;
-		return $this;
-	}
  	function query( $query = '' ) {
  		if ( ! $query ) {
  			$query = $this->getQuery();
  		}
- 		$this->statement = $this->db->query( $query );
+ 		$this->statement = $this->getDb()->prepare( $query );
+		if ( ! $this->statement->execute( $this->data ) ) {
+			throw new Exception('query error!');
+		}
  		return $this;
  	}
  	function exec( $query = '' ) {
  		if ( ! $query ) {
  			$query = $this->getQuery();
  		}
-		$statement = $this->db->prepare( $query );
+		$statement = $this->getDb()->prepare( $query );
 		$statement->execute( $this->data );
+		if ( ! $this->statement->execute( $this->data ) ) {
+			throw new Exception('query error!');
+		}
+
 		if ( $this->command == 'insert' ) {
 			return $statement->getInsertId();
 		}
 		return $statement->rowCount();
  	}
-	/************************* getters **************************/
+	/************************* getter/setter **************************/
 	function getDb() {
+		if ( is_null( $this->db ) ) {
+			$this->setDb();
+		}
 		return $this->db;
 	}
+	function setDb( PDO $db=null ) {
+		if ( is_null($db) ) {
+			$db = MadDb::create();
+		}
+		$this->db = $db;
+		return $this;
+	}
+	function getModel() {
+		if ( is_null( $this->model ) ) {
+			$this->setModel();
+		}
+		return $this->model;
+	}
+	function setModel(MadData $model=null) {
+		if ( is_null( $this->model ) ) {
+			$model = new MadData;
+		}
+		$this->model = $model;
+		return $this;
+	}
 	function getFrom() {
-		return $this->db->escapeField( $this->table );
+		return $this->table;
+		return $this->getDb()->escapeField( $this->table );
 		return implode( ' inner join ', $table );
 	}
 	function getOn() {
@@ -240,7 +265,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		return "select $this->select from $from $on $where $order $limit";
 	}
 	function getInsertQuery() {
-		$table = $this->db->escapeField( $this->table );
+		$table = $this->getDb()->escapeField( $this->table );
 		$fields = $this->getFields();
 		$placeholder = $this->getPlaceholders();
 		return "insert into $table ($fields) values ($placeholder)";
@@ -276,7 +301,7 @@ class MadQuery implements IteratorAggregate, Countable {
 	function getIterator() {
 		if ( empty( $this->statement ) ) {
 			$this->query();
-			$this->statement = $this->db->getStatement();
+			$this->statement = $this->getDb()->getStatement();
 			$this->statement->setFetchMode( PDO::FETCH_CLASS, $this->model );
 		}
 		return new ArrayIterator( $this->statement->fetchAll() );
@@ -293,14 +318,17 @@ class MadQuery implements IteratorAggregate, Countable {
 		return $this;
 	}
 	/****************** fetches *****************/
+	function row() {
+		return $this->fetch();
+	}
 	function fetchAssoc() {
-		return $this->db->query( $this->getQuery() )->fetchAssoc();
+		$this->query();
+		return $this->statement->fetch(PDO::FETCH_ASSOC);
 	}
 	function fetch() {
 		$this->query();
-		$statement = $this->db->getStatement();
-		$statement->setFetchMode( PDO::FETCH_INTO, $this->model );
-		$statement->fetch();
+		$this->statement->setFetchMode( PDO::FETCH_INTO, $this->getModel() );
+		return $this->statement->fetch();
 	}
 	function fetchObject( $class = '' ) {
 		$this->query();
@@ -318,7 +346,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		return empty( $this->data );
 	}
 	function getDriver() {
-		return $this->db->getAttribute(PDO::ATTR_DRIVER_NAME);
+		return $this->getDb()->getAttribute(PDO::ATTR_DRIVER_NAME);
 	}
 	function isTable(){
 		$driver = $this->getDriver();
@@ -327,7 +355,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		} elseif ( $driver == 'mysql' ) {
 			$query = "show tables like '$this->table'";
 		}
-		$result = $this->db->query( $query )->fetch();
+		$result = $this->getDb()->query( $query )->fetch();
 		return ! empty( $result );
 	}
 	/*************************** utilities ***************************/
@@ -336,7 +364,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		unset( $set[$this->pKey] );
 
 		$keys = array_keys( $set );
-		return implode( ',', $this->db->escapeFields( $keys ) );
+		return implode( ',', $this->getDb()->escapeFields( $keys ) );
 	}
 	function getPlaceholders() {
 		$rv = array();
@@ -357,10 +385,8 @@ class MadQuery implements IteratorAggregate, Countable {
 	}
 	function total( $where='' ) {
 		$where = $this->formatWhere( $where );
-		$query = "select count(*) from $this->table $where";
-		$this->db->query($query);
-		$rv = $this->db->getFirst();
-		return ( $rv ) ? $rv : 0;
+		$query = new MadQuery( $this->table );
+		return $query->select('count(*)')->where( $where )->fetch()->first();
 	}
 	function searchTotal() {
 		return $this->total( $this->getWhere() );
@@ -372,16 +398,16 @@ class MadQuery implements IteratorAggregate, Countable {
 	function max($field='id', $where='') {
 		$where = $this->formatWhere( $where );
 		$query = "select max($field) from $this->table $where";
-		return $this->db->query( $query )->getFirst();
+		return $this->getDb()->query( $query )->getFirst();
 	}
 	function drop() {
-		return $this->db->exec("drop table $this->table");
+		return $this->getDb()->exec("drop table $this->table");
 	}
 	function truncate() {
-		return $this->db->exec( "truncate $this->table" );
+		return $this->getDb()->exec( "truncate $this->table" );
 	}
 	function explain() {
-		return $this->db->query( "explain $this->table" )->getData();
+		return $this->getDb()->query( "explain $this->table" )->getData();
 	}
 	function getDefaults() {
 		$data = new MadData( $this->explain() );
@@ -390,11 +416,11 @@ class MadQuery implements IteratorAggregate, Countable {
 	/************************ todo: refactorying. from MadDbModel ************************/
 	function getNextId() {
 		$query = "select min( $this->pKey ) from $this->table where $this->pKey > $this->id";
-		return $this->db->query( $query )->getFirst();
+		return $this->getDb()->query( $query )->getFirst();
 	}
 	function getPrevId() {
 		$query = "select max( $this->pKey ) from $this->table where $this->pKey < $this->id";
-		return $this->db->query( $query )->getFirst();
+		return $this->getDb()->query( $query )->getFirst();
 	}
 	/**************************** query and rollback ****************************/
 	public function setRollback( $flag = true ) {
@@ -406,7 +432,7 @@ class MadQuery implements IteratorAggregate, Countable {
 		return $this;
 	}
 	public function rollback() {
-		return $this->db->exec( $this->rollbackQuery );
+		return $this->getDb()->exec( $this->rollbackQuery );
 	}
 	function createRollback() {
 		if ( ! $this->rollback ) {

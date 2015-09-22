@@ -49,7 +49,8 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	function query( $query ) {
-		return $this->statement = parent::query($query);
+		$this->statement = parent::query($query);
+		return $this->statement;
 	}
 	function getOptions( $options ) {
 		if ( ! ( is_array( $options ) || is_object( $options ) ) ) {
@@ -149,16 +150,11 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 	// CRUD
 	function read( $id, $model ) {
 		$query = new MadQuery( $model->getName() );
-		$query->where( "id=:id");
-
-		$statement = $this->prepare( $query );
-		$result = $statement->execute( array( 'id' => $id ) );
-		$model->setData( $statement->fetch(PDO::FETCH_ASSOC) );
+		$query->where( "id=$id");
+		$model->setData( $query->fetch() );
 	}
 	function save( MadModel $model ) {
-		$model->uDate = date('Y-m-d H:i:s');
 		if ( ! $model->id ) {
-			$model->wDate = date('Y-m-d H:i:s');
 			return $this->insert( $model );
 		}
 		return $this->update( $model );
@@ -168,7 +164,9 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		$query->insert( array_filter($model->getData()) );
 
 		$statement = $this->prepare( $query );
-		$result = $statement->execute( $query->data() );
+		if ( ! $statement->execute( $query->data() ) ) {
+			throw new Exception('insert error.');
+		}
 		return $this->lastInsertId();
 	}
 	function update( MadModel $model ) {
@@ -184,12 +182,6 @@ class MadDb extends PDO implements IteratorAggregate, Countable {
 		$query = new MadQuery( $model->getName() );
 		$query->delete("id=$model->id");
 		return $query->result();
-	}
-	function setDebug( $debug ) {
-		$this->debug = ! ! $debug;
-		if ( $this->debug === true ) {
-		}
-		return $this;
 	}
 	function __toString() {
 		return $this->statement->queryString;

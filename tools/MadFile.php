@@ -229,6 +229,9 @@ class MadFile implements IteratorAggregate, Countable {
 	function append( $data ) {
 		return file_put_contents( $this->file, $contents, FILE_APPEND );
 	}
+	function nl2br() {
+		return nl2br( $this->getContents() );
+	}
 	function log( $message ) {
 		$message = date("Y-m-d H:i:s") . " - $message\n";
 		return $this->append( $message );
