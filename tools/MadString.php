@@ -82,7 +82,8 @@ class MadString implements IteratorAggregate {
 		return false;
 	}
 	function blank() {
-		return $this->string;
+		$value = trim($this->string);
+		return empty($value);
 	}
 	function __call( $method, $args ) {
 		$func = 'str_' . $method;
