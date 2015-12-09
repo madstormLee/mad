@@ -168,7 +168,6 @@ class MadQuery implements IteratorAggregate, Countable {
  			$query = $this->getQuery();
  		}
 		$statement = $this->getDb()->prepare( $query );
-		$statement->execute( $this->data );
 		if ( ! $this->statement->execute( $this->data ) ) {
 			throw new Exception('query error!');
 		}

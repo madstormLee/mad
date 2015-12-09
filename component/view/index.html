@@ -1,0 +1,29 @@
+<? $model = $index->getModel(); ?>
+
+<h1><?=$model->getName()?></h1>
+
+<table>
+	<caption>search total: <?=$index->getSearchTotal()?></caption>
+	<thead>
+		<tr>
+			<? foreach( $model->getHeaders() as $header ): ?>
+			<th><?=$header?></th>
+			<? endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<? foreach( $index as $row ): ?>
+		<tr>
+			<? foreach( $row as $column ): ?>
+			<td><?=$column?></td>
+			<? endforeach; ?>
+		</tr>
+		<? endforeach; ?>
+	</tbody>
+</table>
+
+<? if ( $index->isEmpty() ): ?>
+<p class='noIndex'>No index</p>
+<? endif; ?>
+
+<?=$index->getPagenavi(); ?>
